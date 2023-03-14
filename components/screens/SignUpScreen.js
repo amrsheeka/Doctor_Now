@@ -50,7 +50,7 @@ const SignUpScreen = ({ navigation }) => {
         <Button
           containerStyle={styles.button}
           buttonStyle={[styles.button, styles.buttonOutline]}
-          onPress={handleSignUp}
+          onPress={() => navigation.navigate('Homefunc')}
           title="Register"
           titleStyle={styles.buttonOutlineText}
         />

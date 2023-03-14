@@ -7,7 +7,6 @@ import {
   TextInput,
   Button,
 } from "react-native";
-//import { Button } from "react-native-elements";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -21,9 +20,10 @@ const LoginScreen = ({ navigation }) => {
   }
 
   return (
+    
     <View style={styles.container}>
-      <View>
-        <Text style={styles.greeting}>Welcome to Doctor Now!</Text>
+      <View >
+         <Text >Welcome to Doctor Now!</Text>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
         <Button
           containerStyle={styles.button}
           buttonStyle={styles.button}
-          onPress={handleLogin}
+          onPress={() => navigation.navigate('Homefunc')}
           title="Login"
           titleStyle={styles.buttonText}
         />
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "80%",
+    
   },
   input: {
     backgroundColor: "white",
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderColor: "green",
     borderWidth: 1,
+    
   },
   buttonContainer: {
     width: "60%",
