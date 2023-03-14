@@ -8,7 +8,6 @@ import {
   Button,
   TouchableOpacity
 } from "react-native";
-//import { Button } from "react-native-elements";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -22,9 +21,10 @@ const LoginScreen = ({ navigation }) => {
   }
 
   return (
+    
     <View style={styles.container}>
-      <View>
-        <Text style={styles.greeting}>Welcome to Doctor Now!</Text>
+      <View >
+         <Text >Welcome to Doctor Now!</Text>
       </View>
       <View style={styles.inputContainer}>
       <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Email</label>
@@ -48,7 +48,9 @@ const LoginScreen = ({ navigation }) => {
 
       <View style={styles.buttonContainer}>
         <Button
-          onPress={handleLogin}
+          containerStyle={styles.button}
+          buttonStyle={styles.button}
+          onPress={() => navigation.navigate('Homefunc')}
           title="Login"
           color="#288771"
           titleStyle={styles.buttonText}
@@ -79,6 +81,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "80%",
+    
   },
   input: {
     backgroundColor: "white",
@@ -88,6 +91,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderColor: "green",
     borderWidth: 1,
+    
   },
   buttonContainer: {
     width: "60%",

@@ -62,8 +62,10 @@ const SignUpScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button         
-          onPress={handleSignUp}
+        <Button
+          containerStyle={styles.button}
+          buttonStyle={[styles.button, styles.buttonOutline]}
+          onPress={() => navigation.navigate('Homefunc')}
           title="Register"
           color="#288771"
         />
