@@ -13,6 +13,7 @@ const SignUpScreen = ({ navigation }) => {
   const handleSignUp = () => {
     fetch('http://localhost/API/Auth/signup.php', {
       method: 'POST',
+      
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -22,6 +23,7 @@ const SignUpScreen = ({ navigation }) => {
         "password": password,
       }),
     });
+    
     console.log(email,"\n",password);
   }
 
