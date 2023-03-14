@@ -1,11 +1,13 @@
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import {Image, StyleSheet, Text, View, TextInput, Button } from "react-native";
 import React, { useState } from "react";
 import axios from 'axios';
-
+import { TouchableOpacity } from "react-native-web";
 
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setname] = useState("");
+
 
   const navigateLogin = () => {
     navigation.navigate("LoginScreen");
@@ -27,18 +29,31 @@ const SignUpScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View>
+<Image
+        
+      />      <View>
         <Text style={styles.greeting}>Register your account!</Text>
       </View>
       <View style={styles.inputContainer}>
+      
+      <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Full Name</label>
+      <TextInput
+          placeholder="Enter Your Name"
+          style={styles.input}
+          value={name}
+          onChangeText={(text) => setname(text)}
+        />
+
+      <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Email</label>
         <TextInput
-          placeholder="Email"
+          placeholder="Enter Your Email"
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
+      <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Password</label>
         <TextInput
-          placeholder="Password"
+          placeholder="Enter Your Password"
           style={styles.input}
           secureTextEntry
           value={password}
@@ -47,21 +62,17 @@ const SignUpScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button
-          containerStyle={styles.button}
-          buttonStyle={[styles.button, styles.buttonOutline]}
+        <Button         
           onPress={handleSignUp}
           title="Register"
-          titleStyle={styles.buttonOutlineText}
+          color="#288771"
         />
         <View style={styles.textContainer}>
           <Text>Already have account?</Text>
-          <Button
-            type="clear"
-            title="Log In"
-            titleStyle={styles.text}
-            onPress={navigateLogin}
-          />
+          <TouchableOpacity onPress={() => navigation.replace('LoginScreen')}>
+          <Text style={styles.text}>Login</Text>
+          </TouchableOpacity>
+          
         </View>
       </View>
     </View>
@@ -73,14 +84,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#fcfafa",
   },
   greeting: {
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: "bold",
+    marginTop: 100,
+
   },
   inputContainer: {
     width: "80%",
+    marginTop: 20,
+    
   },
   input: {
     backgroundColor: "white",
@@ -96,16 +111,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
+    
+    
   },
   button: {
     width: "100%",
     borderRadius: 10,
     alignItems: "center",
+    
   },
   buttonOutline: {
     backgroundColor: "white",
     marginTop: 5,
-    borderColor: "#0782F9",
+    borderColor: "#288771",
     borderWidth: 2,
   },
   buttonText: {
@@ -113,9 +131,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: "#0782F9",
+    color: "#288771",
     fontSize: 16,
     fontWeight: "700",
+    
   },
   textContainer: {
     flexDirection: "row",
@@ -125,6 +144,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
+    color: "#288771",
   },
 });
 

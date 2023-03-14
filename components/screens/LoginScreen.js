@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Button,
+  TouchableOpacity
 } from "react-native";
 //import { Button } from "react-native-elements";
 
@@ -26,12 +27,16 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.greeting}>Welcome to Doctor Now!</Text>
       </View>
       <View style={styles.inputContainer}>
+      <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Email</label>
+
         <TextInput
           placeholder="Email"
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
+              <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Password</label>
+
         <TextInput
           placeholder="Password"
           style={styles.input}
@@ -43,19 +48,18 @@ const LoginScreen = ({ navigation }) => {
 
       <View style={styles.buttonContainer}>
         <Button
-          containerStyle={styles.button}
-          buttonStyle={styles.button}
           onPress={handleLogin}
           title="Login"
+          color="#288771"
           titleStyle={styles.buttonText}
         />
-        <Button
-          containerStyle={styles.button}
-          buttonStyle={[styles.button, styles.buttonOutline]}
-          onPress={navigateSignUp}
-          title="Register"
-          titleStyle={styles.buttonOutlineText}
-        />
+       <View style={styles.textContainer}>
+          <Text> Not have account?</Text>
+          <TouchableOpacity onPress={() => navigation.replace('SignUpScreen')}>
+          <Text style={styles.text}>Login</Text>
+          </TouchableOpacity>
+          
+        </View>
       </View>
     </View>
   );
@@ -90,6 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
+    
   },
   button: {
     width: "100%",
@@ -111,8 +116,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
   },
-  textContainer: {},
-  text: {},
+  textContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  text: {
+    fontSize: 15,
+    color: "#288771",
+  },
 });
 
 export default LoginScreen;
