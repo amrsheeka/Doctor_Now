@@ -1,35 +1,48 @@
-import { Image, StyleSheet, Text, View, TextInput, Button } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
-import axios from 'axios';
-import { TouchableOpacity } from "react-native-web";
-
+import axios from "axios";
+// import { TouchableOpacity } from "react-native-web";
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setname] = useState("");
 
-
   const navigateLogin = () => {
     navigation.navigate("LoginScreen");
   };
   const handleSignUp = () => {
-    fetch('http://localhost/API/Auth/signup.php', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+    const signupres = fetch("http://localhost/API/Auth/signup.php", {
+      method: "POST",
+      //mode: "no-cors",
+      header: {
+        Accept: "application/json",
+        "Content-type": "application/json",
       },
       body: JSON.stringify({
-        "email": email,
-        "password": password,
+        email: email,
+        password: password,
       }),
-    });
-    console.log(email, "\n", password);
-  }
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        alert(responseJson.status);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
 
   return (
     <View style={styles.container}>
-      <Image />
+      <Image />{" "}
       <View>
         <Text style={styles.greeting}>Register your account!</Text>
       </View>
@@ -59,12 +72,11 @@ const SignUpScreen = ({ navigation }) => {
           onChangeText={(text) => setPassword(text)}
         />
       </View>
-
       <View style={styles.buttonContainer}>
         <Button
           containerStyle={styles.button}
           buttonStyle={[styles.button, styles.buttonOutline]}
-          onPress={() => navigation.navigate('Homefunc')}
+          onPress={() => navigation.navigate("Homefunc")}
           title="Register"
           color="#288771"
         />
@@ -91,12 +103,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 100,
-
   },
   inputContainer: {
     width: "80%",
     marginTop: 20,
-
   },
   input: {
     backgroundColor: "white",
@@ -119,7 +129,6 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
     alignItems: "center",
-
   },
   buttonOutline: {
     backgroundColor: "white",
@@ -135,7 +144,6 @@ const styles = StyleSheet.create({
     color: "#288771",
     fontSize: 16,
     fontWeight: "700",
-
   },
   textContainer: {
     flexDirection: "row",
