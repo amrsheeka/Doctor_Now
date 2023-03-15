@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View, TextInput, Button } from "react-native";
+import { Image, StyleSheet, Text, View, TextInput, Button } from "react-native";
 import React, { useState } from "react";
 import axios from 'axios';
 import { TouchableOpacity } from "react-native-web";
@@ -24,34 +24,33 @@ const SignUpScreen = ({ navigation }) => {
         "password": password,
       }),
     });
-    console.log(email,"\n",password);
+    console.log(email, "\n", password);
   }
 
   return (
     <View style={styles.container}>
-<Image
-        
-      />      <View>
+      <Image />
+      <View>
         <Text style={styles.greeting}>Register your account!</Text>
       </View>
       <View style={styles.inputContainer}>
-      
-      <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Full Name</label>
-      <TextInput
+
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Full Name</Text>
+        <TextInput
           placeholder="Enter Your Name"
           style={styles.input}
           value={name}
           onChangeText={(text) => setname(text)}
         />
 
-      <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Email</label>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Email</Text>
         <TextInput
           placeholder="Enter Your Email"
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
-      <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Password</label>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Password</Text>
         <TextInput
           placeholder="Enter Your Password"
           style={styles.input}
@@ -72,9 +71,9 @@ const SignUpScreen = ({ navigation }) => {
         <View style={styles.textContainer}>
           <Text>Already have account?</Text>
           <TouchableOpacity onPress={() => navigation.replace('LoginScreen')}>
-          <Text style={styles.text}>Login</Text>
+            <Text style={styles.text}>Login</Text>
           </TouchableOpacity>
-          
+
         </View>
       </View>
     </View>
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: "80%",
     marginTop: 20,
-    
+
   },
   input: {
     backgroundColor: "white",
@@ -113,14 +112,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
-    
-    
+
+
   },
   button: {
     width: "100%",
     borderRadius: 10,
     alignItems: "center",
-    
+
   },
   buttonOutline: {
     backgroundColor: "white",
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
     color: "#288771",
     fontSize: 16,
     fontWeight: "700",
-    
+
   },
   textContainer: {
     flexDirection: "row",
