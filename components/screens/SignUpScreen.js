@@ -42,7 +42,7 @@ const SignUpScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image />{" "}
+      <Image />
       <View>
         <Text style={styles.greeting}>Register your account!</Text>
       </View>
@@ -82,7 +82,7 @@ const SignUpScreen = ({ navigation }) => {
         />
         <View style={styles.textContainer}>
           <Text>Already have account?</Text>
-          <TouchableOpacity onPress={() => navigation.replace('LoginScreen')}>
+          <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
             <Text style={styles.text}>Login</Text>
           </TouchableOpacity>
 
