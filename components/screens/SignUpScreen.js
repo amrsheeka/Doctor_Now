@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import React, { useState } from "react";
-import axios from 'axios';
-
+import axios from "axios";
 
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -11,19 +10,26 @@ const SignUpScreen = ({ navigation }) => {
     navigation.navigate("LoginScreen");
   };
   const handleSignUp = () => {
-    fetch('http://localhost/API/Auth/signup.php', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+    const signupres = fetch("http://localhost/API/Auth/signup.php", {
+      method: "POST",
+      //mode: "no-cors",
+      header: {
+        Accept: "application/json",
+        "Content-type": "application/json",
       },
       body: JSON.stringify({
-        "email": email,
-        "password": password,
+        email: email,
+        password: password,
       }),
-    });
-    console.log(email,"\n",password);
-  }
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        alert(responseJson.status);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
 
   return (
     <View style={styles.container}>
