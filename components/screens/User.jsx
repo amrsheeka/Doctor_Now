@@ -1,43 +1,100 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  KeyboardAvoidingView,
-  TextInput,
-  Button,
-} from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
-const User = ({ navigation }) => {
+const User = () => {
   return (
     <View style={styles.container}>
-      <Text>User</Text>
-      <Button
-        containerStyle={styles.button}
-        buttonStyle={styles.button}
-        onPress={() => navigation.navigate("LoginScreen")}
-        title="Logout"
-        titleStyle={styles.buttonText}
-      />
+      <View style={styles.header}>
+        <Text style={styles.heading}>My Profile</Text>
+      </View>
+      <View style={styles.content}>
+        <View style={styles.profile}>
+          <Image source={require('../assets/Herbal_Medicine_Male_Avatar.png')} style={styles.profilePhoto} />
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileTitle}>John Smith</Text>
+            <Text style={styles.profileSubtitle}>Male, 30 years old</Text>
+          </View>
+        </View>
+        <View style={styles.info}>
+          <Text style={styles.infoTitle}>Contact Information</Text>
+          <View style={styles.infoItem}>
+            <Text style={styles.infoLabel}>Email:</Text>
+            <Text style={styles.infoValue}>johnsmith@gmail.com</Text>
+          </View>
+          <View style={styles.infoItem}>
+            <Text style={styles.infoLabel}>Phone:</Text>
+            <Text style={styles.infoValue}>+1 (123) 456-7890</Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
   },
-  buttonOutlineText: {
-    color: "#0782F9",
+  header: {
+    backgroundColor: '#007aff',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 30,
+    marginBottom: 20,
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  content: {
+    paddingHorizontal: 20,
+  },
+  profile: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  profilePhoto: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginRight: 20,
+  },
+  profileInfo: {
+    flex: 1,
+  },
+  profileTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  profileSubtitle: {
     fontSize: 16,
-    fontWeight: "700",
+    color: '#555',
   },
-  button: {
-    width: "100%",
-    borderRadius: 10,
-    alignItems: "center",
+  info: {
+    marginBottom: 20,
+  },
+  infoTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  infoLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginRight: 10,
+  },
+  infoValue: {
+    fontSize: 16,
+    color: '#555',
   },
 });
 
