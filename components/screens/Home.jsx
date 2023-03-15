@@ -1,20 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image,TouchableOpacity } from 'react-native';
 import doctors from '../consts/Doctor';
-const DoctorCard = ({ doctor }) => {
-  return (
-    <View style={styles.card}>
-      <Image source={doctor.photo} style={styles.cardPhoto} />
-      <View style={styles.cardContent}>
-        <Text style={styles.cardTitle}>{doctor.name}</Text>
-        <TouchableOpacity style={styles.cardButton}>
-          <Text style={styles.cardButtonText}>Make Appointment</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
-
+import DoctorCard from '../subcomponents/DoctorCard';
 const HomePage = () => {
   const renderDoctor = ({ item }) => <DoctorCard doctor={item} />;
 
@@ -42,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    backgroundColor: '#007aff',
+    backgroundColor: '#288771',
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -62,46 +49,7 @@ const styles = StyleSheet.create({
   row: {
     justifyContent: 'space-between',
   },
-  card: {
-    width: 150,
-    height: 230,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    marginBottom: 20,
-  },
-  cardPhoto: {
-    width: 150,
-    height: 120,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
-  cardContent: {
-    padding: 10,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  cardButton: {
-    backgroundColor: '#007aff',
-    padding: 8,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  cardButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
+
 });
 
 export default HomePage;
