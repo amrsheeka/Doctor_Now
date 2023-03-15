@@ -6,7 +6,9 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Button,
+  TouchableOpacity
 } from "react-native";
+
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
