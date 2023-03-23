@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, Image,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image,TouchableOpacity,ImageBackground } from 'react-native';
+
 import doctors from '../consts/Doctor';
 import DoctorCard from '../subcomponents/DoctorCard';
 const HomePage = () => {
   const renderDoctor = ({ item }) => <DoctorCard doctor={item} />;
 
   return (
-    <View style={styles.container}>
+    
+      <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.heading}>Doctor Appointment App</Text>
         <Text style={styles.subHeading}>Find a doctor and schedule an appointment</Text>
@@ -19,6 +21,8 @@ const HomePage = () => {
         columnWrapperStyle={styles.row}
       />
     </View>
+    
+    
   );
 };
 

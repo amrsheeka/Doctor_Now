@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import chats from '../consts/Chats';
 import ChatCard from '../subcomponents/ChatCard'
-const Chat= () => {
-  const renderChat = ({ item }) => <ChatCard chat={item} />;
+const Chat= ({navigation}) => {
+  const renderChat = ({ item }) => <ChatCard chat={item} navigation = {navigation}/>;
   return (
     <View style={styles.container}>
       <View style={styles.header}>

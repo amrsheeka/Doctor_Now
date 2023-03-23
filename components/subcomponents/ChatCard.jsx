@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-const ChatCard = ({ chat }) => {
+import { View, Text, StyleSheet, Image,TouchableOpacity } from 'react-native';
+const ChatCard = ({ chat,navigation }) => {
     return (
-        <View style={styles.card}>
+        <TouchableOpacity
+        // onPress={navigation.navigate("ChatScreen")}
+        style={styles.card}>
             <Image source={chat.photo} style={styles.cardPhoto} />
             <View style={styles.cardContent}>
                 <Text style={styles.cardTitle}>{chat.name}</Text>
                 <Text style={styles.cardMessage}>{chat.message}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
