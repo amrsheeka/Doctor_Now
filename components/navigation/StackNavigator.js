@@ -18,6 +18,7 @@ import Home from "../screens/Home";
 import User from "../screens/User";
 import Chat from "../screens/Chat";
 import Chatbox from "../subcomponents/Chatbox";
+import Doctorbage from "../subcomponents/Doctorbage";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -55,6 +56,16 @@ const Homefunc = () => {
       <Tab.Screen
         name="Chatbox"
         component={Chatbox}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          headerTitle: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Doctorbage"
+        component={Doctorbage}
         options={{
           headerShown: false,
           tabBarVisible: false,
