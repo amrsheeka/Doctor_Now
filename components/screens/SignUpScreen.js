@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import axios from "axios";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 // import { TouchableOpacity } from "react-native-web";
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
