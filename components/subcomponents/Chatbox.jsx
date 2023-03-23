@@ -1,16 +1,47 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { GiftedChat } from 'react-native-gifted-chat';
+
 
 const Chatbox = ({ navigation, route }) => {
-  let item = route.params.chat;
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: 'Hello!',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+          avatar: 'https://placeimg.com/140/140/any',
+        },
+      },
+    ]);
+  }, []);
+
+  function onSend(newMessages = []) {
+    setMessages(GiftedChat.append(messages, newMessages));
+  }
 
   return (
-    <View>
-      <Text> {item.name}</Text>
-    </View>
+    <GiftedChat
+      messages={messages}
+      onSend={onSend}
+      user={{
+        _id: 1,
+      }}
+    />
   );
-};
+}
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default Chatbox;
