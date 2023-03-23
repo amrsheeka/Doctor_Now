@@ -6,7 +6,9 @@ const DoctorCard = ({ navigation, doctor }) => {
       onPress={() => navigation.navigate("Doctorbage", { doctor })}
     >
       <View style={styles.card}>
-        <Image source={doctor.photo} style={styles.cardPhoto} />
+        <View style={styles.photo}>
+          <Image source={doctor.photo} style={styles.cardPhoto} />
+        </View>
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>{doctor.name}</Text>
           <TouchableOpacity style={styles.cardButton}>
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
   card: {
     width: 150,
     height: 230,
-    backgroundColor: "#fff",
+    backgroundColor: "#eceff1",
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: {
@@ -34,10 +36,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   cardPhoto: {
-    width: 150,
-    height: 120,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    width: "60%",
+    height: "60%",
+    borderRadius: 50,
+    alignItems: "center",
+
   },
   cardContent: {
     padding: 10,
@@ -57,6 +60,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  photo:{
+    alignItems:"center",
+    justifyContent:"center",
   },
 });
 export default DoctorCard;
