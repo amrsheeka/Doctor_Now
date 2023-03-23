@@ -102,12 +102,12 @@ const styles = StyleSheet.create({
     
   },
   buttonContainer: {
-    width: "60%",
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
   button: {
-    width: "100%",
+    width: "80%",
     height:"23%",
     borderRadius: 20,
     alignItems: "center",

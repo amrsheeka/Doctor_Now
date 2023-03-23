@@ -14,11 +14,13 @@ import { AntDesign } from "@expo/vector-icons";
 
 import LoginScreen from "../screens/LoginScreen";
 import SignUpScreen from "../screens/SignUpScreen";
+
 import Home from "../screens/Home";
 import User from "../screens/User";
 import Chat from "../screens/Chat";
 import Chatbox from "../subcomponents/Chatbox";
 import Doctorbage from "../subcomponents/Doctorbage";
+import AllDoctors from "../screens/AllDoctors";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -95,6 +97,13 @@ const StackNavigator = () => {
       <Stack.Screen
         name="Homefunc"
         component={Homefunc}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="All Doctors"
+        component={AllDoctors}
         options={{
           headerShown: false,
         }}

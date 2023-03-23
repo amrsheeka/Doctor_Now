@@ -33,11 +33,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    marginBottom: 20,
+    marginBottom: 10,
+    margin:10,
   },
   cardPhoto: {
-    width: "60%",
-    height: "60%",
+    width:80 ,
+    height: 80,
     borderRadius: 50,
     alignItems: "center",
 
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   },
   photo:{
     alignItems:"center",
-    justifyContent:"center",
+    marginTop:"20%",
   },
 });
 export default DoctorCard;
