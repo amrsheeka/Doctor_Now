@@ -56,6 +56,7 @@ const SignUpScreen = ({ navigation }) => {
           value={name}
           onChangeText={(text) => setname(text)}
         />
+        {/* // affg */}
 
         <label style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
           Email
