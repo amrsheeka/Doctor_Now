@@ -11,16 +11,20 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-
+import { MaterialIcons } from "@expo/vector-icons";
+import { Fontisto } from "@expo/vector-icons";
 import LoginScreen from "../screens/LoginScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 
 import Home from "../screens/Home";
 import User from "../screens/User";
+import Favorite from "../screens/Favorite";
 import Chat from "../screens/Chat";
+import Appointment from "../screens/Appointment";
 import Chatbox from "../subcomponents/Chatbox";
 import Doctorbage from "../subcomponents/Doctorbage";
 import AllDoctors from "../screens/AllDoctors";
+import Userpage from "../subcomponents/Userpage";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -37,6 +41,26 @@ const Homefunc = () => {
         }}
       />
       <Tab.Screen
+        name="Favorite"
+        component={Favorite}
+        options={{
+          tabBarIcon: () => (
+            <MaterialIcons name="favorite-border" size={24} color="black" />
+          ),
+          headerShown: false,
+        }}
+      />
+
+      <Tab.Screen
+        name="Appointment"
+        component={Appointment}
+        options={{
+          tabBarIcon: () => <Fontisto name="date" size={24} color="black" />,
+          headerShown: false,
+        }}
+      />
+
+      <Tab.Screen
         name="Chat"
         component={Chat}
         options={{
@@ -46,6 +70,7 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
+
       <Tab.Screen
         name="User"
         component={User}
@@ -54,7 +79,6 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
-
       <Tab.Screen
         name="Chatbox"
         component={Chatbox}
@@ -68,6 +92,16 @@ const Homefunc = () => {
       <Tab.Screen
         name="Doctorbage"
         component={Doctorbage}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          headerTitle: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Userpage"
+        component={Userpage}
         options={{
           headerShown: false,
           tabBarVisible: false,
