@@ -1,32 +1,50 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
-const User = () => {
+const User = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.heading}>My Profile</Text>
       </View>
-      <View style={styles.content}>
-        <View style={styles.profile}>
-          <Image source={require('../assets/Herbal_Medicine_Male_Avatar.png')} style={styles.profilePhoto} />
-          <View style={styles.profileInfo}>
-            <Text style={styles.profileTitle}>John Smith</Text>
-            <Text style={styles.profileSubtitle}>Male, 30 years old</Text>
-          </View>
+      <TouchableOpacity>
+        <View style={styles.xx}>
+          <MaterialCommunityIcons name="history" size={24} color="black" />
+          <Text> History</Text>
+          <AntDesign name="arrowright" size={24} color="black" />
         </View>
-        <View style={styles.info}>
-          <Text style={styles.infoTitle}>Contact Information</Text>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Email:</Text>
-            <Text style={styles.infoValue}>johnsmith@gmail.com</Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Phone:</Text>
-            <Text style={styles.infoValue}>+1 (123) 456-7890</Text>
-          </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Userpage")}>
+        <View style={styles.xx}>
+          <Ionicons name="md-person-outline" size={24} color="black" />
+          <Text> Personal Details</Text>
+          <AntDesign name="arrowright" size={24} color="black" />
         </View>
-      </View>
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <View style={styles.xx}>
+          <Ionicons name="md-location-outline" size={24} color="black" />
+          <Text> Addres </Text>
+          <AntDesign name="arrowright" size={24} color="black" />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <View style={styles.xx}>
+          <AntDesign name="exclamationcircleo" size={24} color="black" />
+          <Text> About </Text>
+          <AntDesign name="arrowright" size={24} color="black" />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <View style={styles.xx}>
+          <SimpleLineIcons name="logout" size={24} color="black" />
+          <Text> Logout </Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -34,67 +52,24 @@ const User = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
-    backgroundColor: '#288771',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#288771",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 30,
     marginBottom: 20,
   },
   heading: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
   },
-  content: {
+  xx: {
+    flexDirection: "row",
     paddingHorizontal: 20,
-  },
-  profile: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  profilePhoto: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginRight: 20,
-  },
-  profileInfo: {
-    flex: 1,
-  },
-  profileTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  profileSubtitle: {
-    fontSize: 16,
-    color: '#555',
-  },
-  info: {
-    marginBottom: 20,
-  },
-  infoTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  infoLabel: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginRight: 10,
-  },
-  infoValue: {
-    fontSize: 16,
-    color: '#555',
   },
 });
 
