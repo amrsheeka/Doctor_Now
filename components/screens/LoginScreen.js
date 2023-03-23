@@ -6,7 +6,8 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from "react-native";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -15,18 +16,21 @@ const LoginScreen = ({ navigation }) => {
   const navigateSignUp = () => {
     navigation.navigate("SignUpScreen");
   };
-  const handleLogin = ()=>{
+  const handleLogin = () => {
 
   }
 
   return (
-    
+
     <View style={styles.container}>
+      <View style={styles.icon}>
+        <Image source={require("../assets/splash.png")} />
+      </View>
       <View >
-         <Text >Welcome to Doctor Now!</Text>
+        <Text style={styles.greeting}>Welcome to Doctor Now!</Text>
       </View>
       <View style={styles.inputContainer}>
-      <Text style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Email</Text>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Email</Text>
 
         <TextInput
           placeholder="Email"
@@ -34,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
-              <Text style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Password</Text>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Password</Text>
 
         <TextInput
           placeholder="Password"
@@ -46,20 +50,19 @@ const LoginScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button
-          containerStyle={styles.button}
-          buttonStyle={styles.button}
+        <TouchableOpacity
+          style ={styles.button}
           onPress={() => navigation.navigate('Homefunc')}
-          title="Login"
-          color="#288771"
-          titleStyle={styles.buttonText}
-        />
-       <View style={styles.textContainer}>
+          
+        >
+          <Text style ={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <View style={styles.textContainer}>
           <Text> Not have account?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
-          <Text style={styles.text}>SignUp</Text>
+            <Text style={styles.text}>SignUp</Text>
           </TouchableOpacity>
-          
+
         </View>
       </View>
     </View>
@@ -76,33 +79,33 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 28,
     fontWeight: "bold",
-    fontFamily:"",
+    fontFamily: "",
   },
   inputContainer: {
     width: "80%",
-    
+
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: "#eceff1",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 10,
-    borderColor: "green",
-    borderWidth: 1,
-    
+
   },
   buttonContainer: {
-    width: "60%",
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
-    
+
   },
   button: {
-    width: "100%",
-    borderRadius: 10,
+    width: "65%",
+    height:"23%",
+    borderRadius: 20,
     alignItems: "center",
+    backgroundColor:"#288771",
   },
   buttonOutline: {
     backgroundColor: "white",
@@ -111,8 +114,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   buttonText: {
-    fontWeight: "700",
-    fontSize: 16,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    color:"white",
   },
   buttonOutlineText: {
     color: "#0782F9",
@@ -128,6 +134,17 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     color: "#288771",
+  },
+  icon: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+
+  },
+  greeting: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 10,
   },
 });
 

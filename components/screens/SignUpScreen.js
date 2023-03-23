@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import axios from "axios";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 // import { TouchableOpacity } from "react-native-web";
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -19,12 +20,15 @@ const SignUpScreen = ({ navigation }) => {
     navigation.navigate("LoginScreen");
   };
   const handleSignUp = () => {
-    sighnup(email,password)
+    sighnup(email, password)
   };
 
   return (
     <View style={styles.container}>
-      <Image />
+      <View style={styles.icon}>
+        <Image source={require("../assets/splash.png")} />
+      </View>
+
       <View>
         <Text style={styles.greeting}>Register your account!</Text>
       </View>
@@ -56,13 +60,12 @@ const SignUpScreen = ({ navigation }) => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <Button
-          containerStyle={styles.button}
-          buttonStyle={[styles.button, styles.buttonOutline]}
-          onPress={() => navigation.navigate("Homefunc")}
-          title="Register"
-          color="#288771"
-        />
+        <TouchableOpacity
+          style ={styles.button}
+          onPress={() => navigation.navigate('Homefunc')}
+        >
+          <Text style ={styles.buttonText}>Register</Text>
+        </TouchableOpacity>
         <View style={styles.textContainer}>
           <Text>Already have account?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
@@ -80,38 +83,36 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fcfafa",
+    backgroundColor: "#fafafa",
   },
   greeting: {
     fontSize: 20,
     fontWeight: "bold",
-    marginTop: 100,
+    marginTop: 10,
   },
   inputContainer: {
     width: "80%",
     marginTop: 20,
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: "#eceff1",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 10,
-    borderColor: "green",
-    borderWidth: 1,
+    
   },
   buttonContainer: {
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40,
-
-
   },
   button: {
     width: "100%",
-    borderRadius: 10,
+    height:"23%",
+    borderRadius: 20,
     alignItems: "center",
+    backgroundColor:"#288771",
   },
   buttonOutline: {
     backgroundColor: "white",
@@ -120,8 +121,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   buttonText: {
-    fontWeight: "700",
-    fontSize: 16,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    color:"white",
   },
   buttonOutlineText: {
     color: "#288771",
@@ -137,6 +141,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     color: "#288771",
+  },
+  icon:{
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    
   },
 });
 
