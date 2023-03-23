@@ -39,9 +39,10 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={(text) => setEmail(text)}
         />
         <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Password</Text>
-
+        
         <TextInput
           placeholder="Password"
+          
           style={styles.input}
           secureTextEntry
           value={password}
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40,
+    marginTop: 20,
 
   },
   button: {
