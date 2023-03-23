@@ -8,8 +8,6 @@ import {
   Button,
   TouchableOpacity
 } from "react-native";
-
-
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +26,7 @@ const LoginScreen = ({ navigation }) => {
          <Text >Welcome to Doctor Now!</Text>
       </View>
       <View style={styles.inputContainer}>
-      <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Email</label>
+      <Text style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Email</Text>
 
         <TextInput
           placeholder="Email"
@@ -36,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
-              <label style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Password</label>
+              <Text style={{fontSize:17,fontWeight: "bold",marginTop:5}} >Password</Text>
 
         <TextInput
           placeholder="Password"
@@ -58,8 +56,8 @@ const LoginScreen = ({ navigation }) => {
         />
        <View style={styles.textContainer}>
           <Text> Not have account?</Text>
-          <TouchableOpacity onPress={() => navigation.replace('SignUpScreen')}>
-          <Text style={styles.text}>Login</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
+          <Text style={styles.text}>SignUp</Text>
           </TouchableOpacity>
           
         </View>

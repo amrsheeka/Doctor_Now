@@ -42,14 +42,13 @@ const SignUpScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image />{" "}
+      <Image />
       <View>
         <Text style={styles.greeting}>Register your account!</Text>
       </View>
       <View style={styles.inputContainer}>
-        <label style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-          Full Name
-        </label>
+
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Full Name</Text>
         <TextInput
           placeholder="Enter Your Name"
           style={styles.input}
@@ -58,18 +57,14 @@ const SignUpScreen = ({ navigation }) => {
         />
         {/* // affg */}
 
-        <label style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-          Email
-        </label>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Email</Text>
         <TextInput
           placeholder="Enter Your Email"
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
-        <label style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-          Password
-        </label>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Password</Text>
         <TextInput
           placeholder="Enter Your Password"
           style={styles.input}
@@ -88,9 +83,10 @@ const SignUpScreen = ({ navigation }) => {
         />
         <View style={styles.textContainer}>
           <Text>Already have account?</Text>
-          <TouchableOpacity onPress={() => navigation.replace("LoginScreen")}>
+          <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
             <Text style={styles.text}>Login</Text>
           </TouchableOpacity>
+
         </View>
       </View>
     </View>
@@ -127,6 +123,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
+
+
   },
   button: {
     width: "100%",
