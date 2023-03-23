@@ -15,8 +15,7 @@ const HomePage = ({ navigation }) => {
   );
 
   return (
-    
-      <View style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.heading}>Doctor Appointment App</Text>
         <Text style={styles.subHeading}>
@@ -31,8 +30,6 @@ const HomePage = ({ navigation }) => {
         columnWrapperStyle={styles.row}
       />
     </View>
-    
-    
   );
 };
 
