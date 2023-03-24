@@ -8,6 +8,9 @@ const DoctorCard2 = ({ navigation, doctor }) => {
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>{doctor.name}</Text>
           <Text style={styles.cardDoctor}>{doctor.message}</Text>
+          <TouchableOpacity style={styles.cardButton}>
+            <Text style={styles.cardButtonText}>Make Appointment</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>
@@ -18,23 +21,17 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f6fc",
     borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
     marginBottom: 20,
+    marginHorizontal: 20,
+    height:200,
+    
   },
   cardPhoto: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    margin: 10,
+    width: "30%",
+    height: "80%",
+    margin:5,
   },
   cardContent: {
     flex: 1,
@@ -46,6 +43,20 @@ const styles = StyleSheet.create({
   cardDoctor: {
     fontSize: 14,
     color: "#555",
+    
+  },
+  cardButton: {
+    backgroundColor: "#288771",
+    padding: 8,
+    borderRadius: 5,
+    width:"50%" ,
+    marginBottom:12,
+  },
+  cardButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 export default DoctorCard2;

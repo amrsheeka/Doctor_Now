@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  KeyboardAvoidingView,
-  TextInput,
-  Button,
-} from "react-native";
+
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -99,7 +92,17 @@ const Homefunc = () => {
           headerTitle: () => null,
         }}
       />
-      <Tab.Screen
+      <Stack.Screen
+        name="AllDoctors"
+        component={AllDoctors}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          headerTitle: () => null,
+        }}
+      />
+      <Stack.Screen
         name="Userpage"
         component={Userpage}
         options={{
@@ -135,27 +138,8 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="All Doctors"
-        component={AllDoctors}
-        options={{
-          headerShown: false,
-        }}
-      />
-      {/* <Stack.Screen
-        name="HomeScreen"
-        component={HomeTabNavigator}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
-        options={{
-          headerShown: false,
-        }}
-      /> */}
+      
+      
     </Stack.Navigator>
   );
 };
