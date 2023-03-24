@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import chats from "../consts/Chats";
 import doctors from "../consts/Doctor";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
@@ -13,9 +21,11 @@ const Home = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.Title}>
-          <Text style={styles.heading}>All doctors treat,but a good doctor lets nature heal.</Text>
+          <Text style={styles.heading}>
+            All doctors treat,but a good doctor lets nature heal.
+          </Text>
         </View>
-        <View style={{flexDirection:"row"}}>
+        <View style={{ flexDirection: "row" }}>
           <View style={styles.search}>
             <TextInput
               placeholder="Search"
@@ -25,12 +35,15 @@ const Home = ({ navigation }) => {
             />
           </View>
           <TouchableOpacity style={styles.filter}>
-            <Image style={{height:35,width:35,alignItems:"center"}} source={require("../assets/filter.png")}/>
+            <Image
+              style={{ height: 35, width: 35, alignItems: "center" }}
+              source={require("../assets/filter.png")}
+            />
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.list}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("AllDoctors")}>
           <Text style={styles.text}>See All</Text>
         </TouchableOpacity>
         <View style={styles.round}>
@@ -40,9 +53,7 @@ const Home = ({ navigation }) => {
             keyExtractor={(item) => item.id.toString()}
           />
         </View>
-
       </View>
-
     </View>
   );
 };
@@ -79,7 +90,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   search: {
-
     backgroundColor: "#40b488",
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -95,11 +105,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    
   },
   filter: {
-    paddingLeft:8,
-    justifyContent:"center",
+    paddingLeft: 8,
+    justifyContent: "center",
     backgroundColor: "white",
     width: 50,
     height: 50,
@@ -117,9 +126,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     color: "#5DADE2",
-    textAlign:"right",
-    marginRight:20,
-    marginTop:5,
+    textAlign: "right",
+    marginRight: 20,
+    marginTop: 5,
   },
 });
 
