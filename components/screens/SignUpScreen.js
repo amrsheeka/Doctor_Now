@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import axios from "axios";
+import { sighnup } from "../../database/Users";
 // import { TouchableOpacity } from "react-native-web";
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ const SignUpScreen = ({ navigation }) => {
     navigation.navigate("LoginScreen");
   };
   const handleSignUp = () => {
-    sighnup(email, password)
+    sighnup(name, email, password);
   };
 
   return (
@@ -32,8 +33,9 @@ const SignUpScreen = ({ navigation }) => {
         <Text style={styles.greeting}>Register your account!</Text>
       </View>
       <View style={styles.inputContainer}>
-
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Full Name</Text>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
+          Full Name
+        </Text>
         <TextInput
           placeholder="Enter Your Name"
           style={styles.input}
@@ -42,14 +44,18 @@ const SignUpScreen = ({ navigation }) => {
         />
         {/* // affg */}
 
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Email</Text>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
+          Email
+        </Text>
         <TextInput
           placeholder="Enter Your Email"
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Password</Text>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
+          Password
+        </Text>
         <TextInput
           placeholder="Enter Your Password"
           style={styles.input}
@@ -59,18 +65,14 @@ const SignUpScreen = ({ navigation }) => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style ={styles.button}
-          onPress={() => navigation.navigate('Homefunc')}
-        >
-          <Text style ={styles.buttonText}>Register</Text>
+        <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
+          <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
         <View style={styles.textContainer}>
           <Text>Already have account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+          <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
             <Text style={styles.text}>Login</Text>
           </TouchableOpacity>
-
         </View>
       </View>
     </View>
@@ -99,7 +101,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 10,
-    
   },
   buttonContainer: {
     width: "100%",
@@ -108,10 +109,10 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "80%",
-    height:"23%",
+    height: "23%",
     borderRadius: 20,
     alignItems: "center",
-    backgroundColor:"#288771",
+    backgroundColor: "#288771",
   },
   buttonOutline: {
     backgroundColor: "white",
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
-    color:"white",
+    color: "white",
   },
   buttonOutlineText: {
     color: "#288771",
@@ -141,11 +142,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#288771",
   },
-  icon:{
+  icon: {
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
-    
   },
 });
 
