@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Chatbox() {
   const [message, setMessage] = useState('');
@@ -33,6 +34,10 @@ export default function Chatbox() {
 
   return (
     <View style={styles.container}>
+       <View style={styles.header}>
+        <Text style={styles.heading}>Client Name</Text>
+      </View>
+
       <FlatList
         data={messages}
         renderItem={renderMessage}
@@ -43,7 +48,7 @@ export default function Chatbox() {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder={isSender ? "Type a message (you)" : "Type a message (receiver)"}
+          placeholder={isSender ? "Type a message " : "Type a message "}
           value={message}
           onChangeText={text => setMessage(text)}
         />
@@ -62,7 +67,7 @@ export default function Chatbox() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f2f2'
+    backgroundColor: '#fcfafa'
   },
   messages: {
     flex: 1
@@ -75,11 +80,13 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   senderMessageContainer: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#288771',
+    borderRadius: 10,
     alignSelf: 'flex-end'
   },
   receiverMessageContainer: {
-    backgroundColor: '#e5e5e5',
+    backgroundColor: '#eceff1',
+    borderRadius: 10,
     alignSelf: 'flex-start'
   },
   message: {
@@ -93,19 +100,20 @@ const styles = StyleSheet.create({
     color: '#000'
   },
   date: {
-    fontSize: 12,
+    fontSize: 10,
     marginTop: 8,
     textAlign: 'right'
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16
+    padding: 16,
+    color:'#cbcbcb',
   },
   input: {
     flex: 1,
     height: 48,
-    backgroundColor: '#fff',
+    backgroundColor: '#eceff1',
     borderRadius: 24,
     paddingLeft: 16,
     marginRight: 16
@@ -113,7 +121,7 @@ const styles = StyleSheet.create({
   sendButton: {
     width: 80,
     height: 48,
-    backgroundColor: '#007bff',
+    backgroundColor: '#288771',
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center'
@@ -121,5 +129,19 @@ const styles = StyleSheet.create({
   sendButtonText: {
     fontSize: 16,
     color: '#fff'
-  }
+  },
+  header: {
+    backgroundColor: "#fcfafa",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 20,
+    marginBottom: 20,
+  },
+  heading: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#0f1a25",
+  },
+ 
 });
