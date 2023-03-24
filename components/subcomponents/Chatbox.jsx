@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from '@expo/vector-icons';
 
 export default function Chatbox() {
   const [message, setMessage] = useState('');
@@ -57,7 +57,7 @@ export default function Chatbox() {
           style={styles.sendButton}
           onPress={handleSendMessage}
         >
-          <Text style={styles.sendButtonText}>Send</Text>
+          <AntDesign name="rocket1" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
     </View>
@@ -119,16 +119,12 @@ const styles = StyleSheet.create({
     marginRight: 16
   },
   sendButton: {
-    width: 80,
+    width: 48,
     height: 48,
     backgroundColor: '#288771',
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  sendButtonText: {
-    fontSize: 16,
-    color: '#fff'
   },
   header: {
     backgroundColor: "#fcfafa",
