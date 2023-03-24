@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import doctors from "../consts/Doctor";
 import DoctorCard from "../subcomponents/DoctorCard";
+import { Ionicons } from "@expo/vector-icons";
+
 const AllDoctors = ({ navigation }) => {
   const renderDoctor = ({ item }) => (
     <DoctorCard doctor={item} navigation={navigation} />
@@ -19,6 +21,13 @@ const AllDoctors = ({ navigation }) => {
       <View style={styles.header}>
         <Text style={styles.heading}>All Doctors</Text>
       </View>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <View style={styles.xx}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+          <Text>back</Text>
+        </View>
+      </TouchableOpacity>
+
       <FlatList
         data={doctors}
         renderItem={renderDoctor}
@@ -42,12 +51,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 20,
-    
+    // flexDirection: "row",
   },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
-    
   },
   subHeading: {
     fontSize: 18,
@@ -55,6 +63,9 @@ const styles = StyleSheet.create({
   },
   row: {
     justifyContent: "space-between",
+  },
+  xx: {
+    flexDirection: "row",
   },
 });
 
