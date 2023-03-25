@@ -8,7 +8,9 @@ const DoctorCard2 = ({ navigation, doctor }) => {
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>{doctor.name}</Text>
           <Text style={styles.cardDoctor}>{doctor.message}</Text>
-          <TouchableOpacity style={styles.cardButton}>
+          <TouchableOpacity style={styles.cardButton}
+            onPress={() => navigation.navigate("AppointmentConfirmation", { doctor })}
+          >
             <Text style={styles.cardButtonText}>Make Appointment</Text>
           </TouchableOpacity>
         </View>

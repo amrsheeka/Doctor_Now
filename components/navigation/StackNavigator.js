@@ -18,6 +18,7 @@ import Chatbox from "../subcomponents/Chatbox";
 import Doctorbage from "../subcomponents/Doctorbage";
 import AllDoctors from "../screens/AllDoctors";
 import Userpage from "../subcomponents/Userpage";
+import AppointmentConfirmation from "../subcomponents/AppointmentConfirmation";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -85,6 +86,16 @@ const Homefunc = () => {
       <Tab.Screen
         name="Doctorbage"
         component={Doctorbage}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          headerTitle: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="AppointmentConfirmation"
+        component={AppointmentConfirmation}
         options={{
           headerShown: false,
           tabBarVisible: false,
