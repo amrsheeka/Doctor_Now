@@ -1,16 +1,18 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 const DoctorCard = ({ navigation, doctor }) => {
+  const image = doctor.image;
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("Doctorbage", { doctor })}
     >
       <View style={styles.card}>
         <View style={styles.photo}>
-          <Image source={doctor.photo} style={styles.cardPhoto} />
+          <Image source={image?{uri: image}:require("../assets/Herbal_Medicine_Male_Avatar.png")} 
+          style={styles.cardPhoto} />
         </View>
         <View style={styles.cardContent}>
-          <Text style={styles.cardTitle}>{doctor.name}</Text>
+          <Text numberOfLines={1} ellipsizeMode='tail' style={styles.cardTitle}>{doctor.name}</Text>
           <TouchableOpacity style={styles.cardButton}>
             <Text style={styles.cardButtonText}>Make Appointment</Text>
           </TouchableOpacity>

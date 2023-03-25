@@ -50,6 +50,9 @@ const Home = ({ navigation }) => {
           <FlatList
             data={Doctor.doctors}
             renderItem={renderDoctor}
+            initialNumToRender={7}
+            maxToRenderPerBatch={7}
+            windowSize = {7}
             keyExtractor={(item,index) => item.id}
           />
         </View>
