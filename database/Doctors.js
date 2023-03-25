@@ -13,6 +13,7 @@ const getDoctors = async() => {
         Doctor.doctors = response.data;
        console.log(Doctor.doctors);
     })
+    
     // Invoking get method to perform a GET request
     axios.get(`http://192.168.1.12/API/doctors/select.php`).then((response) => {
         Doctor.doctors = response.data;
