@@ -13,8 +13,10 @@ const DoctorCard2 = ({ navigation, doctor }) => {
         <Image source={ image?{uri: image}:require("../assets/Herbal_Medicine_Male_Avatar.png")} defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>{doctor.name}</Text>
-          <Text style={styles.cardDoctor}>{doctor.major}</Text>
-          <TouchableOpacity style={styles.cardButton}>
+          <Text style={styles.cardDoctor}>{doctor.title}</Text>
+          <TouchableOpacity style={styles.cardButton}
+            onPress={() => navigation.navigate("AppointmentConfirmation", { doctor })}
+          >
             <Text style={styles.cardButtonText}>Make Appointment</Text>
           </TouchableOpacity>
         </View>
