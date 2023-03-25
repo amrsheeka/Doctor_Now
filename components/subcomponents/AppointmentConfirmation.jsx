@@ -43,11 +43,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     <Text style={styles.titleText}>Biography : </Text>
                     <ScrollView  >
                         <Text style={{ borderRadius: 5, borderColor: "#030303", borderWidth: 1, fontSize: 15 }} numberOfLines={10}>
-                            Doctors, also known as physicians,
-                            are licensed health professionals who maintain and restore human health through the practice of medicine.
-                            They examine patients, review their medical history, diagnose illnesses or injuries,
-                            administer treatment,
-                            and counsel patients on their health and well-being.
+                            {item.describtion}
                         </Text>
                     </ScrollView>
                 </View>
@@ -55,7 +51,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     <Text style={styles.titleText}>
                         Working Hours
                     </Text>
-                    <Text style={{ justifyContent: "center", paddingHorizontal: 10, fontSize: 16 }}>From 8:00 AM To 8:00 PM </Text>
+                    <Text style={{ justifyContent: "center", paddingHorizontal: 10, fontSize: 16 }}>From {item.start} To {item.end} </Text>
                 </View>
                 <View style={{ flex: 3 }}>
                     <Text style={styles.titleText}>
@@ -114,7 +110,7 @@ const styles = StyleSheet.create({
     text: {
         paddingLeft: 10,
         fontSize: 18,
-        fontWeight: 10,
+        
     },
     cardPhoto: {
         marginHorizontal: 10,

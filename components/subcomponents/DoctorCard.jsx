@@ -12,8 +12,14 @@ const DoctorCard = ({ navigation, doctor }) => {
           style={styles.cardPhoto} />
         </View>
         <View style={styles.cardContent}>
-          <Text numberOfLines={1} ellipsizeMode='tail' style={styles.cardTitle}>{doctor.name}</Text>
-          <TouchableOpacity style={styles.cardButton}>
+          <View>
+            <Text numberOfLines={1} ellipsizeMode='tail'
+            style={styles.cardTitle}>{doctor.name}</Text>
+            <Text numberOfLines={2} ellipsizeMode='tail' 
+            style={styles.cardDoctor}>{doctor.title+","+doctor.specialization1+","+doctor.specialization1}</Text>
+          </View>
+          <TouchableOpacity onPress={() => navigation.navigate("AppointmentConfirmation", { doctor })}
+          style={styles.cardButton}>
             <Text style={styles.cardButtonText}>Make Appointment</Text>
           </TouchableOpacity>
         </View>
@@ -24,7 +30,7 @@ const DoctorCard = ({ navigation, doctor }) => {
 const styles = StyleSheet.create({
   card: {
     width: 150,
-    height: 230,
+    height: 260,
     backgroundColor: "#eceff1",
     borderRadius: 10,
     shadowColor: "#000",
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
   },
   cardButton: {
     backgroundColor: "#288771",
-    padding: 8,
+    padding: 5,
     borderRadius: 5,
     marginTop: 10,
   },
