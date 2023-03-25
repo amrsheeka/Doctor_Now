@@ -14,7 +14,8 @@ const DoctorCard2 = ({ navigation, doctor }) => {
         defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
         <View style={styles.cardContent}>
           <View style={{width:"50%"}}>
-            <Text style={styles.cardTitle}>{doctor.name}</Text>
+            <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>{doctor.name}</Text>
             <Text numberOfLines={2} ellipsizeMode='tail' 
             style={styles.cardDoctor}>{doctor.title+","+doctor.specialization1+","+doctor.specialization1}</Text>
           </View>
