@@ -1,13 +1,19 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 const DoctorCard2 = ({ navigation, doctor }) => {
+  let image = doctor.image;
+  // if(!image){
+  //   image = require("../assets/Herbal_Medicine_Male_Avatar.png");
+  // }
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Doctorbage", { doctor })}>
+    <TouchableOpacity
+    key={doctor.id}
+    onPress={() => navigation.navigate("Doctorbage", { doctor })}>
       <View style={styles.card}>
-        <Image source={doctor.photo} style={styles.cardPhoto} />
+        <Image source={ image?{uri: image}:require("../assets/Herbal_Medicine_Male_Avatar.png")} defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>{doctor.name}</Text>
-          <Text style={styles.cardDoctor}>{doctor.message}</Text>
+          <Text style={styles.cardDoctor}>{doctor.major}</Text>
           <TouchableOpacity style={styles.cardButton}>
             <Text style={styles.cardButtonText}>Make Appointment</Text>
           </TouchableOpacity>

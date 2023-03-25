@@ -9,12 +9,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import chats from "../consts/Chats";
-import doctors from "../consts/Doctor";
+import Doctor from "../consts/Doctor";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
 
 const Home = ({ navigation }) => {
   const [search, setSearch] = useState("");
-  const renderChat = ({ item }) => (
+  const renderDoctor = ({ item }) => (
     <DoctorCard2 doctor={item} navigation={navigation} />
   );
   return (
@@ -48,9 +48,9 @@ const Home = ({ navigation }) => {
         </TouchableOpacity>
         <View style={styles.round}>
           <FlatList
-            data={doctors}
-            renderItem={renderChat}
-            keyExtractor={(item) => item.id.toString()}
+            data={Doctor.doctors}
+            renderItem={renderDoctor}
+            keyExtractor={(item,index) => item.id}
           />
         </View>
       </View>
