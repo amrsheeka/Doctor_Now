@@ -80,8 +80,9 @@ const Homefunc = () => {
           headerShown: false,
           tabBarVisible: false,
           tabBarButton: () => null,
-          headerTitle: () => null,
+          
         }}
+        
       />
       <Tab.Screen
         name="Doctorbage"
@@ -91,6 +92,7 @@ const Homefunc = () => {
           tabBarVisible: false,
           tabBarButton: () => null,
           headerTitle: () => null,
+          
         }}
       />
       <Tab.Screen
