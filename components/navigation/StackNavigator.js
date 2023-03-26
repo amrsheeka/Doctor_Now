@@ -18,6 +18,9 @@ import Chatbox from "../subcomponents/Chatbox";
 import Doctorbage from "../subcomponents/Doctorbage";
 import AllDoctors from "../screens/AllDoctors";
 import Userpage from "../subcomponents/Userpage";
+import AppointmentConfirmation from "../screens/AppointmentConfirmation";
+import Details_user_to_appointment from "../screens/Details_user_to_appointment";
+import Thk from "../screens/Thk";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -52,7 +55,26 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
+      <Tab.Screen
+        name="Thk"
+        component={Thk}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
 
+        }}
+      />
+      <Tab.Screen
+        name="Details_user_to_appointment"
+        component={Details_user_to_appointment}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+
+        }}
+      />
       <Tab.Screen
         name="Chat"
         component={Chat}
@@ -92,6 +114,16 @@ const Homefunc = () => {
           tabBarButton: () => null,
           headerTitle: () => null,
           
+        }}
+      />
+      <Tab.Screen
+        name="AppointmentConfirmation"
+        component={AppointmentConfirmation}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          headerTitle: () => null,
         }}
       />
       <Stack.Screen
