@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 const DoctorCard2 = ({ navigation, doctor }) => {
   let image = doctor.image;
@@ -73,4 +73,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-export default DoctorCard2;
+export default memo(DoctorCard2);
