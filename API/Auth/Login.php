@@ -15,7 +15,7 @@ $stmt->execute(array($password, $email));
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
 if ($count > 0) {
-    echo json_encode(array("status" => "success"));
+    echo json_encode(array($users));
     // var_dump($users);
 } else
     echo json_encode(array("status" => "failed"));
