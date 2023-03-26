@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 const DoctorCard2 = ({ navigation, doctor }) => {
   let image = doctor.image;
@@ -10,10 +10,15 @@ const DoctorCard2 = ({ navigation, doctor }) => {
     key={doctor.id}
     onPress={() => navigation.navigate("Doctorbage", { doctor })}>
       <View style={styles.card}>
-        <Image source={ image?{uri: image}:require("../assets/Herbal_Medicine_Male_Avatar.png")} defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
+        <Image source={ image?{uri: image}:require("../assets/Herbal_Medicine_Male_Avatar.png")}
+        defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
         <View style={styles.cardContent}>
-          <Text style={styles.cardTitle}>{doctor.name}</Text>
-          <Text style={styles.cardDoctor}>{doctor.title}</Text>
+          <View style={{width:"50%"}}>
+            <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>{doctor.name}</Text>
+            <Text numberOfLines={2} ellipsizeMode='tail' 
+            style={styles.cardDoctor}>{doctor.title+","+doctor.specialization1+","+doctor.specialization1}</Text>
+          </View>
           <TouchableOpacity style={styles.cardButton}
             onPress={() => navigation.navigate("AppointmentConfirmation", { doctor })}
           >
@@ -47,6 +52,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: "bold",
+    
   },
   cardDoctor: {
     fontSize: 14,
@@ -67,4 +73,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-export default DoctorCard2;
+export default memo(DoctorCard2);

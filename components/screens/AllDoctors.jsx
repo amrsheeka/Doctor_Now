@@ -7,9 +7,9 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import doctors from "../consts/Doctor";
 import DoctorCard from "../subcomponents/DoctorCard";
 import { Ionicons } from "@expo/vector-icons";
+import Doctor from "../consts/Doctor";
 
 const AllDoctors = ({ navigation }) => {
   const renderDoctor = ({ item }) => (
@@ -29,10 +29,13 @@ const AllDoctors = ({ navigation }) => {
       </TouchableOpacity>
 
       <FlatList
-        data={doctors}
+        data={Doctor.doctors}
         renderItem={renderDoctor}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
+        initialNumToRender={7}
+        maxToRenderPerBatch={7}
+        windowSize={7}
         columnWrapperStyle={styles.row}
       />
     </View>

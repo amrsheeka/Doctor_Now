@@ -76,7 +76,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     </TouchableOpacity>
                     <View style={{ marginHorizontal: 20 }}>
                         <Button color={"#288771"} title="Book Appointment"
-                        onPress={() => navigation.navigate("Appointment", navigation={navigation})}
+                            onPress={() => navigation.navigate("Details_user_to_appointment", { item })}
                     >
                     </Button>
                     </View></View>
@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     text: {
         paddingLeft: 10,
         fontSize: 18,
-        fontWeight: 10,
     },
     cardPhoto: {
         marginHorizontal: 10,
