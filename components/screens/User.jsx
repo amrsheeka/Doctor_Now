@@ -14,56 +14,58 @@ const User = ({ navigation }) => {
       </View>
       <TouchableOpacity>
       <View style={styles.x}>
-      <MaterialIcons name="panorama-photosphere-select" size={70} color="black" style={styles.z}/>
-          <Text style={styles.z2}> Name Profile </Text>
+      <Image
+            source={require("../assets/Herbal_Medicine_Male_Avatar.png")}
+            style={styles.z}
+          />          <Text style={styles.z2}> Name Profile </Text>
           <MaterialIcons name="mode-edit" size={24} color="white" style={styles.z1}/>
       </View>
       </TouchableOpacity>
       <TouchableOpacity>
         <View style={styles.xx}>
-          <MaterialCommunityIcons name="history" size={24} color="black" style={styles.xxxx}/>
+          <MaterialCommunityIcons name="history" size={28} color="black" style={styles.xxxx}/>
           <Text style={styles.xxxxx}> History </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx}/>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("Userpage")}>
         <View style={styles.xx}>
-          <Ionicons name="md-person-outline" size={24} color="black" style={styles.xxxx}/>
+          <Ionicons name="md-person-outline" size={28} color="black" style={styles.xxxx}/>
           <Text style={styles.xxxxx}> Personal Details</Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx}/>
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
         <View style={styles.xx}>
-          <Ionicons name="md-location-outline" size={24} color="black" style={styles.xxxx}/>
+          <Ionicons name="md-location-outline" size={28} color="black" style={styles.xxxx}/>
           <Text style={styles.xxxxx}> Addres </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx}/>
                   </View>
       </TouchableOpacity>
       <TouchableOpacity>
         <View style={styles.xx}>
-        <MaterialIcons name="payment" size={24} color="black" style={styles.xxxx}/>
+        <MaterialIcons name="payment" size={28} color="black" style={styles.xxxx}/>
           <Text style={styles.xxxxx}> Payment Method </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx}/>
                   </View>
       </TouchableOpacity>
       <TouchableOpacity>
         <View style={styles.xx}>
-          <AntDesign name="exclamationcircleo" size={24} color="black" style={styles.xxxx}/>
+          <AntDesign name="exclamationcircleo" size={28} color="black" style={styles.xxxx}/>
           <Text style={styles.xxxxx}> About </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx}/>
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
         <View style={styles.xx}>
-        <Feather name="help-circle" size={24} color="black" style={styles.xxxx}/>
+        <Feather name="help-circle" size={28} color="black" style={styles.xxxx}/>
                   <Text style={styles.xxxxx}> Help </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx}/>
                   </View>
       </TouchableOpacity>
       <TouchableOpacity>
         <View style={styles.xx}>
-          <SimpleLineIcons name="logout" size={24} color="black" style={styles.xxxx}/>
+          <SimpleLineIcons name="logout" size={28} color="black" style={styles.xxxx}/>
           <Text style={styles.xxxxx}> Logout </Text>
         </View>
       </TouchableOpacity>
@@ -95,6 +97,10 @@ const styles = StyleSheet.create({
   },
   z: {
     marginRight: 20,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginRight: 20,
   },
   z1: {
     position: "absolute",
@@ -123,7 +129,7 @@ const styles = StyleSheet.create({
   },
   xxxxx: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 100,
 
   },
 });
