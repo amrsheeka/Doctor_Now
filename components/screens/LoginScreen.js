@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Image
 } from "react-native";
+import { login } from "../../database/Users";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,8 +17,10 @@ const LoginScreen = ({ navigation }) => {
   const navigateSignUp = () => {
     navigation.navigate("SignUpScreen");
   };
-  const handleLogin = () => {
-
+  const handleLogin = async () => {
+    login(email,password).then(()=>{
+      navigation.navigate('Homefunc');
+    });
   }
 
   return (
@@ -53,7 +56,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style ={styles.button}
-          onPress={() => navigation.navigate('Homefunc')}
+          onPress={() => handleLogin}
           
         >
           <Text style ={styles.buttonText}>Login</Text>
