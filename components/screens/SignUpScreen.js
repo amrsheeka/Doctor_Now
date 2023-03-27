@@ -13,14 +13,27 @@ import { sighnup } from "../../database/Users";
 // import { TouchableOpacity } from "react-native-web";
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const [emailErr, setEmailErr] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordErr, setPasswordErr] = useState("");
   const [name, setname] = useState("");
+  const [nameErr, setnameErr] = useState("");
 
   const navigateLogin = () => {
     navigation.navigate("LoginScreen");
   };
-  const handleSignUp = () => {
-    sighnup(name, email, password);
+  const handleSignUp = async() => {
+    if (!email) {
+      setEmailErr("Enter your email address.");
+    }else if (!passwordErr) {
+      setPasswordErr("Enter your password.");
+    }else if (!name) {
+      setnameErr("Enter your password.");
+    }else if (passwordErr<=8) {
+      setPasswordErr("password should be greater than 7 letters.");
+    }
+    await sighnup(name, email, password);
+
   };
 
   return (

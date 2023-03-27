@@ -6,12 +6,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { ScrollView } from "react-native";
 const User = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.heading}>My Profile</Text>
-      </View>
+    <ScrollView style={styles.container}>
       <TouchableOpacity>
         <View style={styles.x}>
           <Image
@@ -70,7 +68,7 @@ const User = ({ navigation }) => {
           <Text style={styles.xxxxx}> Logout </Text>
         </View>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 

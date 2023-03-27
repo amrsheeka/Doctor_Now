@@ -14,7 +14,7 @@ $uppercase = preg_match('@[A-Z]@', $password);
 $lowercase = preg_match('@[a-z]@', $password);
 $number    = preg_match('@[0-9]@', $password);
 
-if ($uppercase && $lowercase && $number && strlen($password) > 8) {
+if (($uppercase || $lowercase )&& $number && strlen($password) > 8) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $stmt = $con->prepare("INSERT INTO `users`(`name`,`email`, `password`,created_at) VALUES (?,?,?,NOW())");
         $stmt->execute(array($name, $email, $password));

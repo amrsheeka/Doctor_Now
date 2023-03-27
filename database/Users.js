@@ -1,5 +1,7 @@
+import Ip from "./Ip"; 
+let user;
 const sighnup = (username, email, password) => {
-  const signupres = fetch("http://localhost/API/Auth/signup.php", {
+  const signupres = fetch(`${Ip.ip}/API/Auth/signup.php`, {
     method: "POST",
     //mode: "no-cors",
     header: {
@@ -14,7 +16,8 @@ const sighnup = (username, email, password) => {
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      alert(responseJson.status);
+      user = responseJson;
+      console.log(user);
     })
     .catch((error) => {
       alert(error);

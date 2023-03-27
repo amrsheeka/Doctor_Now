@@ -1,9 +1,10 @@
 import Doctor from "../components/consts/Doctor";
 import axios from "axios";
+import Ip from "./Ip";
 const getDoctors = async () => {
   await axios({
     method: "get",
-    url: `http://192.168.1.5/API/doctors/select.php`,
+    url: `${Ip.ip}/API/doctors/select.php`,
     header: {
       Accept: "application/json",
       "Content-type": "application/json",
@@ -14,7 +15,7 @@ const getDoctors = async () => {
   });
   // Invoking get method to perform a GET request
 
-  axios.get(`http://192.168.1.5/API/doctors/select.php`).then((response) => {
+  axios.get(`${Ip.ip}/API/doctors/select.php`).then((response) => {
 
     Doctor.doctors = response.data;
   });
