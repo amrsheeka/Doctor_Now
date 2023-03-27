@@ -46,9 +46,11 @@ const SignUpScreen = ({ navigation }) => {
         setPasswordErr("");
       }
     } else {
-      sighnup(name, email, password).then(() => { navigation.navigate('Homefunc'); }
+      sighnup(name, email, password).then((res) => { navigation.navigate('Homefunc'); }
 
-      );
+      ).catch((err)=>{
+        console.error(err);
+      });;
     }
 
 

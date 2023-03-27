@@ -2,7 +2,7 @@ import Ip from "./Ip";
 import axios from "axios";
 let user;
 const sighnup = async(username, email, password) => {
-  const signupres = fetch(`${Ip.ip}/API/Auth/signup.php`, {
+  return fetch(`${Ip.ip}/API/Auth/signup.php`, {
     method: "POST",
     //mode: "no-cors",
     header: {
@@ -21,12 +21,13 @@ const sighnup = async(username, email, password) => {
       login(email,password);
     })
     .catch((error) => {
-      alert(error);
+      alert("This email already exist.");
+      throw new Error("This email already exist.");
     });
 };
 
 const login = async(email, password) => {
-  const loginres = fetch(`${Ip.ip}/API/Auth/Login.php`, {
+  return fetch(`${Ip.ip}/API/Auth/Login.php`, {
     method: "POST",
     //mode: "no-cors",
     header: {
@@ -48,21 +49,12 @@ const login = async(email, password) => {
     });
 };
 const logout =async ()=>{
-  // await axios({
-  //   method: "get",
-  //   url: `${Ip.ip}/API/Auth/Logout.php`,
-  //   header: {
-  //     Accept: "application/json",
-  //     "Content-type": "application/json",
-  //   },
-  // }).then((response) => {
-  //   console.log(response);
-  // });
-  // Invoking get method to perform a GET request
 
   axios.get(`${Ip.ip}/API/Auth/Logout.php`).then((response) => {
     console.log(response.data);
     
+  }).catch((err)=>{
+    console.log(err);
   });
 
 }
