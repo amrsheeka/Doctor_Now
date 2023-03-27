@@ -20,6 +20,8 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     login(email,password).then(()=>{
       navigation.navigate('Homefunc');
+    }).catch((err)=>{
+      
     });
   }
 
@@ -56,7 +58,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style ={styles.button}
-          onPress={() => handleLogin}
+          onPress={()=> handleLogin()}
           
         >
           <Text style ={styles.buttonText}>Login</Text>

@@ -41,11 +41,18 @@ const login = async(email, password) => {
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      user = responseJson;
-      console.log(user);
+      
+      if(responseJson.status=="failed"){
+        throw new Error("This email not exist");
+      }else{
+        user = responseJson;
+        console.log(user);
+      }
+      
     })
     .catch((error) => {
-      alert(error);
+      alert("This email not exist");
+      throw new Error("This email not exist");
     });
 };
 const logout =async ()=>{
