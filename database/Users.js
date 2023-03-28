@@ -58,6 +58,7 @@ const login = async(email, password) => {
 const logout =async ()=>{
 
   axios.get(`${Ip.ip}/API/Auth/Logout.php`).then((response) => {
+    user = response.data;
     console.log(response.data);
     
   }).catch((err)=>{
@@ -65,4 +66,4 @@ const logout =async ()=>{
   });
 
 }
-export { sighnup,login };
+export { sighnup,login,logout };

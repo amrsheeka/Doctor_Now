@@ -7,7 +7,11 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { ScrollView } from "react-native";
+import { logout } from "../../database/Users";
 const User = ({ navigation }) => {
+  const handlelgout=()=>{
+    logout().then(()=>navigation.navigate("LoginScreen"));
+  }
   return (
     <ScrollView style={styles.container}>
       <TouchableOpacity>
@@ -62,7 +66,7 @@ const User = ({ navigation }) => {
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>handlelgout()}>
         <View style={styles.xx}>
           <SimpleLineIcons name="logout" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> Logout </Text>
