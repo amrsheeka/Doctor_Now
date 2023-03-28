@@ -13,6 +13,7 @@ $obj = json_decode($json, true);
 if (isset($_SESSION)) {
     echo json_encode($_SESSION);
 }
+$count = 0;
 if (!isset($_SESSION)) {
     $email = $obj['email'];
     $password = $obj['password'];
@@ -33,6 +34,7 @@ if ($count > 0) {
     // );
     // var_dump(session_gc());
     echo json_encode($_SESSION);
-} else {
-    echo json_encode(array("status" => "failed"));
-}
+} 
+//  else {
+//     echo json_encode(array("status" => "failed"));
+// }
