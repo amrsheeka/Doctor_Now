@@ -13,15 +13,78 @@ import { sighnup } from "../../database/Users";
 // import { TouchableOpacity } from "react-native-web";
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const [emailErr, setEmailErr] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordErr, setPasswordErr] = useState("");
   const [name, setname] = useState("");
+  const [nameErr, setnameErr] = useState("");
 
   const navigateLogin = () => {
     navigation.navigate("LoginScreen");
   };
-  const handleSignUp = () => {
-    sighnup(name, email, password);
+  const handleSignUp = async () => {
+    if (!name || !email || !ValidateEmail(email) || !password || password.length <= 8 || !ValidatePassword(password)) {
+      if (!name) {
+        setnameErr("Enter your your name.");
+      } else {
+        setnameErr("");
+      }
+      if (!email) {
+        setEmailErr("Enter your email address.");
+      } else if (!ValidateEmail(email)) {
+        setEmailErr("The email address should have the format: (user@example.com).");
+      } else {
+        setEmailErr("");
+      }
+      if (!password) {
+        setPasswordErr("Enter your password.");
+      } else if (password.length <= 8) {
+        setPasswordErr("password should be greater than 7 letters.");
+      } else if (!ValidatePassword(password)) {
+        setPasswordErr("password should have at least one letter and one number");
+      } else {
+        setPasswordErr("");
+      }
+    } else {
+      sighnup(name, email, password).then((res) => { navigation.navigate('Homefunc'); }
+
+      ).catch((err)=>{
+        console.error(err);
+      });;
+    }
+
+
   };
+  function ValidateEmail(x) {
+    let input = "";
+    input = x;
+    var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    if (input.match(validRegex)) {
+      return true;
+
+    } else {
+
+      return false;
+
+    }
+
+  }
+  function ValidatePassword(x) {
+    let input = "";
+    input = x;
+    var validRegex = /^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$/i;
+
+    if (input.match(validRegex)) {
+      return true;
+
+    } else {
+
+      return false;
+
+    }
+
+  }
 
   return (
     <View style={styles.container}>
@@ -42,7 +105,7 @@ const SignUpScreen = ({ navigation }) => {
           value={name}
           onChangeText={(text) => setname(text)}
         />
-        {/* // affg */}
+        <Text style={{ color: "red" }}>{nameErr}</Text>
 
         <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
           Email
@@ -53,6 +116,7 @@ const SignUpScreen = ({ navigation }) => {
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
+        <Text style={{ color: "red" }}>{emailErr}</Text>
         <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
           Password
         </Text>
@@ -63,6 +127,7 @@ const SignUpScreen = ({ navigation }) => {
           value={password}
           onChangeText={(text) => setPassword(text)}
         />
+        <Text style={{ color: "red" }}>{passwordErr}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>

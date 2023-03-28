@@ -6,12 +6,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { ScrollView } from "react-native";
+import { logout } from "../../database/Users";
 const User = ({ navigation }) => {
+  const handlelgout=()=>{
+    logout().then(()=>navigation.navigate("LoginScreen"));
+  }
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.heading}>My Profile</Text>
-      </View>
+    <ScrollView style={styles.container}>
       <TouchableOpacity>
         <View style={styles.x}>
           <Image
@@ -64,13 +66,13 @@ const User = ({ navigation }) => {
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>handlelgout()}>
         <View style={styles.xx}>
           <SimpleLineIcons name="logout" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> Logout </Text>
         </View>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 

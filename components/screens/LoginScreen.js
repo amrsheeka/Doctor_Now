@@ -9,15 +9,34 @@ import {
   TouchableOpacity,
   Image
 } from "react-native";
+import { login } from "../../database/Users";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const [emailErr, setEmailErr] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordErr, setPasswordErr] = useState("");
 
   const navigateSignUp = () => {
     navigation.navigate("SignUpScreen");
   };
-  const handleLogin = () => {
-
+  const handleLogin = async () => {
+    if(!email||!password){
+      if(!email){
+        setEmailErr("Enter your email");
+      }else{
+        setEmailErr("");
+      }
+      if(!password){
+        setPasswordErr("Enter your password");
+      }else{
+        setPasswordErr("");
+      }
+    }else{
+      login(email,password).then(()=>{
+        navigation.navigate('Homefunc');
+      }).catch((err)=>{});
+    }
+    
   }
 
   return (
@@ -31,13 +50,13 @@ const LoginScreen = ({ navigation }) => {
       </View>
       <View style={styles.inputContainer}>
         <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Email</Text>
-
         <TextInput
           placeholder="Email"
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
+        <Text style={{ color: "red" }}>{emailErr}</Text>
         <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Password</Text>
         
         <TextInput
@@ -48,12 +67,13 @@ const LoginScreen = ({ navigation }) => {
           value={password}
           onChangeText={(text) => setPassword(text)}
         />
+        <Text style={{ color: "red" }}>{passwordErr}</Text>
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style ={styles.button}
-          onPress={() => navigation.navigate('Homefunc')}
+          onPress={()=> handleLogin()}
           
         >
           <Text style ={styles.buttonText}>Login</Text>
