@@ -11,7 +11,7 @@ const getDoctors = async () => {
     },
   }).then((response) => {
     Doctor.doctors = response.data;
-    console.log(Doctor.doctors);
+    //console.log(Doctor.doctors);
   });
   // Invoking get method to perform a GET request
 
