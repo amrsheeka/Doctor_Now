@@ -11,12 +11,20 @@ import {
 import chats from "../consts/Chats";
 import Doctor from "../consts/Doctor";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
+import { Picker } from "@react-native-picker/picker";
 
 const Home = ({ navigation }) => {
+  let con = "All";
+  const [filteritem, setFilteritem] = useState("ss");
   const [search, setSearch] = useState("");
   const renderDoctor = ({ item }) => (
     <DoctorCard2 doctor={item} navigation={navigation} />
   );
+  const onChange = (val) => {
+    setFilteritem(val);
+    console.log(filteritem);
+    //navigation.navigate("AllDoctors", { filteritem });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -35,15 +43,30 @@ const Home = ({ navigation }) => {
             />
           </View>
           <TouchableOpacity style={styles.filter}>
-            <Image
+            {/* <Image
               style={{ height: 35, width: 35, alignItems: "center" }}
               source={require("../assets/filter.png")}
-            />
+            /> */}
+            <Picker
+              dropdownIconColor="black"
+              selectedValue={filteritem}
+              onValueChange={(itemValue) => {
+                setFilteritem(itemValue);
+                console.log(itemValue);
+                navigation.navigate("AllDoctors", { itemValue });
+              }}
+            >
+              <Picker.Item label="All" value="All" />
+              <Picker.Item label="Female" value="Female" />
+              <Picker.Item label="Not Willing" value="NA" />
+            </Picker>
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.list}>
-        <TouchableOpacity onPress={() => navigation.navigate("AllDoctors")}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AllDoctors", { con })}
+        >
           <Text style={styles.text}>See All</Text>
         </TouchableOpacity>
         <View style={styles.round}>
@@ -52,8 +75,8 @@ const Home = ({ navigation }) => {
             renderItem={renderDoctor}
             initialNumToRender={7}
             maxToRenderPerBatch={7}
-            windowSize = {7}
-            keyExtractor={(item,index) => item.id}
+            windowSize={7}
+            keyExtractor={(item, index) => item.id}
           />
         </View>
       </View>
@@ -132,6 +155,14 @@ const styles = StyleSheet.create({
     textAlign: "right",
     marginRight: 20,
     marginTop: 5,
+  },
+  picker: {
+    marginHorizontal: "10%",
+    // width: '50%',
+    padding: 15,
+    borderWidth: 2,
+    borderColor: "#288771",
+    // color: "#000"
   },
 });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,35 +11,49 @@ import DoctorCard from "../subcomponents/DoctorCard";
 import { Ionicons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 
-const AllDoctors = ({ navigation }) => {
+const AllDoctors = ({ navigation, route }) => {
+  let filterd = route.params.itemValue;
+  console.log(filterd);
+
+  const [doctors, setDoctors] = useState([]);
+
   const renderDoctor = ({ item }) => (
     <DoctorCard doctor={item} navigation={navigation} />
   );
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.heading}>All Doctors</Text>
-      </View>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <View style={styles.xx}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-          <Text>back</Text>
+  if (filterd == "All") {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.heading}>All Doctors</Text>
         </View>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <View style={styles.xx}>
+            <Ionicons name="arrow-back" size={24} color="black" />
+            <Text>back</Text>
+          </View>
+        </TouchableOpacity>
 
-      <FlatList
-        data={Doctor.doctors}
-        renderItem={renderDoctor}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={2}
-        initialNumToRender={7}
-        maxToRenderPerBatch={7}
-        windowSize={7}
-        columnWrapperStyle={styles.row}
-      />
-    </View>
-  );
+        <FlatList
+          data={Doctor.doctors}
+          renderItem={renderDoctor}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={2}
+          initialNumToRender={7}
+          maxToRenderPerBatch={7}
+          windowSize={7}
+          columnWrapperStyle={styles.row}
+        />
+      </View>
+    );
+  } else {
+    //let dataa = Doctor.doctors.filter((e) => e.type == selectedValue);
+    return (
+      <View>
+        <Text>sa</Text>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
