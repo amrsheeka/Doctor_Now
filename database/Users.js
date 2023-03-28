@@ -1,6 +1,6 @@
 import Ip from "./Ip"; 
 import axios from "axios";
-let user;
+import CurrentUser from "../components/consts/CurrentUser";
 const sighnup = async(username, email, password) => {
   return fetch(`${Ip.ip}/API/Auth/signup.php`, {
     method: "POST",
@@ -52,13 +52,14 @@ const login = async(email, password) => {
     })
     .catch((error) => {
       alert("This email not exist");
+      console.log(error);
       throw new Error("This email not exist");
     });
 };
 const logout =async ()=>{
 
   axios.get(`${Ip.ip}/API/Auth/Logout.php`).then((response) => {
-    user = response.data;
+    CurrentUser.user = response.data;
     console.log(response.data);
     
   }).catch((err)=>{
@@ -66,4 +67,10 @@ const logout =async ()=>{
   });
 
 }
-export { sighnup,login,logout };
+const getCurrentUser = async()=>{
+  return await axios.get(`${Ip.ip}/API/Auth/Login.php`).then((response) => {
+    CurrentUser.user = response.data;
+    console.log(response.data);
+  });
+}
+export { sighnup,login,logout,getCurrentUser};
