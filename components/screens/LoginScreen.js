@@ -9,13 +9,16 @@ import {
   TouchableOpacity,
   Image
 } from "react-native";
+import Home from "./Home";
+import CurrentUser from "../consts/CurrentUser";
 import { login } from "../../database/Users";
 const LoginScreen = ({ navigation }) => {
+  const [user, setUser] = useState(CurrentUser.user);
   const [email, setEmail] = useState("");
   const [emailErr, setEmailErr] = useState("");
   const [password, setPassword] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
-
+  
   const navigateSignUp = () => {
     navigation.navigate("SignUpScreen");
   };
@@ -38,56 +41,57 @@ const LoginScreen = ({ navigation }) => {
     }
     
   }
+    return (
 
-  return (
-
-    <View style={styles.container}>
-      <View style={styles.icon}>
-        <Image source={require("../assets/splash.png")} />
-      </View>
-      <View >
-        <Text style={styles.greeting}>Welcome to Doctor Now!</Text>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Email</Text>
-        <TextInput
-          placeholder="Email"
-          style={styles.input}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <Text style={{ color: "red" }}>{emailErr}</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Password</Text>
-        
-        <TextInput
-          placeholder="Password"
+      <View style={styles.container}>
+        <View style={styles.icon}>
+          <Image source={require("../assets/splash.png")} />
+        </View>
+        <View >
+          <Text style={styles.greeting}>Welcome to Doctor Now!</Text>
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Email</Text>
+          <TextInput
+            placeholder="Email"
+            style={styles.input}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          />
+          <Text style={{ color: "red" }}>{emailErr}</Text>
+          <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Password</Text>
           
-          style={styles.input}
-          secureTextEntry
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <Text style={{ color: "red" }}>{passwordErr}</Text>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style ={styles.button}
-          onPress={()=> handleLogin()}
-          
-        >
-          <Text style ={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <View style={styles.textContainer}>
-          <Text> Not have account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
-            <Text style={styles.text}>SignUp</Text>
+          <TextInput
+            placeholder="Password"
+            
+            style={styles.input}
+            secureTextEntry
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+          <Text style={{ color: "red" }}>{passwordErr}</Text>
+        </View>
+  
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style ={styles.button}
+            onPress={()=> handleLogin()}
+            
+          >
+            <Text style ={styles.buttonText}>Login</Text>
           </TouchableOpacity>
-
+          <View style={styles.textContainer}>
+            <Text> Not have account?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
+              <Text style={styles.text}>SignUp</Text>
+            </TouchableOpacity>
+  
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  
+  
 };
 
 const styles = StyleSheet.create({

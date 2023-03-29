@@ -1,7 +1,7 @@
-import Ip from "./Ip"; 
+import Ip from "./Ip";
 import axios from "axios";
 import CurrentUser from "../components/consts/CurrentUser";
-const sighnup = async(username, email, password) => {
+const sighnup = async (username, email, password) => {
   return fetch(`${Ip.ip}/API/Auth/signup.php`, {
     method: "POST",
     //mode: "no-cors",
@@ -18,7 +18,7 @@ const sighnup = async(username, email, password) => {
     .then((response) => response.json())
     .then((responseJson) => {
       console.log(responseJson);
-      login(email,password);
+      login(email, password);
     })
     .catch((error) => {
       alert("This email already exist.");
@@ -26,7 +26,7 @@ const sighnup = async(username, email, password) => {
     });
 };
 
-const login = async(email, password) => {
+const login = async (email, password) => {
   return fetch(`${Ip.ip}/API/Auth/Login.php`, {
     method: "POST",
     //mode: "no-cors",
@@ -41,14 +41,14 @@ const login = async(email, password) => {
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      
-      if(responseJson.status=="failed"){
+
+      if (responseJson.status == "failed") {
         throw new Error("This email not exist");
-      }else{
+      } else {
         user = responseJson;
         console.log(user);
       }
-      
+
     })
     .catch((error) => {
       alert("This email not exist");
@@ -56,21 +56,26 @@ const login = async(email, password) => {
       throw new Error("This email not exist");
     });
 };
-const logout =async ()=>{
+const logout = async () => {
 
   axios.get(`${Ip.ip}/API/Auth/Logout.php`).then((response) => {
     CurrentUser.user = response.data;
     console.log(response.data);
-    
-  }).catch((err)=>{
+
+  }).catch((err) => {
     console.log(err);
   });
 
 }
-const getCurrentUser = async()=>{
-  return await axios.get(`${Ip.ip}/API/Auth/Login.php`).then((response) => {
-    CurrentUser.user = response.data;
-    console.log(response.data);
-  });
+const getCurrentUser = async () => {
+
+  const res = await axios.get(`${Ip.ip}/API/Auth/Login.php`);
+  if(res.data!=""){
+    CurrentUser.user = res.data;
+    return res.data;
+  }else{
+    return null;
+  }
+
 }
-export { sighnup,login,logout,getCurrentUser};
+export { sighnup, login, logout, getCurrentUser };

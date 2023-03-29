@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -8,7 +8,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { ScrollView } from "react-native";
 import { logout } from "../../database/Users";
+import CurrentUser from "../consts/CurrentUser";
 const User = ({ navigation }) => {
+  const [user, setUser] = useState(CurrentUser.user);
+  // if (Object.keys(user).length == 0){
+  //   setUser(CurrentUser.user)
+  // }
   const handlelgout=()=>{
     logout().then(()=>navigation.navigate("LoginScreen"));
   }
@@ -20,7 +25,7 @@ const User = ({ navigation }) => {
             source={require("../assets/Herbal_Medicine_Male_Avatar.png")}
             style={styles.z}
           />          
-          <Text style={styles.z2}> Name Profile </Text>
+          <Text style={styles.z2}> {user.name} </Text>
           <MaterialIcons name="mode-edit" size={24} color="white" style={styles.z1} />
         </View>
       </TouchableOpacity>

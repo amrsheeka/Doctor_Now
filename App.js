@@ -6,25 +6,37 @@ import { StackNavigator, StackNavigator2 } from "./components/navigation/StackNa
 import CurrentUser from "./components/consts/CurrentUser";
 import { getDoctors } from "./database/Doctors";
 import { getCurrentUser } from "./database/Users";
+import Doctor from "./components/consts/Doctor";
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [doctors, setDoctors] = useState([]);
   useEffect(() => {
-    CurrentUser.user = getCurrentUser();
-    getDoctors();
-  });
-
-  if (Object.keys(CurrentUser.user).length == 0
-  ) return (
-
+    async function fetchUser() {
+      const user = await getCurrentUser();
+      setCurrentUser(user);
+      //console.log(user);
+    }
+    async function fetchDoctors() {
+      const doc =  await getDoctors();
+      Doctor.doctors =doc;
+      //console.log(doc);
+    }
+    fetchUser();
+    fetchDoctors();
+  },[]);
+  if (currentUser== null) {
+    
+    return (
     <NavigationContainer>
-      <StackNavigator />
+      <StackNavigator/>
     </NavigationContainer>
-  );
+  );}
   else
     return (
 
       <NavigationContainer>
-        <StackNavigator2 />
+        <StackNavigator2/>
       </NavigationContainer>
     );
 }
