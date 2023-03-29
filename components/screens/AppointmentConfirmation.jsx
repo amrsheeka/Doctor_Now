@@ -29,11 +29,11 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             <View style={styles.body}>
                 <View style={styles.box}>
                     <Text style={styles.text}>Patients</Text>
-                    <Text style={styles.text}>1600</Text>
+                    <Text style={styles.text}>{1600}</Text>
                 </View>
                 <View style={styles.box}>
-                    <Text style={styles.text}>Experience</Text>
-                    <Text style={styles.text}>5 Years</Text>
+                    <Text style={styles.text}>price</Text>
+                    <Text style={styles.text}>{item.price}</Text>
 
                 </View>
                 <View style={styles.box}>
@@ -49,11 +49,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
 
                     <ScrollView  >
                         <Text style={styles.inp} numberOfLines={10}>
-                            Doctors, also known as physicians,
-                            are licensed health professionals who maintain and restore human health through the practice of medicine.
-                            They examine patients, review their medical history, diagnose illnesses or injuries,
-                            administer treatment,
-                            and counsel patients on their health and well-being.
+                            {item.describtion}
                         </Text>
                     </ScrollView>
                 </View>
@@ -64,13 +60,13 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                 </View>
                 <View style={styles.body}>
                     <View style={styles.box}>
-                        <Text style={styles.text}>10:00 PM</Text>
+                        <Text style={styles.text}>{item.start}</Text>
                     </View>
                     <View style={styles.box}>
-                        <Text style={styles.text}>8:00 PM</Text>
+                        <Text style={styles.text}>select time</Text>
                     </View>
                     <View style={styles.box}>
-                        <Text style={styles.text}>6:00 PM</Text>
+                        <Text style={styles.text}>{item.end}</Text>
                     </View>
                 </View>
                 <View style={{ flex: 3 }}>
@@ -94,24 +90,9 @@ const AppointmentConfirmation = ({ navigation, route }) => {
 
                         </View>
                     </View>
-                    {/* <FlatList
-                        data={Days}
-                        renderItem={renderDays}
-                        keyExtractor={(item, index) => (index)}
-                        horizontal ={true}
-                    /> */}
+                    
                 </View>
-                {/* <View style={{ flex: 1, flexDirection: "row", marginHorizontal: 10 }}>
-
-                    <TouchableOpacity style={{ flexDirection: "row", alignContent: "space-between", padding: 10 }} onPress={() => navigation.navigate("Chatbox")}>
-                    <Ionicons name="ios-chatbubble-ellipses-outline" size={50} color="black" />
-                    </TouchableOpacity>
-                    <View style={{ marginHorizontal: 20 }}>
-                        <Button color={"#288771"} title="Book Appointment"
-                            onPress={() => navigation.navigate("Details_user_to_appointment", { item })}
-                    >
-                    </Button>
-                    </View></View> */}
+                
                 <View style={{ flexDirection: "row", marginHorizontal: 10, height: "17%" }}>
                     <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Chatbox")}>
                         <Ionicons name="ios-chatbubble-ellipses-outline" size={30} color="white" />
