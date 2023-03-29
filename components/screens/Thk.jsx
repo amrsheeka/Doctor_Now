@@ -28,6 +28,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
     );
 };
 
+
 const styles = StyleSheet.create({
     header: {
         flex: 2,
