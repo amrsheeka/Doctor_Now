@@ -1,21 +1,20 @@
-import React,{useState} from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { SimpleLineIcons } from "@expo/vector-icons";
-import { MaterialIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
-import { ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import { AntDesign, Feather, MaterialIcons, SimpleLineIcons, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { logout } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
+import { getCurrentUser } from "../../database/Users";
 const User = ({ navigation }) => {
   const [user, setUser] = useState(CurrentUser.user);
-  // if (Object.keys(user).length == 0){
-  //   setUser(CurrentUser.user)
-  // }
-  const handlelgout=()=>{
-    logout().then(()=>navigation.navigate("LoginScreen"));
+  useEffect(() => {
+    async function fetchUser() {
+      const user = await getCurrentUser();
+      setUser(user);
+    }
+    fetchUser();
+  }, []);
+  const handlelgout = () => {
+    logout().then(() => navigation.navigate("LoginScreen"));
   }
   return (
     <ScrollView style={styles.container}>
@@ -24,7 +23,7 @@ const User = ({ navigation }) => {
           <Image
             source={require("../assets/Herbal_Medicine_Male_Avatar.png")}
             style={styles.z}
-          />          
+          />
           <Text style={styles.z2}> {user.name} </Text>
           <MaterialIcons name="mode-edit" size={24} color="white" style={styles.z1} />
         </View>
@@ -71,7 +70,7 @@ const User = ({ navigation }) => {
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=>handlelgout()}>
+      <TouchableOpacity onPress={() => handlelgout()}>
         <View style={styles.xx}>
           <SimpleLineIcons name="logout" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> Logout </Text>
