@@ -30,13 +30,14 @@ const Homefunc = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="User"
-        component={User}
+        name="Home"
+        component={Home}
         options={{
-          tabBarIcon: () => <AntDesign name="user" size={24} color="black" />,
+          tabBarIcon: () => <AntDesign name="home" size={24} color="black" />,
           headerShown: false,
         }}
       />
+      
       
       <Tab.Screen
         name="Favorite"
@@ -142,10 +143,10 @@ const Homefunc = () => {
         }}
       />
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="User"
+        component={User}
         options={{
-          tabBarIcon: () => <AntDesign name="home" size={24} color="black" />,
+          tabBarIcon: () => <AntDesign name="user" size={24} color="black" />,
           headerShown: false,
         }}
       />

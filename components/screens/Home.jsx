@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   View,
   Text,
@@ -8,19 +8,27 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import chats from "../consts/Chats";
 import { MaterialCommunityIcons,FontAwesome5 } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
 import { Picker } from "@react-native-picker/picker";
+import { getDoctors } from "../../database/Doctors";
 
 const Home = ({ navigation }) => {
   let con = "All";
   const [filteritem, setFilteritem] = useState("ss");
   const [search, setSearch] = useState("");
   const [doctors, setDoctors] = useState(Doctor.doctors);
-
+  useEffect(() => {
+    async function fetchDoctor() {
+      const doctor = await getDoctors();
+      setDoctors(doctor);
+    }
+    fetchDoctor();
+  }, []);
   const renderDoctor = ({ item }) => (
     <DoctorCard2 doctor={item} navigation={navigation} />
   );
@@ -29,7 +37,7 @@ const Home = ({ navigation }) => {
     console.log(filteritem);
     //navigation.navigate("AllDoctors", { filteritem });
   };
-  if (Doctor.doctors.length != 0) {
+   
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -113,24 +121,32 @@ const Home = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={styles.round}>
-            <FlatList
+            {
+            doctors.length != 0?(
+              <FlatList
             scrollEnabled={false}
-              data={Doctor.doctors}
+              data={doctors}
               renderItem={renderDoctor}
               initialNumToRender={7}
               maxToRenderPerBatch={7}
               windowSize={7}
               keyExtractor={(item, index) => item.id}
             />
+            ):(
+              <View style={{padding:"18%"}}>
+                <ActivityIndicator size={100} color="#00ff00" />
+              </View>
+            
+            )
+            }
+            
           </View>
           </ScrollView>
           
         </View>
       </View>
     );
-  } else {
-
-  }
+   
 };
 
 const styles = StyleSheet.create({

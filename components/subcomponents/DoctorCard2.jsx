@@ -48,10 +48,12 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     flex: 1,
+    alignItems:"center",
   },
   cardTitle: {
     fontSize: 16,
     fontWeight: "bold",
+    textAlign:"center"
     
   },
   cardDoctor: {
@@ -64,7 +66,8 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     width:"50%" ,
-    marginBottom:12,
+    marginTop:"10%",
+    
   },
   cardButtonText: {
     color: "#fff",
