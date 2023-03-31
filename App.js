@@ -32,7 +32,6 @@ export default function App() {
   }, []);
 
   if (currentUser == null) {
-
     return (
       <NavigationContainer>
         <StackNavigator />
