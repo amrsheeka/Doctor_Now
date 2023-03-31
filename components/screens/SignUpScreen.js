@@ -75,7 +75,7 @@ const SignUpScreen = ({ navigation }) => {
     if (input.match(validRegex)) {
       return true;
     } else {
-      return true;
+      return false;
     }
   }
   function ValidatePassword(x) {

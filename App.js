@@ -21,26 +21,25 @@ export default function App() {
       console.log(user);
     }
     async function fetchDoctors() {
-      const doc =  await getDoctors();
-      Doctor.doctors =doc;
+      const doc = await getDoctors();
+      Doctor.doctors = doc;
       //console.log(doc);
       setDoctors(doc);
     }
     fetchUser();
     fetchDoctors();
-  },[]);
-  
-  if (currentUser== null) {
-    
-    return (
-    <NavigationContainer>
-      <StackNavigator/>
-    </NavigationContainer>
-  );}
-  else
+  }, []);
+
+  if (currentUser == null) {
     return (
       <NavigationContainer>
-        <StackNavigator2/>
+        <StackNavigator />
+      </NavigationContainer>
+    );
+  } else
+    return (
+      <NavigationContainer>
+        <StackNavigator2 />
       </NavigationContainer>
     );
 }
