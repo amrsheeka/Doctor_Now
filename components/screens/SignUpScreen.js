@@ -23,7 +23,14 @@ const SignUpScreen = ({ navigation }) => {
     navigation.navigate("LoginScreen");
   };
   const handleSignUp = async () => {
-    if (!name || !email || !ValidateEmail(email) || !password || password.length <= 8 || !ValidatePassword(password)) {
+    if (
+      !name ||
+      !email ||
+      !ValidateEmail(email) ||
+      !password ||
+      password.length <= 8 ||
+      !ValidatePassword(password)
+    ) {
       if (!name) {
         setnameErr("Enter your your name.");
       } else {
@@ -32,7 +39,9 @@ const SignUpScreen = ({ navigation }) => {
       if (!email) {
         setEmailErr("Enter your email address.");
       } else if (!ValidateEmail(email)) {
-        setEmailErr("The email address should have the format: (user@example.com).");
+        setEmailErr(
+          "The email address should have the format: (user@example.com)."
+        );
       } else {
         setEmailErr("");
       }
@@ -41,34 +50,33 @@ const SignUpScreen = ({ navigation }) => {
       } else if (password.length <= 8) {
         setPasswordErr("password should be greater than 7 letters.");
       } else if (!ValidatePassword(password)) {
-        setPasswordErr("password should have at least one letter and one number");
+        setPasswordErr(
+          "password should have at least one letter and one number"
+        );
       } else {
         setPasswordErr("");
       }
     } else {
-      sighnup(name, email, password).then((res) => { navigation.navigate('Homefunc'); }
-
-      ).catch((err)=>{
-        console.error(err);
-      });;
+      sighnup(name, email, password)
+        .then((res) => {
+          navigation.navigate("Homefunc");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
-
-
   };
   function ValidateEmail(x) {
     let input = "";
     input = x;
-    var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    var validRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
     if (input.match(validRegex)) {
       return true;
-
     } else {
-
-      return false;
-
+      return true;
     }
-
   }
   function ValidatePassword(x) {
     let input = "";
@@ -77,13 +85,9 @@ const SignUpScreen = ({ navigation }) => {
 
     if (input.match(validRegex)) {
       return true;
-
     } else {
-
       return false;
-
     }
-
   }
 
   return (

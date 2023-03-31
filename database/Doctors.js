@@ -16,7 +16,6 @@ const getDoctors = async () => {
   // Invoking get method to perform a GET request
 
   axios.get(`${Ip.ip}/API/doctors/select.php`).then((response) => {
-
     Doctor.doctors = response.data;
   });
 };
