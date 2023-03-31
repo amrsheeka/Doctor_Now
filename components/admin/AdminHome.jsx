@@ -8,124 +8,138 @@ import {
     TextInput,
     Image,
   } from "react-native";
+  import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
   import { logout } from "../../database/Users";
   export default function AdminHome({ navigation }) {
     return (
-      <View style={styles.content}>
-        <Image
-          source={require("../assets/splash.png")}
-          style={{
-            width: 80,
-            height: 80,
-            alignSelf: "center",
-            marginTop: "10%",
-          }}
-        />
-        <View style={{ marginBottom: "12%" }}>
-          <TouchableOpacity onPress={() => {navigation.navigate("AllDoctors",{all:"all"})}}>
-            <View style={styles.pp}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  // paddingTop: "5%",
-                  fontSize: 22,
-                  color: "#F9FFB7",
-                }}
-              >
-                Edit Doctors
-              </Text>
-              <Image
-                source={require("../assets/edit.png")}
-                style={{ width: 30, height: 30, margintop: "5%" }}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={{ marginBottom: "12%" }}>
-          <TouchableOpacity onPress={() => {navigation.navigate("AddDoctor")}}>
-            <View style={styles.pp}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  // paddingTop: "5%",
-                  fontSize: 22,
-                  color: "#F9FFB7",
-                }}
-              >
-                Add Doctor
-              </Text>
-              <Image
-                source={require("../assets/resume.png")}
-                style={{ width: 35, height: 35, margintop: "5%" }}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={{ marginBottom: "12%" }}>
-          <TouchableOpacity onPress={() => {navigation.navigate("AppointmentList")}}>
-            <View style={styles.pp}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  // paddingTop: "5%",
-                  fontSize: 22,
-                  color: "#F9FFB7",
-                }}
-              >
-                Appointment List
-              </Text>
-              <Image
-                source={require("../assets/to-do-list.png")}
-                style={{ width: 35, height: 35, margintop: "5%" }}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-  
-        <TouchableOpacity onPress={() => {logout()}}>
-          <View style={styles.pp}>
-            <Text
-              style={{
-                fontWeight: "bold",
-                // paddingTop: "5%",
-                fontSize: 22,
-                color: "#F9FFB7",
+      <View style={styles.filterCards}>
+            <TouchableOpacity
+              style={styles.filterCard1}
+              onPress={() => {
+                navigation.navigate("AddDoctor");
               }}
             >
-              Log Out
-            </Text>
-            <Image
-              source={require("../assets/logout.png")}
-              style={{ width: 35, height: 35, margintop: "5%" }}
-            />
+              <View style={styles.filterCardElements}>
+                <View style={styles.cardsIcons}>
+                  <MaterialCommunityIcons
+                    name="stomach"
+                    size={70}
+                    color="white"
+                  />
+                </View>
+                <View style={styles.filterCard1TextVeiw}>
+                  <Text style={styles.filterCard1Text}>Add Doctor</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.filterCard2}
+              onPress={() => {
+                navigation.navigate("AllDoctors",{all:"all"});
+              }}
+            >
+              <View style={styles.filterCardElements}>
+                <View style={styles.cardsIcons}>
+                  <FontAwesome5 name="tooth" size={60} color="white" />
+                </View>
+                <View style={styles.filterCard2TextVeiw}>
+                  <Text style={styles.filterCard2Text}>Edit Doctors</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.filterCard3}
+              onPress={() => {
+                navigation.navigate("AppointmentList");
+              }}
+            >
+              <View style={styles.filterCardElements}>
+                <View style={styles.cardsIcons}>
+                  <Image
+                    source={require("../assets/surgery.png")}
+                    style={{ height: 65, width: 65 }}
+                  />
+                </View>
+                <View style={styles.filterCard3TextVeiw}>
+                  <Text style={styles.filterCard3Text}>AppointmentList</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.filterCard3}
+              onPress={() => {
+                logout().then(()=>{navigation.navigate("StackNavigator")});
+              }}
+            >
+              <View style={styles.filterCardElements}>
+                <View style={styles.cardsIcons}>
+                  <Image
+                    source={require("../assets/surgery.png")}
+                    style={{ height: 65, width: 65 }}
+                  />
+                </View>
+                <View style={styles.filterCard3TextVeiw}>
+                  <Text style={styles.filterCard3Text}>Log Out</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
     );
   }
   
   const styles = StyleSheet.create({
-    content: {
-      paddingHorizontal: 20,
-      backgroundColor: "#FFFFFF",
-    },
-    botton: {
-      width: 250,
-      padding: 10,
-      paddingLeft: 100,
-    },
-    pp: {
-      // marginTop: "90%",
-      // marginLeft: "10%",
-  
-      width: "100%",
-      borderRadius: 20,
-      height: 50,
-      marginRight: 10,
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "#2DCCA9",
+    filterCards: {
       flexDirection: "row",
+      height: 140,
+      marginHorizontal: "5%",
+      justifyContent: "center",
+      gap: 10,
+    },
+    filterCard1Text: {
+      color: "white",
+      fontWeight: "900",
+    },
+    filterCard1: {
+      flex: 1,
+      borderRadius: 20,
+      backgroundColor: "#439bdd",
+      height: "100%",
+    },
+    filterCard2Text: {
+      color: "white",
+      fontWeight: "900",
+    },
+    filterCard2: {
+      flex: 1,
+      borderRadius: 20,
+      backgroundColor: "#2bd2fc",
+      height: "100%",
+    },
+    filterCard3Text: {
+      color: "white",
+      fontWeight: "900",
+    },
+    filterCard3: {
+      flex: 1,
+      borderRadius: 20,
+      backgroundColor: "#289ba4",
+      height: "100%",
+    },
+    filterCardElements: {
+      flex: 1,
+      alignItems: "center",
+    },
+    cardsIcons: {
+      flex: 2,
+    },
+    filterCard1TextVeiw: {
+      flex: 1,
+    },
+    filterCard2TextVeiw: {
+      flex: 1,
+    },
+    filterCard3TextVeiw: {
+      flex: 1,
     },
   });
   

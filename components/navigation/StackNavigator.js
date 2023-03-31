@@ -236,6 +236,11 @@ const AdminStackNavigator = () => {
         component={AppointmentList}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="StackNavigator"
+        component={StackNavigator}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
