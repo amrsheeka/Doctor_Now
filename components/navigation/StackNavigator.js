@@ -37,6 +37,8 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
+      
+      
       <Tab.Screen
         name="Favorite"
         component={Favorite}
@@ -87,14 +89,7 @@ const Homefunc = () => {
         }}
       />
 
-      <Tab.Screen
-        name="User"
-        component={User}
-        options={{
-          tabBarIcon: () => <AntDesign name="user" size={24} color="black" />,
-          headerShown: false,
-        }}
-      />
+      
       <Tab.Screen
         name="Chatbox"
         component={Chatbox}
@@ -145,6 +140,14 @@ const Homefunc = () => {
           tabBarVisible: false,
           tabBarButton: () => null,
           headerTitle: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="User"
+        component={User}
+        options={{
+          tabBarIcon: () => <AntDesign name="user" size={24} color="black" />,
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

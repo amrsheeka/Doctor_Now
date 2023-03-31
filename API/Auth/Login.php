@@ -6,11 +6,13 @@ include "../Connection.php";
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
-if (isset($_SESSION) && !empty($_SESSION)) {
+$json = file_get_contents('php://input');
+$obj = json_decode($json, true);
+if (!empty($_SESSION)) {
     echo json_encode($_SESSION);
 }
 $count = 0;
-if (empty($_SESSION)&&$_SERVER['REQUEST_METHOD'] === 'POST') {
+if (empty($_SESSION) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $json = file_get_contents('php://input');
     $obj = json_decode($json, true);
     $email = $obj['email'];
@@ -19,7 +21,7 @@ if (empty($_SESSION)&&$_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute(array($password, $email));
     $users = $stmt->fetch(PDO::FETCH_ASSOC);
     $count = $stmt->rowCount();
-}elseif(empty($_SESSION)&&$_SERVER['REQUEST_METHOD'] === 'GET'){
+} elseif (empty($_SESSION) && $_SERVER['REQUEST_METHOD'] === 'GET') {
     echo json_encode(new stdClass);
 }
 
@@ -27,6 +29,5 @@ if ($count > 0) {
     $_SESSION['id'] = $users['id'];
     $_SESSION['name'] = $users['name'];
     $_SESSION['email'] = $users['email'];
-    
     echo json_encode($_SESSION);
-} 
+}

@@ -55,20 +55,25 @@ const login = async (email, password) => {
     });
 };
 const logout = async () => {
-  axios
-    .get(`${Ip.ip}/API/Auth/Logout.php`)
-    .then((response) => {
-      CurrentUser.user = response.data;
-      console.log(response.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-const getCurrentUser = async () => {
-  return await axios.get(`${Ip.ip}/API/Auth/Login.php`).then((response) => {
+
+  axios.get(`${Ip.ip}/API/Auth/Logout.php`).then((response) => {
     CurrentUser.user = response.data;
     console.log(response.data);
+
+  }).catch((err) => {
+    console.log(err);
   });
-};
+
+}
+const getCurrentUser = async () => {
+
+  const res = await axios.get(`${Ip.ip}/API/Auth/Login.php`);
+  if(res.data!=""){
+    CurrentUser.user = res.data;
+    return res.data;
+  }else{
+    return null;
+  }
+
+}
 export { sighnup, login, logout, getCurrentUser };
