@@ -41,14 +41,12 @@ const login = async (email, password) => {
   })
     .then((response) => response.json())
     .then((responseJson) => {
-
       if (responseJson.status == "failed") {
         throw new Error("This email not exist");
       } else {
         user = responseJson;
         console.log(user);
       }
-
     })
     .catch((error) => {
       alert("This email not exist");

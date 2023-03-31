@@ -21,7 +21,9 @@ import AppointmentConfirmation from "../screens/AppointmentConfirmation";
 import Details_user_to_appointment from "../screens/Details_user_to_appointment";
 import Thk from "../screens/Thk";
 import CurrentUser from "../consts/CurrentUser";
-
+import AdminHome from "../admin/AdminHome";
+import AddDoctor from "../admin/AddDoctor";
+import AppointmentList from "../admin/AppointmentList";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -37,8 +39,8 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
-      
-      
+
+
       <Tab.Screen
         name="Favorite"
         component={Favorite}
@@ -89,7 +91,7 @@ const Homefunc = () => {
         }}
       />
 
-      
+
       <Tab.Screen
         name="Chatbox"
         component={Chatbox}
@@ -208,6 +210,38 @@ const StackNavigator = () => {
     </Stack.Navigator>
   );
 
+
 };
 
-export {StackNavigator,StackNavigator2};
+const AdminStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="AdminHome"
+        component={AdminHome}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AllDoctors"
+        component={AllDoctors}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AddDoctor"
+        component={AddDoctor}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AppointmentList"
+        component={AppointmentList}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="StackNavigator"
+        component={StackNavigator}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+export { StackNavigator, StackNavigator2, AdminStackNavigator };
