@@ -1,3 +1,4 @@
+import { all } from "axios";
 import {
     StyleSheet,
     Text,
@@ -7,7 +8,7 @@ import {
     TextInput,
     Image,
   } from "react-native";
-  
+  import { logout } from "../../database/Users";
   export default function AdminHome({ navigation }) {
     return (
       <View style={styles.content}>
@@ -21,7 +22,7 @@ import {
           }}
         />
         <View style={{ marginBottom: "12%" }}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => {navigation.navigate("AllDoctors",{all:"all"})}}>
             <View style={styles.pp}>
               <Text
                 style={{
@@ -31,7 +32,7 @@ import {
                   color: "#F9FFB7",
                 }}
               >
-                Edit Product{" "}
+                Edit Doctors
               </Text>
               <Image
                 source={require("../assets/edit.png")}
@@ -41,7 +42,7 @@ import {
           </TouchableOpacity>
         </View>
         <View style={{ marginBottom: "12%" }}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => {navigation.navigate("AddDoctor")}}>
             <View style={styles.pp}>
               <Text
                 style={{
@@ -51,7 +52,7 @@ import {
                   color: "#F9FFB7",
                 }}
               >
-                Edit User Information{" "}
+                Add Doctor
               </Text>
               <Image
                 source={require("../assets/resume.png")}
@@ -61,7 +62,7 @@ import {
           </TouchableOpacity>
         </View>
         <View style={{ marginBottom: "12%" }}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => {navigation.navigate("AppointmentList")}}>
             <View style={styles.pp}>
               <Text
                 style={{
@@ -71,7 +72,7 @@ import {
                   color: "#F9FFB7",
                 }}
               >
-                Order List{" "}
+                Appointment List
               </Text>
               <Image
                 source={require("../assets/to-do-list.png")}
@@ -81,7 +82,7 @@ import {
           </TouchableOpacity>
         </View>
   
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => {logout()}}>
           <View style={styles.pp}>
             <Text
               style={{
@@ -91,7 +92,7 @@ import {
                 color: "#F9FFB7",
               }}
             >
-              Log Out{" "}
+              Log Out
             </Text>
             <Image
               source={require("../assets/logout.png")}

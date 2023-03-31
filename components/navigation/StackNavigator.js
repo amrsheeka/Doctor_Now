@@ -22,6 +22,8 @@ import Details_user_to_appointment from "../screens/Details_user_to_appointment"
 import Thk from "../screens/Thk";
 import CurrentUser from "../consts/CurrentUser";
 import AdminHome from "../admin/AdminHome";
+import AddDoctor from "../admin/AddDoctor";
+import AppointmentList from "../admin/AppointmentList";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -217,6 +219,21 @@ const AdminStackNavigator = () => {
       <Stack.Screen
         name="AdminHome"
         component={AdminHome}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AllDoctors"
+        component={AllDoctors}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AddDoctor"
+        component={AddDoctor}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AppointmentList"
+        component={AppointmentList}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

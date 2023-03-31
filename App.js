@@ -44,7 +44,8 @@ export default function App() {
         <AdminStackNavigator />
       </NavigationContainer>
     );
-  } else
+  } 
+  else
     return (
       <NavigationContainer>
         <StackNavigator2 />
