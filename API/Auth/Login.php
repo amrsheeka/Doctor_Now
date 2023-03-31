@@ -1,6 +1,6 @@
 <?php
-ini_set('session.cookie_lifetime', 0);
-session_set_cookie_params(0, '/', '', false, true);
+ini_set('session.cookie_lifetime', 86400);
+session_set_cookie_params(86400, '/', '', false, true);
 session_start();
 include "../Connection.php";
 header('Access-Control-Allow-Origin: *');
@@ -12,13 +12,17 @@ if (!empty($_SESSION)) {
     echo json_encode($_SESSION);
 }
 $count = 0;
-if (!isset($_SESSION)) {
+if (empty($_SESSION) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $json = file_get_contents('php://input');
+    $obj = json_decode($json, true);
     $email = $obj['email'];
     $password = $obj['password'];
     $stmt = $con->prepare("SELECT * FROM users WHERE  `password` = ? AND `email` =? ");
     $stmt->execute(array($password, $email));
     $users = $stmt->fetch(PDO::FETCH_ASSOC);
     $count = $stmt->rowCount();
+} elseif (empty($_SESSION) && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    echo json_encode(new stdClass);
 }
 
 if ($count > 0) {
