@@ -8,9 +8,7 @@ header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
-// $email = filterRequest('email');
-// $password = filterRequest('password');
-if (isset($_SESSION)) {
+if (!empty($_SESSION)) {
     echo json_encode($_SESSION);
 }
 $count = 0;
@@ -27,14 +25,5 @@ if ($count > 0) {
     $_SESSION['id'] = $users['id'];
     $_SESSION['name'] = $users['name'];
     $_SESSION['email'] = $users['email'];
-    // $user_data = array(
-    //     'id' => $_SESSION['id'],
-    //     'email' => $_SESSION['email'],
-    //     'name' => $_SESSION['name'],
-    // );
-    // var_dump(session_gc());
     echo json_encode($_SESSION);
-} 
-//  else {
-//     echo json_encode(array("status" => "failed"));
-// }
+}
