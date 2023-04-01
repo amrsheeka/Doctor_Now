@@ -36,7 +36,9 @@ const LoginScreen = ({ navigation }) => {
       }
     }else{
       login(email,password).then(()=>{
-        navigation.navigate('Homefunc');
+        CurrentUser.user.is_admin=="yes"?
+        navigation.navigate('AdminStackNavigator'):
+        navigation.navigate('Homefunc')
       }).catch((err)=>{});
     }
     

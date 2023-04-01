@@ -219,6 +219,13 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="AdminStackNavigator"
+        component={AdminStackNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
      
     </Stack.Navigator>
   );

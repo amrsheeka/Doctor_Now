@@ -32,7 +32,7 @@ const sighnup = async (name, email, password, phone, address, address2, confirm)
 };
 
 const login = async (email, password) => {
-  return fetch(`${Ip.ip}/API/Auth/Login.php`, {
+  return await fetch(`${Ip.ip}/API/Auth/Login.php`, {
     method: "POST",
     //mode: "no-cors",
     header: {
@@ -49,7 +49,7 @@ const login = async (email, password) => {
       if (responseJson.status == "failed") {
         throw new Error("This email not exist");
       } else {
-        user = responseJson;
+        CurrentUser.user = responseJson;
         console.log(user);
       }
     })
