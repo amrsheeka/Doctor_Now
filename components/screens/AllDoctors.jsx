@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   View,
   Text,
@@ -11,19 +11,27 @@ import { Picker } from "@react-native-picker/picker";
 import DoctorCard from "../subcomponents/DoctorCard";
 import { Ionicons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
-
+import { getCurrentUser } from "../../database/Users";
 const AllDoctors = ({ navigation, route }) => {
   let filterd = route.params.filteritem;
   let all = route.params.all;
-
+  // const [doctors, setDoctors] = useState([]);
+  const [selectedValue, setSelectedValue] = useState("all");
+  console.log(selectedValue);
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    async function fetchUser() {
+      const user = await getCurrentUser();
+      setCurrentUser(user);
+    }
+    fetchUser();
+  }, []);
   //console.log(all);
   //console.log(filterd);
 
-  const [doctors, setDoctors] = useState([]);
-  const [selectedValue, setSelectedValue] = useState("all");
-  console.log(selectedValue);
+  
   const renderDoctor = ({ item }) => (
-    <DoctorCard doctor={item} navigation={navigation} />
+    <DoctorCard doctor={item} user={currentUser} navigation={navigation} />
   );
   let ff;
   if (selectedValue != "all" && all === "all") {
