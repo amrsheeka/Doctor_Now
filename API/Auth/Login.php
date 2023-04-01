@@ -21,8 +21,6 @@ if (empty($_SESSION) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute(array($password, $email));
     $users = $stmt->fetch(PDO::FETCH_ASSOC);
     $count = $stmt->rowCount();
-} elseif (empty($_SESSION) && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    echo json_encode(new stdClass);
 }
 
 if ($count > 0) {

@@ -191,8 +191,6 @@ const StackNavigator2 = () => {
   );
 }
 const StackNavigator = () => {
-
-  console.log(CurrentUser.user);
   return (
     <Stack.Navigator>
       <Stack.Screen
