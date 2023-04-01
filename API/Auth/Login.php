@@ -29,5 +29,9 @@ if ($count > 0) {
     $_SESSION['id'] = $users['id'];
     $_SESSION['name'] = $users['name'];
     $_SESSION['email'] = $users['email'];
+    $_SESSION['is_admin'] = $users['is_admin'];
+    $_SESSION['phone'] = $users['phone'];
+    $_SESSION['address'] = $users['address'];
+    $_SESSION['address_2'] = $users['address_2'];
     echo json_encode($_SESSION);
 }
