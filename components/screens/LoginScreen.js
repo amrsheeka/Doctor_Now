@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
   const [passwordErr, setPasswordErr] = useState("");
   
   const navigateSignUp = () => {
-    navigation.navigate("SignUpScreen");
+    navigation.navigate("Sign_UP_2th_Screen");
   };
   const handleLogin = async () => {
     if(!email||!password){
@@ -82,7 +82,7 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
           <View style={styles.textContainer}>
             <Text> Not have account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
+            <TouchableOpacity onPress={() => navigateSignUp()}>
               <Text style={styles.text}>SignUp</Text>
             </TouchableOpacity>
   

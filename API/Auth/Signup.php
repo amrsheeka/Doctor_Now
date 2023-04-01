@@ -11,7 +11,7 @@ $password = $obj['password'];
 $phone = $obj['phone'];
 $confirm = $obj['confirm'];
 $address = $obj['address'];
-$addres_2 = $obj['address_2'];
+$address_2 = $obj['address_2'];
 
 // validation
 $uppercase = preg_match('@[A-Z]@', $password);
@@ -40,7 +40,7 @@ if ($uppercase && $lowercase && $number && strlen($password) > 8) {
             if ($confirm == $password) {
                 if (!empty($address)) {
                     $stmt = $con->prepare("INSERT INTO `users`(`name`,`email`, `password`,`phone`,`address`,`address_2`,`created_at`) VALUES (?,?,?,?,?,?,NOW())");
-                    $stmt->execute(array($name, $email, $password, $phone, $address, $addres_2));
+                    $stmt->execute(array($name, $email, $password, $phone, $address, $address_2));
                     $count = $stmt->rowCount();
                     if ($count > 0) {
                         echo json_encode(array("status" => "success"));

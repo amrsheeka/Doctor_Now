@@ -11,31 +11,21 @@ import React, { useState } from "react";
 import axios from "axios";
 import { sighnup } from "../../database/Users";
 // import { TouchableOpacity } from "react-native-web";
-const SignUpScreen = ({ navigation }) => {
+const SignUpScreen = ({ navigation,route }) => {
   const [email, setEmail] = useState("");
   const [emailErr, setEmailErr] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
-  const [name, setname] = useState("");
-  const [nameErr, setnameErr] = useState("");
-
-  const navigateLogin = () => {
-    navigation.navigate("LoginScreen");
-  };
   const handleSignUp = async () => {
+
     if (
-      !name ||
       !email ||
       !ValidateEmail(email) ||
       !password ||
       password.length <= 8 ||
       !ValidatePassword(password)
     ) {
-      if (!name) {
-        setnameErr("Enter your your name.");
-      } else {
-        setnameErr("");
-      }
       if (!email) {
         setEmailErr("Enter your email address.");
       } else if (!ValidateEmail(email)) {
@@ -57,7 +47,7 @@ const SignUpScreen = ({ navigation }) => {
         setPasswordErr("");
       }
     } else {
-      sighnup(name, email, password)
+      sighnup(route.params.name, email, password, route.params.phone, route.params.address, route.params.address2, confirm)
         .then((res) => {
           navigation.navigate("Homefunc");
         })
@@ -101,17 +91,6 @@ const SignUpScreen = ({ navigation }) => {
       </View>
       <View style={styles.inputContainer}>
         <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-          Full Name
-        </Text>
-        <TextInput
-          placeholder="Enter Your Name"
-          style={styles.input}
-          value={name}
-          onChangeText={(text) => setname(text)}
-        />
-        <Text style={{ color: "red" }}>{nameErr}</Text>
-
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
           Email
         </Text>
         <TextInput
@@ -132,6 +111,16 @@ const SignUpScreen = ({ navigation }) => {
           onChangeText={(text) => setPassword(text)}
         />
         <Text style={{ color: "red" }}>{passwordErr}</Text>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
+            Confirm Password
+        </Text>
+        <TextInput
+          placeholder="Confirm Password"
+          style={styles.input}
+          secureTextEntry
+          value={confirm}
+          onChangeText={(text) => setConfirm(text)}
+        />
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
