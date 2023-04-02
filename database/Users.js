@@ -29,8 +29,8 @@ const sighnup = async (name, email, password, phone, address, address2,age, conf
     
     .catch((error) => {
       //alert("This email already exist.");
-      console.log(error);
-      throw new Error(error);
+      console.log(error.json());
+      throw new Error(error.json());
     });
 };
 
