@@ -15,12 +15,12 @@ $addres_2 = $obj['address_2'];
 $gender = $obj['gender'];
 $age = $obj['age'];
 // validation
-$uppercase = preg_match('@[A-Z]@', $password);
+
 $lowercase = preg_match('@[a-z]@', $password);
 $number    = preg_match('@[0-9]@', $password);
 $phone_number_validation_regex = '/^01[0125][0-9]{8}$/';
 $phone_regex = preg_match($phone_number_validation_regex, $phone);
-if (!$uppercase && !$lowercase && !$number && strlen($password) < 8) {
+if (!$lowercase && !$number && strlen($password) < 8) {
     echo json_encode(array("error" => "invalid password"));
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -35,7 +35,7 @@ if (!($confirm == $password)) {
 if (empty($address)) {
     echo json_encode(array("error" => "please enter your address"));
 }
-if ($uppercase && $lowercase && $number && strlen($password) > 8) {
+if ($lowercase && $number && strlen($password) > 8) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         if ($phone_regex) {
             if ($confirm == $password) {
