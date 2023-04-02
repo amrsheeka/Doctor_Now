@@ -1,9 +1,30 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import React, { useCallback, useState, useLayoutEffect } from "react";
+import { ScrollView } from "react-native-web";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+} from "react-native";
+import { Avatar } from "react-native-elements";
+import { AntDesign } from "@expo/vector-icons";
+import { db } from "../../db/Config";
+import { signOut } from "firebase/auth";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
 
-export default function Chatbox() {
-  const [message, setMessage] = useState('');
+export default function Chatbox({ navigation, route }) {
+  let filterd = route.params.item;
+
+  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [isSender, setIsSender] = useState(true);
 
@@ -11,30 +32,38 @@ export default function Chatbox() {
     const newMessage = {
       message,
       date: new Date(),
-      isSender
+      isSender,
     };
 
     setMessages([...messages, newMessage]);
     setIsSender(!isSender);
-    setMessage('');
-  }
+    setMessage("");
+  };
 
   const renderMessage = ({ item }) => (
-    <View style={[
-      styles.messageContainer,
-      item.isSender ? styles.senderMessageContainer : styles.receiverMessageContainer
-    ]}>
-      <Text style={[
-        styles.message,
-        item.isSender ? styles.senderMessage : styles.receiverMessage
-      ]}>{item.message}</Text>
+    <View
+      style={[
+        styles.messageContainer,
+        item.isSender
+          ? styles.senderMessageContainer
+          : styles.receiverMessageContainer,
+      ]}
+    >
+      <Text
+        style={[
+          styles.message,
+          item.isSender ? styles.senderMessage : styles.receiverMessage,
+        ]}
+      >
+        {item.message}
+      </Text>
       <Text style={styles.date}>{item.date.toLocaleString()}</Text>
     </View>
   );
 
   return (
     <View style={styles.container}>
-       <View style={styles.header}>
+      <View style={styles.header}>
         <Text style={styles.heading}>Client Name</Text>
       </View>
 
@@ -50,13 +79,10 @@ export default function Chatbox() {
           style={styles.input}
           placeholder={isSender ? "Type a message " : "Type a message "}
           value={message}
-          onChangeText={text => setMessage(text)}
+          onChangeText={(text) => setMessage(text)}
         />
 
-        <TouchableOpacity
-          style={styles.sendButton}
-          onPress={handleSendMessage}
-        >
+        <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
           <AntDesign name="rocket1" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
@@ -67,64 +93,64 @@ export default function Chatbox() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fcfafa'
+    backgroundColor: "#fcfafa",
   },
   messages: {
-    flex: 1
+    flex: 1,
   },
   messageContainer: {
     borderRadius: 8,
     padding: 16,
     marginBottom: 8,
-    maxWidth: '80%',
-    alignSelf: 'flex-end'
+    maxWidth: "80%",
+    alignSelf: "flex-end",
   },
   senderMessageContainer: {
-    backgroundColor: '#288771',
+    backgroundColor: "#288771",
     borderRadius: 10,
-    alignSelf: 'flex-end'
+    alignSelf: "flex-end",
   },
   receiverMessageContainer: {
-    backgroundColor: '#eceff1',
+    backgroundColor: "#eceff1",
     borderRadius: 10,
-    alignSelf: 'flex-start'
+    alignSelf: "flex-start",
   },
   message: {
     fontSize: 16,
-    color: '#fff'
+    color: "#fff",
   },
   senderMessage: {
-    color: '#fff'
+    color: "#fff",
   },
   receiverMessage: {
-    color: '#000'
+    color: "#000",
   },
   date: {
     fontSize: 10,
     marginTop: 8,
-    textAlign: 'right'
+    textAlign: "right",
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
-    color:'#cbcbcb',
+    color: "#cbcbcb",
   },
   input: {
     flex: 1,
     height: 48,
-    backgroundColor: '#eceff1',
+    backgroundColor: "#eceff1",
     borderRadius: 24,
     paddingLeft: 16,
-    marginRight: 16
+    marginRight: 16,
   },
   sendButton: {
     width: 48,
     height: 48,
-    backgroundColor: '#288771',
+    backgroundColor: "#288771",
     borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
   header: {
     backgroundColor: "#fcfafa",
@@ -139,5 +165,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#0f1a25",
   },
- 
 });
