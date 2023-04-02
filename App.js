@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import {
   StackNavigator,
   StackNavigator2,
-  AdminStackNavigator
+  AdminStackNavigator,
 } from "./components/navigation/StackNavigator";
 import CurrentUser from "./components/consts/CurrentUser";
 import { getDoctors } from "./database/Doctors";
@@ -32,28 +32,24 @@ export default function App() {
   }, []);
 
   if (currentUser == null) {
-    
     return (
       <NavigationContainer>
         <StackNavigator />
       </NavigationContainer>
     );
-  }
-  else if (currentUser.is_admin == "yes") {
+  } else if (currentUser.is_admin == "yes") {
     return (
       <NavigationContainer>
         <AdminStackNavigator />
       </NavigationContainer>
     );
-  } 
-  else{
+  } else {
     return (
       <NavigationContainer>
         <StackNavigator2 />
       </NavigationContainer>
     );
   }
-  
 }
 
 const styles = StyleSheet.create({

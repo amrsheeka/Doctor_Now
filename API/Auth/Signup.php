@@ -21,19 +21,19 @@ $number    = preg_match('@[0-9]@', $password);
 $phone_number_validation_regex = '/^01[0125][0-9]{8}$/';
 $phone_regex = preg_match($phone_number_validation_regex, $phone);
 if (!$lowercase && !$number && strlen($password) < 8) {
-    echo json_encode(array("error" => "invalid password"));
+    echo json_encode(array("status" => "invalid password"));
 }
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(array("error" => "invalid email"));
+elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(array("status" => "invalid email"));
 }
-if (!$phone_regex) {
-    echo json_encode(array("error" => "invalid phone number"));
+elseif (!$phone_regex) {
+    echo json_encode(array("status" => "invalid phone number"));
 }
-if (!($confirm == $password)) {
-    echo json_encode(array("error" => "invalid confirm password"));
+elseif (!($confirm == $password)) {
+    echo json_encode(array("status" => "invalid confirm password"));
 }
-if (empty($address)) {
-    echo json_encode(array("error" => "please enter your address"));
+elseif (empty($address)) {
+    echo json_encode(array("status" => "please enter your address"));
 }
 if ($lowercase && $number && strlen($password) > 8) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {

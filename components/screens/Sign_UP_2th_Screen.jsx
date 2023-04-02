@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import { sighnup } from "../../database/Users";
 import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native";
@@ -17,7 +16,7 @@ const Sign_UP_2th_Screen = ({ navigation }) => {
     const [name, setname] = useState("");
     const [address2, setaddress2] = useState("");
     const [address, setaddress] = useState("");
-    const [age, setAge] = useState("");
+    const [age, setAge] = useState("15+");
     const [nameErr, setnameErr] = useState("");
     const handle_To_go_next_Screen = () => {
         if (!name) {
