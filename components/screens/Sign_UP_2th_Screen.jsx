@@ -27,7 +27,7 @@ const Sign_UP_2th_Screen = ({ navigation }) => {
                 setnameErr("");
             }
         } else {
-            navigation.navigate("SignUpScreen", { name, phone, address, address2, age, Is_a_doctor_or_user });
+            navigation.navigate("SignUpScreen", { name, phone, address, address2, age });
         }
     };
 
