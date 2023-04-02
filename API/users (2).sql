@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2023 at 03:15 AM
+-- Generation Time: Apr 02, 2023 at 05:58 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -40,6 +40,7 @@ CREATE TABLE `users` (
   `bio` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `image` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_admin` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `is_doctor` enum('no','yes') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `created_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -47,10 +48,15 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `phone`, `address`, `address_2`, `gender`, `age`, `bio`, `image`, `is_admin`, `created_at`) VALUES
-(178, 'ahmed', 'ahmed@gmail.com', 'Ahmed220123', '01122084056', 'ahmed zaki - maadi', '', 'male', '15+', NULL, NULL, 'no', '2023-03-30'),
-(181, 'ahmed', 'ahmee@gmail.com', 'Ahmed220123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'no', '2023-04-01'),
-(182, 'ahmed', 'ah@gmail.com', 'Ahmed220123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'yes', '2023-04-01');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `phone`, `address`, `address_2`, `gender`, `age`, `bio`, `image`, `is_admin`, `is_doctor`, `created_at`) VALUES
+(178, 'ahmed', 'ahmed@gmail.com', 'Ahmed220123', '01122084056', 'ahmed zaki - maadi', '', 'male', '15+', NULL, NULL, 'no', 'no', '2023-03-30'),
+(181, 'ahmed', 'ahmee@gmail.com', 'Ahmed220123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'no', 'no', '2023-04-01'),
+(182, 'ahmed', 'ah@gmail.com', 'Ahmed220123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'yes', 'no', '2023-04-01'),
+(185, 'ahmed', 'ahmsssed@gmail.com', 'Ahmed12345', '01122384056', '12345', '12345', NULL, NULL, NULL, NULL, 'no', 'no', '2023-04-02'),
+(188, 'ahmed', 'ahmsassed@gmail.com', 'Ahmed12345', '01222384056', '12345', '12345', NULL, NULL, NULL, NULL, 'no', 'no', '2023-04-02'),
+(190, 'ahmed', 'ahmsasaased@gmail.com', 'Ahmed12345', '01228405116', '12345', '12345', NULL, NULL, NULL, NULL, 'no', 'no', '2023-04-02'),
+(191, 'ahmed', 'amsasaased@gmail.com', 'Ahmed12345', '01228435116', '12345', '12345', 'male', '15+', NULL, NULL, 'no', 'no', '2023-04-02'),
+(192, 'ahmed', 'amhasaased@gmail.com', 'Ahmed12345', '01228435916', '12345', '12345', '', '', NULL, NULL, 'no', 'no', '2023-04-02');
 
 --
 -- Indexes for dumped tables
@@ -72,7 +78,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=194;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
