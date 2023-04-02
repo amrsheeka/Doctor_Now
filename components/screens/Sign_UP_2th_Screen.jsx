@@ -143,9 +143,8 @@ const styles = StyleSheet.create({
         flex: 3,
     },
     Go_Back: {
-        flexWrap: "wrap",
-        display:"flex"
-
+    display:"flex",
+    marginTop:15
     },
     picker: {
         height: 50,
@@ -169,7 +168,7 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        flex: 2,
+        flex: 2
     },
     button: {
         width: "80%",
@@ -208,11 +207,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     body: {
-        flex: 5,
-        flexDirection: "row-reverse",
-        justifyContent:"center",
-        alignItems:"flex-start",
-        alignContent:"space-between"
+        flex: 6,
+        flexDirection: "column",
+        justifyContent:"center"        
     }
 });
 
