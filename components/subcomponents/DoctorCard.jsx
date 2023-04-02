@@ -22,11 +22,7 @@ const DoctorCard = ({ navigation, doctor, user }) => {
               style={styles.cardDoctor}>{doctor.title + "," + doctor.specialization1 + "," + doctor.specialization1}</Text>
           </View>
           {
-            currentUser.is_admin=="no"?(<TouchableOpacity onPress={() => navigation.navigate("AppointmentConfirmation", { doctor })}
-            style={styles.cardButton}>
-              <Text style={styles.cardButtonText}>Make Appointment</Text>
-            </TouchableOpacity>):
-            (<View style={styles.adminComponent}>
+            currentUser.is_admin=="yes"?(<View style={styles.adminComponent}>
               <TouchableOpacity onPress={() => {}}
             style={styles.delete}>
               <MaterialCommunityIcons name="delete" size={50} color={"#288771"}/>
@@ -38,7 +34,13 @@ const DoctorCard = ({ navigation, doctor, user }) => {
               </View>
               
             </TouchableOpacity>
-            </View>)
+            </View>):(
+              <TouchableOpacity onPress={() => navigation.navigate("AppointmentConfirmation", { doctor })}
+              style={styles.cardButton}>
+                <Text style={styles.cardButtonText}>Make Appointment</Text>
+              </TouchableOpacity>
+            )
+            
           }
         </View>
       </View>
