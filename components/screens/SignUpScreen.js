@@ -59,8 +59,14 @@ const SignUpScreen = ({ navigation, route }) => {
       )
         .then((res) => {
           console.log("res:",res);
-          if(res=="success")
-            navigation.navigate("Homefunc");
+          if(res=="success"){
+            alert("Register Successfully go to login ->");
+            navigation.navigate("LoginScreen");
+          }else{
+            console.log(res);
+            alert(res);
+          }
+            
         })
         .catch((err) => {
           console.error(err);
