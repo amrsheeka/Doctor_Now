@@ -9,6 +9,7 @@ import {
   Image,
 } from "react-native";
 import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 export default function AddDoctor({ navigation }) {
   const [email, setEmail] = useState("");
   const [emailErr, setEmailErr] = useState("");
@@ -16,6 +17,12 @@ export default function AddDoctor({ navigation }) {
   const [passwordErr, setPasswordErr] = useState("");
   return (
     <View style={styles.container}>
+       <TouchableOpacity onPress={() => navigation.goBack()}>
+          <View style={styles.xx}>
+            <Ionicons name="arrow-back" size={24} color="black" />
+            <Text>back</Text>
+          </View>
+        </TouchableOpacity>
       <View style={styles.icon}>
         <Image source={require("../assets/splash.png")} />
       </View>

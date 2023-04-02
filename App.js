@@ -19,7 +19,7 @@ export default function App() {
     async function fetchUser() {
       const user = await getCurrentUser();
       setCurrentUser(user);
-      //console.log(user);
+      console.log(user);
     }
     async function fetchDoctors() {
       const doc = await getDoctors();
