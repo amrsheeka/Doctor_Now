@@ -35,159 +35,157 @@ const Sign_UP_2th_Screen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <ScrollView style={{ paddingHorizontal: "10%" }} >
-                
-                <View style={styles.icon}>
+            <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <View style={styles.Go_Back}>
-                        <View style={{display:"flex",alignItems:"flex-start"}}>
+                        <View style={styles.Go_Back}>
                             <Ionicons name="arrow-back" size={24} color="black" />
                             <Text >back</Text>
-                        </View>
-                        <View style={styles.textContainer}>
-                        <Text>Already have account?</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
-                            <Text style={styles.text}>Login</Text>
-                        </TouchableOpacity>
-                    </View>
                     </View>
                 </TouchableOpacity>
-                    <Image source={require("../assets/splash.png")} />
-                    <View>
-                        <Text style={styles.greeting}>Fill your Information</Text>
-                    </View>
-                </View>
-
-
-                <View style={styles.inputContainer}>
-                    <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-                        Full Name
-                    </Text>
-                    <TextInput
-                        placeholder="Enter Your Name"
-                        style={styles.input}
-                        value={name}
-                        onChangeText={(text) => setname(text)}
-                    />
-                    <Text style={{ color: "red" }}>{nameErr}</Text>
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-                        Age
-                    </Text>
-                    <Picker
-                        selectedValue={age}
-                        onValueChange={(value, index) => setAge(value)}
-                        mode="dropdown"
-                        style={styles.picker}
-                    >
-                        <Picker.Item label="15+" value="15+" />
-                        <Picker.Item label="25+" value="25+" />
-                        <Picker.Item label="35+" value="35+" />
-                        <Picker.Item label="45+" value="45+" />
-                    </Picker>
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-                        address
-                    </Text>
-                    <TextInput
-                        placeholder="Enter Your address"
-                        style={styles.input}
-                        value={address}
-                        onChangeText={(text) => setaddress(text)}
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-                        address2
-                    </Text>
-                    <TextInput
-                        placeholder="Enter Your address"
-                        style={styles.input}
-                        value={address2}
-                        onChangeText={(text) => setaddress2(text)}
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-                        phone
-                    </Text>
-                    <TextInput
-                        placeholder="Enter Your phone"
-                        style={styles.input}
-                        value={phone}
-                        onChangeText={(text) => setphone(text)}
-                    />
-                </View>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => handle_To_go_next_Screen()}>
-                        <Text style={styles.buttonText}>Next</Text>
+                <View style={styles.textContainer}>
+                    <Text>Already have account?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
+                        <Text style={styles.text}>Login</Text>
                     </TouchableOpacity>
-                    
                 </View>
-            </ScrollView>
+                <View style={styles.icon}>
+                    <Image source={require("../assets/splash.png")} />
+                </View>
+                <View style={styles.icon}>
+                    <Text style={styles.greeting}>Fill your Information</Text>
+                </View>
+            </View>
+
+            <View style={styles.body}>
+                <ScrollView >
+                    <View style={styles.inputContainer}>
+                        <Text style={{ fontSize: 17, fontWeight: "bold",justifyContent:"center",alignItems:"center" }}>
+                            Full Name
+                        </Text>
+                        <TextInput
+                            placeholder="Enter Your Name"
+                            style={styles.input}
+                            value={name}
+                            onChangeText={(text) => setname(text)}
+                        />
+                        <Text style={{ color: "red" }}>{nameErr}</Text>
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
+                            Age
+                        </Text>
+                        <Picker
+                            selectedValue={age}
+                            onValueChange={(value, index) => setAge(value)}
+                            mode="dropdown"
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="15+" value="15+" />
+                            <Picker.Item label="25+" value="25+" />
+                            <Picker.Item label="35+" value="35+" />
+                            <Picker.Item label="45+" value="45+" />
+                        </Picker>
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+                            address
+                        </Text>
+                        <TextInput
+                            placeholder="Enter Your address"
+                            style={styles.input}
+                            value={address}
+                            onChangeText={(text) => setaddress(text)}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+                            address2
+                        </Text>
+                        <TextInput
+                            placeholder="Enter Your address"
+                            style={styles.input}
+                            value={address2}
+                            onChangeText={(text) => setaddress2(text)}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
+                            phone
+                        </Text>
+                        <TextInput
+                            placeholder="Enter Your phone"
+                            style={styles.input}
+                            value={phone}
+                            onChangeText={(text) => setphone(text)}
+                        />
+                    </View>
+                </ScrollView>
+
+            </View>
+
+            <View style={styles.footer}>
+                <TouchableOpacity style={styles.button} onPress={() => handle_To_go_next_Screen()}>
+                    <Text style={styles.buttonText}>Next</Text>
+                </TouchableOpacity>
+
+            </View>
+
         </View>
     );
 };
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //justifyContent: "center",
-        //alignItems: "center",
         backgroundColor: "#fafafa",
-
-
-
+        padding:20
+    },
+     header: {
+        flex: 3,
     },
     Go_Back: {
-        flexDirection: "row",
+        flexWrap: "wrap",
+        display:"flex"
+
     },
     picker: {
-        //paddingVertical: 10,
+        height: 50,
         borderRadius: 10,
+        marginBottom: 10,
         backgroundColor: "#efefef",
     },
     greeting: {
         fontSize: 20,
         fontWeight: "bold",
-        marginTop: 10,
     },
     inputContainer: {
-        //width: "80%",
-        marginTop: 20,
+        width: "100%",
     },
     input: {
         backgroundColor: "#eceff1",
-        paddingHorizontal: 15,
         paddingVertical: 10,
         borderRadius: 10,
-        marginTop: 10,
     },
-    buttonContainer: {
+    footer: {
         width: "100%",
-        marginTop: 20,
-        //justifyContent: "center",
+        justifyContent: "center",
         alignItems: "center",
+        flex: 2,
     },
     button: {
         width: "80%",
         height: "23%",
         borderRadius: 20,
         alignItems: "center",
-        justifyContent:"center",
         backgroundColor: "#288771",
     },
     buttonOutline: {
         backgroundColor: "white",
-        //marginTop: 5,
         borderColor: "#288771",
         borderWidth: 2,
     },
     buttonText: {
         flexDirection: "row",
-        //justifyContent: "center",
+        justifyContent: "center",
         alignItems: "center",
         color: "white",
     },
@@ -198,7 +196,7 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         flexDirection: "row",
-        //justifyContent: "center",
+        justifyContent: "center",
         alignItems: "center",
     },
     text: {
@@ -208,8 +206,14 @@ const styles = StyleSheet.create({
     icon: {
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 20,
     },
+    body: {
+        flex: 5,
+        flexDirection: "row-reverse",
+        justifyContent:"center",
+        alignItems:"flex-start",
+        alignContent:"space-between"
+    }
 });
 
 export default Sign_UP_2th_Screen;
