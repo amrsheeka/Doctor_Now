@@ -1,7 +1,7 @@
 import Ip from "./Ip";
 import axios from "axios";
 import CurrentUser from "../components/consts/CurrentUser";
-const sighnup = async (username, email, password) => {
+const sighnup = async (name, email, password, phone, address, address2, confirm) => {
   return fetch(`${Ip.ip}/API/Auth/signup.php`, {
     method: "POST",
     //mode: "no-cors",
@@ -10,9 +10,13 @@ const sighnup = async (username, email, password) => {
       "Content-type": "application/json",
     },
     body: JSON.stringify({
-      name: username,
+      name: name,
       email: email,
       password: password,
+      phone: phone, 
+      address: address,
+      address_2: address2,
+      confirm: confirm
     }),
   })
     .then((response) => response.json())
@@ -21,13 +25,14 @@ const sighnup = async (username, email, password) => {
       login(email, password);
     })
     .catch((error) => {
-      alert("This email already exist.");
-      throw new Error("This email already exist.");
+      //alert("This email already exist.");
+      console.log(error);
+      throw new Error(error);
     });
 };
 
 const login = async (email, password) => {
-  return fetch(`${Ip.ip}/API/Auth/Login.php`, {
+  return await fetch(`${Ip.ip}/API/Auth/Login.php`, {
     method: "POST",
     //mode: "no-cors",
     header: {
@@ -44,7 +49,7 @@ const login = async (email, password) => {
       if (responseJson.status == "failed") {
         throw new Error("This email not exist");
       } else {
-        user = responseJson;
+        CurrentUser.user = responseJson;
         console.log(user);
       }
     })
@@ -68,10 +73,11 @@ const logout = async () => {
 const getCurrentUser = async () => {
 
   const res = await axios.get(`${Ip.ip}/API/Auth/Login.php`);
-  if(res.data!=""){
+  if (res.data != "") {
     CurrentUser.user = res.data;
+    //console.log(res.data);
     return res.data;
-  }else{
+  } else {
     return null;
   }
 

@@ -19,7 +19,7 @@ export default function App() {
     async function fetchUser() {
       const user = await getCurrentUser();
       setCurrentUser(user);
-      console.log(user);
+      //console.log(user);
     }
     async function fetchDoctors() {
       const doc = await getDoctors();
@@ -32,6 +32,7 @@ export default function App() {
   }, []);
 
   if (currentUser == null) {
+    
     return (
       <NavigationContainer>
         <StackNavigator />
@@ -45,12 +46,14 @@ export default function App() {
       </NavigationContainer>
     );
   } 
-  else
+  else{
     return (
       <NavigationContainer>
         <StackNavigator2 />
       </NavigationContainer>
     );
+  }
+  
 }
 
 const styles = StyleSheet.create({

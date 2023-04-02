@@ -24,6 +24,7 @@ import CurrentUser from "../consts/CurrentUser";
 import AdminHome from "../admin/AdminHome";
 import AddDoctor from "../admin/AddDoctor";
 import AppointmentList from "../admin/AppointmentList";
+import Sign_UP_2th_Screen from "../screens/Sign_UP_2th_Screen";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -60,6 +61,7 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
+   
       <Tab.Screen
         name="Thk"
         component={Thk}
@@ -171,25 +173,37 @@ const StackNavigator2 = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="Sign_UP_2th_Screen"
+        component={Sign_UP_2th_Screen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="SignUpScreen"
         component={SignUpScreen}
         options={{
           headerShown: false,
         }}
       />
-
+    
     </Stack.Navigator>
   );
 }
 const StackNavigator = () => {
-
-  console.log(CurrentUser.user);
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="LoginScreen"
         component={LoginScreen}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Sign_UP_2th_Screen"
+        component={Sign_UP_2th_Screen}
+        options={{
+          headerShown: false,
+        }} 
       />
       <Stack.Screen
         name="SignUpScreen"
@@ -205,8 +219,14 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-
-
+      <Stack.Screen
+        name="AdminStackNavigator"
+        component={AdminStackNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+     
     </Stack.Navigator>
   );
 
