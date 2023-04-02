@@ -8,11 +8,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import axios from "axios";
+import { Picker } from "@react-native-picker/picker";
 import { sighnup } from "../../database/Users";
 // import { TouchableOpacity } from "react-native-web";
-const SignUpScreen = ({ navigation,route }) => {
+const SignUpScreen = ({ navigation, route }) => {
   const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("male");
   const [emailErr, setEmailErr] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -47,7 +48,15 @@ const SignUpScreen = ({ navigation,route }) => {
         setPasswordErr("");
       }
     } else {
-      sighnup(route.params.name, email, password, route.params.phone, route.params.address, route.params.address2,route.params.age, confirm)
+      sighnup(route.params.name,
+        email, password,
+        route.params.phone,
+        route.params.address,
+        route.params.address2,
+        route.params.age,
+        gender,
+        confirm
+      )
         .then((res) => {
           navigation.navigate("Homefunc");
         })
@@ -91,6 +100,18 @@ const SignUpScreen = ({ navigation,route }) => {
       </View>
       <View style={styles.inputContainer}>
         <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
+          Gender
+        </Text>
+        <Picker
+          selectedValue={gender}
+          onValueChange={(value, index) => setGender(value)}
+          mode="dropdown"
+          style={styles.picker}
+        >
+          <Picker.Item label="male" value="male" />
+          <Picker.Item label="female" value="female" />
+        </Picker>
+        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
           Email
         </Text>
         <TextInput
@@ -112,7 +133,7 @@ const SignUpScreen = ({ navigation,route }) => {
         />
         <Text style={{ color: "red" }}>{passwordErr}</Text>
         <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-            Confirm Password
+          Confirm Password
         </Text>
         <TextInput
           placeholder="Confirm Password"
@@ -204,6 +225,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+  },
+  picker: {
+    height: 50,
+    borderRadius: 10,
+    marginBottom: 10,
+    backgroundColor: "#efefef",
   },
 });
 

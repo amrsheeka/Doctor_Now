@@ -1,8 +1,8 @@
 import Ip from "./Ip";
 import axios from "axios";
 import CurrentUser from "../components/consts/CurrentUser";
-const sighnup = async (name, email, password, phone, address, address2,age, confirm) => {
-  console.log(name, email, password, phone, address, address2,age, confirm);
+const sighnup = async (name, email, password, phone, address, address2,age,gender, confirm) => {
+  console.log(age,gender);
   return fetch(`${Ip.ip}/API/Auth/signup.php`, {
     method: "POST",
     //mode: "no-cors",
@@ -18,7 +18,8 @@ const sighnup = async (name, email, password, phone, address, address2,age, conf
       address: address,
       address_2: address2,
       confirm: confirm,
-      //age:age,
+      age:age,
+      gender:gender
     }),
   })
     .then((response) => response.json())
