@@ -47,7 +47,7 @@ const SignUpScreen = ({ navigation,route }) => {
         setPasswordErr("");
       }
     } else {
-      sighnup(route.params.name, email, password, route.params.phone, route.params.address, route.params.address2, confirm)
+      sighnup(route.params.name, email, password, route.params.phone, route.params.address, route.params.address2,route.params.age, confirm)
         .then((res) => {
           navigation.navigate("Homefunc");
         })

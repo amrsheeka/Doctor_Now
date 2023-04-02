@@ -1,7 +1,8 @@
 import Ip from "./Ip";
 import axios from "axios";
 import CurrentUser from "../components/consts/CurrentUser";
-const sighnup = async (name, email, password, phone, address, address2, confirm) => {
+const sighnup = async (name, email, password, phone, address, address2,age, confirm) => {
+  console.log(name, email, password, phone, address, address2,age, confirm);
   return fetch(`${Ip.ip}/API/Auth/signup.php`, {
     method: "POST",
     //mode: "no-cors",
@@ -16,7 +17,8 @@ const sighnup = async (name, email, password, phone, address, address2, confirm)
       phone: phone, 
       address: address,
       address_2: address2,
-      confirm: confirm
+      confirm: confirm,
+      //age:age,
     }),
   })
     .then((response) => response.json())
@@ -24,6 +26,7 @@ const sighnup = async (name, email, password, phone, address, address2, confirm)
       console.log(responseJson);
       login(email, password);
     })
+    
     .catch((error) => {
       //alert("This email already exist.");
       console.log(error);
@@ -50,7 +53,6 @@ const login = async (email, password) => {
         throw new Error("This email not exist");
       } else {
         CurrentUser.user = responseJson;
-        console.log(user);
       }
     })
     .catch((error) => {
