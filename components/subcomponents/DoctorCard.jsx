@@ -2,6 +2,7 @@ import React,{useEffect} from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import CurrentUser from "../consts/CurrentUser";
+import { deleteDoctor } from "../../database/Doctors";
 const DoctorCard = ({ navigation, doctor, user }) => {
   const image = doctor.image;
   let currentUser = CurrentUser.user;
@@ -23,7 +24,7 @@ const DoctorCard = ({ navigation, doctor, user }) => {
           </View>
           {
             currentUser.is_admin=="yes"?(<View style={styles.adminComponent}>
-              <TouchableOpacity onPress={() => {}}
+              <TouchableOpacity onPress={() => {deleteDoctor(doctor.id)}}
             style={styles.delete}>
               <MaterialCommunityIcons name="delete" size={50} color={"#288771"}/>
             </TouchableOpacity>

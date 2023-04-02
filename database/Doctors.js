@@ -7,4 +7,15 @@ const getDoctors = async () => {
   //console.log((await res).data);
   return res.data;
 };
-export { getDoctors };
+const deleteDoctor = async (id) => {
+  const res = await axios.post(`${Ip.ip}/API/doctors/delete.php`, {
+    id:id
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+export { getDoctors, deleteDoctor };
