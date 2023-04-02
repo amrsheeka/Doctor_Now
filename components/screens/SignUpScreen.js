@@ -58,7 +58,9 @@ const SignUpScreen = ({ navigation, route }) => {
         confirm
       )
         .then((res) => {
-          navigation.navigate("Homefunc");
+          console.log("res:",res);
+          if(res=="success")
+            navigation.navigate("Homefunc");
         })
         .catch((err) => {
           console.error(err);
