@@ -22,17 +22,13 @@ $phone_number_validation_regex = '/^01[0125][0-9]{8}$/';
 $phone_regex = preg_match($phone_number_validation_regex, $phone);
 if (!$lowercase && !$number && strlen($password) < 8) {
     echo json_encode(array("status" => "invalid password"));
-}
-elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     echo json_encode(array("status" => "invalid email"));
-}
-elseif (!$phone_regex) {
+} elseif (!$phone_regex) {
     echo json_encode(array("status" => "invalid phone number"));
-}
-elseif (!($confirm == $password)) {
+} elseif (!($confirm == $password)) {
     echo json_encode(array("status" => "invalid confirm password"));
-}
-elseif (empty($address)) {
+} elseif (empty($address)) {
     echo json_encode(array("status" => "please enter your address"));
 }
 if ($lowercase && $number && strlen($password) > 8) {
