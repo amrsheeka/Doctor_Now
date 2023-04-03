@@ -10,6 +10,7 @@ const User = ({ navigation }) => {
     async function fetchUser() {
       const user = await getCurrentUser();
       setUser(user);
+      console.log(user);
     }
     fetchUser();
   }, []);

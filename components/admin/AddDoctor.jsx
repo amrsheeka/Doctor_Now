@@ -1,140 +1,205 @@
-import { all } from "axios";
 import {
+  Image,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  Button,
   TextInput,
-  Image,
+  Button,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-export default function AddDoctor({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [emailErr, setEmailErr] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordErr, setPasswordErr] = useState("");
+import { Picker } from "@react-native-picker/picker";
+import { Ionicons } from "@expo/vector-icons";
+import { ScrollView } from "react-native";
+const AddDoctor = ({ navigation }) => {
+  const [name, setname] = useState("");
+  const [description, setdescription] = useState("");
+  const [Title, setTitle] = useState("");
+  const [address, setaddress] = useState("");
+  const [Price, setPrice] = useState("");
+  const [Status, setStatus] = useState("");
+
   return (
     <View style={styles.container}>
-      <View style={styles.icon}>
-        <Image source={require("../assets/splash.png")} />
-      </View>
-      <View >
-        <Text style={styles.greeting}>Add a new doctor!</Text>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Email</Text>
-        <TextInput
-          placeholder="Email"
-          style={styles.input}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <Text style={{ color: "red" }}>{emailErr}</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Password</Text>
+        <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <View style={styles.Go_Back}>
+                        <Ionicons name="arrow-back" size={24} color="black" />
+                        <Text >back</Text>
+                </View>
+            </TouchableOpacity>
+            
+            <View style={styles.icon}>
+                <Image source={require("../assets/splash.png")} />
+            </View>
+            <View style={styles.icon}>
+                <Text style={styles.greeting}>Add Doctor</Text>
+            </View>
+        </View>
 
-        <TextInput
-          placeholder="Password"
+        <View style={styles.body}>
+            <ScrollView >
+                <View style={styles.inputContainer}>
+                    <Text style={{ fontSize: 17, fontWeight: "bold",justifyContent:"center",alignItems:"center" }}>
+                        Doctor Name
+                    </Text>
+                    <TextInput
+                        placeholder="Enter The Doctor Name"
+                        style={styles.input}
+                        value={name}
+                        onChangeText={(text) => setname(text)}
+                    />
+                </View>
+              
+                <View style={styles.inputContainer}>
+                    <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+                        Doctor Address
+                    </Text>
+                    <TextInput
+                        placeholder="Enter The Doctor Address"
+                        style={styles.input}
+                        value={address}
+                        onChangeText={(text) => setaddress(text)}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+                    Doctor Title
+                    </Text>
+                    <TextInput
+                        placeholder="Enter the specialty of Doctor"
+                        style={styles.input}
+                        value={Title}
+                        onChangeText={(text) => setTitle(text)}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
+                    Doctor Describtion
+                    </Text>
+                    <TextInput
+                        placeholder="Enter the description of Doctor"
+                        style={styles.input}
+                        value={description}
+                        onChangeText={(text) => setdescription(text)}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
+                    Doctor Price
+                    </Text>
+                    <TextInput
+                        placeholder="Enter the Price of Doctor"
+                        style={styles.input}
+                        value={Price}
+                        onChangeText={(text) => setPrice(text)}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
+                    Doctor Status
+                    </Text>
+                    <TextInput
+                        placeholder="Enter the description of Doctor"
+                        style={styles.input}
+                        value={Status}
+                        onChangeText={(text) => setStatus(text)}
+                    />
+                </View>
+            </ScrollView>
 
-          style={styles.input}
-          secureTextEntry
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <Text style={{ color: "red" }}>{passwordErr}</Text>
-      </View>
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {}}
+        <View style={styles.footer}>
+            <TouchableOpacity style={styles.button} onPress={() => ("")}>
+                <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>
 
-        >
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
-        
-      </View>
+        </View>
+
     </View>
-  );
-
-
+);
 };
-
 const styles = StyleSheet.create({
-  container: {
+container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
-  greeting: {
-    fontSize: 28,
+    backgroundColor: "#fafafa",
+    padding:20
+},
+ header: {
+    flex: 3,
+},
+Go_Back: {
+marginTop:15,
+width:"10%"
+},
+picker: {
+    height: 50,
+    borderRadius: 10,
+    marginBottom: 10,
+    backgroundColor: "#efefef",
+},
+greeting: {
+    fontSize: 20,
     fontWeight: "bold",
-    fontFamily: "",
-  },
-  inputContainer: {
-    width: "80%",
-
-  },
-  input: {
+},
+inputContainer: {
+    width: "100%",
+},
+input: {
     backgroundColor: "#eceff1",
-    paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
-    marginTop: 10,
-
-  },
-  buttonContainer: {
+},
+footer: {
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
-
-  },
-  button: {
+    flex: 2
+},
+button: {
     width: "80%",
     height: "23%",
     borderRadius: 20,
     alignItems: "center",
     backgroundColor: "#288771",
-  },
-  buttonOutline: {
+},
+buttonOutline: {
     backgroundColor: "white",
-    marginTop: 5,
-    borderColor: "#0782F9",
+    borderColor: "#288771",
     borderWidth: 2,
-  },
-  buttonText: {
+},
+buttonText: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
     color: "white",
-  },
-  buttonOutlineText: {
-    color: "#0782F9",
+},
+buttonOutlineText: {
+    color: "#288771",
     fontSize: 16,
     fontWeight: "700",
-  },
-  textContainer: {
+},
+textContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
-  },
-  text: {
+},
+text: {
     fontSize: 15,
     color: "#288771",
-  },
-  icon: {
+},
+icon: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
-
-  },
-  greeting: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 10,
-  },
+    flex:1
+},
+body: {
+    flex: 6,
+    flexDirection: "column",
+    justifyContent:"center"        
+}
 });
+
+export default AddDoctor;
+

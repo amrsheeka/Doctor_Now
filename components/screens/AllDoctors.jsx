@@ -23,6 +23,7 @@ const AllDoctors = ({ navigation, route }) => {
     async function fetchUser() {
       const user = await getCurrentUser();
       setCurrentUser(user);
+      // console.log(user);
     }
     fetchUser();
   }, []);
