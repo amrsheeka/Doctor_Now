@@ -4,7 +4,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { insertFavourite, deleteFavourite } from "../../database/Users";
 import { getinFavourite } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
-const DoctorCard2 = ({ navigation, doctor, isFav }) => {
+const DoctorCard2 = ({ navigation, doctor, reload }) => {
   let image = doctor.image;
   const [infav, setInfav] = useState(false);
   useEffect(() => {
@@ -66,7 +66,7 @@ const DoctorCard2 = ({ navigation, doctor, isFav }) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
-          onPress={() => handleFav(CurrentUser.user.id, doctor.id)}
+          onPress={() => {handleFav(CurrentUser.user.id, doctor.id);reload();}}
           style={{}}>
           {
             infav ? (

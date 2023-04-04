@@ -90,11 +90,12 @@ const getCurrentUser = async () => {
 
 const getFavourite = async (users_id) => {
 
-  const res = await axios.post(`${Ip.ip}/API/favorate/get.php`, {
+  return axios.post(`${Ip.ip}/API/favorate/get.php`, {
     users_id:users_id
   })
     .then(function (response) {
       console.log(response.data);
+      return response.data;
     })
     .catch(function (error) {
       console.log(error);
