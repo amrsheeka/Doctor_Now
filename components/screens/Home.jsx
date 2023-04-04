@@ -20,10 +20,7 @@ const Home = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [doctors, setDoctors] = useState(Doctor.doctors);
   const [fav, setFav] = useState([]);
-  async function fetchDoctor() {
-    const filt = await getFavourite(CurrentUser.user.id);
-    setFav(filt);
-  }
+  
   useEffect(() => {
     async function fetchDoctor() {
       const doctor = await getDoctors();
@@ -32,7 +29,7 @@ const Home = ({ navigation }) => {
     fetchDoctor();
   }, []);
   const renderDoctor = ({ item }) => {
-    return (<DoctorCard2 reload={fetchDoctor} doctor={item} navigation={navigation} />
+    return (<DoctorCard2 reload={()=>{}} doctor={item} navigation={navigation} />
     );
   }
   const footer = () => (
