@@ -1,4 +1,9 @@
-import React from "react";
+import React, {
+  useEffect,
+  useCallback,
+  useState,
+  useLayoutEffect,
+} from "react";
 import {
   View,
   Text,
@@ -7,31 +12,104 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-
-import chats from "../consts/Chats";
+import { db } from "../../db/Config";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
+import Doctor from "../consts/Doctor";
+import { Ionicons } from "@expo/vector-icons";
+import CurrentUser from "../consts/CurrentUser";
 const Chat = ({ navigation }) => {
+  const [chat, setChat] = useState([]);
+  // console.log(Doctor.doctors);
+  async function getChat() {
+    const citiesCol = collection(db, "chats");
+    const citySnapshot = await getDocs(citiesCol);
+    const cityList = citySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    return cityList;
+  }
+
+  const getChats = async () => {
+    const c = await getChat();
+    await setChat(c);
+    // console.log("chat ", c);
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      await getChats();
+      console.log(chat);
+      console.log(CurrentUser.user);
+    }
+    fetchData();
+  }, []);
+
+  function subscribe(callback) {
+    const unsubscribe = onSnapshot(
+      query(collection(db, "chats")),
+      (snapshot) => {
+        const source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
+        snapshot.docChanges().forEach((change) => {
+          // console.log("changes", change, snapshot.metadata);
+          if (callback) callback({ change, snapshot });
+        });
+        // console.log(source, " data: ", snapshot.data());
+      }
+    );
+    return unsubscribe;
+  }
+
+  useEffect(() => {
+    const unsubscribe = subscribe(({ change, snapshot }) => {
+      if (change.type === "added") {
+        getChats();
+      }
+      if (change.type === "modified") {
+        getChats();
+      }
+      if (change.type === "removed") {
+        getChats();
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  let user_chats = chat.filter((e) => e.user_id == CurrentUser.user.id);
+  //console.log("ddddddd", user_chats);
+
   const renderChat = ({ item }) => {
+    //console.log("1111111", item.doctor.image);
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("Chatbox", { item })}
       >
         <View style={styles.card}>
-          <Image source={item.photo} style={styles.cardPhoto} />
+          <Image source={{ uri: item.doctor.image }} style={styles.cardPhoto} />
           <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>{item.name}</Text>
-            <Text style={styles.cardMessage}>{item.message}</Text>
+            <Text style={styles.cardTitle}>{item.doctor.name}</Text>
+            <Text style={styles.cardMessage}>How are you feeling today?</Text>
           </View>
         </View>
       </TouchableOpacity>
     );
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.heading}>Chats</Text>
       </View>
       <FlatList
-        data={chats}
+        data={user_chats}
         renderItem={renderChat}
         keyExtractor={(item) => item.id.toString()}
       />

@@ -41,7 +41,6 @@ const Homefunc = () => {
         }}
       />
 
-
       <Tab.Screen
         name="Favorite"
         component={Favorite}
@@ -61,7 +60,7 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
-   
+
       <Tab.Screen
         name="Thk"
         component={Thk}
@@ -69,7 +68,6 @@ const Homefunc = () => {
           headerShown: false,
           tabBarVisible: false,
           tabBarButton: () => null,
-
         }}
       />
       <Tab.Screen
@@ -79,7 +77,6 @@ const Homefunc = () => {
           headerShown: false,
           tabBarVisible: false,
           tabBarButton: () => null,
-
         }}
       />
       <Tab.Screen
@@ -93,17 +90,14 @@ const Homefunc = () => {
         }}
       />
 
-
-      <Tab.Screen
+      <Stack.Screen
         name="Chatbox"
         component={Chatbox}
         options={{
-          headerShown: false,
-          tabBarVisible: false,
+          //headerShown: false,
+          //tabBarVisible: false,
           tabBarButton: () => null,
-
         }}
-
       />
       <Tab.Screen
         name="Doctorbage"
@@ -113,7 +107,6 @@ const Homefunc = () => {
           tabBarVisible: false,
           tabBarButton: () => null,
           headerTitle: () => null,
-
         }}
       />
       <Tab.Screen
@@ -186,10 +179,9 @@ const StackNavigator2 = () => {
           headerShown: false,
         }}
       />
-    
     </Stack.Navigator>
   );
-}
+};
 const StackNavigator = () => {
   return (
     <Stack.Navigator>
@@ -203,7 +195,7 @@ const StackNavigator = () => {
         component={Sign_UP_2th_Screen}
         options={{
           headerShown: false,
-        }} 
+        }}
       />
       <Stack.Screen
         name="SignUpScreen"
@@ -226,11 +218,8 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
-     
     </Stack.Navigator>
   );
-
-
 };
 
 const AdminStackNavigator = () => {
@@ -263,5 +252,5 @@ const AdminStackNavigator = () => {
       />
     </Stack.Navigator>
   );
-}
+};
 export { StackNavigator, StackNavigator2, AdminStackNavigator };
