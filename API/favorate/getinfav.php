@@ -6,12 +6,13 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
 $users_id = $obj['users_id'];
+$doctor_id = $obj['doctor_id'];
 // validation
-$stmt = $con->prepare("SELECT * FROM favorite WHERE `users_id`=?");
-$stmt->execute(array($users_id));
+$stmt = $con->prepare("SELECT * FROM favorite WHERE `users_id`=? AND doctor_id =? ");
+$stmt->execute(array($users_id,$doctor_id));
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
 if ($count > 0) {
-    echo json_encode($users);
+    echo json_encode(array("status" => "success"));
 } else
     echo json_encode(array("status" => "fail"));

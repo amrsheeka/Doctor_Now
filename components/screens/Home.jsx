@@ -10,13 +10,11 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import chats from "../consts/Chats";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
-import { Picker } from "@react-native-picker/picker";
 import { getDoctors } from "../../database/Doctors";
-
+import CurrentUser from "../consts/CurrentUser";
 const Home = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [doctors, setDoctors] = useState(Doctor.doctors);
@@ -27,9 +25,12 @@ const Home = ({ navigation }) => {
     }
     fetchDoctor();
   }, []);
-  const renderDoctor = ({ item }) => (
-    <DoctorCard2 doctor={item} navigation={navigation} />
-  );
+  const renderDoctor = ({ item }) => {
+    return (<DoctorCard2 doctor={item} navigation={navigation} />
+    );
+  }
+
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>

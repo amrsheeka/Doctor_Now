@@ -86,6 +86,57 @@ const getCurrentUser = async () => {
   } else {
     return null;
   }
-
 }
-export { sighnup, login, logout, getCurrentUser };
+
+const getFavourite = async (users_id) => {
+
+  const res = await axios.post(`${Ip.ip}/API/favorate/get.php`, {
+    users_id:users_id
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+const getinFavourite = async (users_id,doctor_id) => {
+
+  return axios.post(`${Ip.ip}/API/favorate/getinfav.php`, {
+    users_id:users_id,
+    doctor_id:doctor_id
+  })
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+const insertFavourite = async (users_id,doctor_id) => {
+  const res = await axios.post(`${Ip.ip}/API/favorate/insert.php`, {
+    users_id:users_id,
+    doctor_id:doctor_id
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+const deleteFavourite = async (users_id,doctor_id) => {
+  const res = await axios.post(`${Ip.ip}/API/favorate/delete.php`, {
+    users_id:users_id,
+    doctor_id:doctor_id
+    
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+export { sighnup, login, logout, getCurrentUser,insertFavourite,getFavourite,getinFavourite,deleteFavourite };
