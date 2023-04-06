@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, AppState } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -11,6 +11,7 @@ import CurrentUser from "./components/consts/CurrentUser";
 import { getDoctors } from "./database/Doctors";
 import { getCurrentUser } from "./database/Users";
 import Doctor from "./components/consts/Doctor";
+import { AppProvider } from "./components/consts/AppContext";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -45,9 +46,12 @@ export default function App() {
     );
   } else {
     return (
-      <NavigationContainer>
-        <StackNavigator2 />
-      </NavigationContainer>
+      <AppProvider>
+        <NavigationContainer>
+          <StackNavigator2 />
+        </NavigationContainer>
+      </AppProvider>
+
     );
   }
 }

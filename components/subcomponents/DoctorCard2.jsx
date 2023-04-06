@@ -1,12 +1,19 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState,useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { AppContext,AppProvider } from "../consts/AppContext";
 import { insertFavourite, deleteFavourite } from "../../database/Users";
 import { getinFavourite } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
+import { getFavourite } from "../../database/Users";
 const DoctorCard2 = ({ navigation, doctor, reload }) => {
   let image = doctor.image;
+  const { favourite, setFavourite } = useContext(AppContext);
   const [infav, setInfav] = useState(false);
+  async function fetchDoctor() {
+    const filt = await getFavourite(CurrentUser.user.id);
+    setFavourite([...filt]);
+  }
   useEffect(() => {
     async function fetchFavouriteinfav() {
       try {
@@ -38,6 +45,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       }
       )
     }
+    fetchDoctor();
     setInfav(!infav);
   }
 
