@@ -14,34 +14,37 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
     const filt = await getFavourite(CurrentUser.user.id);
     setFavourite([...filt]);
   }
-  useEffect(() => {
-    async function fetchFavouriteinfav() {
-      try {
-        const fav = await getinFavourite(CurrentUser.user.id, doctor.id).then(
-          (data)=>{
-            if (data.status=="success") {
-              setInfav(true);
-            }
+  async function fetchFavouriteinfav() {
+    try {
+      const fav = await getinFavourite(CurrentUser.user.id, doctor.id).then(
+        (data)=>{
+          if (data.status=="success") {
+            setInfav(true);
+          }else{
+            setInfav(false);
           }
-        );
-        
-        
-      } catch (err) {
-        console.log(err);
-      }
-
+        }
+      );
+      
+      
+    } catch (err) {
+      console.log(err);
     }
+
+  }
+  useEffect(() => {
+    
     fetchFavouriteinfav();
   }, []);
   const handleFav = async (user_id, doctor_id) => {
     if (infav) {
       deleteFavourite(user_id, doctor_id).then(() => {
-
+        fetchFavouriteinfav();
       }
       )
     } else {
       insertFavourite(user_id, doctor_id).then(() => {
-
+        fetchFavouriteinfav();
       }
       )
     }
