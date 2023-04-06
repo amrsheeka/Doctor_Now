@@ -22,7 +22,6 @@ if (empty($_SESSION) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $users = $stmt->fetch(PDO::FETCH_ASSOC);
     $count = $stmt->rowCount();
 }
-
 if ($count > 0) {
     $_SESSION['id'] = $users['id'];
     $_SESSION['name'] = $users['name'];
