@@ -19,7 +19,6 @@ const Favorite = ({ navigation, reload }) => {
     fetchDoctor();
   }, []);
   return (
-    <AppProvider>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.heading}>My Favorite Doctors</Text>
@@ -40,7 +39,6 @@ const Favorite = ({ navigation, reload }) => {
         )}
 
       </View>
-    </AppProvider>
 
   );
 };
