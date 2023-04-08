@@ -13,14 +13,19 @@ import {
   collection,
   addDoc,
   getDocs,
+  doc,
   query,
+  setDoc,
   orderBy,
   onSnapshot,
+  where,
 } from "firebase/firestore";
 import { db } from "../../db/Config";
 import CurrentUser from "../consts/CurrentUser";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { getFirestore } from "firebase/firestore";
+import { app } from "../../db/Config";
 const AppointmentConfirmation = ({ navigation, route }) => {
   let Days = [
     "Monday",
@@ -54,6 +59,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   function addChat(Chat) {
     addDoc(collection(db, "chats"), Chat);
   }
+
+  //console.log(CurrentUser.user);
 
   const addNewChat = () => {
     addChat({
