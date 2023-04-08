@@ -13,6 +13,7 @@ const Favorite = ({ navigation, reload }) => {
   async function fetchDoctor() {
     const filt = await getFavourite(CurrentUser.user.id);
     setFavourite([...filt]);
+    
   }
   useEffect(() => {
 

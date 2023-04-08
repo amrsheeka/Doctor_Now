@@ -41,15 +41,25 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       deleteFavourite(user_id, doctor_id).then(() => {
         fetchFavouriteinfav();
       }
+      ).then(
+        ()=>{
+          reload();
+          fetchDoctor();
+        }
       )
     } else {
       insertFavourite(user_id, doctor_id).then(() => {
         fetchFavouriteinfav();
       }
+      ).then(
+        ()=>{
+          reload();
+          fetchDoctor();
+        }
       )
     }
-    fetchDoctor();
     setInfav(!infav);
+    console.log(favourite[favourite.length-1].name);
   }
 
   return (
@@ -77,7 +87,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
-          onPress={() => {handleFav(CurrentUser.user.id, doctor.id);reload();}}
+          onPress={() => {handleFav(CurrentUser.user.id, doctor.id);}}
           style={{}}>
           {
             infav ? (

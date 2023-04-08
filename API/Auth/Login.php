@@ -30,5 +30,7 @@ if ($count > 0) {
     $_SESSION['phone'] = $users['phone'];
     $_SESSION['address'] = $users['address'];
     $_SESSION['address_2'] = $users['address_2'];
+    $_SESSION['gender'] = $users['gender'];
+    $_SESSION['age'] = $users['age'];
     echo json_encode($_SESSION);
 }
