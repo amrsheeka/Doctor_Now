@@ -12,7 +12,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const [infav, setInfav] = useState(false);
   async function fetchDoctor() {
     const filt = await getFavourite(CurrentUser.user.id);
-    setFavourite([...filt]);
+    setFavourite(filt);
   }
   async function fetchFavouriteinfav() {
     try {
@@ -59,7 +59,6 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       )
     }
     setInfav(!infav);
-    console.log(favourite[favourite.length-1].name);
   }
 
   return (

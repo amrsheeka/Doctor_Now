@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import {
   View,
   Text,
@@ -13,19 +13,20 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
+import { AppContext } from "../consts/AppContext";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
 import { getDoctors } from "../../database/Doctors";
 import CurrentUser from "../consts/CurrentUser";
 const Home = ({ navigation }) => {
   const [search, setSearch] = useState("");
-  const [doctors, setDoctors] = useState(Doctor.doctors);
+  const {doctors, setDoctors} = useContext(AppContext);
   const [fav, setFav] = useState([]);
-  
+  async function fetchDoctor() {
+    const doctor = await getDoctors();
+    setDoctors(doctor);
+  }
   useEffect(() => {
-    async function fetchDoctor() {
-      const doctor = await getDoctors();
-      setDoctors(doctor);
-    }
+    
     fetchDoctor();
   }, []);
   const renderDoctor = ({ item }) => {
