@@ -11,7 +11,6 @@ $obj = json_decode($json, true);
 if (!empty($_SESSION)) {
     echo json_encode($_SESSION);
 }
-
 $count = 0;
 if (empty($_SESSION) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $json = file_get_contents('php://input');
