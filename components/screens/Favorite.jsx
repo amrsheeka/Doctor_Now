@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, FlatList, Image, SafeAreaView, ActivityIndicator } from "react-native";
 import { getFavourite } from "../../database/Users";
-import { AppProvider,AppContext } from "../consts/AppContext";
+import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
 const Favorite = ({ navigation, reload }) => {
@@ -12,34 +12,36 @@ const Favorite = ({ navigation, reload }) => {
   }
   async function fetchDoctor() {
     const filt = await getFavourite(CurrentUser.user.id);
-    setFavourite([...filt]);
+    setFavourite(filt);
   }
   useEffect(() => {
-
     fetchDoctor();
   }, []);
   return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.heading}>My Favorite Doctors</Text>
-        </View>
-
-        {favourite.length !== 0 ? (
-          <FlatList
-
-            data={favourite}
-            renderItem={renderDoctor}
-
-            keyExtractor={(item, index) => item.id}
-          />
-        ) : (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.heading}>My Favorite Doctors</Text>
+      </View>
+      {favourite.length !== 0 ?
+        (<FlatList
+          contentContainerStyle={{ flexGrow: 1 }}
+          data={favourite}
+          renderItem={renderDoctor}
+          ListEmptyComponent={() => {
+            return (
+              <View style={{flex:1,justifyContent:"center"}}>
+                <Image style={{ height: "100%", width: "100%",alignItems:"center" }} source={require("../assets/empty.png")} />
+              </View>
+            );
+          }}
+          keyExtractor={(item, index) => item.id}
+        />)
+        : (
           <View style={{ padding: "18%" }}>
             <ActivityIndicator size={100} color="#00ff00" />
           </View>
         )}
-
-      </View>
-
+    </View>
   );
 };
 

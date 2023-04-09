@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2023 at 02:09 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.0.19
+-- Generation Time: Apr 07, 2023 at 11:46 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,20 +30,32 @@ SET time_zone = "+00:00";
 CREATE TABLE `appointment` (
   `users_id` int(11) NOT NULL,
   `doctor_id` int(11) NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL,
-  `time_now` time NOT NULL,
-  `date_now` time NOT NULL
+  `date` varchar(20) NOT NULL,
+  `time` varchar(10) NOT NULL,
+  `name_patient` varchar(100) NOT NULL,
+  `age` varchar(10) NOT NULL,
+  `gender` enum('male','female') NOT NULL,
+  `notes` varchar(600) NOT NULL,
+  `date_now` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `appointment`
 --
 
-INSERT INTO `appointment` (`users_id`, `doctor_id`, `date`, `time`, `time_now`, `date_now`) VALUES
-(22, 22, '2023-03-26', '22:27:36', '00:00:00', '00:00:00'),
-(22, 22, '0000-00-00', '11:05:00', '22:31:59', '22:31:59'),
-(22, 22, '2020-03-11', '11:05:00', '22:32:52', '22:32:52');
+INSERT INTO `appointment` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `notes`, `date_now`) VALUES
+(22, 22, '2023-03-26', '22:27:36', '', '', '', '', '2023-04-07'),
+(22, 22, '0000-00-00', '11:05:00', '', '', '', '', '2023-04-07'),
+(22, 22, '2020-03-11', '11:05:00', '', '', '', '', '2023-04-07'),
+(183, 509, 'Sat Apr 22 2023', '5:30 PM', 'Ahmed fahim', '23', 'male', 'Gggg', '2023-04-07'),
+(184, 509, 'Fri Apr 07 2023', '5:30 PM', 'ahmed fhaim', '25+', 'male', 'All is well', '2023-04-07'),
+(184, 509, 'Fri Apr 07 2023', '5:30 PM', '', '25+', 'male', '', '2023-04-07'),
+(184, 509, 'Fri Apr 07 2023', '5:30 PM', '', '25+', 'male', '', '2023-04-07'),
+(184, 509, 'Fri Apr 07 2023', '5:30 PM', '', '25+', 'male', '', '2023-04-07'),
+(184, 509, 'Fri Apr 07 2023', '5:30 PM', '', '25+', 'male', '', '2023-04-07'),
+(184, 509, 'Fri Apr 07 2023', '5:30 PM', '', '25+', 'male', '', '2023-04-07'),
+(184, 509, 'Fri Apr 07 2023', '5:30 PM', '', '25+', 'male', '', '2023-04-07'),
+(184, 509, 'Fri Apr 07 2023', '5:30 PM', '', '25+', 'male', '', '2023-04-07');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

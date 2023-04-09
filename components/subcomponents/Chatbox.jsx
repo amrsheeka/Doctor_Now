@@ -1,4 +1,9 @@
-import React, { useCallback, useState, useLayoutEffect } from "react";
+import React, {
+  useCallback,
+  useState,
+  useLayoutEffect,
+  useEffect,
+} from "react";
 import { ScrollView } from "react-native-web";
 import {
   View,
@@ -8,6 +13,7 @@ import {
   StyleSheet,
   FlatList,
   Image,
+  ActivityIndicator
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { db } from "../../db/Config";
@@ -15,122 +21,188 @@ import { signOut } from "firebase/auth";
 import {
   collection,
   addDoc,
+  doc,
   getDocs,
   query,
+  setDoc,
   orderBy,
+  where,
   onSnapshot,
 } from "firebase/firestore";
-
+import { getFirestore } from "firebase/firestore";
+import CurrentUser from "../consts/CurrentUser";
+import app from "../../db/Config";
 export default function Chatbox({ navigation, route }) {
   let filterd = route.params.item;
-  //console.log("ddd", filterd);
+  console.log("filterd", filterd.chat);
+
+  const [chat, setChat] = useState([]);
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
   const [isSender, setIsSender] = useState(true);
+  const [local, setLocal] = useState([]);
+  const firestoreDB = getFirestore(app);
 
-  navigation.setOptions({
-    headerLeft: () => (
-      <View style={{ marginLeft: 20 }}>
-        <Image
-          source={{ uri: filterd.doctor.image }}
-          style={styles.cardPhoto}
-        />
-      </View>
-    ),
-    headerRight: () => (
-      <TouchableOpacity
-        style={{
-          marginRight: 10,
-        }}
-        onPress={() => navigation.goBack()}
-      >
-        <Text>back</Text>
-      </TouchableOpacity>
-    ),
-  });
+  async function getChat() {
+    const citiesCol = collection(db, "chats");
+    const citySnapshot = await getDocs(citiesCol);
+    const cityList = citySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    return cityList;
+  }
 
-  useLayoutEffect(() => {
-    const q = query(collection(db, "chats"), orderBy("createdAt", "desc"));
-    const unsubscribe = onSnapshot(q, (snapshot) =>
-      setMessages(
-        snapshot.docs.map((doc) => ({
-          _id: doc.data()._id,
-          createdAt: doc.data().createdAt.toDate(),
-          text: doc.data().text,
-          user: doc.data().user,
-        }))
-      )
+  const getChats = async () => {
+    const c = await getChat();
+    await setChat(c);
+    //await setLocal(hh[0].chat);
+    // console.log("chat ", c);
+  };
+
+  let user_chats = chat.filter((e) => e.id == filterd.id);
+  let hh = { ...user_chats };
+  //console.log("ffffffffffffffff ", hh[0].chat);
+
+  useEffect(() => {
+    async function fetchData() {
+      await getChats().then(() => {
+        // setLocal(hh[0].chat);
+      });
+      // await setLocal(hh[0].chat);
+      //console.log(CurrentUser.user);
+    }
+    fetchData();
+  }, []);
+
+  function subscribe(callback) {
+    const unsubscribe = onSnapshot(
+      query(collection(db, "chats")),
+      (snapshot) => {
+        const source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
+        snapshot.docChanges().forEach((change) => {
+          // console.log("changes", change, snapshot.metadata);
+          if (callback) callback({ change, snapshot });
+        });
+        // console.log(source, " data: ", snapshot.data());
+      }
     );
+    return unsubscribe;
+  }
 
+  useEffect(() => {
+    const unsubscribe = subscribe(({ change, snapshot }) => {
+      if (change.type === "added") {
+        getChats();
+      }
+      if (change.type === "modified") {
+        getChats();
+      }
+      if (change.type === "removed") {
+        getChats();
+      }
+    });
     return () => {
       unsubscribe();
     };
-  }, [navigation]);
-
-  //console.log(messages);
-
-  const onSend = useCallback((messages = []) => {
-    user = {
-      _id: "234234324324",
-      name: "sasa",
-      avatar: null,
-    };
-    const { _id, createdAt, text, user } = messages[0];
-
-    addDoc(collection(db, "chats"), { _id, createdAt, text, user });
   }, []);
 
-  const handleSendMessage = () => {
-    const newMessage = {
-      message,
-      date: new Date(),
-      isSender,
-    };
+  async function editUser(user) {
+    //console.log("at editCity", user);
+    await setDoc(doc(db, "chats", user.id), user);
+  }
 
-    setMessages([...messages, newMessage]);
-    setIsSender(!isSender);
-    setMessage("");
+  const onSend = useCallback(() => {
+    const date = new Date();
+    const newchat = [
+      {
+        createdAt: date.toLocaleString(),
+        text: message,
+        SenderId: CurrentUser.user.id,
+      },
+    ];
+    getChatById(filterd.id).then((user) => {
+      const user1 = user;
+      //console.log("kokooooooooooo", user1[0]);
+      editUser({
+        ...user1[0],
+        chat: [...hh[0].chat, ...newchat],
+      });
+    });
+  });
+
+  async function getChatById(id) {
+    const usersRef = collection(firestoreDB, "chats");
+    const q = query(usersRef, where("id", "==", id));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+  }
+
+  const isSenderr = (item) => {
+    if (item.SenderId == CurrentUser.user.id) {
+      return true;
+    } else {
+      return false;
+    }
   };
-
-  const renderMessage = ({ item }) => (
-    <View
-      style={[
-        styles.messageContainer,
-        item.isSender
-          ? styles.senderMessageContainer
-          : styles.receiverMessageContainer,
-      ]}
-    >
-      <Text
+  const renderMessage = ({ item }) => {
+    return (
+      <View
         style={[
-          styles.message,
-          item.isSender ? styles.senderMessage : styles.receiverMessage,
+          styles.messageContainer,
+          isSenderr(item)
+            ? styles.senderMessageContainer
+            : styles.receiverMessageContainer,
         ]}
       >
-        {item.text}
-      </Text>
-      <Text style={styles.date}>{item.createdAt.toLocaleString()}</Text>
-    </View>
-  );
-
+        <Text
+          style={[
+            styles.message,
+            item.isSender ? styles.senderMessage : styles.receiverMessage,
+          ]}
+        >
+          {item.text}
+        </Text>
+        <Text style={styles.date}>{item.createdAt.toLocaleString()}</Text>
+      </View>
+    );
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.heading}>Client Name</Text>
       </View>
-
-      <FlatList
-        data={messages}
+      {/* 
+       hh[0].chat 
+       filterd.chat
+       local
+      */}
+      {
+        hh[0]?
+        <FlatList
+        data={hh[0].chat}
         renderItem={renderMessage}
+        ListEmptyComponent={() => {
+          return (
+            <View style={{flex:1,justifyContent:"center"}}>
+              <Image style={{ height: "100%", width: "100%",alignItems:"center" }} source={require("../assets/empty.png")} />
+            </View>
+          );
+        }}
         keyExtractor={(item, index) => index.toString()}
         style={styles.messages}
-      />
+      />:(
+        <View style={{ padding: "18%" }}>
+            <ActivityIndicator size={100} color="#00ff00" />
+          </View>
+      )
+      }
+      
 
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder={isSender ? "Type a message " : "Type a message "}
-          value={message}
+          placeholder={"Type a message "}
           onChangeText={(text) => setMessage(text)}
         />
 

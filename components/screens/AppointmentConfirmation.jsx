@@ -13,21 +13,25 @@ import {
   collection,
   addDoc,
   getDocs,
+  doc,
   query,
+  setDoc,
   orderBy,
   onSnapshot,
+  where,
 } from "firebase/firestore";
 import { db } from "../../db/Config";
 import CurrentUser from "../consts/CurrentUser";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { getFirestore } from "firebase/firestore";
+import { app } from "../../db/Config";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from "@react-native-community/datetimepicker";
 const AppointmentConfirmation = ({ navigation, route }) => {
-
   let item = route.params.doctor;
-  const [Time,setTime]=useState("");
+  const [Time, setTime] = useState("");
   const [date, setDate] = useState(new Date().toDateString());
   const [showPicker, setShowPicker] = useState(false);
 
@@ -43,6 +47,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   function addChat(Chat) {
     addDoc(collection(db, "chats"), Chat);
   }
+
+  //console.log(CurrentUser.user);
 
   const addNewChat = () => {
     addChat({
@@ -100,10 +106,10 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             </Text>
           </ScrollView>
         </View>
-        <View style={{ }}>
+        <View style={{}}>
           <Text style={styles.text3}>Working Hours</Text>
         </View>
-        <View >
+        <View>
           <Picker
             selectedValue={Time}
             onValueChange={(value, index) => setTime(value)}
@@ -117,13 +123,15 @@ const AppointmentConfirmation = ({ navigation, route }) => {
           </Picker>
         </View>
         <View style={{ flex: 3 }}>
-          <Text style={styles.text3}>Working Days</Text> 
+          <Text style={styles.text3}>Working Days</Text>
 
           <View>
-            <Text style={{ fontSize: 14}}>
-              Selected date: {date}
-            </Text>
-            <Button color={"#73caa4"} title="Select date" onPress={openPicker} />
+            <Text style={{ fontSize: 14 }}>Selected date: {date}</Text>
+            <Button
+              color={"#73caa4"}
+              title="Select date"
+              onPress={openPicker}
+            />
             {showPicker && (
               <DateTimePicker
                 value={new Date()}
@@ -146,7 +154,11 @@ const AppointmentConfirmation = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.button1}
             onPress={() =>
-              navigation.navigate("Details_user_to_appointment", {item,Time,date})
+              navigation.navigate("Details_user_to_appointment", {
+                item,
+                Time,
+                date,
+              })
             }
           >
             <Text style={styles.buttonText}>Book Appointment</Text>
@@ -280,7 +292,8 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: "center",
     color: "white",
-  }, picker: {
+  },
+  picker: {
     height: 50,
     margin: 12,
     borderRadius: 10,
