@@ -13,6 +13,7 @@ import {
   StyleSheet,
   FlatList,
   Image,
+  ActivityIndicator
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { db } from "../../db/Config";
@@ -176,12 +177,27 @@ export default function Chatbox({ navigation, route }) {
        filterd.chat
        local
       */}
-      <FlatList
-        data={local}
+      {
+        hh[0]?
+        <FlatList
+        data={hh[0].chat}
         renderItem={renderMessage}
+        ListEmptyComponent={() => {
+          return (
+            <View style={{flex:1,justifyContent:"center"}}>
+              <Image style={{ height: "100%", width: "100%",alignItems:"center" }} source={require("../assets/empty.png")} />
+            </View>
+          );
+        }}
         keyExtractor={(item, index) => index.toString()}
         style={styles.messages}
-      />
+      />:(
+        <View style={{ padding: "18%" }}>
+            <ActivityIndicator size={100} color="#00ff00" />
+          </View>
+      )
+      }
+      
 
       <View style={styles.inputContainer}>
         <TextInput
