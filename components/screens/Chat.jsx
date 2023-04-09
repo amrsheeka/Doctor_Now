@@ -18,15 +18,15 @@ import {
   addDoc,
   getDocs,
   query,
+  doc,
+  setDoc,
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
-import Doctor from "../consts/Doctor";
-import { Ionicons } from "@expo/vector-icons";
 import CurrentUser from "../consts/CurrentUser";
 const Chat = ({ navigation }) => {
   const [chat, setChat] = useState([]);
-  // console.log(Doctor.doctors);
+
   async function getChat() {
     const citiesCol = collection(db, "chats");
     const citySnapshot = await getDocs(citiesCol);
@@ -83,14 +83,30 @@ const Chat = ({ navigation }) => {
     };
   }, []);
 
+  //console.log(chat);
   let user_chats = chat.filter((e) => e.user_id == CurrentUser.user.id);
   //console.log("ddddddd", user_chats);
 
+  const onklek = () => {
+    navigation.navigate("Chatbox", { item });
+  };
+
+  async function editUser(user) {
+    //console.log("at editCity", user);
+    await setDoc(doc(db, "chats", user.id), user);
+  }
   const renderChat = ({ item }) => {
-    //console.log("1111111", item.doctor.image);
+    //console.log("1111111", item.id);
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("Chatbox", { item })}
+        onPress={() => {
+          editUser({
+            ...item,
+            id: item.id,
+          }).then(() => {
+            navigation.navigate("Chatbox", { item });
+          });
+        }}
       >
         <View style={styles.card}>
           <Image source={{ uri: item.doctor.image }} style={styles.cardPhoto} />
