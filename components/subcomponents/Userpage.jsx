@@ -1,6 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import CurrentUser from "../consts/CurrentUser";
+
 const Userpage = ({ navigation }) => {
+  const user = CurrentUser.user;
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -13,20 +16,31 @@ const Userpage = ({ navigation }) => {
             style={styles.profilePhoto}
           />
           <View style={styles.profileInfo}>
-            <Text style={styles.profileTitle}>John Smith</Text>
-            <Text style={styles.profileSubtitle}>Male, 30 years old</Text>
+            <Text style={styles.profileTitle}>{user.name}</Text>
+            <Text style={styles.profileSubtitle}>{user.gender}, {user.age} years old</Text>
           </View>
         </View>
         <View style={styles.info}>
           <Text style={styles.infoTitle}>Contact Information</Text>
           <View style={styles.infoItem}>
             <Text style={styles.infoLabel}>Email:</Text>
-            <Text style={styles.infoValue}>johnsmith@gmail.com</Text>
+            <Text style={styles.infoValue}>{user.email}</Text>
           </View>
           <View style={styles.infoItem}>
             <Text style={styles.infoLabel}>Phone:</Text>
-            <Text style={styles.infoValue}>+1 (123) 456-7890</Text>
+            <Text style={styles.infoValue}>{user.phone}</Text>
           </View>
+          <View style={styles.infoItem}>
+            <Text style={styles.infoLabel}>address:</Text>
+            <Text style={styles.infoValue}>{user.address}</Text>
+          </View>
+          {
+            user.address_2 ?
+              <View style={styles.infoItem}>
+                <Text style={styles.infoLabel}>address 2:</Text>
+                <Text style={styles.infoValue}>{(user.address_2)}</Text>
+              </View> : <></>
+          }
         </View>
       </View>
     </View>
