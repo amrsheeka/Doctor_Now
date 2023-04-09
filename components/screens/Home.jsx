@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -19,18 +19,18 @@ import { getDoctors } from "../../database/Doctors";
 import CurrentUser from "../consts/CurrentUser";
 const Home = ({ navigation }) => {
   const [search, setSearch] = useState("");
-  const {doctors, setDoctors} = useContext(AppContext);
+  const { doctors, setDoctors } = useContext(AppContext);
   const [fav, setFav] = useState([]);
   async function fetchDoctor() {
     const doctor = await getDoctors();
     setDoctors(doctor);
   }
   useEffect(() => {
-    
+
     fetchDoctor();
   }, []);
   const renderDoctor = ({ item }) => {
-    return (<DoctorCard2 reload={()=>{}} doctor={item} navigation={navigation} />
+    return (<DoctorCard2 reload={() => { }} doctor={item} navigation={navigation} />
     );
   }
   const footer = () => (
@@ -135,7 +135,10 @@ const Home = ({ navigation }) => {
           {doctors.length != 0 ? (
             <FlatList
               removeClippedSubviews={true}
-              data={doctors}
+              data={
+                doctors.filter((doctor) =>
+                  doctor.name.toLowerCase().includes(search.toLowerCase()))
+              }
               ListHeaderComponent={header}
               ListFooterComponent={footer}
               renderItem={renderDoctor}
@@ -235,7 +238,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: 140,
     marginHorizontal: "5%",
-    marginBottom:10,
+    marginBottom: 10,
     justifyContent: "center",
     gap: 10,
   },
