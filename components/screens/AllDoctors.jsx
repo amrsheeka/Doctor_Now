@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,50 +6,70 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DoctorCard from "../subcomponents/DoctorCard";
 import { Ionicons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import { getCurrentUser } from "../../database/Users";
+
 const AllDoctors = ({ navigation, route }) => {
-  let filterd = route.params.filteritem;
-  let all = route.params.all;
-  // const [doctors, setDoctors] = useState([]);
+  const filterd = route.params.filteritem;
+  const all = route.params.all;
+
   const [selectedValue, setSelectedValue] = useState("all");
-  console.log(selectedValue);
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
+
   useEffect(() => {
     async function fetchUser() {
       const user = await getCurrentUser();
       setCurrentUser(user);
-      // console.log(user);
     }
     fetchUser();
   }, []);
-  //console.log(all);
-  //console.log(filterd);
 
-  
   const renderDoctor = ({ item }) => (
     <DoctorCard doctor={item} user={currentUser} navigation={navigation} />
   );
-  let ff;
-  if (selectedValue != "all" && all === "all") {
-    ff = Doctor.doctors.filter((e) => e.title == selectedValue);
-  } else ff = Doctor.doctors;
+
+  let ff = Doctor.doctors;
+
+  if (selectedValue !== "all") {
+    ff = ff.filter((doctor) => doctor.title === selectedValue);
+  }
+
+  if (searchQuery !== "") {
+    ff = ff.filter((doctor) =>
+      doctor.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
   if (all === "all") {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.heading}>All Doctors</Text>
         </View>
+        <View style={{flexDirection:"row"}}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={styles.xx}>
             <Ionicons name="arrow-back" size={24} color="black" />
             <Text>back</Text>
           </View>
         </TouchableOpacity>
+        <View style={styles.searchContainer}>
+          <Ionicons name="search" size={24} color="gray" style={styles.searchIcon} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search doctors by name"
+            value={searchQuery}
+            onChangeText={(text) => setSearchQuery(text)}
+            placeholderTextColor="gray"
+          />
+        </View>
+        </View>
         <View style={{ height: 50, width: 250 }}>
           <Picker
             selectedValue={selectedValue}
@@ -57,9 +77,8 @@ const AllDoctors = ({ navigation, route }) => {
             onValueChange={(itemValue, itemIndex) =>
               setSelectedValue(itemValue)
             }
-            //mode="dropdown"
           >
-            <Picker.Item label="Select Specialization" value="Unknown" />
+            <Picker.Item label="Select Specialization" value="all" />
             <Picker.Item label="Pulmonologist" value="Pulmonologist" />
             <Picker.Item label="Psychiatrist" value="Psychiatrist" />
             <Picker.Item label="Internist" value="Internist" />
@@ -76,6 +95,7 @@ const AllDoctors = ({ navigation, route }) => {
             <Picker.Item label="Andrologist" value="Andrologist" />
           </Picker>
         </View>
+        
         <FlatList
           data={ff}
           renderItem={renderDoctor}
@@ -203,6 +223,30 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
     backgroundColor: "#efefef",
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    height: 40,
+    marginHorizontal: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+  searchInput: {
+    fontSize: 16,
+    color: "black",
   },
 });
 
