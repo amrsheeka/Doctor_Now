@@ -10,12 +10,23 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { KeyboardAvoidingView } from "react-native";
 import { Button } from "react-native";
+import { insertAppointment } from "../../database/Users";
+import CurrentUser from "../consts/CurrentUser";
 
 const Details_user_to_appointment = ({ navigation, route }) => {
   const [text, onChangeText] = useState("");
   const [text2, onChangeText2] = useState("");
-  const ages = ["15+", "25+", "35+", "45+"];
+  const [age,setAge]= useState("");
   const [gender, setGender] = useState("Unknown");
+  let doc=route.params.item
+  const handleInsertAppointment = async () => {
+    await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2).then(
+      (res)=>{
+        console.log("its ok")
+     }
+    ) 
+    // console.log(CurrentUser.user.age)
+  }
 
   return (
     <View style={styles.container}>
@@ -31,14 +42,18 @@ const Details_user_to_appointment = ({ navigation, route }) => {
           placeholder={"Enter Full Name"}
         />
         <Text style={styles.text}>Select Your Age</Text>
-        <View style={styles.ageBox}>
-          {ages.map((element, idx) => (
-            <View key={idx} style={styles.ageItem}>
-              <TouchableOpacity>
-                <Text>{element}</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+        <View>
+          <Picker
+            selectedValue={age}
+            onValueChange={(value, index) => setAge(value)}
+            mode="dropdown"
+            style={styles.picker}
+          >
+            <Picker.Item label="15+" value="15+" />
+            <Picker.Item label="25+" value="25+" />
+            <Picker.Item label="35+" value="35+" />
+            <Picker.Item label="45+" value="45+" />
+          </Picker>
         </View>
         <View>
           <Text style={styles.text}>Gender</Text>
@@ -76,7 +91,9 @@ const Details_user_to_appointment = ({ navigation, route }) => {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("Thk", { route })}
+          
+          
+          onPress={() => handleInsertAppointment().then(navigation.navigate("Thk",{doc}))}
         >
           <Text style={styles.buttonText}>NEXT</Text>
         </TouchableOpacity>

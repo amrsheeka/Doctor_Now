@@ -13,47 +13,42 @@ import {
   collection,
   addDoc,
   getDocs,
+  doc,
   query,
+  setDoc,
   orderBy,
   onSnapshot,
+  where,
 } from "firebase/firestore";
 import { db } from "../../db/Config";
 import CurrentUser from "../consts/CurrentUser";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { getFirestore } from "firebase/firestore";
+import { app } from "../../db/Config";
+import { useState } from "react";
+import { Picker } from "@react-native-picker/picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 const AppointmentConfirmation = ({ navigation, route }) => {
-  let Days = [
-    "Monday",
-    "Friday",
-    "Sunday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Saturday",
-  ];
   let item = route.params.doctor;
-  //console.log(item.id);
-  let image = item.image;
-  const renderDays = ({ item }) => (
-    <TouchableOpacity>
-      <Text
-        style={{
-          paddingHorizontal: 10,
-          fontSize: 20,
-          borderWidth: 1,
-          borderRadius: 3,
-          height: "20%",
-          marginHorizontal: 10,
-        }}
-      >
-        {item}
-      </Text>
-    </TouchableOpacity>
-  );
+  const [Time, setTime] = useState("");
+  const [date, setDate] = useState(new Date().toDateString());
+  const [showPicker, setShowPicker] = useState(false);
 
+  let image = item.image;
+  const onDateChange = (event, newDate) => {
+    setShowPicker(false);
+    setDate(newDate.toDateString());
+  };
+
+  const openPicker = () => {
+    setShowPicker(true);
+  };
   function addChat(Chat) {
     addDoc(collection(db, "chats"), Chat);
   }
+
+  //console.log(CurrentUser.user);
 
   const addNewChat = () => {
     addChat({
@@ -66,7 +61,6 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     addNewChat();
     navigation.navigate("Chat");
   };
-  // let item = { id: 1, name: 'Dr. John Doe', photo: require('../assets/Herbal_Medicine_Male_Avatar.png') }
   return (
     <View style={styles.container}>
       <View style={styles.header1}>
@@ -112,38 +106,41 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             </Text>
           </ScrollView>
         </View>
-        <View style={{ flex: 1 }}>
+        <View style={{}}>
           <Text style={styles.text3}>Working Hours</Text>
         </View>
-        <View style={styles.body}>
-          <View style={styles.box}>
-            <Text style={styles.text}>{item.start}</Text>
-          </View>
-          <View style={styles.box}>
-            <Text style={styles.text}>select time</Text>
-          </View>
-          <View style={styles.box}>
-            <Text style={styles.text}>{item.end}</Text>
-          </View>
+        <View>
+          <Picker
+            selectedValue={Time}
+            onValueChange={(value, index) => setTime(value)}
+            mode="dropdown"
+            style={styles.picker}
+          >
+            <Picker.Item label="5:30 PM" value="5:30 PM" />
+            <Picker.Item label="7:30 PM" value="7:30 PM" />
+            <Picker.Item label="9:30 PM" value="9:30 PM" />
+            <Picker.Item label="10:30 PM" value="10:30 PM" />
+          </Picker>
         </View>
         <View style={{ flex: 3 }}>
           <Text style={styles.text3}>Working Days</Text>
-          <View style={styles.body}>
-            <View style={styles.box1}>
-              <Text style={styles.text4}>Sun</Text>
-              <Text style={styles.text4}>20</Text>
-            </View>
-            <View style={styles.box1}>
-              <Text style={styles.text4}>Wen</Text>
-              <Text style={styles.text4}>13</Text>
-            </View>
-            <View style={styles.box1}>
-              <Text style={styles.text4}>Mon</Text>
-              <Text style={styles.text4}>5</Text>
-            </View>
+
+          <View>
+            <Text style={{ fontSize: 14 }}>Selected date: {date}</Text>
+            <Button
+              color={"#73caa4"}
+              title="Select date"
+              onPress={openPicker}
+            />
+            {showPicker && (
+              <DateTimePicker
+                value={new Date()}
+                mode="date"
+                onChange={onDateChange}
+              />
+            )}
           </View>
         </View>
-
         <View
           style={{ flexDirection: "row", marginHorizontal: 10, height: "17%" }}
         >
@@ -157,7 +154,11 @@ const AppointmentConfirmation = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.button1}
             onPress={() =>
-              navigation.navigate("Details_user_to_appointment", { item })
+              navigation.navigate("Details_user_to_appointment", {
+                item,
+                Time,
+                date,
+              })
             }
           >
             <Text style={styles.buttonText}>Book Appointment</Text>
@@ -291,6 +292,13 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: "center",
     color: "white",
+  },
+  picker: {
+    height: 50,
+    margin: 12,
+    borderRadius: 10,
+    marginBottom: 10,
+    backgroundColor: "#efefef",
   },
 });
 

@@ -139,4 +139,23 @@ const deleteFavourite = async (users_id,doctor_id) => {
     });
 };
 
-export { sighnup, login, logout, getCurrentUser,insertFavourite,getFavourite,getinFavourite,deleteFavourite };
+const insertAppointment = async(users_id, doctor_id,date, time, name_patient, age, gender, notes) => {
+  const res = await axios.post(`${Ip.ip}/API/doctors/InsertAppointment.php`, {
+    users_id: users_id,
+    doctor_id: doctor_id,
+    date:date,
+    time:time,
+    name_patient:name_patient,
+    age:age,
+    gender:gender,
+    notes:notes
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+export { sighnup, login, logout, getCurrentUser,insertFavourite,getFavourite,getinFavourite,deleteFavourite,insertAppointment };

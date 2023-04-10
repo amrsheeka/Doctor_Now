@@ -1,9 +1,10 @@
 
 import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, Button } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
-const Details_user_to_appointment = ({ navigation, route }) => {
-    let item = route.params.route.params.item
-    // let item = { id: 1, name: 'Dr. John Doe', photo: require('../assets/Herbal_Medicine_Male_Avatar.png') }
+
+
+const Thk = ({ navigation, route }) => { 
+    let name=route.params.doc.name
     return (
         <View style={{ flex: 1, padding: 20,display:"flex" }}>
             <View style={styles.header}>
@@ -13,7 +14,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
             <View style={styles.body}>
                 <Text numberOfLines={5}  style={styles.text}>
                     Your appointment booking has successfully completed
-                    with {item.name}  and he will massage you soon.
+                    with {name}  and he will massage you soon.
                 </Text>
             </View>
             <View style={styles.footer}>
@@ -85,4 +86,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Details_user_to_appointment;
+export default Thk;
