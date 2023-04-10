@@ -25,6 +25,7 @@ import AdminHome from "../admin/AdminHome";
 import AddDoctor from "../admin/AddDoctor";
 import AppointmentList from "../admin/AppointmentList";
 import Sign_UP_2th_Screen from "../screens/Sign_UP_2th_Screen";
+import info from "../Doctor_Page/info";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -253,4 +254,17 @@ const AdminStackNavigator = () => {
     </Stack.Navigator>
   );
 };
-export { StackNavigator, StackNavigator2, AdminStackNavigator };
+
+const DoctorStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profile"
+        component={info}
+        options={{ headerShown: false }}
+      />
+    
+    </Stack.Navigator>
+  );
+};
+export { StackNavigator, StackNavigator2, AdminStackNavigator, DoctorStackNavigator };

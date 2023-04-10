@@ -6,6 +6,7 @@ import {
   StackNavigator,
   StackNavigator2,
   AdminStackNavigator,
+  DoctorStackNavigator,
 } from "./components/navigation/StackNavigator";
 import CurrentUser from "./components/consts/CurrentUser";
 import { getDoctors } from "./database/Doctors";
@@ -14,6 +15,15 @@ import Doctor from "./components/consts/Doctor";
 import { AppProvider } from "./components/consts/AppContext";
 
 export default function App() {
+
+ return (
+    <NavigationContainer>
+      <DoctorStackNavigator />
+    </NavigationContainer>
+  );
+
+
+
   const [currentUser, setCurrentUser] = useState(null);
   const [doctors, setDoctors] = useState([]);
   useEffect(() => {
@@ -38,13 +48,22 @@ export default function App() {
         <StackNavigator />
       </NavigationContainer>
     );
-  } else if (currentUser.is_admin == "yes") {
+  } 
+  else if (currentUser.is_admin == "yes") {
     return (
       <NavigationContainer>
         <AdminStackNavigator />
       </NavigationContainer>
     );
-  } else {
+  }
+  // else if (currentUser.is_doct == "yes") {
+  //   return (
+  //     <NavigationContainer>
+  //       <DoctorStackNavigator />
+  //     </NavigationContainer>
+  //   );
+  // }
+   else {
     return (
       <AppProvider>
         <NavigationContainer>
