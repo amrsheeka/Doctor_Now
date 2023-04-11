@@ -100,7 +100,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         <Button
           color={"#73caa4"}
           title="Location"
-          onPress={()=>navigation.navigate("MapScreen")}
+          onPress={()=>navigation.navigate("MapScreen", item.address)}
         />
         <View style={{}}>
           <Text style={styles.text3}>Working Hours</Text>
