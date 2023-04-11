@@ -1,2 +1,2 @@
-const ip = "http://192.168.1.3";
+const ip = "http://192.168.1.9";
 export default { ip };
