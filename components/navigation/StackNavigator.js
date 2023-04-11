@@ -141,6 +141,7 @@ const Homefunc = () => {
           headerTitle: () => null,
         }}
       />
+       
       <Stack.Screen
         name="Userpage"
         component={Userpage}
