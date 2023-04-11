@@ -26,6 +26,7 @@ import AddDoctor from "../admin/AddDoctor";
 import AppointmentList from "../admin/AppointmentList";
 import Sign_UP_2th_Screen from "../screens/Sign_UP_2th_Screen";
 import info from "../Doctor_Page/info";
+import MapScreen from "../screens/MapScreen";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -69,6 +70,16 @@ const Homefunc = () => {
           headerShown: false,
           tabBarVisible: false,
           tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="MapScreen"
+        component={MapScreen}
+        options={{
+          // headerShown: false,
+          // tabBarVisible: false,
+          tabBarButton: () => null,
+          
         }}
       />
       <Tab.Screen
@@ -148,6 +159,7 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
+      
     </Tab.Navigator>
   );
 };
