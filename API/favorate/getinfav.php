@@ -8,8 +8,9 @@ $obj = json_decode($json, true);
 $users_id = $obj['users_id'];
 $doctor_id = $obj['doctor_id'];
 // validation
+
 $stmt = $con->prepare("SELECT * FROM favorite WHERE `users_id`=? AND doctor_id =? ");
-$stmt->execute(array($users_id,$doctor_id));
+$stmt->execute(array($users_id, $doctor_id));
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
 if ($count > 0) {
