@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-  SafeAreaView
+  SafeAreaView,
+  Animated, PanResponder,Dimensions
 } from "react-native";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
@@ -20,6 +21,9 @@ import CurrentUser from "../consts/CurrentUser";
 const Home = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const { doctors, setDoctors } = useContext(AppContext);
+  const [panResponder, setPanResponder] = useState(null);
+  const [scrollY, setScrollY] = useState(new Animated.Value(0));
+  const height =Dimensions.get('window').height;
   const [fav, setFav] = useState([]);
   async function fetchDoctor() {
     const doctor = await getDoctors();
@@ -29,6 +33,39 @@ const Home = ({ navigation }) => {
 
     fetchDoctor();
   }, []);
+  useEffect(() => {
+    const panResponder = PanResponder.create({
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        const { dx, dy } = gestureState;
+        return dx > 2 || dx < -2 || dy > 2 || dy < -2;
+      },
+      onPanResponderMove: (evt, gestureState) => {
+        if (gestureState.dy < 0) {
+          Animated.event([null, { dy: scrollY }], { useNativeDriver: false })(
+            evt,
+            gestureState
+          );
+        }
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        if (gestureState.dy < -100) {
+          Animated.timing(scrollY, {
+            toValue: -height,
+            duration: 300,
+            useNativeDriver: false,
+          }).start();
+        } else {
+          Animated.timing(scrollY, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: false,
+          }).start();
+        }
+      },
+    });
+    setPanResponder(panResponder);
+  }, []);
+
   const renderDoctor = ({ item }) => {
     return (<DoctorCard2 reload={() => { }} doctor={item} navigation={navigation} />
     );
@@ -125,14 +162,26 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.list}>
-        <TouchableOpacity>
-          <Text style={styles.text}></Text>
-        </TouchableOpacity>
-
-
-        <SafeAreaView>
           {doctors.length != 0 ? (
+            <Animated.View
+            
+            style={[
+              styles.list,
+              {
+                transform: [
+                  {
+                    translateY: scrollY.interpolate({
+                      inputRange: [-height, height],
+                      outputRange: [0, height],
+                      extrapolateRight: "clamp",
+                    }),
+                    
+                  },
+                ],
+              },
+            ]}
+            {...panResponder.panHandlers}
+          >
             <FlatList
               removeClippedSubviews={true}
               data={
@@ -146,14 +195,21 @@ const Home = ({ navigation }) => {
               maxToRenderPerBatch={7}
               windowSize={10}
               keyExtractor={(item, index) => item.id}
+              
             />
+            </Animated.View>
           ) : (
             <View style={{ padding: "18%" }}>
               <ActivityIndicator size={100} color="#00ff00" />
             </View>
           )}
-        </SafeAreaView >
-      </View>
+        
+
+
+
+
+
+      
     </View>
   );
 };
@@ -184,6 +240,7 @@ const styles = StyleSheet.create({
   list: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    paddingTop:30,
     backgroundColor: "#fff",
   },
   search: {
