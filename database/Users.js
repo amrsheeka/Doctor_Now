@@ -157,5 +157,15 @@ const insertAppointment = async(users_id, doctor_id,date, time, name_patient, ag
       console.log(error);
     });
 };
-
-export { sighnup, login, logout, getCurrentUser,insertFavourite,getFavourite,getinFavourite,deleteFavourite,insertAppointment };
+const getAppointment = async (users_id) => {
+  return axios.post(`${Ip.ip}/API/doctors/getAppointment.php`, {
+    users_id: users_id
+  })
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+export { sighnup, login, logout, getAppointment, getCurrentUser,insertFavourite,getFavourite,getinFavourite,deleteFavourite,insertAppointment };
