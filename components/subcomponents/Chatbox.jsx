@@ -4,7 +4,6 @@ import React, {
   useLayoutEffect,
   useEffect,
 } from "react";
-import { ScrollView } from "react-native-web";
 import {
   View,
   Text,

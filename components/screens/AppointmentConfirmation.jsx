@@ -97,15 +97,11 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         </View>
       </View>
       <View style={styles.footer}>
-        <View style={{ flex: 2 }}>
-          <Text style={styles.text3}>Biography </Text>
-
-          <ScrollView>
-            <Text style={styles.inp} numberOfLines={10}>
-              {item.describtion}
-            </Text>
-          </ScrollView>
-        </View>
+        <Button
+          color={"#73caa4"}
+          title="Location"
+          onPress={()=>navigation.navigate("MapScreen", item.address)}
+        />
         <View style={{}}>
           <Text style={styles.text3}>Working Hours</Text>
         </View>
