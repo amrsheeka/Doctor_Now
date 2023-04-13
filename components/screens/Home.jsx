@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   list: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingTop:40,
+    paddingTop:60,
     backgroundColor: "#fff",
   },
   search: {

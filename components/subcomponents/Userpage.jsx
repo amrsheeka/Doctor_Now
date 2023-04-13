@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 10,
     flexDirection:"column",
-    gap:5
+    gap:10
   },
   profile: {
       // backgroundColor: "#ffffff",
