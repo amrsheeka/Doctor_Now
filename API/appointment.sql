@@ -26,7 +26,6 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `appointment`
 --
-
 CREATE TABLE `appointment` (
   `users_id` int(11) NOT NULL,
   `doctor_id` int(11) NOT NULL,
