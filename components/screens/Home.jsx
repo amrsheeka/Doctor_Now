@@ -10,7 +10,7 @@ import {
   ScrollView,
   ActivityIndicator,
   SafeAreaView,
-  Animated, PanResponder,Dimensions
+  Animated, PanResponder,Dimensions,StatusBar
 } from "react-native";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
@@ -134,6 +134,7 @@ const Home = ({ navigation }) => {
 
 
   return (
+    
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.Title}>
@@ -172,7 +173,7 @@ const Home = ({ navigation }) => {
                   {
                     translateY: scrollY.interpolate({
                       inputRange: [-height, height],
-                      outputRange: [0, height],
+                      outputRange: [0, height-200],
                       extrapolateRight: "clamp",
                     }),
                     
@@ -224,8 +225,8 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "flex-start",
     justifyContent: "center",
-    paddingBottom: 5,
-    paddingVertical: 20,
+    paddingVertical:20,
+    position:"absolute",
   },
   heading: {
     fontSize: 24,
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
   list: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingTop:30,
+    paddingTop:40,
     backgroundColor: "#fff",
   },
   search: {
