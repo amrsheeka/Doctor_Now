@@ -143,8 +143,9 @@ const Home = ({ navigation }) => {
           </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <View style={styles.search}>
+          <View >
             <TextInput
+            style={styles.search}
               placeholder="Search"
               placeholderTextColor="white"
               value={search}
@@ -246,10 +247,11 @@ const styles = StyleSheet.create({
   },
   search: {
     backgroundColor: "#40b488",
-    paddingHorizontal: 20,
+    paddingHorizontal: "25%",
+    paddingVertical: 11,
     borderRadius: 10,
-    margin: 20,
-    width: "60%",
+    marginVertical: 20,
+    marginLeft:10,
     flexDirection: "row",
     shadowColor: "#000",
     shadowOffset: {
@@ -266,6 +268,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: 50,
     height: 50,
+    marginLeft:"15%",
     borderRadius: 10,
     margin: 20,
     shadowColor: "#000",
