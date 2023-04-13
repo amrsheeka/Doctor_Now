@@ -12,8 +12,10 @@ import User from "../screens/User";
 import Home from "../screens/Home";
 import Favorite from "../screens/Favorite";
 import Chat from "../screens/Chat";
+import Thk2 from "../screens/Thk2";
 import Appointment from "../screens/Appointment";
 import Chatbox from "../subcomponents/Chatbox";
+import Payment from "../subcomponents/Payment";
 import Doctorbage from "../subcomponents/Doctorbage";
 import AllDoctors from "../screens/AllDoctors";
 import Userpage from "../subcomponents/Userpage";
@@ -66,6 +68,15 @@ const Homefunc = () => {
       <Tab.Screen
         name="Thk"
         component={Thk}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Thk2"
+        component={Thk2}
         options={{
           headerShown: false,
           tabBarVisible: false,
@@ -145,6 +156,16 @@ const Homefunc = () => {
       <Stack.Screen
         name="Userpage"
         component={Userpage}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          headerTitle: () => null,
+        }}
+      />
+       <Stack.Screen
+        name="Payment"
+        component={Payment}
         options={{
           headerShown: false,
           tabBarVisible: false,

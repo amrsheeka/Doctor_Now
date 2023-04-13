@@ -50,7 +50,7 @@ const User = ({ navigation }) => {
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Payment")}>
         <View style={styles.xx}>
           <MaterialIcons name="payment" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> Payment Method </Text>
