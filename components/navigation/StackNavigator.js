@@ -15,7 +15,7 @@ import Chat from "../screens/Chat";
 import Thk2 from "../screens/Thk2";
 import Appointment from "../screens/Appointment";
 import Chatbox from "../subcomponents/Chatbox";
-import Payment from "../subcomponents/Payment";
+import Payment from "../subcomponents/Payments";
 import Doctorbage from "../subcomponents/Doctorbage";
 import AllDoctors from "../screens/AllDoctors";
 import Userpage from "../subcomponents/Userpage";
