@@ -1,38 +1,51 @@
 import React, { memo} from "react";
+import { useState } from "react";
+import { ScrollView, TextInput } from "react-native";
 import { View, Text, StyleSheet, Image, TouchableOpacity, } from "react-native";
-
-const doc_card_appointment = ({ navigation }) =>{
-  let image ='../assets/Appointment.png'
-  let doctor = { name: 'alaa', title: 'sdsd', specialization1: 'sdsdsd'}
+import { deleteAppointment } from "../../database/Users";
+function Doc_card_appointment({navigation, image, date, time, name_patient, doc_name, gender, notes, date_now, specialization1,doctor_id,users_id}){
+  let obj = { image:image, date: date, time: time, name_patient: name_patient, doc_name: doc_name, gender: gender, notes: notes, date_now: date_now, specialization1: specialization1,doctor_id:doctor_id,users_id:users_id }
+  const Delete=async ()=>(
+  await deleteAppointment(users_id,doctor_id).then((res)=>(
+      navigation.navigate("Home")
+     ))
+  )
   return (
-    <View>
       <View style={styles.card}>
-
         <Image source={image ? { uri: image } : require("../assets/Herbal_Medicine_Male_Avatar.png")}
           defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
         <View style={styles.cardContent}>
           <View style={{ width: "50%" }}>
-
             <Text numberOfLines={2} ellipsizeMode='tail'
-              style={styles.cardTitle}>{doctor.name}</Text>
-
-
-            <Text numberOfLines={2} ellipsizeMode='tail'
-              style={styles.cardDoctor}>{doctor.title + "," + doctor.specialization1 + "," + doctor.specialization1}</Text>
+              style={styles.cardTitle}>doctor: {doc_name}</Text>
+          <Text numberOfLines={3} ellipsizeMode='tail'
+            style={styles.cardTitle}> {specialization1}</Text>
+          <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>Patient Name: {name_patient}</Text>
+          <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>Date: {date}</Text>
+          <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>Time: {time}</Text>
+          <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>gender: {gender}</Text>
+          <Text numberOfLines={5} ellipsizeMode='tail'
+            style={styles.cardTitle}>notes: {notes}</Text>
           </View>
           <TouchableOpacity style={styles.cardButton}
-            onPress={() => Update}
+          onPress={() => (navigation.navigate("Update_patient",obj))}
           >
             <Text style={styles.cardButtonText}>Update </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.cardButton}
-            onPress={() => Delete}
+            onPress={() => Delete()}
           >
             <Text style={styles.cardButtonText}>Decline </Text>
           </TouchableOpacity>
+
+        <Text style={styles.cardTitle}>create at  {date_now}</Text>
+
         </View>
-      </View>
-    </View>
+      </View>   
   );
 };
 
@@ -44,8 +57,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
     marginHorizontal: 20,
-    height: 200,
-
   },
   cardPhoto: {
     width: "30%",
@@ -80,6 +91,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
+  }, inputContainer: {
+    width: "100%",
+  },
+  input: {
+    backgroundColor: "#eceff1",
+    paddingVertical: 10,
+    borderRadius: 10,
   },
 });
-export default memo(doc_card_appointment);
+export default memo(Doc_card_appointment);
