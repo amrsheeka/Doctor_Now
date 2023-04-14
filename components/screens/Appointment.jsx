@@ -1,12 +1,49 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import { useEffect, useState } from "react";
+import { ScrollView } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { getAppointment } from "../../database/Users";
+import CurrentUser from "../consts/CurrentUser";
+import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
 const Appointment = ({ navigation }) => {
+  let id = CurrentUser.user.id
+  let cnt=0
+  const [appointments, setAppointments] = useState([])
+  const [flag, setFlag] = useState(true)
+  const [dbVersion, setDbVersion] = useState(cnt);
+  useEffect(() => {
+    getAppointment(id).then((res) => {
+      console.log(res)
+      res.length >= 1 ?  setAppointments(res):setFlag(false)
+      setDbVersion(cnt++);
+    })
+  }, [dbVersion])
+
   return (
+    flag ? (
+
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.heading}>My Appointments</Text>
+        <View style={styles.header}>
+          <Text style={styles.heading}>My Appointments</Text>
+        </View>
+      <View style={{ flex: 10, flexDirection: "column" }}>
+        <ScrollView>
+          {
+            appointments.map((ele, idx) => {
+              return <Doc_card_appointment key={idx} navigation={navigation} date={ele.date} time={ele.time} name_patient={ele.name_patient} doc_name={ele.doc_name} gender={ele.gender} notes={ele.notes} date_now={ele.date_now} specialization1={ele.specialization1} image={ele.image} doctor_id={ele.doctor_id} users_id={ele.users_id} />
+            })
+          }
+        </ScrollView>
       </View>
-    </View>
+    </View>)
+      :(
+      <View style={{flex:1}}>
+        <View style={styles.header}>
+          <Text style={styles.heading}>My Appointments</Text>
+        </View>
+        <View style={{ padding: "18%" ,flex:6}}>
+          <ActivityIndicator size={100} color="#00ff00" />
+        </View>
+      </View>)
   );
 };
 
@@ -22,6 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 30,
     marginBottom: 20,
+    flex: 1
   },
   heading: {
     fontSize: 24,

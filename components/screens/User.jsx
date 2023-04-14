@@ -19,16 +19,17 @@ const User = ({ navigation }) => {
   }
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity>
+      <View>
         <View style={styles.x}>
+         <TouchableOpacity>
           <Image
             source={require("../assets/Herbal_Medicine_Male_Avatar.png")}
             style={styles.z}
           />
+          </TouchableOpacity>
           <Text style={styles.z2}> {user.name} </Text>
-          <MaterialIcons name="mode-edit" size={24} color="white" style={styles.z1} />
         </View>
-      </TouchableOpacity>
+      </View>
       <TouchableOpacity>
         <View style={styles.xx}>
           <MaterialCommunityIcons name="history" size={28} color="black" style={styles.xxxx} />
@@ -50,7 +51,7 @@ const User = ({ navigation }) => {
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Payment")}>
         <View style={styles.xx}>
           <MaterialIcons name="payment" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> Payment Method </Text>
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
     paddingVertical: 40,
   },
   header: {
@@ -101,7 +102,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 30,
-    backgroundColor: "#288771"
+    backgroundColor: "#288771",
+    borderRadius: 40,
+    width:"100%"
+
   },
   z: {
     marginRight: 20,
@@ -125,7 +129,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
-    padding: 20
+    padding: 20,
+    backgroundColor: "#FFF",
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "#f7eceb",
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    marginHorizontal:15
   },
   xxxx: {
     marginRight: 20,
