@@ -9,17 +9,11 @@ const Appointment = ({ navigation }) => {
   const [appointments, setAppointments] = useState([])
   const [flag, setFlag] = useState(true)
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      // Call the function that updates your data here
-      getAppointment(id).then((res) => {
-        console.log(res)
-        res.length >= 1 ? (setAppointments(res),setFlag(true)) : setFlag(false)
-      })
-    }, 10000);
-
-    // Return a cleanup function to clear the interval when the component unmounts
-    return () => clearInterval(intervalId);
-  }, []);
+    getAppointment(id).then((res) => {
+      console.log(res)
+      res.length >= 1 ? setAppointments(res) : setFlag(false)
+    })
+  }, [])
 
   return (
     flag ? (
