@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import { ScrollView } from "react-native";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { getAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
+import { AppContext } from "../consts/AppContext";
 const Appointment = ({ navigation }) => {
   let id = CurrentUser.user.id
-  const [appointments, setAppointments] = useState([])
+  const {appointments, setAppointments} = useContext(AppContext);
   const [flag, setFlag] = useState(true)
   useEffect(() => {
     getAppointment(id).then((res) => {
@@ -16,7 +17,6 @@ const Appointment = ({ navigation }) => {
   }, [])
 
   return (
-    flag ? (
 
     <View style={styles.container}>
         <View style={styles.header}>
@@ -31,16 +31,8 @@ const Appointment = ({ navigation }) => {
           }
         </ScrollView>
       </View>
-    </View>)
-      :(
-      <View style={{flex:1}}>
-        <View style={styles.header}>
-          <Text style={styles.heading}>My Appointments</Text>
-        </View>
-        <View style={{ padding: "18%" ,flex:6}}>
-          <ActivityIndicator size={100} color="#00ff00" />
-        </View>
-      </View>)
+    </View>
+      
   );
 };
 
