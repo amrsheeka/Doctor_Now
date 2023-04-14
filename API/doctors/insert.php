@@ -9,27 +9,21 @@ $obj = json_decode($json, true);
 $title = $obj['title'];
 $image = $obj['image'];
 $name = $obj['name'];
-
 $title1 = $obj['title1'];
 $describtion = $obj['describtion'];
 $keywords = $obj['keywords'];
-
 $charactristic = $obj['charactristic'];
 $charactristic_2 = $obj['charactristic_2'];
 $specialization = $obj['specialization'];
-
 $specialization1 = $obj['specialization1'];
 $specialization2 = $obj['specialization2'];
 $specialization3 = $obj['specialization3'];
-
 $address = $obj['address'];
 $price = $obj['price'];
 $currency = $obj['currency'];
-
 $number = $obj['number'];
 $start = $obj['start'];
 $end = $obj['end'];
-
 $day = $obj['day'];
 $available = $obj['available'];
 $status = $obj['status'];
