@@ -16,7 +16,6 @@ export default function MapScreen({navigation,route}) {
   }
   console.log(s2);
   const [initialRegion, setInitialRegion] = useState(null);
-  // const [searchText, setSearchText] = useState(s2); //state to store the search text
   const [searchResult, setSearchResult] = useState(null); //state to store the search result
 
   const handleSearch = async () => {
@@ -48,7 +47,7 @@ export default function MapScreen({navigation,route}) {
       }
       s2+= s.charAt(i);
     }
-    // setSearchText(s2); // Update the search text state to the new parameter value
+    
     handleSearch(); // Call the handleSearch function to update the initialRegion state
   }, [route.params]);
 
@@ -61,17 +60,7 @@ export default function MapScreen({navigation,route}) {
       <MapView style={styles.map} region={initialRegion}>
         {searchResult && <Marker coordinate={searchResult} onPress={handleMarkerPress} />}
       </MapView>
-      {/* <View style={styles.searchBar}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search"
-          value={searchText}
-          onChangeText={setSearchText}
-        />
-        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <Text style={styles.searchButtonText}>Search</Text>
-        </TouchableOpacity>
-      </View> */}
+      
     </View>
   );
 }
