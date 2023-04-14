@@ -26,7 +26,7 @@ const Appointment = ({ navigation }) => {
         <ScrollView>
           {
             appointments.map((ele, idx) => {
-              return <Doc_card_appointment key={idx} navigation={navigation} date={ele.date} time={ele.time} name_patient={ele.name_patient} doc_name={ele.doc_name} gender={ele.gender} notes={ele.notes} date_now={ele.date_now} specialization1={ele.specialization1} image={ele.image} doctor_id={ele.doctor_id} users_id={ele.users_id} />
+              return <Doc_card_appointment key={idx} navigation={navigation} date={ele.date} time={ele.time} name_patient={ele.name_patient} doc_name={ele.doc_name} gender={ele.gender} notes={ele.notes} date_now={ele.date_now} specialization1={ele.specialization1} image={ele.doc_image} doctor_id={ele.doctor_id} users_id={ele.users_id} />
             })
           }
         </ScrollView>
