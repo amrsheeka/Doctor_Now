@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2023 at 06:02 PM
+-- Generation Time: Apr 14, 2023 at 09:54 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -47,7 +47,17 @@ CREATE TABLE `appointment` (
 --
 
 INSERT INTO `appointment` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `notes`, `doc_name`, `doc_image`, `specialization1`, `date_now`) VALUES
-(183, 509, 'Fri Apr 14 2023', '5:30 PM', 'Ahmed', '25+', 'male', 'Ahmed', 'Tamer Yehia HCC', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '2023-04-14');
+(183, 514, 'Fri Apr 14 2023', '5:30 PM', '', '25+', 'male', '', 'Mohamed Said ElGamal', '', 'Adult Vascular Diseases', '2023-04-14');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `appointment`
+--
+ALTER TABLE `appointment`
+  ADD PRIMARY KEY (`users_id`,`doctor_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
