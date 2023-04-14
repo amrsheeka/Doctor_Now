@@ -33,9 +33,11 @@ $end = $obj['end'];
 $day = $obj['day'];
 $available = $obj['available'];
 $status = $obj['status'];
+$x_coordnate = $obj['x_coordnate'];
+$y_coordnate = $obj['y_coordnate'];
 
-$stmt = $con->prepare("INSERT INTO `doctors`(`title`, `image`, `name`, `title1`, `describtion`, `keywords`, `charactristic`, `charactristic_2`, `specialization`, `specialization1`, `specialization2`, `specialization3`, `address`, `price`, `currency`, `number`,  `start`, `end`, `day`, `available`, `status`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-$stmt->execute(array($title, $image, $name, $title1, $describtion, $keywords, $charactristic, $charactristic_2, $specialization, $specialization1, $specialization2, $specialization3, $address, $price, $currency, $number, $start, $end, $day, $available, $status));
+$stmt = $con->prepare("INSERT INTO `doctors`(`title`, `image`, `name`, `title1`, `describtion`, `keywords`, `charactristic`, `charactristic_2`, `specialization`, `specialization1`, `specialization2`, `specialization3`, `address`, `price`, `currency`, `number`,  `start`, `end`, `day`, `available`, `status`,`x_coordnate`,`y_coordnate`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$stmt->execute(array($title, $image, $name, $title1, $describtion, $keywords, $charactristic, $charactristic_2, $specialization, $specialization1, $specialization2, $specialization3, $address, $price, $currency, $number, $start, $end, $day, $available, $status, $x_coordnate, $y_coordnate));
 $count = $stmt->rowCount();
 if ($count > 0) {
     echo json_encode(array("status" => "success"));
