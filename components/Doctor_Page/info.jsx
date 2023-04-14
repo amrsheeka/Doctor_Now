@@ -23,7 +23,7 @@ import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
-
+import { logout } from "../../database/Users";
 const Info = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
@@ -1122,6 +1122,7 @@ const Info = ({ navigation }) => {
             ) : (
               <></>
             )}
+            <Button onPress={()=>logout()} title="Log Out"/>
           </View>
         ) : page === "About the Doctor" ? (
           <View>
