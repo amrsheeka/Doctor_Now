@@ -23,9 +23,8 @@ import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
-import { height } from "deprecated-react-native-prop-types/DeprecatedImagePropType";
 
-const Home = ({ navigation }) => {
+const Info = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
   const [show, setShow] = useState(false);
@@ -1233,4 +1232,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default Info;
