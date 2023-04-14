@@ -6,17 +6,20 @@ import CurrentUser from "../consts/CurrentUser";
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
 const Appointment = ({ navigation }) => {
   let id = CurrentUser.user.id
-  let cnt=0
   const [appointments, setAppointments] = useState([])
   const [flag, setFlag] = useState(true)
-  const [dbVersion, setDbVersion] = useState(cnt);
   useEffect(() => {
-    getAppointment(id).then((res) => {
-      console.log(res)
-      res.length >= 1 ?  setAppointments(res):setFlag(false)
-      setDbVersion(cnt++);
-    })
-  }, [dbVersion])
+    const intervalId = setInterval(() => {
+      // Call the function that updates your data here
+      getAppointment(id).then((res) => {
+        console.log(res)
+        res.length >= 1 ? (setAppointments(res),setFlag(true)) : setFlag(false)
+      })
+    }, 10000);
+
+    // Return a cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     flag ? (
