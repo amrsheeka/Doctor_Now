@@ -20,7 +20,8 @@ const Details_user_to_appointment = ({ navigation, route }) => {
   const [gender, setGender] = useState("Unknown");
   let doc=route.params.item
   const handleInsertAppointment = async () => {
-    await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2).then(
+    console.log(doc)
+    await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2, doc.name, doc.image,doc.specialization1).then(
       (res)=>{
         console.log("its ok")
      }

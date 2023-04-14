@@ -5,15 +5,14 @@ header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
-$users_id = $obj['users_id'];
-$doctor_id = $obj['doctor_id'];
-// validation
-
-$stmt = $con->prepare("SELECT * FROM favorite WHERE `users_id`=? AND doctor_id =? ");
-$stmt->execute(array($users_id, $doctor_id));
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$id = $obj['id'];
+$x_coordnate = $obj['x_coordnate'];
+$y_coordnate = $obj['y_coordnate'];
+$stmt = $con->prepare("UPDATE `doctors` SET `x_coordnate`=?,`y_coordnate`=? WHERE `id` = '$id' ");
+$stmt->execute(array($x_coordnate, $y_coordnate));
+$doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
 if ($count > 0) {
     echo json_encode(array("status" => "success"));
 } else
-    echo json_encode(array("status" => "fail"));
+    echo json_encode(array("status" => "failed"));

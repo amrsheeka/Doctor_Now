@@ -8,7 +8,16 @@ const Userpage = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.heading}> Your Profile</Text>
+        <View  style={styles.Go_Back1}>
+          <TouchableOpacity onPress={() => navigation.navigate("User")}>
+            <View style={styles.Go_Back}>
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View >
+          <Text style={styles.heading}> Your Profile</Text>
+        </View>
       </View>
       <View style={styles.content}>
         <View style={styles.profile}>
@@ -119,22 +128,41 @@ const styles = StyleSheet.create({
     paddingVertical:35
   },
   header: {
-    // backgroundColor: "#288771",
+    flexDirection:"row",
     width: "100%",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     paddingVertical: 20,
-    marginBottom: 20,
+    // marginBottom: 20,
+
   },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
     color: "black",
+    
+
   },
+  
+  Go_Back: {
+    // marginTop:15,
+    // // width:"10%",
+    // justifyContent: "flex-start",
+    // justifyContent: "flex-start",
+    width:"10%",
+    // left:1
+    },
+    Go_Back1: {
+      // marginTop:15,
+      width:"35%",
+      // justifyContent: "flex-start",
+      // justifyContent: "flex-start",
+  
+      },
   content: {
     paddingHorizontal: 10,
     flexDirection:"column",
-    gap:5
+    gap:10
   },
   profile: {
       // backgroundColor: "#ffffff",

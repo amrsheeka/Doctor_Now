@@ -139,7 +139,7 @@ const deleteFavourite = async (users_id,doctor_id) => {
     });
 };
 
-const insertAppointment = async(users_id, doctor_id,date, time, name_patient, age, gender, notes) => {
+const insertAppointment = async(users_id, doctor_id, date, time, name_patient, age, gender, notes, doc_name, doc_image, specialization1) => {
   const res = await axios.post(`${Ip.ip}/API/doctors/InsertAppointment.php`, {
     users_id: users_id,
     doctor_id: doctor_id,
@@ -148,7 +148,10 @@ const insertAppointment = async(users_id, doctor_id,date, time, name_patient, ag
     name_patient:name_patient,
     age:age,
     gender:gender,
-    notes:notes
+    notes:notes,
+    doc_name:doc_name,
+    doc_image:doc_image,
+    specialization1:specialization1
   })
     .then(function (response) {
       console.log(response.data);
@@ -157,5 +160,30 @@ const insertAppointment = async(users_id, doctor_id,date, time, name_patient, ag
       console.log(error);
     });
 };
+const getAppointment = async (users_id) => {
+  return axios.post(`${Ip.ip}/API/doctors/getAppointment.php`, {
+    users_id: users_id
+  })
+    .then(function (response) {
+      console.log(response.date)
 
-export { sighnup, login, logout, getCurrentUser,insertFavourite,getFavourite,getinFavourite,deleteFavourite,insertAppointment };
+      return response.data;
+      
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+const deleteAppointment = async (users_id, doctor_id) => {
+  const res = await axios.post(`${Ip.ip}/API/doctors/del_appointment.php`, {
+    users_id: users_id,
+    doctor_id: doctor_id
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+export { sighnup, login, logout, getAppointment, getCurrentUser, insertFavourite, getFavourite, getinFavourite, deleteFavourite, insertAppointment, deleteAppointment };

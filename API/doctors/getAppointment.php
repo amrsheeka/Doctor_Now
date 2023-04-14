@@ -6,10 +6,10 @@ header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
-$id = $obj['id'];
+$users_id = $obj['users_id'];
 
 $stmt = $con->prepare("SELECT * FROM `appointment` WHERE  `users_id` = ? ");
-$stmt->execute(array($id));
+$stmt->execute(array($users_id));
 $users_app = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
 if ($count > 0) {

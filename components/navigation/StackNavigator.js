@@ -12,8 +12,10 @@ import User from "../screens/User";
 import Home from "../screens/Home";
 import Favorite from "../screens/Favorite";
 import Chat from "../screens/Chat";
+import Thk2 from "../screens/Thk2";
 import Appointment from "../screens/Appointment";
 import Chatbox from "../subcomponents/Chatbox";
+import Payment from "../subcomponents/Payments";
 import Doctorbage from "../subcomponents/Doctorbage";
 import AllDoctors from "../screens/AllDoctors";
 import Userpage from "../subcomponents/Userpage";
@@ -27,6 +29,9 @@ import AppointmentList from "../admin/AppointmentList";
 import Sign_UP_2th_Screen from "../screens/Sign_UP_2th_Screen";
 import info from "../Doctor_Page/info";
 import MapScreen from "../screens/MapScreen";
+
+import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
+import Update_patient from "../subcomponents/Update_patient";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -66,6 +71,33 @@ const Homefunc = () => {
       <Tab.Screen
         name="Thk"
         component={Thk}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Thk2"
+        component={Thk2}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Doc_card_appointment"
+        component={Doc_card_appointment}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Update_patient"
+        component={Update_patient}
         options={{
           headerShown: false,
           tabBarVisible: false,
@@ -152,6 +184,16 @@ const Homefunc = () => {
           headerTitle: () => null,
         }}
       />
+       <Stack.Screen
+        name="Payment"
+        component={Payment}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          headerTitle: () => null,
+        }}
+      />
       <Tab.Screen
         name="User"
         component={User}
@@ -160,7 +202,7 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
-      
+    
     </Tab.Navigator>
   );
 };
