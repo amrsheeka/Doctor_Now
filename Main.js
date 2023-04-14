@@ -6,6 +6,7 @@ import {
   StackNavigator,
   StackNavigator2,
   AdminStackNavigator,
+  DoctorStackNavigator,
 } from "./components/navigation/StackNavigator";
 import CurrentUser from "./components/consts/CurrentUser";
 import { getDoctors } from "./database/Doctors";
@@ -32,25 +33,42 @@ export default function Main() {
     fetchDoctors();
   }, []);
 
-  if (currentUser == null) {
+
     return (
       <NavigationContainer>
-        <StackNavigator />
+        <DoctorStackNavigator />
       </NavigationContainer>
     );
-  } else if (currentUser.is_admin == "yes") {
-    return (
-      <NavigationContainer>
-        <AdminStackNavigator />
-      </NavigationContainer>
-    );
-  } else {
-    return (
-        <NavigationContainer>
-          <StackNavigator2 />
-        </NavigationContainer>
-    );
-  }
+
+  // if (currentUser == null) {
+  //   return (
+  //     <NavigationContainer>
+  //       <StackNavigator />
+  //     </NavigationContainer>
+  //   );
+  // } else if (currentUser.is_admin == "yes") {
+  //   return (
+  //     <NavigationContainer>
+  //       <AdminStackNavigator />
+  //     </NavigationContainer>
+  //   );
+
+  // }
+  // else if (currentUser.is_doctor == "yes") {
+  //   return (
+  //     <NavigationContainer>
+  //       <DoctorStackNavigator />
+  //     </NavigationContainer>
+  //   );
+    
+  // }
+  //  else {
+  //   return (
+  //       <NavigationContainer>
+  //         <StackNavigator2 />
+  //       </NavigationContainer>
+  //   );
+  // }
 }
 
 const styles = StyleSheet.create({

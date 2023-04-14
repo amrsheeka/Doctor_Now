@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     borderRadius: 10,
     marginVertical: 20,
-    marginLeft:10,
+    marginLeft:15,
     flexDirection: "row",
     shadowColor: "#000",
     shadowOffset: {
