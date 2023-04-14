@@ -6,6 +6,7 @@ import {
   StackNavigator,
   StackNavigator2,
   AdminStackNavigator,
+  DoctorStackNavigator,
 } from "./components/navigation/StackNavigator";
 import CurrentUser from "./components/consts/CurrentUser";
 import { getDoctors } from "./database/Doctors";
@@ -32,6 +33,13 @@ export default function Main() {
     fetchDoctors();
   }, []);
 
+
+    // return (
+    //   <NavigationContainer>
+    //     <DoctorStackNavigator />
+    //   </NavigationContainer>
+    // );
+
   if (currentUser == null) {
     return (
       <NavigationContainer>
@@ -44,7 +52,17 @@ export default function Main() {
         <AdminStackNavigator />
       </NavigationContainer>
     );
-  } else {
+
+  }
+  else if (currentUser.is_doctor == "yes") {
+    return (
+      <NavigationContainer>
+        <DoctorStackNavigator />
+      </NavigationContainer>
+    );
+    
+  }
+   else {
     return (
         <NavigationContainer>
           <StackNavigator2 />

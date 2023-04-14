@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import {
   View,
   Text,
@@ -12,18 +12,24 @@ import { KeyboardAvoidingView } from "react-native";
 import { Button } from "react-native";
 import { insertAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
-
+import { AppContext } from "../consts/AppContext";
+import { getAppointment } from "../../database/Users";
 const Details_user_to_appointment = ({ navigation, route }) => {
   const [text, onChangeText] = useState("");
+  const {appointments, setAppointments} = useContext(AppContext);
   const [text2, onChangeText2] = useState("");
   const [age,setAge]= useState("");
   const [gender, setGender] = useState("Unknown");
   let doc=route.params.item
+  let id = CurrentUser.user.id;
   const handleInsertAppointment = async () => {
     console.log(doc)
     await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2, doc.name, doc.image,doc.specialization1).then(
       (res)=>{
-        console.log("its ok")
+        console.log("its ok");
+        getAppointment(id).then((res) => {
+          setAppointments(res);
+        })
      }
     ) 
     // console.log(CurrentUser.user.age)
