@@ -27,7 +27,7 @@ import AdminHome from "../admin/AdminHome";
 import AddDoctor from "../admin/AddDoctor";
 import AppointmentList from "../admin/AppointmentList";
 import Sign_UP_2th_Screen from "../screens/Sign_UP_2th_Screen";
-//import Info from "../Doctor_Page/Info";
+import Info from "../Doctor_Page/Info";
 import MapScreen from "../screens/MapScreen";
 
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
@@ -311,15 +311,15 @@ const AdminStackNavigator = () => {
 };
 
 const DoctorStackNavigator = () => {
-  // return (
-  //   <Stack.Navigator>
-  //     <Stack.Screen
-  //       name="Profile"
-  //       component={Info}
-  //       options={{ headerShown: false }}
-  //     />
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profile"
+        component={Info}
+        options={{ headerShown: false }}
+      />
     
-  //   </Stack.Navigator>
-  // );
+    </Stack.Navigator>
+  );
 };
 export { StackNavigator, StackNavigator2, AdminStackNavigator, DoctorStackNavigator };
