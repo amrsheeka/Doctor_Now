@@ -3,7 +3,7 @@ import { ScrollView } from "react-native";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { getAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
-import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
+// import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
 import { AppContext } from "../consts/AppContext";
 const Appointment = ({ navigation }) => {
   let id = CurrentUser.user.id
