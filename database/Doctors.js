@@ -29,4 +29,17 @@ const getDoc = async (doctor_id) => {
       console.log(error);
     });
 }
-export { getDoctors, deleteDoctor,getDoc };
+const editDoctor = async (id,lat,long) => {
+  const res = await axios.post(`${Ip.ip}/API/doctors/updateLocation.php`, {
+    id:id,
+    x_coordnate:lat,
+    y_coordnate:long
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+export { getDoctors, deleteDoctor,getDoc,editDoctor };
