@@ -24,6 +24,7 @@ import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
 import { logout } from "../../database/Users";
+
 const Info = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
@@ -39,7 +40,6 @@ const Info = ({ navigation }) => {
   const [page, setPage] = useState("Profile");
   const [fName, setfName] = useState("Mohamed");
   const [lName, setlName] = useState("Essam");
-  const [pro_title, setPro_title] = useState("");
   const [fullpro_title, setFullpro_title] = useState(" Consultant of dinstiy ");
 
   const [doctor_email, setDoctor_email] = useState("moh.essam@gmail.com");
@@ -52,7 +52,6 @@ const Info = ({ navigation }) => {
 
   const [about_the_doctor, setAbout_theDoctor] = useState("hi");
   const [height, setHeight] = useState(0);
-  const [number_of_letters, setNumber_of_letters] = useState(0);
 
   const [nameClinic, setNameClinic] = useState("Essam Clinic");
   const [numberClinic, setNumberClinic] = useState("01012453522");
@@ -81,6 +80,9 @@ const Info = ({ navigation }) => {
   const icon14 = "arrow-left";
   const icon15 = "content-save-check";
   const icon16 = "user-lock";
+  const icon17 = "email";
+  const icon18 = "phone";
+  const icon19 = "user-nurse";
   const main_color = "#288771";
   const back = () => {
     setPage("Profile");
@@ -145,6 +147,19 @@ const Info = ({ navigation }) => {
   const about_doctor = () => {
     setPage("About the Doctor");
   };
+
+  const clinic_name = () => {
+    setPage("Clinic Name and Number");
+  };
+
+  const exmination = () => {
+    setPage("Exmination and Follow-up");
+  };
+
+  const assistant = () => {
+    setPage("Assistant Name and Number");
+  };
+
   return (
     <View style={{ flex: 1 }}>
       {page === "Profile" ? (
@@ -375,8 +390,27 @@ const Info = ({ navigation }) => {
                     </Text>
                     <Icon name={icon6} size={25} color="#288759" />
                   </View>
-                </TouchableOpacity>
 
+                  {about_the_doctor !== "" ? (
+                    <View style={[styles.content, { paddingVertical: 15 }]}>
+                      <View style={{ flexDirection: "row", width: "100%" }}>
+                        <Text
+                          style={{
+                            color: "black",
+                            fontSize: 15,
+                            paddingBottom: 10,
+                            paddingHorizontal: 20,
+                            width: "80%",
+                          }}
+                        >
+                          {about_the_doctor}
+                        </Text>
+                      </View>
+                    </View>
+                  ) : (
+                    <></>
+                  )}
+                </TouchableOpacity>
                 <TouchableOpacity>
                   <View
                     style={[
@@ -443,7 +477,7 @@ const Info = ({ navigation }) => {
               </View>
             ) : (
               <View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={clinic_name}>
                   <View
                     style={[
                       styles.content,
@@ -529,7 +563,7 @@ const Info = ({ navigation }) => {
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={exmination}>
                   <View
                     style={[
                       styles.content,
@@ -642,7 +676,7 @@ const Info = ({ navigation }) => {
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={assistant}>
                   <View
                     style={[
                       styles.content,
@@ -909,28 +943,9 @@ const Info = ({ navigation }) => {
                 Professional Title{" "}
               </Text>
             </View>
-            {/* <Text
-              style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
-                marginHorizontal: 10,
-                paddingVertical: 15,
-              }}
-            >
-              {" "}
-              Professional Title{" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              defaultValue={pro_title}
-              onChangeText={setPro_title}
-            /> */}
             <Text
               style={{
                 fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
                 marginHorizontal: 10,
                 paddingVertical: 15,
               }}
@@ -989,18 +1004,33 @@ const Info = ({ navigation }) => {
           </View>
         ) : page === "Account Settings" ? (
           <View>
-            <Text
+            <View
               style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
+                marginVertical: 5,
                 marginHorizontal: 10,
-                paddingVertical: 10,
+                alignItems: "center",
+                flexDirection: "row",
               }}
             >
-              {" "}
-              Email address{" "}
-            </Text>
+              <Icon6
+                name={icon17}
+                size={30}
+                color={main_color}
+                style={{ width: "7%" }}
+              />
+              <Text
+                style={{
+                  fontSize: 16,
+                  // fontStyle: "italic",
+                  // fontWeight: "bold",
+                  marginHorizontal: 10,
+                  paddingVertical: 10,
+                }}
+              >
+                {" "}
+                Email address{" "}
+              </Text>
+            </View>
             <TextInput
               style={styles.inp}
               defaultValue={doctor_email}
@@ -1008,19 +1038,33 @@ const Info = ({ navigation }) => {
               //placeholder={"last name"}
               onChangeText={setDoctor_email}
             />
-
-            <Text
+            <View
               style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
+                marginVertical: 5,
                 marginHorizontal: 10,
-                paddingVertical: 10,
+                alignItems: "center",
+                flexDirection: "row",
               }}
             >
-              {" "}
-              Mobile number{" "}
-            </Text>
+              <Icon6
+                name={icon18}
+                size={30}
+                color={main_color}
+                style={{ width: "7%" }}
+              />
+              <Text
+                style={{
+                  fontSize: 16,
+                  // fontStyle: "italic",
+                  // fontWeight: "bold",
+                  marginHorizontal: 10,
+                  paddingVertical: 10,
+                }}
+              >
+                {" "}
+                Mobile number{" "}
+              </Text>
+            </View>
             <TextInput
               style={styles.inp}
               defaultValue={doctor_phone}
@@ -1122,7 +1166,23 @@ const Info = ({ navigation }) => {
             ) : (
               <></>
             )}
-            <Button onPress={()=>logout()} title="Log Out"/>
+            <TouchableOpacity
+              style={{ alignItems: "center" }}
+              onPress={() => logout()}
+            >
+              <Text
+                style={{
+                  backgroundColor: "#288759",
+                  paddingHorizontal: 20,
+                  paddingVertical: 10,
+                  color: "white",
+                  margin: 20,
+                }}
+              >
+                {" "}
+                Log out
+              </Text>
+            </TouchableOpacity>
           </View>
         ) : page === "About the Doctor" ? (
           <View>
@@ -1150,30 +1210,242 @@ const Info = ({ navigation }) => {
                 About the Doctor{" "}
               </Text>
             </View>
-            <Text
-              style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              About the Doctor{" "}
-            </Text>
             <TextInput
-              style={[styles.inp , {height : height }  ] }
+              style={[styles.inp, { height: height }]}
               defaultValue={about_the_doctor}
               multiline
               onContentSizeChange={(event) =>
                 setHeight(event.nativeEvent.contentSize.height)
               }
               onChangeText={setAbout_theDoctor}
-              numberOfLines = {10}
+              numberOfLines={10}
               maxLength={250}
             />
-            <Text style = {{alignSelf : "flex-end" , marginHorizontal : 30}}>{about_the_doctor.length} / 250</Text>
+            <Text style={{ alignSelf: "flex-end", marginHorizontal: 30 }}>
+              {about_the_doctor.length} / 250
+            </Text>
+          </View>
+        ) : page === "Clinic Name and Number" ? (
+          <View>
+            <View
+              style={{
+                flexDirection: "row",
+                paddingVertical: 15,
+                marginVertical: 5,
+              }}
+            >
+              <Icon2
+                name={icon7}
+                size={25}
+                color="#288759"
+                style={{ width: "5%", marginLeft: 5 }}
+              />
+              <Text
+                style={{
+                  color: "black",
+                  paddingHorizontal: 5,
+                  width: "85%",
+                }}
+              >
+                {" "}
+                Basic Clinic Information{" "}
+              </Text>
+            </View>
+            <Text
+              style={{
+                fontSize: 16,
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              Clinic Name{" "}
+            </Text>
+            <TextInput
+              style={styles.inp}
+              defaultValue={nameClinic}
+              onChangeText={setNameClinic}
+            />
+
+            <Text
+              style={{
+                fontSize: 16,
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              Clinic Phone number{" "}
+            </Text>
+            <TextInput
+              style={styles.inp}
+              keyboardType="phone-pad"
+              defaultValue={numberClinic}
+              onChangeText={setNumberClinic}
+            />
+          </View>
+        ) : page === "Exmination and Follow-up" ? (
+          <View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 10,
+                marginHorizontal: 15,
+              }}
+            >
+              <Icon4
+                name={icon11}
+                size={25}
+                color={main_color}
+                style={{ width: "7%" }}
+              />
+              <Text
+                style={{
+                  color: "black",
+                  paddingHorizontal: 5,
+                  width: "85%",
+                }}
+              >
+                {" "}
+                Exmination{" "}
+              </Text>
+            </View>
+            <Text
+              style={{
+                fontSize: 16,
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              Exmination Fees (EGP){" "}
+            </Text>
+            <TextInput
+              keyboardType="phone-pad"
+              style={styles.inp}
+              defaultValue={exmain + ""}
+              onChangeText={setExmain}
+            />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 30,
+                marginBottom: 5,
+                marginHorizontal: 15,
+              }}
+            >
+              <Icon4
+                name={icon11}
+                size={25}
+                color={main_color}
+                style={{ width: "7%" }}
+              />
+              <Text
+                style={{
+                  color: "black",
+                  paddingHorizontal: 5,
+                  width: "85%",
+                }}
+              >
+                {" "}
+                Follow-up{" "}
+              </Text>
+            </View>
+            <Text
+              style={{
+                fontSize: 16,
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              Follow-up Fees (EGP){" "}
+            </Text>
+            <TextInput
+              keyboardType="phone-pad"
+              style={styles.inp}
+              defaultValue={follow_up + ""}
+              onChangeText={setFollow_up}
+            />
+            <Text
+              style={{
+                fontSize: 16,
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              Duration (Days){" "}
+            </Text>
+            <TextInput
+              keyboardType="phone-pad"
+              style={styles.inp}
+              defaultValue={duration + ""}
+              onChangeText={setDuration}
+            />
+          </View>
+        ) : page === "Assistant Name and Number" ? (
+          <View>
+            <View
+              style={{
+                flexDirection: "row",
+                paddingVertical: 15,
+                marginHorizontal : 10, 
+                alignItems : "center",
+                marginVertical: 5,
+              }}
+            >
+              <Icon4
+                name={icon19}
+                size={25}
+                color="#288759"
+                style={{ width: "5%", marginLeft: 5 }}
+              />
+              <Text
+                style={{
+                  color: "black",
+                  paddingHorizontal: 5,
+                  width: "85%",
+                }}
+              >
+                {" "}
+                Basic Assistant Information{" "}
+              </Text>
+            </View>
+            <Text
+              style={{
+                fontSize: 16,
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              Assistant Name{" "}
+            </Text>
+            <TextInput
+              style={styles.inp}
+              defaultValue={nameAssistant}
+              onChangeText={setNameAssistant}
+            />
+
+            <Text
+              style={{
+                fontSize: 16,
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              Assistant number{" "}
+            </Text>
+            <TextInput
+              style={styles.inp}
+              keyboardType="phone-pad"
+              defaultValue={numberAssistant}
+              onChangeText={setNumberAssistant}
+            />
           </View>
         ) : (
           <></>
@@ -1234,3 +1506,4 @@ const styles = StyleSheet.create({
 });
 
 export default Info;
+// 0100220620059

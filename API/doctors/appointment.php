@@ -9,7 +9,6 @@ $users_id = $obj['users_id'];
 $doctor_id = $obj['doctor_id'];
 $date = $obj['date'];
 $time = $obj['time'];
-// $created_at = $obj['created_at'];
 // validation
 $stmt = $con->prepare("INSERT INTO `appointment`(`users_id`, `doctor_id`, `date`, `time`,`time_now`, `date_now`) VALUES (?,?,?,?,NOW(),NOW())");
 $stmt->execute(array($users_id, $doctor_id, $date, $time));
