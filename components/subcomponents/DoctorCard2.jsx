@@ -37,10 +37,10 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   function fetch(){
     var timeList1 = getTimeList(doctor.start, doctor.end);
     getAppointment_by_doc_id(doctor.id, new Date().toDateString()).then((res) => {
-      res.map((e) => {
+      res.status != "failed" ? res.map((e) => {
         timeList1 = timeList1.filter(ele => ele !== e.time.toString())
-      })
-      setTimeList(timeList1)
+      }) : setTimeList(timeList1);
+      setTimeList(timeList1);
     }
     )
   }
