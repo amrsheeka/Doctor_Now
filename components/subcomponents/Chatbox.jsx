@@ -12,7 +12,7 @@ import {
   StyleSheet,
   FlatList,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { db } from "../../db/Config";
@@ -31,9 +31,12 @@ import {
 import { getFirestore } from "firebase/firestore";
 import CurrentUser from "../consts/CurrentUser";
 import app from "../../db/Config";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Modal } from "react-native";
+import ImageViewer from "react-native-image-zoom-viewer";
 export default function Chatbox({ navigation, route }) {
   let filterd = route.params.item;
-  console.log("filterd", filterd.chat);
+  //console.log("filterd", filterd.chat);
 
   const [chat, setChat] = useState([]);
   const [message, setMessage] = useState("");
@@ -145,26 +148,51 @@ export default function Chatbox({ navigation, route }) {
     }
   };
   const renderMessage = ({ item }) => {
-    return (
-      <View
-        style={[
-          styles.messageContainer,
-          isSenderr(item)
-            ? styles.senderMessageContainer
-            : styles.receiverMessageContainer,
-        ]}
-      >
-        <Text
+    if (item.image != null) {
+      console.log(item.image);
+      return (
+        <View
           style={[
-            styles.message,
-            item.isSender ? styles.senderMessage : styles.receiverMessage,
+            styles.messageContainer,
+            isSenderr(item)
+              ? styles.senderMessageContainer
+              : styles.receiverMessageContainer,
           ]}
         >
-          {item.text}
-        </Text>
-        <Text style={styles.date}>{item.createdAt.toLocaleString()}</Text>
-      </View>
-    );
+          {/* <Modal visible={true} transparent={true}>
+            <ImageViewer imageUrls={item.image} />
+          </Modal> */}
+          <Image source={{ uri: item.image }} style={styles.imageeee} />
+
+          <Text style={styles.date}>{item.createdAt.toLocaleString()}</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View
+          style={[
+            styles.messageContainer,
+            isSenderr(item)
+              ? styles.senderMessageContainer
+              : styles.receiverMessageContainer,
+          ]}
+        >
+          <Text
+            style={[
+              styles.message,
+              item.isSender ? styles.senderMessage : styles.receiverMessage,
+            ]}
+          >
+            {item.text}
+          </Text>
+          <Text style={styles.date}>{item.createdAt.toLocaleString()}</Text>
+        </View>
+      );
+    }
+  };
+
+  const photopage = () => {
+    navigation.navigate("Chatbox_photo", { filterd });
   };
   return (
     <View style={styles.container}>
@@ -176,27 +204,32 @@ export default function Chatbox({ navigation, route }) {
        filterd.chat
        local
       */}
-      {
-        hh[0]?
+      {hh[0] ? (
         <FlatList
-        data={hh[0].chat}
-        renderItem={renderMessage}
-        ListEmptyComponent={() => {
-          return (
-            <View style={{flex:1,justifyContent:"center"}}>
-              <Image style={{ height: "100%", width: "100%",alignItems:"center" }} source={require("../assets/empty.png")} />
-            </View>
-          );
-        }}
-        keyExtractor={(item, index) => index.toString()}
-        style={styles.messages}
-      />:(
+          data={hh[0].chat}
+          renderItem={renderMessage}
+          ListEmptyComponent={() => {
+            return (
+              <View style={{ flex: 1, justifyContent: "center" }}>
+                <Image
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    alignItems: "center",
+                  }}
+                  source={require("../assets/empty.png")}
+                />
+              </View>
+            );
+          }}
+          keyExtractor={(item, index) => index.toString()}
+          style={styles.messages}
+        />
+      ) : (
         <View style={{ padding: "18%" }}>
-            <ActivityIndicator size={100} color="#00ff00" />
-          </View>
-      )
-      }
-      
+          <ActivityIndicator size={100} color="#00ff00" />
+        </View>
+      )}
 
       <View style={styles.inputContainer}>
         <TextInput
@@ -204,7 +237,9 @@ export default function Chatbox({ navigation, route }) {
           placeholder={"Type a message "}
           onChangeText={(text) => setMessage(text)}
         />
-
+        <TouchableOpacity onPress={photopage}>
+          <MaterialIcons name="add-photo-alternate" size={30} color="black" />
+        </TouchableOpacity>
         <TouchableOpacity style={styles.sendButton} onPress={onSend}>
           <AntDesign name="rocket1" size={24} color="#fff" />
         </TouchableOpacity>
@@ -293,5 +328,9 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     margin: 10,
+  },
+  imageeee: {
+    width: 70,
+    height: 70,
   },
 });

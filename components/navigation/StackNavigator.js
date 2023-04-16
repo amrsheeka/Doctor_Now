@@ -31,6 +31,7 @@ import Info from "../Doctor_Page/info";
 import MapScreen from "../screens/MapScreen";
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
 import Update_patient from "../subcomponents/Update_patient";
+import Chatbox_photo from "../subcomponents/Chatbox_photo";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -110,7 +111,6 @@ const Homefunc = () => {
           // headerShown: false,
           // tabBarVisible: false,
           tabBarButton: () => null,
-          
         }}
       />
       <Tab.Screen
@@ -142,6 +142,17 @@ const Homefunc = () => {
           tabBarButton: () => null,
         }}
       />
+
+      <Stack.Screen
+        name="Chatbox_photo"
+        component={Chatbox_photo}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+
       <Tab.Screen
         name="Doctorbage"
         component={Doctorbage}
@@ -172,7 +183,7 @@ const Homefunc = () => {
           headerTitle: () => null,
         }}
       />
-       
+
       <Stack.Screen
         name="Userpage"
         component={Userpage}
@@ -183,7 +194,7 @@ const Homefunc = () => {
           headerTitle: () => null,
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="Payment"
         component={Payment}
         options={{
@@ -201,7 +212,6 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
-    
     </Tab.Navigator>
   );
 };
@@ -317,8 +327,12 @@ const DoctorStackNavigator = () => {
         component={Info}
         options={{ headerShown: false }}
       />
-    
     </Stack.Navigator>
   );
 };
-export { StackNavigator, StackNavigator2, AdminStackNavigator, DoctorStackNavigator };
+export {
+  StackNavigator,
+  StackNavigator2,
+  AdminStackNavigator,
+  DoctorStackNavigator,
+};
