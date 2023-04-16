@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DoctorCard from "../subcomponents/DoctorCard";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import { getCurrentUser } from "../../database/Users";
 import * as Location from 'expo-location';
@@ -97,17 +97,29 @@ const AllDoctors = ({ navigation, route }) => {
   if (all === "all") {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.heading}>All Doctors</Text>
+         <View style={styles.header}>
+        <View  style={styles.Go_Back1}>
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <View style={styles.Go_Back}>
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </View>
+          </TouchableOpacity>
         </View>
+        <View >
+        <Text style={styles.heading}>All Doctors</Text>
+        </View>
+      </View>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          {/* <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.xx}>
 
               <Ionicons name="arrow-back" size={24} color="black" />
               <Text>back</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <View style ={{flexDirection:"row",flex:3}}>
+
+          </View>
           <View style={styles.searchContainer}>
             <Ionicons name="search" size={24} color="gray" style={styles.searchIcon} />
             <TextInput
@@ -118,17 +130,26 @@ const AllDoctors = ({ navigation, route }) => {
               placeholderTextColor="gray"
             />
           </View>
+         
         </View>
-        <View style ={{flexDirection:"row"}}>
-          {
+        <View style ={{flexDirection:"row" }}>
+                
+        {
             
-              reload?
-                <ActivityIndicator size={25} color="#00ff00" />
-                :<></>
-            
-          }
-                  <Button onPress={() => { fetchLocation() }} title="Nearest" />
+            reload?
+              <ActivityIndicator size={20} color="#00ff00" />
+              :<></>
+          
+        }
+        <TouchableOpacity onPress={() => { fetchLocation() }} title="Nearest" style={styles.near}>
+        <View style={styles.smallicon}>
+        <MaterialCommunityIcons name="near-me" size={20} color="black" style={styles.nearIcon} />
+        <Text style={{fontSize:20}}>Nearest</Text>
+        </View>
+          </TouchableOpacity>
+          {/* <View > */}
           <View style={{ height: 50, width: 200 }}>
+
             <Picker
               selectedValue={selectedValue}
               style={{ height: 50, width: 250 }}
@@ -254,19 +275,49 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
+    paddingVertical:20,
+
   },
   header: {
-    backgroundColor: "#fff",
+    flexDirection:"row",
     width: "100%",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     paddingVertical: 20,
-    // flexDirection: "row",
+    // marginBottom: 20,
+    
+
   },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "black",
+    
+
   },
+  
+  Go_Back: {
+    // marginTop:15,
+    // // width:"10%",
+    // justifyContent: "flex-start",
+    // justifyContent: "flex-start",
+    width:"10%",
+    // left:1
+    },
+    Go_Back1: {
+      // marginTop:15,
+      width:"35%",
+      // justifyContent: "flex-start",
+      // justifyContent: "flex-start",
+  
+      },
+      near: {
+        // backgroundColor: "gray",
+        // borderRadius: 8,
+        // borderColor:"gray",
+        // borderWidth:1,
+        height:40,
+        },
   subHeading: {
     fontSize: 18,
     color: "#fff",
@@ -304,10 +355,26 @@ const styles = StyleSheet.create({
   searchIcon: {
     marginRight: 10,
   },
+  nearIcon: {
+    margin: 5,
+  },
   searchInput: {
     fontSize: 16,
     color: "black",
+    width:"90%"
   },
+  smallicon: {
+    backgroundColor: "gray",
+        borderRadius: 8,
+        borderColor:"gray",
+        borderWidth:1,
+        height:30,
+        flexDirection:"row",
+        // height: 50,
+        margin: 12,
+        borderRadius: 10,
+        marginBottom: 10,
+   },
 });
 
 export default AllDoctors;

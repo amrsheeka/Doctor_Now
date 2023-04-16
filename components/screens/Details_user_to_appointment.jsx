@@ -6,6 +6,7 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { KeyboardAvoidingView } from "react-native";
@@ -53,6 +54,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
       <View style={styles.header}>
         <Text style={styles.heading}>Appointment</Text>
       </View>
+      <ScrollView>
       <View>
         <Text style={styles.text}>Full Name</Text>
         <TextInput
@@ -108,6 +110,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
           </View>
         </KeyboardAvoidingView>
       </View>
+      </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.button}
