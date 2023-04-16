@@ -9,7 +9,7 @@ const Update_patient=({navigation,route})=> {
     const [gender1, setGender] = useState("")
     const [notes1, setNotes] = useState("")
     useEffect(() => {
-        console.log(route.params)
+        //console.log(route.params)
         setName_patient(route.params.name_patient)
         setGender(route.params.gender)
         setNotes(route.params.notes)
