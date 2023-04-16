@@ -27,6 +27,7 @@ if ($count > 0) {
     $_SESSION['name'] = $users['name'];
     $_SESSION['email'] = $users['email'];
     $_SESSION['is_admin'] = $users['is_admin'];
+    $_SESSION['is_doctor'] = $users['is_doctor'];
     $_SESSION['phone'] = $users['phone'];
     $_SESSION['address'] = $users['address'];
     $_SESSION['address_2'] = $users['address_2'];
