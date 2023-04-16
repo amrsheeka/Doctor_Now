@@ -13,6 +13,5 @@ $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
 if ($count > 0) {
     echo json_encode(array("status" => "success"));
-    // var_dump($users);
 } else
     echo json_encode(array("status" => "failed"));
