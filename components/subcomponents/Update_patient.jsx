@@ -18,6 +18,7 @@ const Update_patient=({navigation,route})=> {
       //write y 3m 3sam
         navigation.navigate("Appointment")
     }
+    
     return (
         <View style={{ flex: 1,justifyContent:"center",alignItems:"center",padding:20 }}>
             <View style={styles.inputContainer}>
@@ -57,6 +58,7 @@ const Update_patient=({navigation,route})=> {
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     inputContainer: {
