@@ -7,15 +7,14 @@ import { AppContext } from "../consts/AppContext";
 import { getAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 function Doc_card_appointment({navigation, image, date, time, name_patient, doc_name, gender, notes, date_now, specialization1,doctor_id,users_id}){
-  console.log(image);
   const {appointments, setAppointments} = useContext(AppContext);
   let obj = { image:image, date: date, time: time, name_patient: name_patient, doc_name: doc_name, gender: gender, notes: notes, date_now: date_now, specialization1: specialization1,doctor_id:doctor_id,users_id:users_id }
   let id = CurrentUser.user.id;
   const Delete=async ()=>(
   await deleteAppointment(users_id,doctor_id).then((res)=>{
-        console.log("its ok");
-          getAppointment(id).then((res) => {
-          setAppointments(res);
+         console.log("its ok");
+            getAppointment(id).then((res) => {
+              res.status != "failed" ? setAppointments(res) : setAppointments([]) ;
         })
       })
   )
