@@ -12,11 +12,10 @@ import CurrentUser from "./components/consts/CurrentUser";
 import { getDoctors } from "./database/Doctors";
 import { getCurrentUser } from "./database/Users";
 import Doctor from "./components/consts/Doctor";
-import { AppProvider } from "./components/consts/AppContext";
-
 export default function Main() {
   const [currentUser, setCurrentUser] = useState(null);
   const [doctors, setDoctors] = useState([]);
+  
   useEffect(() => {
     async function fetchUser() {
       const user = await getCurrentUser();

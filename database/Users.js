@@ -78,9 +78,9 @@ const logout = async () => {
 
 }
 const getCurrentUser = async () => {
-
   const res = await axios.get(`${Ip.ip}/API/Auth/Login.php`);
   if (res.data != "") {
+    
     CurrentUser.user = res.data;
     return res.data;
   } else {
@@ -174,6 +174,21 @@ const getAppointment = async (users_id) => {
       console.log(error);
     });
 }
+const getAppointment_by_doc_id = async (doctor_id,date) => {
+  return axios.post(`${Ip.ip}/API/doctors/getAppointmentsby_doc_id.php`, {
+    doctor_id: doctor_id,
+    date:date
+  })
+    .then(function (response) {
+      console.log(response.date)
+
+      return response.data;
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
 const deleteAppointment = async (users_id, doctor_id) => {
   const res = await axios.post(`${Ip.ip}/API/doctors/del_appointment.php`, {
     users_id: users_id,
@@ -186,4 +201,4 @@ const deleteAppointment = async (users_id, doctor_id) => {
       console.log(error);
     });
 };
-export { sighnup, login, logout, getAppointment, getCurrentUser, insertFavourite, getFavourite, getinFavourite, deleteFavourite, insertAppointment, deleteAppointment };
+export { sighnup, login, logout, getAppointment, getCurrentUser, insertFavourite, getFavourite, getinFavourite, deleteFavourite, insertAppointment, deleteAppointment, getAppointment_by_doc_id };

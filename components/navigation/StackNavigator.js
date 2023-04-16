@@ -27,9 +27,8 @@ import AdminHome from "../admin/AdminHome";
 import AddDoctor from "../admin/AddDoctor";
 import AppointmentList from "../admin/AppointmentList";
 import Sign_UP_2th_Screen from "../screens/Sign_UP_2th_Screen";
-import Info from "../Doctor_Page/Info";
+import Info from "../Doctor_Page/info";
 import MapScreen from "../screens/MapScreen";
-
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
 import Update_patient from "../subcomponents/Update_patient";
 const Tab = createBottomTabNavigator();

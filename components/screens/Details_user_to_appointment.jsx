@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -10,28 +10,41 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { KeyboardAvoidingView } from "react-native";
 import { Button } from "react-native";
-import { insertAppointment } from "../../database/Users";
+import { getAppointment_by_doc_id, insertAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { AppContext } from "../consts/AppContext";
 import { getAppointment } from "../../database/Users";
+import getTimeList from "../../database/getTimeList";
 const Details_user_to_appointment = ({ navigation, route }) => {
   const [text, onChangeText] = useState("");
-  const {appointments, setAppointments} = useContext(AppContext);
+  const { appointments, setAppointments } = useContext(AppContext);
+  const { timeList, setTimeList } = useContext(AppContext)
   const [text2, onChangeText2] = useState("");
-  const [age,setAge]= useState("");
+  const [age, setAge] = useState("");
   const [gender, setGender] = useState("Unknown");
-  let doc=route.params.item
+  let doc = route.params.item
   let id = CurrentUser.user.id;
   const handleInsertAppointment = async () => {
     console.log(doc)
-    await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2, doc.name, doc.image,doc.specialization1).then(
-      (res)=>{
+    await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2, doc.name, doc.image, doc.specialization1).then(
+      (res) => {
+        
         console.log("its ok");
         getAppointment(id).then((res) => {
           setAppointments(res);
         })
-     }
-    ) 
+        var timeList1 = getTimeList(doc.start, doc.end);
+        getAppointment_by_doc_id(doc.id, new Date().toDateString()).then((res) => {
+          console.log(res)
+          res.map((e) => {
+            timeList1 = timeList1.filter(ele => ele !== e.time.toString())
+          })
+          
+          setTimeList(timeList1)
+        }
+        )
+      }
+    )
     // console.log(CurrentUser.user.age)
   }
 
@@ -98,9 +111,9 @@ const Details_user_to_appointment = ({ navigation, route }) => {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.button}
-          
-          
-          onPress={() => handleInsertAppointment().then(navigation.navigate("Thk",{doc}))}
+
+
+          onPress={() => handleInsertAppointment().then(navigation.navigate("Thk", { doc }))}
         >
           <Text style={styles.buttonText}>NEXT</Text>
         </TouchableOpacity>

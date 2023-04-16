@@ -7,13 +7,15 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DoctorCard from "../subcomponents/DoctorCard";
 import { Ionicons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import { getCurrentUser } from "../../database/Users";
-
+import * as Location from 'expo-location';
+import { Button } from "react-native";
 const AllDoctors = ({ navigation, route }) => {
   const filterd = route.params.filteritem;
   const all = route.params.all;
@@ -21,6 +23,52 @@ const AllDoctors = ({ navigation, route }) => {
   const [selectedValue, setSelectedValue] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [reload, setReload] = useState(false); // add reload state
+
+  async function getlocation() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      // handle permission denied
+
+    } else {
+      setReload(true);
+      let location = await Location.getCurrentPositionAsync({});
+      setLatitude(location.coords.latitude);
+      setLongitude(location.coords.longitude);
+    }
+  }
+
+  async function fetchLocation() {
+    await getlocation().then(
+      () => {
+        console.log(latitude);
+        if (latitude != null && longitude != null) {
+          
+          // Get the user's current location coordinates
+          const userLatitude = latitude;
+          const userLongitude = longitude;
+
+          // Calculate the distance from each doctor's location to the user's location
+          for (let i = 0; i < ff.length; i++) {
+            const { x_coordnate, y_coordnate } = ff[i];
+            const distance = Math.sqrt(
+              Math.pow(x_coordnate - userLatitude, 2) + Math.pow(y_coordnate - userLongitude, 2)
+            );
+            ff[i] = { ...ff[i], distance };
+          }
+
+          // Sort the doctors by distance in ascending order
+          ff.sort((a, b) => a.distance - b.distance);
+          setReload(false);
+           // update reload state to trigger re-render
+        }
+      }
+    )
+
+
+  }
 
   useEffect(() => {
     async function fetchUser() {
@@ -28,7 +76,7 @@ const AllDoctors = ({ navigation, route }) => {
       setCurrentUser(user);
     }
     fetchUser();
-  }, []);
+  }, []); // add reload state to the dependency array
 
   const renderDoctor = ({ item }) => (
     <DoctorCard doctor={item} user={currentUser} navigation={navigation} />
@@ -52,50 +100,62 @@ const AllDoctors = ({ navigation, route }) => {
         <View style={styles.header}>
           <Text style={styles.heading}>All Doctors</Text>
         </View>
-        <View style={{flexDirection:"row"}}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <View style={styles.xx}>
-            <Ionicons name="arrow-back" size={24} color="black" />
-            <Text>back</Text>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.searchContainer}>
-          <Ionicons name="search" size={24} color="gray" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search doctors by name"
-            value={searchQuery}
-            onChangeText={(text) => setSearchQuery(text)}
-            placeholderTextColor="gray"
-          />
-        </View>
-        </View>
-        <View style={{ height: 50, width: 250 }}>
-          <Picker
-            selectedValue={selectedValue}
-            style={{ height: 50, width: 250 }}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedValue(itemValue)
-            }
-          >
-            <Picker.Item label="Select Specialization" value="all" />
-            <Picker.Item label="Pulmonologist" value="Pulmonologist" />
-            <Picker.Item label="Psychiatrist" value="Psychiatrist" />
-            <Picker.Item label="Internist" value="Internist" />
-            <Picker.Item label="Hematologist" value="Hematologist" />
-            <Picker.Item label="Plastic Surgeon" value="Plastic Surgeon" />
-            <Picker.Item label="Cardiologist" value="Cardiologist" />
-            <Picker.Item label="Neurosurgeon" value="Neurosurgeon" />
-            <Picker.Item label="Endocrinologist" value="Endocrinologist" />
-            <Picker.Item label="ENT Doctor" value="ENT Doctor" />
-            <Picker.Item
-              label="Infertility Specialist"
-              value="Infertility Specialist"
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <View style={styles.xx}>
+
+              <Ionicons name="arrow-back" size={24} color="black" />
+              <Text>back</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={styles.searchContainer}>
+            <Ionicons name="search" size={24} color="gray" style={styles.searchIcon} />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search doctors by name"
+              value={searchQuery}
+              onChangeText={(text) => setSearchQuery(text)}
+              placeholderTextColor="gray"
             />
-            <Picker.Item label="Andrologist" value="Andrologist" />
-          </Picker>
+          </View>
         </View>
-        
+        <View style ={{flexDirection:"row"}}>
+          {
+            
+              reload?
+                <ActivityIndicator size={25} color="#00ff00" />
+                :<></>
+            
+          }
+                  <Button onPress={() => { fetchLocation() }} title="Nearest" />
+          <View style={{ height: 50, width: 200 }}>
+            <Picker
+              selectedValue={selectedValue}
+              style={{ height: 50, width: 250 }}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedValue(itemValue)
+              }
+            >
+              <Picker.Item label="Select Specialization" value="all" />
+              <Picker.Item label="Pulmonologist" value="Pulmonologist" />
+              <Picker.Item label="Psychiatrist" value="Psychiatrist" />
+              <Picker.Item label="Internist" value="Internist" />
+              <Picker.Item label="Hematologist" value="Hematologist" />
+              <Picker.Item label="Plastic Surgeon" value="Plastic Surgeon" />
+              <Picker.Item label="Cardiologist" value="Cardiologist" />
+              <Picker.Item label="Neurosurgeon" value="Neurosurgeon" />
+              <Picker.Item label="Endocrinologist" value="Endocrinologist" />
+              <Picker.Item label="ENT Doctor" value="ENT Doctor" />
+              <Picker.Item
+                label="Infertility Specialist"
+                value="Infertility Specialist"
+              />
+              <Picker.Item label="Andrologist" value="Andrologist" />
+            </Picker>
+          </View>
+        </View>
+
+
         <FlatList
           data={ff}
           renderItem={renderDoctor}

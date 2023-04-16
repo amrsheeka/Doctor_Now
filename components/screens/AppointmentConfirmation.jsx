@@ -1,4 +1,6 @@
-import React from "react";
+
+
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -29,17 +31,43 @@ import { app } from "../../db/Config";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import getTimeList from "../../database/getTimeList";
+import { getAppointment_by_doc_id } from "../../database/Users";
+import { useContext } from "react";
+import { AppContext } from "../consts/AppContext";
+
 const AppointmentConfirmation = ({ navigation, route }) => {
   let item = route.params.doctor;
+  const { timeList, setTimeList } = useContext(AppContext)
   const [Time, setTime] = useState("");
   const [date, setDate] = useState(new Date().toDateString());
   const [showPicker, setShowPicker] = useState(false);
-
   let image = item.image;
   const onDateChange = (event, newDate) => {
     setShowPicker(false);
     setDate(newDate.toDateString());
+    var timeList1 = getTimeList(item.start, item.end);
+    getAppointment_by_doc_id(item.id, newDate.toDateString()).then((res) => {
+      res.status != "failed" ? res.map((e) => {
+        timeList1 = timeList1.filter(ele => ele !== e.time.toString())
+      }) : setTimeList(timeList1);
+      setTimeList(timeList1);
+    }
+
+    )
+    
+
   };
+  useEffect(() => {
+    var timeList1 = getTimeList(item.start, item.end);
+    getAppointment_by_doc_id(item.id,date).then((res) => {
+      res.status != "failed" ? res.map((e) => {
+        timeList1 = timeList1.filter(ele => ele !== e.time.toString())
+      }) : setTimeList(timeList1)
+  }
+    )
+    setTimeList(timeList1)
+  }, [])
 
   const openPicker = () => {
     setShowPicker(true);
@@ -47,9 +75,6 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   function addChat(Chat) {
     addDoc(collection(db, "chats"), Chat);
   }
-
-  //console.log(CurrentUser.user);
-
   const addNewChat = () => {
     addChat({
       user_id: CurrentUser.user.id,
@@ -100,7 +125,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         <Button
           color={"#73caa4"}
           title="Location"
-          onPress={()=>navigation.navigate("MapScreen", item.address)}
+          onPress={() => navigation.navigate("MapScreen", item.address)}
         />
         <View style={{}}>
           <Text style={styles.text3}>Working Hours</Text>
@@ -112,10 +137,9 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             mode="dropdown"
             style={styles.picker}
           >
-            <Picker.Item label="5:30 PM" value="5:30 PM" />
-            <Picker.Item label="7:30 PM" value="7:30 PM" />
-            <Picker.Item label="9:30 PM" value="9:30 PM" />
-            <Picker.Item label="10:30 PM" value="10:30 PM" />
+            {timeList.map((e, i) => (
+              <Picker.Item label={e} value={e} key={i} />
+            ))}
           </Picker>
         </View>
         <View style={{ flex: 3 }}>

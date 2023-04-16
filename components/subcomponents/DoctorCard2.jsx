@@ -2,13 +2,15 @@ import React, { memo, useEffect, useState,useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AppContext,AppProvider } from "../consts/AppContext";
-import { insertFavourite, deleteFavourite } from "../../database/Users";
+import { insertFavourite, deleteFavourite, getAppointment_by_doc_id } from "../../database/Users";
 import { getinFavourite } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { getFavourite } from "../../database/Users";
+import getTimeList from "../../database/getTimeList";
 const DoctorCard2 = ({ navigation, doctor, reload }) => {
   let image = doctor.image;
   const { favourite, setFavourite } = useContext(AppContext);
+  const { timeList, setTimeList } = useContext(AppContext)
   const [infav, setInfav] = useState(false);
   async function fetchDoctor() {
     const filt = await getFavourite(CurrentUser.user.id);
@@ -31,6 +33,16 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       console.log(err);
     }
 
+  }
+  function fetch(){
+    var timeList1 = getTimeList(doctor.start, doctor.end);
+    getAppointment_by_doc_id(doctor.id, new Date().toDateString()).then((res) => {
+      res.map((e) => {
+        timeList1 = timeList1.filter(ele => ele !== e.time.toString())
+      })
+      setTimeList(timeList1)
+    }
+    )
   }
   useEffect(() => {
     
@@ -80,7 +92,10 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
               style={styles.cardDoctor}>{doctor.title + "," + doctor.specialization1 + "," + doctor.specialization1}</Text>
           </View>
           <TouchableOpacity style={styles.cardButton}
-            onPress={() => navigation.navigate("AppointmentConfirmation", { doctor })}
+            onPress={() => {
+              fetch();
+              navigation.navigate("AppointmentConfirmation", { doctor })
+            }}
           >
             <Text style={styles.cardButtonText}>Make Appointment</Text>
           </TouchableOpacity>

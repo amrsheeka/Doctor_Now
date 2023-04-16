@@ -1,3 +1,4 @@
 let doctors=[];
+let filterdLocationDoctors=[];
 
-export default {doctors};
+export default {doctors,filterdLocationDoctors};
