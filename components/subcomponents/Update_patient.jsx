@@ -9,7 +9,7 @@ const Update_patient=({navigation,route})=> {
     const [gender1, setGender] = useState("")
     const [notes1, setNotes] = useState("")
     useEffect(() => {
-        console.log(route.params)
+        //console.log(route.params)
         setName_patient(route.params.name_patient)
         setGender(route.params.gender)
         setNotes(route.params.notes)
@@ -18,6 +18,7 @@ const Update_patient=({navigation,route})=> {
       //write y 3m 3sam
         navigation.navigate("Appointment")
     }
+    
     return (
         <View style={{ flex: 1,justifyContent:"center",alignItems:"center",padding:20 }}>
             <View style={styles.inputContainer}>
@@ -57,6 +58,7 @@ const Update_patient=({navigation,route})=> {
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     inputContainer: {

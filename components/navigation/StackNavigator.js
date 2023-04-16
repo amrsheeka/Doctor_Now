@@ -283,6 +283,13 @@ const StackNavigator = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="DoctorStackNavigator"
+        component={DoctorStackNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

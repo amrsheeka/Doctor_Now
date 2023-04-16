@@ -45,8 +45,8 @@ const Chat = ({ navigation }) => {
   useEffect(() => {
     async function fetchData() {
       await getChats();
-      console.log(chat);
-      console.log(CurrentUser.user);
+      //console.log(chat);
+      //console.log(CurrentUser.user);
     }
     fetchData();
   }, []);

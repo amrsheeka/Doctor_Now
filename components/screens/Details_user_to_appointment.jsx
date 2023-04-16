@@ -6,6 +6,7 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { KeyboardAvoidingView } from "react-native";
@@ -25,7 +26,6 @@ const Details_user_to_appointment = ({ navigation, route }) => {
   let doc = route.params.item
   let id = CurrentUser.user.id;
   const handleInsertAppointment = async () => {
-    console.log(doc)
     await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2, doc.name, doc.image, doc.specialization1).then(
       (res) => {
         
@@ -35,7 +35,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
         })
         var timeList1 = getTimeList(doc.start, doc.end);
         getAppointment_by_doc_id(doc.id, new Date().toDateString()).then((res) => {
-          console.log(res)
+          
           res.map((e) => {
             timeList1 = timeList1.filter(ele => ele !== e.time.toString())
           })
@@ -53,6 +53,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
       <View style={styles.header}>
         <Text style={styles.heading}>Appointment</Text>
       </View>
+      <ScrollView>
       <View>
         <Text style={styles.text}>Full Name</Text>
         <TextInput
@@ -108,6 +109,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
           </View>
         </KeyboardAvoidingView>
       </View>
+      </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.button}
