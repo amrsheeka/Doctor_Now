@@ -1,6 +1,6 @@
 <?php
-ini_set('session.cookie_lifetime', 86400);
-session_set_cookie_params(86400, '/', '', false, true);
+ini_set('session.cookie_lifetime', 0);
+session_set_cookie_params(0, '/', '', false, true);
 session_start();
 include "../Connection.php";
 header('Access-Control-Allow-Origin: *');
