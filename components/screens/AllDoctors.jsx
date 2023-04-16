@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DoctorCard from "../subcomponents/DoctorCard";
@@ -24,12 +25,15 @@ const AllDoctors = ({ navigation, route }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const [reload, setReload] = useState(false); // add reload state
+
   async function getlocation() {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       // handle permission denied
 
     } else {
+      setReload(true);
       let location = await Location.getCurrentPositionAsync({});
       setLatitude(location.coords.latitude);
       setLongitude(location.coords.longitude);
@@ -37,10 +41,11 @@ const AllDoctors = ({ navigation, route }) => {
   }
 
   async function fetchLocation() {
-    getlocation().then(
+    await getlocation().then(
       () => {
-        console.log(longitude);
+        console.log(latitude);
         if (latitude != null && longitude != null) {
+          
           // Get the user's current location coordinates
           const userLatitude = latitude;
           const userLongitude = longitude;
@@ -56,6 +61,8 @@ const AllDoctors = ({ navigation, route }) => {
 
           // Sort the doctors by distance in ascending order
           ff.sort((a, b) => a.distance - b.distance);
+          setReload(false);
+           // update reload state to trigger re-render
         }
       }
     )
@@ -69,7 +76,7 @@ const AllDoctors = ({ navigation, route }) => {
       setCurrentUser(user);
     }
     fetchUser();
-  }, []);
+  }, []); // add reload state to the dependency array
 
   const renderDoctor = ({ item }) => (
     <DoctorCard doctor={item} user={currentUser} navigation={navigation} />
@@ -96,6 +103,7 @@ const AllDoctors = ({ navigation, route }) => {
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.xx}>
+
               <Ionicons name="arrow-back" size={24} color="black" />
               <Text>back</Text>
             </View>
@@ -111,9 +119,16 @@ const AllDoctors = ({ navigation, route }) => {
             />
           </View>
         </View>
-        <View>
-          <Button onPress={() => { fetchLocation() }} title="Nearest" />
-          <View style={{ height: 50, width: 250 }}>
+        <View style ={{flexDirection:"row"}}>
+          {
+            
+              reload?
+                <ActivityIndicator size={25} color="#00ff00" />
+                :<></>
+            
+          }
+                  <Button onPress={() => { fetchLocation() }} title="Nearest" />
+          <View style={{ height: 50, width: 200 }}>
             <Picker
               selectedValue={selectedValue}
               style={{ height: 50, width: 250 }}
