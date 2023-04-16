@@ -1,10 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import { ScrollView } from "react-native";
-<<<<<<< HEAD
-import { View, Text, StyleSheet, ActivityIndicator ,TouchableOpacity} from "react-native";
-=======
-import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
->>>>>>> 2e3716410a43730716361e8b1afa01dee5d331a8
+import { View, Text, StyleSheet, ActivityIndicator, Image,TouchableOpacity } from "react-native";
+// import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
+
 import { getAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
@@ -24,11 +22,7 @@ const Appointment = ({ navigation }) => {
   return (
 
     <View style={styles.container}>
-<<<<<<< HEAD
-        {/* <View style={styles.header}>
-          <Text style={styles.heading}>My Appointments</Text>
-        </View> */}
-        <View style={styles.header}>
+       <View style={styles.header}>
         <View  style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.navigate("Home")}>
             <View style={styles.Go_Back}>
@@ -39,19 +33,6 @@ const Appointment = ({ navigation }) => {
         <View >
         <Text style={styles.heading}>My Appointments</Text>
         </View>
-      </View>
-      <View style={{ flex: 10, flexDirection: "column" }}>
-        <ScrollView>
-          {
-            appointments.map((ele, idx) => {
-              return <Doc_card_appointment key={idx} navigation={navigation} date={ele.date} time={ele.time} name_patient={ele.name_patient} doc_name={ele.doc_name} gender={ele.gender} notes={ele.notes} date_now={ele.date_now} specialization1={ele.specialization1} image={ele.doc_image} doctor_id={ele.doctor_id} users_id={ele.users_id} />
-            })
-          }
-        </ScrollView>
-=======
-      <View style={styles.header}>
-        <Text style={styles.heading}>My Appointments</Text>
->>>>>>> 2e3716410a43730716361e8b1afa01dee5d331a8
       </View>
       {appointments.length !== 0 ?
         (
@@ -98,17 +79,11 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     width: "100%",
     alignItems: "center",
-<<<<<<< HEAD
     justifyContent: "flex-start",
-    paddingVertical: 20,
+    paddingVertical: 30,
     // marginBottom: 20,
     
 
-=======
-    justifyContent: "center",
-    paddingVertical: 30,
-    marginBottom: 20,
->>>>>>> 2e3716410a43730716361e8b1afa01dee5d331a8
   },
   heading: {
     fontSize: 24,
@@ -119,12 +94,18 @@ const styles = StyleSheet.create({
   },
   
   Go_Back: {
-    
+    // marginTop:15,
+    // // width:"10%",
+    // justifyContent: "flex-start",
+    // justifyContent: "flex-start",
     width:"10%",
+    // left:1
     },
     Go_Back1: {
+      // marginTop:15,
       width:"35%",
-    
+      // justifyContent: "flex-start",
+      // justifyContent: "flex-start",
   
       },
 });
