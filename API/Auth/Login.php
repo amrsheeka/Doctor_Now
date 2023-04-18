@@ -1,6 +1,6 @@
 <?php
-ini_set('session.cookie_lifetime', 86400);
-session_set_cookie_params(86400, '/', '', false, true);
+ini_set('session.cookie_lifetime', 0);
+session_set_cookie_params(0, '/', '', false, true);
 session_start();
 include "../Connection.php";
 header('Access-Control-Allow-Origin: *');
@@ -27,6 +27,7 @@ if ($count > 0) {
     $_SESSION['name'] = $users['name'];
     $_SESSION['email'] = $users['email'];
     $_SESSION['is_admin'] = $users['is_admin'];
+    $_SESSION['is_doctor'] = $users['is_doctor'];
     $_SESSION['phone'] = $users['phone'];
     $_SESSION['address'] = $users['address'];
     $_SESSION['address_2'] = $users['address_2'];

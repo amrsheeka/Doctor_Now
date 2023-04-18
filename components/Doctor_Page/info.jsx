@@ -1168,7 +1168,11 @@ const Info = ({ navigation }) => {
             )}
             <TouchableOpacity
               style={{ alignItems: "center" }}
-              onPress={() => logout()}
+              onPress={
+                () => logout().then(
+                  ()=>{navigation.navigate("LoginScreen")}
+                )
+              }
             >
               <Text
                 style={{

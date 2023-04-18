@@ -89,7 +89,16 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header1}>
+        <View  style={styles.Go_Back1}>
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <View style={styles.Go_Back}>
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View >
         <Text style={styles.heading}>Appointment</Text>
+        </View>
       </View>
       <View style={styles.header}>
         <Image
@@ -204,15 +213,34 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   header1: {
-    marginBottom: 10,
-    paddingTop: 20,
+    flexDirection:"row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingVertical: 30,
+    // marginBottom: 20,
+    
+
   },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
     color: "black",
-    textAlign: "center",
+    
+
   },
+  
+  Go_Back: {
+   
+    width:"10%",
+    // left:1
+    },
+    Go_Back1: {
+      // marginTop:15,
+      width:"35%",
+      
+  
+      },
   body: {
     flex: 1,
     flexDirection: "row",
