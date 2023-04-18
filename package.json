@@ -19,6 +19,7 @@
     "deprecated-react-native-prop-types": "^4.0.0",
     "expo": "~48.0.6",
     "expo-font": "~11.1.1",
+    "expo-location": "~15.1.1",
     "expo-status-bar": "~1.4.4",
     "firebase": "^9.19.1",
     "react": "18.2.0",
@@ -34,8 +35,7 @@
     "react-native-paper": "^5.6.0",
     "react-native-picker": "^4.3.7",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-web": "~0.18.10",
-    "expo-location": "~15.1.1"
+    "react-native-web": "~0.18.10"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
