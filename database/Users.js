@@ -1,7 +1,7 @@
 import Ip from "./Ip";
 import axios from "axios";
 import CurrentUser from "../components/consts/CurrentUser";
-const sighnup = async (name, email, password, phone, address, address2,age,gender, confirm) => {
+const sighnup = async (name, email, password, phone, address, address2, age, gender, confirm) => {
   return fetch(`${Ip.ip}/API/Auth/signup.php`, {
     method: "POST",
     //mode: "no-cors",
@@ -13,24 +13,24 @@ const sighnup = async (name, email, password, phone, address, address2,age,gende
       name: name,
       email: email,
       password: password,
-      phone: phone, 
+      phone: phone,
       address: address,
       address_2: address2,
       confirm: confirm,
-      age:age,
-      gender:gender
+      age: age,
+      gender: gender
     }),
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      
-      if(responseJson.status=="sucees"){
+
+      if (responseJson.status == "sucees") {
         console.log("err");
         login(email, password);
       }
       return responseJson.status;
     })
-    
+
     .catch((error) => {
       alert("This email already exist.");
       throw new Error(error);
@@ -56,7 +56,7 @@ const login = async (email, password) => {
         throw new Error("This email not exist");
       } else {
         CurrentUser.user = responseJson;
-        
+
       }
       console.log(responseJson);
     })
@@ -80,7 +80,7 @@ const logout = async () => {
 const getCurrentUser = async () => {
   const res = await axios.get(`${Ip.ip}/API/Auth/Login.php`);
   if (res.data != "") {
-    
+
     CurrentUser.user = res.data;
     return res.data;
   } else {
@@ -91,7 +91,7 @@ const getCurrentUser = async () => {
 const getFavourite = async (users_id) => {
 
   return axios.post(`${Ip.ip}/API/favorate/get.php`, {
-    users_id:users_id
+    users_id: users_id
   })
     .then(function (response) {
       return response.data;
@@ -100,11 +100,11 @@ const getFavourite = async (users_id) => {
       console.log(error);
     });
 }
-const getinFavourite = async (users_id,doctor_id) => {
+const getinFavourite = async (users_id, doctor_id) => {
 
   return axios.post(`${Ip.ip}/API/favorate/getinfav.php`, {
-    users_id:users_id,
-    doctor_id:doctor_id
+    users_id: users_id,
+    doctor_id: doctor_id
   })
     .then(function (response) {
       return response.data;
@@ -113,10 +113,10 @@ const getinFavourite = async (users_id,doctor_id) => {
       console.log(error);
     });
 }
-const insertFavourite = async (users_id,doctor_id) => {
+const insertFavourite = async (users_id, doctor_id) => {
   const res = await axios.post(`${Ip.ip}/API/favorate/insert.php`, {
-    users_id:users_id,
-    doctor_id:doctor_id
+    users_id: users_id,
+    doctor_id: doctor_id
   })
     .then(function (response) {
       console.log(response.data);
@@ -125,11 +125,11 @@ const insertFavourite = async (users_id,doctor_id) => {
       console.log(error);
     });
 };
-const deleteFavourite = async (users_id,doctor_id) => {
+const deleteFavourite = async (users_id, doctor_id) => {
   const res = await axios.post(`${Ip.ip}/API/favorate/delete.php`, {
-    users_id:users_id,
-    doctor_id:doctor_id
-    
+    users_id: users_id,
+    doctor_id: doctor_id
+
   })
     .then(function (response) {
       console.log(response.data);
@@ -139,19 +139,19 @@ const deleteFavourite = async (users_id,doctor_id) => {
     });
 };
 
-const insertAppointment = async(users_id, doctor_id, date, time, name_patient, age, gender, notes, doc_name, doc_image, specialization1) => {
+const insertAppointment = async (users_id, doctor_id, date, time, name_patient, age, gender, notes, doc_name, doc_image, specialization1) => {
   const res = await axios.post(`${Ip.ip}/API/doctors/InsertAppointment.php`, {
     users_id: users_id,
     doctor_id: doctor_id,
-    date:date,
-    time:time,
-    name_patient:name_patient,
-    age:age,
-    gender:gender,
-    notes:notes,
-    doc_name:doc_name,
-    doc_image:doc_image,
-    specialization1:specialization1
+    date: date,
+    time: time,
+    name_patient: name_patient,
+    age: age,
+    gender: gender,
+    notes: notes,
+    doc_name: doc_name,
+    doc_image: doc_image,
+    specialization1: specialization1
   })
     .then(function (response) {
       console.log(response.data);
@@ -168,16 +168,16 @@ const getAppointment = async (users_id) => {
       console.log(response.date)
 
       return response.data;
-      
+
     })
     .catch(function (error) {
       console.log(error);
     });
 }
-const getAppointment_by_doc_id = async (doctor_id,date) => {
+const getAppointment_by_doc_id = async (doctor_id, date) => {
   return axios.post(`${Ip.ip}/API/doctors/getAppointmentsby_doc_id.php`, {
     doctor_id: doctor_id,
-    date:date
+    date: date
   })
     .then(function (response) {
       console.log(response.date)
@@ -201,4 +201,22 @@ const deleteAppointment = async (users_id, doctor_id) => {
       console.log(error);
     });
 };
-export { sighnup, login, logout, getAppointment, getCurrentUser, insertFavourite, getFavourite, getinFavourite, deleteFavourite, insertAppointment, deleteAppointment, getAppointment_by_doc_id };
+const Update_Appointment = async (users_id, doctor_id,date,time, name_patient, gender, notes, age) => {
+  const res = await axios.post(`${Ip.ip}/API/doctors/Update_Appointment.php`, {
+    users_id: users_id,
+    doctor_id: doctor_id,
+    date: date,
+    time: time,
+    name_patient: name_patient,
+    gender: gender,
+    notes: notes,
+    age: age,
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+export { sighnup, login, logout, getAppointment, getCurrentUser, insertFavourite, getFavourite, getinFavourite, deleteFavourite, insertAppointment, deleteAppointment, getAppointment_by_doc_id, Update_Appointment };
