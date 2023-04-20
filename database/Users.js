@@ -213,6 +213,26 @@ const deleteAppointment = async (users_id, doctor_id) => {
       console.log(error);
     });
 };
+
+const Update_Appointment = async (users_id, doctor_id,date,time, name_patient, gender, notes, age) => {
+  const res = await axios.post(`${Ip.ip}/API/doctors/Update_Appointment.php`, {
+    users_id: users_id,
+    doctor_id: doctor_id,
+    date: date,
+    time: time,
+    name_patient: name_patient,
+    gender: gender,
+    notes: notes,
+    age: age,
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
 export {
   sighnup,
   login,
@@ -226,5 +246,6 @@ export {
   insertAppointment,
   deleteAppointment,
   getAppointment_by_doc_id,
-  getAllAppointment
+  getAllAppointment,
+  Update_Appointment,
 };
