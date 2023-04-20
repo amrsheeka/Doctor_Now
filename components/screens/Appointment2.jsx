@@ -80,6 +80,18 @@ const Appointment2 = ({ navigation ,route }) => {
             </View>
 
         </View>
+        <View style={{flexDirection:"row", gap:60}}>
+        <TouchableOpacity style={styles.cardButton}
+          onPress={() =>""}
+        >
+          <Text style={styles.cardButtonText}>Update </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.cardButton}
+          onPress={() => ""}
+        >
+          <Text style={styles.cardButtonText}>Decline </Text>
+        </TouchableOpacity>
+        </View>
         </View>
 
     </View>
@@ -163,7 +175,7 @@ const styles = StyleSheet.create({
     },
           bigblock:{
             flexDirection:"column",
-            gap:20
+            gap:15
           },
           cardTitle:{
             width:"30%",
@@ -192,7 +204,24 @@ const styles = StyleSheet.create({
             elevation: 5,
             paddingHorizontal:10,
             paddingVertical:5
-          }
+          },
+          cardButton: {
+            backgroundColor: "#288771",
+            padding: 8,
+            borderRadius: 5,
+            width: "30%",
+            marginTop: "5%",
+            marginHorizontal:"5%"
+        
+          },
+          cardButtonText: {
+            color: "#fff",
+            fontSize: 14,
+            fontWeight: "bold",
+            textAlign: "center",
+          }, inputContainer: {
+            width: "100%",
+          },
 });
 
 export default Appointment2;
