@@ -37,7 +37,50 @@ const Appointment2 = ({ navigation ,route }) => {
         <Text style={styles.heading}>My Appointments</Text>
         </View>
       </View>
+          <View style={styles.content}> 
+          <View style={styles.profile}>
+          <Image source={appointment.image ? { uri: appointment.image } : require("../assets/Herbal_Medicine_Male_Avatar.png")}
+        defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.photo} />
+               <Text style={styles.text}>{appointment.doc_name}</Text>
+          </View>
+          <View style={styles.bigblock}>
+        <Text style={styles.text2}>Patient Information</Text>
+        <View style={styles.block}>
+        <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>Patient Name:</Text>
+            <Text style={styles.cardTitle1}> {appointment.name_patient}</Text>
+        </View>
+        
+        <View style={styles.block}>
+            <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>Date: </Text>
+            <Text style={styles.cardTitle1}>{appointment.date}</Text>
+            </View>
           
+            <View style={styles.block}>
+            <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>Time:</Text>
+            <Text style={styles.cardTitle1}> {appointment.time}</Text>
+            </View>
+          
+            <View style={styles.block}>
+            <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>gender: </Text>
+            <Text style={styles.cardTitle1}>{appointment.gender}</Text>
+            </View>
+          
+            <View style={styles.block}>
+            <Text numberOfLines={5} ellipsizeMode='tail'
+            style={styles.cardTitle}>notes: </Text>
+            <Text style={styles.cardTitle1}>{appointment.notes}</Text>
+            </View>
+            <View style={styles.block}>
+            <Text style={styles.cardTitle}>create at:  </Text>
+            <Text style={styles.cardTitle1}>{appointment.date_now}</Text>
+            </View>
+
+        </View>
+        </View>
 
     </View>
   );
