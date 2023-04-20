@@ -219,29 +219,13 @@ const Homefunc = () => {
           headerShown: false,
           tabBarVisible: false,
           tabBarButton: () => null,
+          tabBarStyle: { display: "none" },
         }}
       />
     </Tab.Navigator>
   );
 };
-const StackNavigator2 = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Homefunc"
-        component={Homefunc}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="StackNavigator"
-        component={StackNavigator}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
-};
+
 const StackNavigator = () => {
   return (
     <Stack.Navigator>
@@ -339,7 +323,7 @@ const DoctorStackNavigator = () => {
 };
 export {
   StackNavigator,
-  StackNavigator2,
   AdminStackNavigator,
   DoctorStackNavigator,
+  Homefunc,
 };

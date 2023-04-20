@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, AppState } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-
 import {
   StackNavigator,
-  StackNavigator2,
+  Homefunc,
   AdminStackNavigator,
   DoctorStackNavigator,
 } from "./components/navigation/StackNavigator";
@@ -65,7 +64,7 @@ export default function Main() {
    else {
     return (
         <NavigationContainer>
-          <StackNavigator2 />
+          <Homefunc />
         </NavigationContainer>
     );
   }
