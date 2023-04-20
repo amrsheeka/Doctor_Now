@@ -6,7 +6,7 @@ import { deleteAppointment, getAllAppointment } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 import { getAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
-function Doc_card_appointment({ navigation, image, date, time, name_patient, doc_name, gender, notes, date_now, specialization1, doctor_id, users_id }) {
+function All_details_to_appointment({ navigation, image, date, time, name_patient, doc_name, gender, notes, date_now, specialization1, doctor_id, users_id }) {
   const { appointments, setAppointments } = useContext(AppContext);
   let obj = { image: image, date: date, time: time, name_patient: name_patient, doc_name: doc_name, gender: gender, notes: notes, date_now: date_now, specialization1: specialization1, doctor_id: doctor_id, users_id: users_id }
   let id = CurrentUser.user.id;
@@ -25,7 +25,7 @@ function Doc_card_appointment({ navigation, image, date, time, name_patient, doc
     })
   )
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Appointment2",{obj})}>
+    <TouchableOpacity>
     <View style={styles.card}>
       <Image source={image ? { uri: image } : require("../assets/Herbal_Medicine_Male_Avatar.png")}
         defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
@@ -33,18 +33,18 @@ function Doc_card_appointment({ navigation, image, date, time, name_patient, doc
         <View style={styles.cardContent1}>
           <Text numberOfLines={2} ellipsizeMode='tail'
             style={styles.cardTitle}>Doctor: {doc_name}</Text>
-          {/* <Text numberOfLines={3} ellipsizeMode='tail'
-            style={styles.cardTitle}> {specialization1}</Text> */}
+          <Text numberOfLines={3} ellipsizeMode='tail'
+            style={styles.cardTitle}> {specialization1}</Text>
           <Text numberOfLines={2} ellipsizeMode='tail'
             style={styles.cardTitle}>Patient Name: {name_patient}</Text>
-          {/* <Text numberOfLines={2} ellipsizeMode='tail'
+          <Text numberOfLines={2} ellipsizeMode='tail'
             style={styles.cardTitle}>Date: {date}</Text>
           <Text numberOfLines={2} ellipsizeMode='tail'
             style={styles.cardTitle}>Time: {time}</Text>
           <Text numberOfLines={2} ellipsizeMode='tail'
             style={styles.cardTitle}>gender: {gender}</Text>
           <Text numberOfLines={5} ellipsizeMode='tail'
-            style={styles.cardTitle}>notes: {notes}</Text> */}
+            style={styles.cardTitle}>notes: {notes}</Text>
         </View>
         <View style={{flexDirection:"row", gap:60}}>
         <TouchableOpacity style={styles.cardButton}
@@ -59,7 +59,7 @@ function Doc_card_appointment({ navigation, image, date, time, name_patient, doc
         </TouchableOpacity>
         </View>
 
-        {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
+        <Text style={styles.cardTitle}>create at  {date_now}</Text>
 
       </View>
     </View>
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
-export default memo(Doc_card_appointment);
+export default memo(All_details_to_appointment);

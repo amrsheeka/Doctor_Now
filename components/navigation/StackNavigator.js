@@ -14,6 +14,7 @@ import Favorite from "../screens/Favorite";
 import Chat from "../screens/Chat";
 import Thk2 from "../screens/Thk2";
 import Appointment from "../screens/Appointment";
+import Appointment2 from "../screens/Appointment2";
 import Chatbox from "../subcomponents/Chatbox";
 import Payment from "../subcomponents/Payments";
 import Edit_user from "../subcomponents/Edit_user";
@@ -24,6 +25,7 @@ import AppointmentConfirmation from "../screens/AppointmentConfirmation";
 import Details_user_to_appointment from "../screens/Details_user_to_appointment";
 import Thk from "../screens/Thk";
 import Thk3 from "../screens/Thk3";
+import All_details_to_appointment from "../subcomponents/All_details_to_appointment";
 import CurrentUser from "../consts/CurrentUser";
 import AdminHome from "../admin/AdminHome";
 import AddDoctor from "../admin/AddDoctor";
@@ -69,10 +71,28 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
+      <Tab.Screen
+        name="Appointment2"
+        component={Appointment2}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
 
       <Tab.Screen
         name="Thk"
         component={Thk}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="All_details_to_appointment"
+        component={All_details_to_appointment}
         options={{
           headerShown: false,
           tabBarVisible: false,
