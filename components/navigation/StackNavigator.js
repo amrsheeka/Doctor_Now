@@ -16,12 +16,14 @@ import Thk2 from "../screens/Thk2";
 import Appointment from "../screens/Appointment";
 import Chatbox from "../subcomponents/Chatbox";
 import Payment from "../subcomponents/Payments";
+import Edit_user from "../subcomponents/Edit_user";
 import Doctorbage from "../subcomponents/Doctorbage";
 import AllDoctors from "../screens/AllDoctors";
 import Userpage from "../subcomponents/Userpage";
 import AppointmentConfirmation from "../screens/AppointmentConfirmation";
 import Details_user_to_appointment from "../screens/Details_user_to_appointment";
 import Thk from "../screens/Thk";
+import Thk3 from "../screens/Thk3";
 import CurrentUser from "../consts/CurrentUser";
 import AdminHome from "../admin/AdminHome";
 import AddDoctor from "../admin/AddDoctor";
@@ -80,6 +82,15 @@ const Homefunc = () => {
       <Tab.Screen
         name="Thk2"
         component={Thk2}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Thk3"
+        component={Thk3}
         options={{
           headerShown: false,
           tabBarVisible: false,
@@ -187,6 +198,16 @@ const Homefunc = () => {
       <Stack.Screen
         name="Userpage"
         component={Userpage}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          headerTitle: () => null,
+        }}
+      />
+       <Stack.Screen
+        name="Edit_user"
+        component={Edit_user}
         options={{
           headerShown: false,
           tabBarVisible: false,
