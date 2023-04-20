@@ -15,7 +15,7 @@ const User = ({ navigation }) => {
     fetchUser();
   }, []);
   const handlelgout = () => {
-    logout().then(() => navigation.navigate("LoginScreen"));
+    logout().then(() => navigation.navigate("StackNavigator"));
   }
   return (
     <ScrollView style={styles.container}>

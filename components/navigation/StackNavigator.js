@@ -212,6 +212,15 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="StackNavigator"
+        component={StackNavigator}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -226,23 +235,9 @@ const StackNavigator2 = () => {
         }}
       />
       <Stack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
+        name="StackNavigator"
+        component={StackNavigator}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Sign_UP_2th_Screen"
-        component={Sign_UP_2th_Screen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="SignUpScreen"
-        component={SignUpScreen}
-        options={{
-          headerShown: false,
-        }}
       />
     </Stack.Navigator>
   );
@@ -332,6 +327,11 @@ const DoctorStackNavigator = () => {
       <Stack.Screen
         name="Profile"
         component={Info}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="StackNavigator"
+        component={StackNavigator}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
