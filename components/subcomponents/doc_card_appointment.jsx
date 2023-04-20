@@ -1,31 +1,37 @@
-import React, { memo,useContext} from "react";
+import React, { memo, useContext } from "react";
 import { useState } from "react";
 import { ScrollView, TextInput } from "react-native";
 import { View, Text, StyleSheet, Image, TouchableOpacity, } from "react-native";
-import { deleteAppointment } from "../../database/Users";
+import { deleteAppointment, getAllAppointment } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 import { getAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
-function Doc_card_appointment({navigation, image, date, time, name_patient, doc_name, gender, notes, date_now, specialization1,doctor_id,users_id}){
-  const {appointments, setAppointments} = useContext(AppContext);
-  let obj = { image:image, date: date, time: time, name_patient: name_patient, doc_name: doc_name, gender: gender, notes: notes, date_now: date_now, specialization1: specialization1,doctor_id:doctor_id,users_id:users_id }
+function Doc_card_appointment({ navigation, image, date, time, name_patient, doc_name, gender, notes, date_now, specialization1, doctor_id, users_id }) {
+  const { appointments, setAppointments } = useContext(AppContext);
+  let obj = { image: image, date: date, time: time, name_patient: name_patient, doc_name: doc_name, gender: gender, notes: notes, date_now: date_now, specialization1: specialization1, doctor_id: doctor_id, users_id: users_id }
   let id = CurrentUser.user.id;
-  const Delete=async ()=>(
-  await deleteAppointment(users_id,doctor_id).then((res)=>{
-         console.log("its ok");
-            getAppointment(id).then((res) => {
-              res.status != "failed" ? setAppointments(res) : setAppointments([]) ;
+  const Delete = async () => (
+    await deleteAppointment(users_id, doctor_id).then((res) => {
+      console.log("its ok");
+      if (CurrentUser.user.is_admin == "yes") {
+        getAllAppointment().then((res) => {
+          res.status != "failed" ? setAppointments(res) : setAppointments([]);
         })
-      })
+      } else {
+        getAppointment(id).then((res) => {
+          res.status != "failed" ? setAppointments(res) : setAppointments([]);
+        })
+      }
+    })
   )
   return (
-      <View style={styles.card}>
-        <Image source={image ? { uri: image } : require("../assets/Herbal_Medicine_Male_Avatar.png")}
-          defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
-        <View style={styles.cardContent}>
-          <View style={{ width: "50%" }}>
-            <Text numberOfLines={2} ellipsizeMode='tail'
-              style={styles.cardTitle}>doctor: {doc_name}</Text>
+    <View style={styles.card}>
+      <Image source={image ? { uri: image } : require("../assets/Herbal_Medicine_Male_Avatar.png")}
+        defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
+      <View style={styles.cardContent}>
+        <View style={{ width: "50%" }}>
+          <Text numberOfLines={2} ellipsizeMode='tail'
+            style={styles.cardTitle}>doctor: {doc_name}</Text>
           <Text numberOfLines={3} ellipsizeMode='tail'
             style={styles.cardTitle}> {specialization1}</Text>
           <Text numberOfLines={2} ellipsizeMode='tail'
@@ -38,22 +44,22 @@ function Doc_card_appointment({navigation, image, date, time, name_patient, doc_
             style={styles.cardTitle}>gender: {gender}</Text>
           <Text numberOfLines={5} ellipsizeMode='tail'
             style={styles.cardTitle}>notes: {notes}</Text>
-          </View>
-          <TouchableOpacity style={styles.cardButton}
-          onPress={() => (navigation.navigate("Update_patient",obj))}
-          >
-            <Text style={styles.cardButtonText}>Update </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.cardButton}
-            onPress={() => Delete()}
-          >
-            <Text style={styles.cardButtonText}>Decline </Text>
-          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.cardButton}
+          onPress={() => (navigation.navigate("Update_patient", obj))}
+        >
+          <Text style={styles.cardButtonText}>Update </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.cardButton}
+          onPress={() => Delete()}
+        >
+          <Text style={styles.cardButtonText}>Decline </Text>
+        </TouchableOpacity>
 
         <Text style={styles.cardTitle}>create at  {date_now}</Text>
 
-        </View>
-      </View>   
+      </View>
+    </View>
   );
 };
 

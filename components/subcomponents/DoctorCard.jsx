@@ -1,11 +1,25 @@
-import React,{useEffect} from "react";
+import React,{useContext, useEffect} from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import CurrentUser from "../consts/CurrentUser";
+import { getDoctors } from "../../database/Doctors";
 import { deleteDoctor } from "../../database/Doctors";
+import { AppContext } from "../consts/AppContext";
 const DoctorCard = ({ navigation, doctor, user }) => {
   const image = doctor.image;
   let currentUser = CurrentUser.user;
+  const {setDoctors} = useContext(AppContext);
+  async function fetchDoctors() {
+    const doc = await getDoctors();
+    setDoctors(doc);
+  }
+  const handelDelete =async ()=>{
+    deleteDoctor(doctor.id).then(()=>{
+      console.log(doctor.name);
+      fetchDoctors();
+    }
+    );
+  }
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("Doctorbage", { doctor })}
@@ -24,7 +38,7 @@ const DoctorCard = ({ navigation, doctor, user }) => {
           </View>
           {
             currentUser.is_admin=="yes"?(<View style={styles.adminComponent}>
-              <TouchableOpacity onPress={() => {deleteDoctor(doctor.id)}}
+              <TouchableOpacity onPress={() => {handelDelete()}}
             style={styles.delete}>
               <MaterialCommunityIcons name="delete" size={50} color={"#288771"}/>
             </TouchableOpacity>

@@ -7,6 +7,7 @@ const getDoctors = async () => {
   return res.data;
 };
 const deleteDoctor = async (id) => {
+  console.log(id);
   const res = await axios.post(`${Ip.ip}/API/doctors/delete.php`, {
     id:id
   })

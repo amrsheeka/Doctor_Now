@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -15,11 +15,12 @@ import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import { getCurrentUser } from "../../database/Users";
 import * as Location from 'expo-location';
+import { AppContext } from "../consts/AppContext";
 import { Button } from "react-native";
 const AllDoctors = ({ navigation, route }) => {
   const filterd = route.params.filteritem;
   const all = route.params.all;
-
+  const {doctors} = useContext(AppContext);
   const [selectedValue, setSelectedValue] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
@@ -82,7 +83,7 @@ const AllDoctors = ({ navigation, route }) => {
     <DoctorCard doctor={item} user={currentUser} navigation={navigation} />
   );
 
-  let ff = Doctor.doctors;
+  let ff = doctors;
 
   if (selectedValue !== "all") {
     ff = ff.filter((doctor) => doctor.title === selectedValue);
@@ -99,7 +100,7 @@ const AllDoctors = ({ navigation, route }) => {
       <View style={styles.container}>
          <View style={styles.header}>
         <View  style={styles.Go_Back1}>
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
               <Ionicons name="arrow-back" size={24} color="black" />
             </View>
@@ -180,7 +181,7 @@ const AllDoctors = ({ navigation, route }) => {
         <FlatList
           data={ff}
           renderItem={renderDoctor}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id}
           numColumns={2}
           initialNumToRender={7}
           maxToRenderPerBatch={7}
@@ -190,7 +191,7 @@ const AllDoctors = ({ navigation, route }) => {
       </View>
     );
   } else if (filterd === "Stomach") {
-    let dataa = Doctor.doctors.filter((e) => e.title === "Internist");
+    let dataa = doctors.filter((e) => e.title === "Internist");
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -216,7 +217,7 @@ const AllDoctors = ({ navigation, route }) => {
       </View>
     );
   } else if (filterd === "Dentist") {
-    let dataa = Doctor.doctors.filter((e) => e.title === "Dentist");
+    let dataa =doctors.filter((e) => e.title === "Dentist");
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -242,7 +243,7 @@ const AllDoctors = ({ navigation, route }) => {
       </View>
     );
   } else if (filterd === "Surgery") {
-    let dataa = Doctor.doctors.filter((e) => e.title === "General Surgeon");
+    let dataa = doctors.filter((e) => e.title === "General Surgeon");
     return (
       <View style={styles.container}>
         <View style={styles.header}>
