@@ -20,7 +20,7 @@ const Userpage = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.z2} >
-          <TouchableOpacity onPress={() => navigation.navigate("Edit_user")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Edit_user",{user})}>
               <MaterialIcons name="mode-edit" size={24} color="white" style={styles.z1}/>
             </TouchableOpacity>
           </View>

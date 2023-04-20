@@ -12,13 +12,27 @@ import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { AppContext } from "../consts/AppContext";
 const Edit_user = ({ navigation, route }) => {
-  const [text, onChangeText] = useState("");
-  const [phone, onChangePhone] = useState("");
-  const [Address1, onChangeAddress1] = useState("");
-  const [Address2, onChangeAddress2] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("Unknown");
+  const [user, setUser] = useState(route.params.user);
+  const [name, setName] = useState(route.params.user.name);
+  const [email, setEmail] = useState(route.params.user.email);
+  const [phone, onChangePhone] = useState(route.params.user.phone);
+  const [Address1, onChangeAddress1] = useState(route.params.user.address);
+  const [Address2, onChangeAddress2] = useState(route.params.user.address_2);
+  const [age, setAge] = useState(route.params.user.age);
+  const [gender, setGender] = useState(route.params.user.gender);
   
+  const handleSave=async()=>{
+    setUser({...user,
+      email:email,
+      address:Address1,
+      address_2:Address2,
+      age:age,
+      gender:gender,
+      phone:phone,
+      name,name
+    });
+    navigation.navigate("Thk3");
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -38,9 +52,16 @@ const Edit_user = ({ navigation, route }) => {
         <Text style={styles.text}>Email address</Text>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
+          onChangeText={setEmail}
+          value={email}
           placeholder={"Enter Email address"}
+        />
+        <Text style={styles.text}>Name</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={setName}
+          value={name}
+          placeholder={"Enter your name"}
         />
         <Text style={styles.text}>Phone Number</Text>
         <TextInput
@@ -56,7 +77,7 @@ const Edit_user = ({ navigation, route }) => {
           value={Address1}
           placeholder={"Enter Address1"}
         />
-         <Text style={styles.text}>Address2</Text>
+        <Text style={styles.text}>Address2</Text>
         <TextInput
           style={styles.input}
           onChangeText={onChangeAddress2}
@@ -86,7 +107,7 @@ const Edit_user = ({ navigation, route }) => {
             mode="dropdown"
             style={styles.picker}
           >
-            <Picker.Item label="Select Gender" value="Unknown" />
+            <Picker.Item label="Select Gender" value={null} />
             <Picker.Item label="Male" value="Male" />
             <Picker.Item label="Female" value="Female" />
             <Picker.Item label="Not Willing" value="NA" />
@@ -100,7 +121,7 @@ const Edit_user = ({ navigation, route }) => {
           style={styles.button}
 
 
-          onPress={() => (navigation.navigate("Thk3"))}
+          onPress={() => {handleSave()}}
         >
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
