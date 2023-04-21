@@ -342,7 +342,26 @@ const AdminStackNavigator = () => {
         component={StackNavigator}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Appointment2"
+        component={Appointment2}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Update_patient"
+        component={Update_patient}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
     </Stack.Navigator>
+    
   );
 };
 

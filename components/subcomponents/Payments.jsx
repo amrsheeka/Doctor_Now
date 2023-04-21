@@ -11,7 +11,7 @@ const Payment = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View  style={styles.Go_Back1}>
-          <TouchableOpacity onPress={() => navigation.navigate("User")}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
               <Ionicons name="arrow-back" size={24} color="black" />
             </View>

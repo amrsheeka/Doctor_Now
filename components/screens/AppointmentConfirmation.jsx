@@ -90,7 +90,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     <View style={styles.container}>
       <View style={styles.header1}>
         <View  style={styles.Go_Back1}>
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
               <Ionicons name="arrow-back" size={24} color="black" />
             </View>

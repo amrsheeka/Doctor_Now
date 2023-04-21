@@ -29,7 +29,7 @@ const Update_patient = ({ navigation, route }) => {
         console.log(res);
         setAppointments(res)
       })
-      navigation.navigate("Appointment")
+      navigation.goBack();
     })
   }
 
@@ -77,7 +77,7 @@ const Update_patient = ({ navigation, route }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.Go_Back1}>
-          <TouchableOpacity onPress={() => navigation.navigate("Appointment")}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
               <Ionicons name="arrow-back" size={24} color="black" />
             </View>
