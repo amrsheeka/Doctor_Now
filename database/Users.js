@@ -88,6 +88,18 @@ const getCurrentUser = async () => {
   }
 }
 
+const editUser = async (user) => {
+
+  return await axios.post(`${Ip.ip}/API/users/edit.php`, {...user})
+    .then(function (response) {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
 const getFavourite = async (users_id) => {
 
   return axios.post(`${Ip.ip}/API/favorate/get.php`, {
@@ -248,4 +260,5 @@ export {
   getAppointment_by_doc_id,
   getAllAppointment,
   Update_Appointment,
+  editUser,
 };

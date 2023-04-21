@@ -2,9 +2,12 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList, Image ,Button,TouchableOpacity} from "react-native";
 import CurrentUser from "../consts/CurrentUser";
 import { AntDesign, Feather, MaterialIcons, SimpleLineIcons, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useContext } from "react";
+import { AppContext } from "../consts/AppContext";
 
 const Userpage = ({ navigation }) => {
-  const user = CurrentUser.user;
+  const { curruser} = useContext(AppContext);
+  const user = curruser;
   return (
     <View style={styles.container}>
       <View style={styles.header}>

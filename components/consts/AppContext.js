@@ -7,13 +7,14 @@ export const AppProvider = ({ children }) => {
     const [doctors, setDoctors] = useState([]);
     const [appointments, setAppointments] = useState([]);
     const [timeList, setTimeList] = useState([]);
-
+    const [curruser, setCurrUser] = useState({});
     return (
         <AppContext.Provider value={{ 
             favourite, setFavourite,
             doctors,setDoctors,
             appointments,setAppointments,
-            timeList, setTimeList
+            timeList, setTimeList,
+            curruser, setCurrUser,
         }}>
             {children}
         </AppContext.Provider>
