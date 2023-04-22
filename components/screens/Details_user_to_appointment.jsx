@@ -12,7 +12,10 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { KeyboardAvoidingView } from "react-native";
 import { Button } from "react-native";
-import { getAppointment_by_doc_id, insertAppointment } from "../../database/Users";
+import {
+  getAppointment_by_doc_id,
+  insertAppointment,
+} from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { AppContext } from "../consts/AppContext";
 import { getAppointment } from "../../database/Users";
@@ -20,39 +23,52 @@ import getTimeList from "../../database/getTimeList";
 const Details_user_to_appointment = ({ navigation, route }) => {
   const [text, onChangeText] = useState(CurrentUser.user.name);
   const { appointments, setAppointments } = useContext(AppContext);
-  const { timeList, setTimeList } = useContext(AppContext)
+  const { timeList, setTimeList } = useContext(AppContext);
   const [text2, onChangeText2] = useState("");
   const [age, setAge] = useState(CurrentUser.user.age);
   const [gender, setGender] = useState(CurrentUser.user.gender);
   const [nameerr, setNameErr] = useState("");
-  let doc = route.params.item
+  let doc = route.params.item;
   let id = CurrentUser.user.id;
   const handleInsertAppointment = async () => {
     if (!text) {
       setNameErr("Enter your your name.");
-    }
-    else {
-      await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2, doc.name, doc.image, doc.specialization1).then(
-        (res) => {
-          console.log("its ok");
-          navigation.navigate("Thk", { doc });
-          getAppointment(id).then((res) => {
-            setAppointments(res);
-          })
-          var timeList1 = getTimeList(doc.start, doc.end);
-          getAppointment_by_doc_id(doc.id, new Date().toDateString()).then((res) => {
-            res.status != "failed" ? res.map((e) => {
-              timeList1 = timeList1.filter(ele => ele !== e.time.toString())
-            }) : setTimeList(timeList1);
+    } else {
+      await insertAppointment(
+        CurrentUser.user.id,
+        doc.id,
+        route.params.date,
+        route.params.Time,
+        text,
+        CurrentUser.user.age,
+        CurrentUser.user.gender,
+        text2,
+        doc.name,
+        doc.image,
+        doc.specialization1
+      ).then((res) => {
+        console.log("its ok");
+        navigation.navigate("Thk", { doc });
+        getAppointment(id).then((res) => {
+          setAppointments(res);
+        });
+        var timeList1 = getTimeList(doc.start, doc.end);
+        getAppointment_by_doc_id(doc.id, new Date().toDateString()).then(
+          (res) => {
+            res.status != "failed"
+              ? res.map((e) => {
+                  timeList1 = timeList1.filter(
+                    (ele) => ele !== e.time.toString()
+                  );
+                })
+              : setTimeList(timeList1);
             setTimeList(timeList1);
           }
-          )
-        }
-      )
+        );
+      });
       // console.log(CurrentUser.user.age)
     }
-
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -64,7 +80,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
             </View>
           </TouchableOpacity>
         </View>
-        <View >
+        <View>
           <Text style={styles.heading}>Appointment</Text>
         </View>
       </View>
@@ -127,8 +143,6 @@ const Details_user_to_appointment = ({ navigation, route }) => {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.button}
-
-
           onPress={() => handleInsertAppointment()}
         >
           <Text style={styles.buttonText}>NEXT</Text>
@@ -151,20 +165,12 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     paddingVertical: 30,
     // marginBottom: 20,
-
-
   },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
     color: "black",
-
-
   },
-<<<<<<< HEAD
-=======
-
->>>>>>> 892bc3abea78bb87b20800b7026e9fbfe965eeeb
   Go_Back: {
     width: "10%",
     // left:1
@@ -172,8 +178,6 @@ const styles = StyleSheet.create({
   Go_Back1: {
     // marginTop:15,
     width: "35%",
-
-
   },
   input: {
     height: 50,
