@@ -9,7 +9,8 @@ import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 const Update_patient = ({ navigation, route }) => {
   let obj = { image: route.params.image, date: route.params.date, time: route.params.time, name_patient: route.params.name_patient, doc_name: route.params.doc_name, gender: route.params.gender, notes: route.params.notes, date_now: route.params.date_now, specialization1: route.params.specialization1, doctor_id: route.params.doctor_id, users_id: route.params.users_id }
-  const [name_patient1, setName_patient] = useState("")
+  const [name_patient1, setName_patient] = useState("");
+  const [nameerr, setNameErr] = useState("");
   const [gender1, setGender] = useState("")
   const [notes1, setNotes] = useState("")
   const [age1, setAge] = useState("")
@@ -22,15 +23,20 @@ const Update_patient = ({ navigation, route }) => {
 
   }, [])
   const HandleUpdate = () => {
-    Update_Appointment(obj.users_id, obj.doctor_id, obj.date, obj.time, name_patient1, gender1, notes1, age1).then((res) => (
-      console.log(res)
-    )).then(() => {
-      getAppointment(obj.users_id).then((res) => {
-        console.log(res);
-        setAppointments(res)
+    if (!name_patient1) {
+      setNameErr("Enter your your name.");
+    } else{
+      Update_Appointment(obj.users_id, obj.doctor_id, obj.date, obj.time, name_patient1, gender1, notes1, age1).then((res) => (
+        console.log(res)
+      )).then(() => {
+        getAppointment(obj.users_id).then((res) => {
+          console.log(res);
+          setAppointments(res)
+        })
+        navigation.goBack();
       })
-      navigation.goBack();
-    })
+    }
+    
   }
 
   //     return (
@@ -96,6 +102,7 @@ const Update_patient = ({ navigation, route }) => {
             value={name_patient1}
             onChangeText={(text) => setName_patient(text)}
           />
+          <Text style={{ color: "red" }}>{nameerr}</Text>
           <Text style={styles.text}>Select Your Age</Text>
           <View>
             <Picker
@@ -118,10 +125,8 @@ const Update_patient = ({ navigation, route }) => {
               mode="dropdown"
               style={styles.picker}
             >
-              <Picker.Item label="Select Gender" value="Unknown" />
               <Picker.Item label="Male" value="Male" />
               <Picker.Item label="Female" value="Female" />
-              <Picker.Item label="Not Willing" value="NA" />
             </Picker>
           </View>
         </View>

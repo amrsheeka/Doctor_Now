@@ -13,8 +13,10 @@ import { Picker } from "@react-native-picker/picker";
 import { AppContext } from "../consts/AppContext";
 import { editUser, getCurrentUser, login } from "../../database/Users";
 const Edit_user = ({ navigation, route }) => {
+  const [nameerr, setNameErr] = useState("");
+  const [phoneerr, onChangePhoneErr] = useState("");
+  const [Address1err, onChangeAddress1Err] = useState("");
   const [name, setName] = useState(route.params.user.name);
-  const [email, setEmail] = useState(route.params.user.email);
   const [phone, onChangePhone] = useState(route.params.user.phone);
   const [Address1, onChangeAddress1] = useState(route.params.user.address);
   const [Address2, onChangeAddress2] = useState(route.params.user.address_2);
@@ -22,35 +24,58 @@ const Edit_user = ({ navigation, route }) => {
   const [gender, setGender] = useState(route.params.user.gender);
   const { curruser, setCurrUser } = useContext(AppContext);
   const handleSave = async () => {
-    let user = {};
-    user = route.params.user;
-    const set = async () => {
-      user = {
-        ...user,
-        email: email,
-        address: Address1,
-        address_2: Address2,
-        age: age,
-        gender: gender,
-        phone: phone,
-        name, name
+    if (!name||!phone||!Address1) {
+      if (!name) {
+        setNameErr("Enter your your name.");
+      } 
+       else {
+        setNameErr("");
       }
-    }
-    await set().then(
-      () => {
-        editUser(user).then(
-          () => {
-            getCurrentUser().then((res) => {
-              setCurrUser(res);
-              navigation.navigate("Thk3");
-              console.log(user);
+      if (!phone) {
+        onChangePhoneErr("Enter your your phone.");
+      } 
+       else {
+        onChangePhoneErr("");
+      }
+      if (!Address1) {
+        onChangeAddress1Err("Enter your your address.");
+      } 
+       else {
+        onChangeAddress1Err("");
+      }
+    } else {
+      let user = {};
+      user = route.params.user;
+      const set = async () => {
+        user = {
+          ...user,
+          address: Address1,
+          address_2: Address2,
+          age: age,
+          gender: gender,
+          phone: phone,
+          name, name
+        }
+      }
+      await set().then(
+        () => {
+          editUser(user).then(
+            () => {
+              getCurrentUser().then((res) => {
+                setCurrUser(res);
+                navigation.navigate("Thk3");
+                console.log(user);
+              }
+              );
             }
-            );
-          }
-        );
-      }
-    );
+          );
+        }
+      );
+    }
   }
+
+  
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -67,13 +92,6 @@ const Edit_user = ({ navigation, route }) => {
       </View>
       <ScrollView>
         <View>
-          <Text style={styles.text}>Email address</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={setEmail}
-            value={email}
-            placeholder={"Enter Email address"}
-          />
           <Text style={styles.text}>Name</Text>
           <TextInput
             style={styles.input}
@@ -81,6 +99,7 @@ const Edit_user = ({ navigation, route }) => {
             value={name}
             placeholder={"Enter your name"}
           />
+          <Text style={{ color: "red" }}>{nameerr}</Text>
           <Text style={styles.text}>Phone Number</Text>
           <TextInput
             style={styles.input}
@@ -88,6 +107,7 @@ const Edit_user = ({ navigation, route }) => {
             value={phone}
             placeholder={"Enter Phone Number"}
           />
+          <Text style={{ color: "red" }}>{phoneerr}</Text>
           <Text style={styles.text}>Address1</Text>
           <TextInput
             style={styles.input}
@@ -95,6 +115,7 @@ const Edit_user = ({ navigation, route }) => {
             value={Address1}
             placeholder={"Enter Address1"}
           />
+          <Text style={{ color: "red" }}>{Address1err}</Text>
           <Text style={styles.text}>Address2</Text>
           <TextInput
             style={styles.input}
@@ -125,7 +146,6 @@ const Edit_user = ({ navigation, route }) => {
               mode="dropdown"
               style={styles.picker}
             >
-              <Picker.Item label="Select Gender" value={null} />
               <Picker.Item label="male" value="male" />
               <Picker.Item label="female" value="female" />
             </Picker>
@@ -138,7 +158,7 @@ const Edit_user = ({ navigation, route }) => {
           style={styles.button}
 
 
-          onPress={() => { handleSave() }}
+          onPress={() => { handleSave(); }}
         >
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>

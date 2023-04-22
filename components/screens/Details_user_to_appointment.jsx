@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { KeyboardAvoidingView } from "react-native";
 import { Button } from "react-native";
@@ -18,40 +18,46 @@ import { AppContext } from "../consts/AppContext";
 import { getAppointment } from "../../database/Users";
 import getTimeList from "../../database/getTimeList";
 const Details_user_to_appointment = ({ navigation, route }) => {
-  const [text, onChangeText] = useState("");
+  const [text, onChangeText] = useState(CurrentUser.user.name);
   const { appointments, setAppointments } = useContext(AppContext);
   const { timeList, setTimeList } = useContext(AppContext)
   const [text2, onChangeText2] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("Unknown");
+  const [age, setAge] = useState(CurrentUser.user.age);
+  const [gender, setGender] = useState(CurrentUser.user.gender);
+  const [nameerr, setNameErr] = useState("");
   let doc = route.params.item
   let id = CurrentUser.user.id;
   const handleInsertAppointment = async () => {
-    await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2, doc.name, doc.image, doc.specialization1).then(
-      (res) => {
-        
-        console.log("its ok");
-        getAppointment(id).then((res) => {
-          setAppointments(res);
-        })
-        var timeList1 = getTimeList(doc.start, doc.end);
-        getAppointment_by_doc_id(doc.id, new Date().toDateString()).then((res) => {
-          res.status != "failed" ? res.map((e) => {
-            timeList1 = timeList1.filter(ele => ele !== e.time.toString())
-          }) : setTimeList(timeList1);
-          setTimeList(timeList1);
+    if (!text) {
+      setNameErr("Enter your your name.");
+    }
+    else {
+      await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2, doc.name, doc.image, doc.specialization1).then(
+        (res) => {
+          console.log("its ok");
+          navigation.navigate("Thk", { doc });
+          getAppointment(id).then((res) => {
+            setAppointments(res);
+          })
+          var timeList1 = getTimeList(doc.start, doc.end);
+          getAppointment_by_doc_id(doc.id, new Date().toDateString()).then((res) => {
+            res.status != "failed" ? res.map((e) => {
+              timeList1 = timeList1.filter(ele => ele !== e.time.toString())
+            }) : setTimeList(timeList1);
+            setTimeList(timeList1);
+          }
+          )
         }
+      )
+      // console.log(CurrentUser.user.age)
+    }
 
-        )
-      }
-    )
-    // console.log(CurrentUser.user.age)
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View  style={styles.Go_Back1}>
+        <View style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
               <Ionicons name="arrow-back" size={24} color="black" />
@@ -59,72 +65,71 @@ const Details_user_to_appointment = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         <View >
-        <Text style={styles.heading}>Appointment</Text>
+          <Text style={styles.heading}>Appointment</Text>
         </View>
       </View>
       <ScrollView>
-      <View>
-        <Text style={styles.text}>Full Name</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-          placeholder={"Enter Full Name"}
-        />
-        <Text style={styles.text}>Select Your Age</Text>
         <View>
-          <Picker
-            selectedValue={age}
-            onValueChange={(value, index) => setAge(value)}
-            mode="dropdown"
-            style={styles.picker}
-          >
-            <Picker.Item label="15+" value="15+" />
-            <Picker.Item label="25+" value="25+" />
-            <Picker.Item label="35+" value="35+" />
-            <Picker.Item label="45+" value="45+" />
-          </Picker>
-        </View>
-        <View>
-          <Text style={styles.text}>Gender</Text>
-          <Picker
-            selectedValue={gender}
-            onValueChange={(value, index) => setGender(value)}
-            mode="dropdown"
-            style={styles.picker}
-          >
-            <Picker.Item label="Select Gender" value="Unknown" />
-            <Picker.Item label="Male" value="Male" />
-            <Picker.Item label="Female" value="Female" />
-            <Picker.Item label="Not Willing" value="NA" />
-          </Picker>
-        </View>
-      </View>
-      <View style={styles.body}>
-        <View>
-          <Text style={styles.text}>Compose Your Problem</Text>
-        </View>
-        <KeyboardAvoidingView enabled={true}>
+          <Text style={styles.text}>Full Name</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={onChangeText}
+            value={text}
+            placeholder={"Enter Full Name"}
+          />
+          <Text style={{ color: "red" }}>{nameerr}</Text>
+          <Text style={styles.text}>Select Your Age</Text>
           <View>
-            <TextInput
-              style={styles.input2}
-              onChangeText={onChangeText2}
-              value={text2}
-              numberOfLines={10}
-              multiline={true}
-              maxLength={600}
-              placeholder={"Don't exceed 600 characters..."}
-            />
+            <Picker
+              selectedValue={age}
+              onValueChange={(value, index) => setAge(value)}
+              mode="dropdown"
+              style={styles.picker}
+            >
+              <Picker.Item label="15+" value="15+" />
+              <Picker.Item label="25+" value="25+" />
+              <Picker.Item label="35+" value="35+" />
+              <Picker.Item label="45+" value="45+" />
+            </Picker>
           </View>
-        </KeyboardAvoidingView>
-      </View>
+          <View>
+            <Text style={styles.text}>Gender</Text>
+            <Picker
+              selectedValue={gender}
+              onValueChange={(value, index) => setGender(value)}
+              mode="dropdown"
+              style={styles.picker}
+            >
+              <Picker.Item label="Male" value="Male" />
+              <Picker.Item label="Female" value="Female" />
+            </Picker>
+          </View>
+        </View>
+        <View style={styles.body}>
+          <View>
+            <Text style={styles.text}>Compose Your Problem</Text>
+          </View>
+          <KeyboardAvoidingView enabled={true}>
+            <View>
+              <TextInput
+                style={styles.input2}
+                onChangeText={onChangeText2}
+                value={text2}
+                numberOfLines={10}
+                multiline={true}
+                maxLength={600}
+                placeholder={"Don't exceed 600 characters..."}
+              />
+            </View>
+          </KeyboardAvoidingView>
+        </View>
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.button}
 
 
-          onPress={() => handleInsertAppointment().then(navigation.navigate("Thk", { doc }))}
+          onPress={() => handleInsertAppointment()}
         >
           <Text style={styles.buttonText}>NEXT</Text>
         </TouchableOpacity>
@@ -140,33 +145,33 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   header: {
-    flexDirection:"row",
+    flexDirection: "row",
     width: "100%",
     alignItems: "center",
     justifyContent: "flex-start",
     paddingVertical: 30,
     // marginBottom: 20,
-    
+
 
   },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
     color: "black",
-    
+
 
   },
-  
+
   Go_Back: {
-    width:"10%",
+    width: "10%",
     // left:1
-    },
-    Go_Back1: {
-      // marginTop:15,
-      width:"35%",
-     
-  
-      },
+  },
+  Go_Back1: {
+    // marginTop:15,
+    width: "35%",
+
+
+  },
   input: {
     height: 50,
     borderColor: "#ffffff",
