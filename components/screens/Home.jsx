@@ -182,7 +182,7 @@ const Home = ({ navigation }) => {
                 ],
               },
             ]}
-            {...panResponder.panHandlers}
+            {...panResponder?.panHandlers}
           >
             <FlatList
               removeClippedSubviews={true}

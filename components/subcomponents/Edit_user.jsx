@@ -10,49 +10,71 @@ import {
 } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
-import { KeyboardAvoidingView } from "react-native";
-import { Button } from "react-native";
-import { getAppointment_by_doc_id, insertAppointment } from "../../database/Users";
-import CurrentUser from "../consts/CurrentUser";
 import { AppContext } from "../consts/AppContext";
-import { getAppointment } from "../../database/Users";
-import getTimeList from "../../database/getTimeList";
-const Details_user_to_appointment = ({ navigation, route }) => {
-  const [text, onChangeText] = useState(CurrentUser.user.name);
-  const { appointments, setAppointments } = useContext(AppContext);
-  const { timeList, setTimeList } = useContext(AppContext)
-  const [text2, onChangeText2] = useState("");
-  const [age, setAge] = useState(CurrentUser.user.age);
-  const [gender, setGender] = useState(CurrentUser.user.gender);
+import { editUser, getCurrentUser, login } from "../../database/Users";
+const Edit_user = ({ navigation, route }) => {
   const [nameerr, setNameErr] = useState("");
-  let doc = route.params.item
-  let id = CurrentUser.user.id;
-  const handleInsertAppointment = async () => {
-    if (!text) {
-      setNameErr("Enter your your name.");
-    }
-    else {
-      await insertAppointment(CurrentUser.user.id, doc.id, route.params.date, route.params.Time, text, CurrentUser.user.age, CurrentUser.user.gender, text2, doc.name, doc.image, doc.specialization1).then(
-        (res) => {
-          console.log("its ok");
-          navigation.navigate("Thk", { doc });
-          getAppointment(id).then((res) => {
-            setAppointments(res);
-          })
-          var timeList1 = getTimeList(doc.start, doc.end);
-          getAppointment_by_doc_id(doc.id, new Date().toDateString()).then((res) => {
-            res.status != "failed" ? res.map((e) => {
-              timeList1 = timeList1.filter(ele => ele !== e.time.toString())
-            }) : setTimeList(timeList1);
-            setTimeList(timeList1);
-          }
-          )
+  const [phoneerr, onChangePhoneErr] = useState("");
+  const [Address1err, onChangeAddress1Err] = useState("");
+  const [name, setName] = useState(route.params.user.name);
+  const [phone, onChangePhone] = useState(route.params.user.phone);
+  const [Address1, onChangeAddress1] = useState(route.params.user.address);
+  const [Address2, onChangeAddress2] = useState(route.params.user.address_2);
+  const [age, setAge] = useState(route.params.user.age);
+  const [gender, setGender] = useState(route.params.user.gender);
+  const { curruser, setCurrUser } = useContext(AppContext);
+  const handleSave = async () => {
+    if (!name||!phone||!Address1) {
+      if (!name) {
+        setNameErr("Enter your your name.");
+      } 
+       else {
+        setNameErr("");
+      }
+      if (!phone) {
+        onChangePhoneErr("Enter your your phone.");
+      } 
+       else {
+        onChangePhoneErr("");
+      }
+      if (!Address1) {
+        onChangeAddress1Err("Enter your your address.");
+      } 
+       else {
+        onChangeAddress1Err("");
+      }
+    } else {
+      let user = {};
+      user = route.params.user;
+      const set = async () => {
+        user = {
+          ...user,
+          address: Address1,
+          address_2: Address2,
+          age: age,
+          gender: gender,
+          phone: phone,
+          name, name
         }
-      )
-      // console.log(CurrentUser.user.age)
+      }
+      await set().then(
+        () => {
+          editUser(user).then(
+            () => {
+              getCurrentUser().then((res) => {
+                setCurrUser(res);
+                navigation.navigate("Thk3");
+                console.log(user);
+              }
+              );
+            }
+          );
+        }
+      );
     }
-
   }
+
+  
 
   return (
     <View style={styles.container}>
@@ -65,19 +87,43 @@ const Details_user_to_appointment = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         <View >
-          <Text style={styles.heading}>Appointment</Text>
+          <Text style={styles.heading}>Edit User</Text>
         </View>
       </View>
       <ScrollView>
         <View>
-          <Text style={styles.text}>Full Name</Text>
+          <Text style={styles.text}>Name</Text>
           <TextInput
             style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-            placeholder={"Enter Full Name"}
+            onChangeText={setName}
+            value={name}
+            placeholder={"Enter your name"}
           />
           <Text style={{ color: "red" }}>{nameerr}</Text>
+          <Text style={styles.text}>Phone Number</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={onChangePhone}
+            value={phone}
+            placeholder={"Enter Phone Number"}
+          />
+          <Text style={{ color: "red" }}>{phoneerr}</Text>
+          <Text style={styles.text}>Address1</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={onChangeAddress1}
+            value={Address1}
+            placeholder={"Enter Address1"}
+          />
+          <Text style={{ color: "red" }}>{Address1err}</Text>
+          <Text style={styles.text}>Address2</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={onChangeAddress2}
+            value={Address2}
+            placeholder={"Enter Address2"}
+          />
+
           <Text style={styles.text}>Select Your Age</Text>
           <View>
             <Picker
@@ -100,38 +146,21 @@ const Details_user_to_appointment = ({ navigation, route }) => {
               mode="dropdown"
               style={styles.picker}
             >
-              <Picker.Item label="Male" value="Male" />
-              <Picker.Item label="Female" value="Female" />
+              <Picker.Item label="male" value="male" />
+              <Picker.Item label="female" value="female" />
             </Picker>
           </View>
         </View>
-        <View style={styles.body}>
-          <View>
-            <Text style={styles.text}>Compose Your Problem</Text>
-          </View>
-          <KeyboardAvoidingView enabled={true}>
-            <View>
-              <TextInput
-                style={styles.input2}
-                onChangeText={onChangeText2}
-                value={text2}
-                numberOfLines={10}
-                multiline={true}
-                maxLength={600}
-                placeholder={"Don't exceed 600 characters..."}
-              />
-            </View>
-          </KeyboardAvoidingView>
-        </View>
+
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.button}
 
 
-          onPress={() => handleInsertAppointment()}
+          onPress={() => { handleSave(); }}
         >
-          <Text style={styles.buttonText}>NEXT</Text>
+          <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -161,10 +190,7 @@ const styles = StyleSheet.create({
 
 
   },
-<<<<<<< HEAD
-=======
 
->>>>>>> 892bc3abea78bb87b20800b7026e9fbfe965eeeb
   Go_Back: {
     width: "10%",
     // left:1
@@ -238,4 +264,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Details_user_to_appointment;
+export default Edit_user;

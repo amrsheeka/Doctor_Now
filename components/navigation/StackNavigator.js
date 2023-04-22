@@ -14,14 +14,18 @@ import Favorite from "../screens/Favorite";
 import Chat from "../screens/Chat";
 import Thk2 from "../screens/Thk2";
 import Appointment from "../screens/Appointment";
+import Appointment2 from "../screens/Appointment2";
 import Chatbox from "../subcomponents/Chatbox";
 import Payment from "../subcomponents/Payments";
+import Edit_user from "../subcomponents/Edit_user";
 import Doctorbage from "../subcomponents/Doctorbage";
 import AllDoctors from "../screens/AllDoctors";
 import Userpage from "../subcomponents/Userpage";
 import AppointmentConfirmation from "../screens/AppointmentConfirmation";
 import Details_user_to_appointment from "../screens/Details_user_to_appointment";
 import Thk from "../screens/Thk";
+import Thk3 from "../screens/Thk3";
+import All_details_to_appointment from "../subcomponents/All_details_to_appointment";
 import CurrentUser from "../consts/CurrentUser";
 import AdminHome from "../admin/AdminHome";
 import AddDoctor from "../admin/AddDoctor";
@@ -67,6 +71,15 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
+      <Tab.Screen
+        name="Appointment2"
+        component={Appointment2}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
 
       <Tab.Screen
         name="Thk"
@@ -78,8 +91,26 @@ const Homefunc = () => {
         }}
       />
       <Tab.Screen
+        name="All_details_to_appointment"
+        component={All_details_to_appointment}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
         name="Thk2"
         component={Thk2}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Thk3"
+        component={Thk3}
         options={{
           headerShown: false,
           tabBarVisible: false,
@@ -194,6 +225,16 @@ const Homefunc = () => {
           headerTitle: () => null,
         }}
       />
+       <Stack.Screen
+        name="Edit_user"
+        component={Edit_user}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          headerTitle: () => null,
+        }}
+      />
       <Stack.Screen
         name="Payment"
         component={Payment}
@@ -212,41 +253,20 @@ const Homefunc = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="StackNavigator"
+        component={StackNavigator}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          tabBarStyle: { display: "none" },
+        }}
+      />
     </Tab.Navigator>
   );
 };
-const StackNavigator2 = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Homefunc"
-        component={Homefunc}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Sign_UP_2th_Screen"
-        component={Sign_UP_2th_Screen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="SignUpScreen"
-        component={SignUpScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
+
 const StackNavigator = () => {
   return (
     <Stack.Navigator>
@@ -322,7 +342,26 @@ const AdminStackNavigator = () => {
         component={StackNavigator}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Appointment2"
+        component={Appointment2}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Update_patient"
+        component={Update_patient}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
     </Stack.Navigator>
+    
   );
 };
 
@@ -334,12 +373,17 @@ const DoctorStackNavigator = () => {
         component={Info}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="StackNavigator"
+        component={StackNavigator}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
 export {
   StackNavigator,
-  StackNavigator2,
   AdminStackNavigator,
   DoctorStackNavigator,
+  Homefunc,
 };

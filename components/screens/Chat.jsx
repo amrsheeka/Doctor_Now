@@ -97,6 +97,7 @@ const Chat = ({ navigation }) => {
   }
   const renderChat = ({ item }) => {
     //console.log("1111111", item.id);
+    let image = item.doctor.image;
     return (
       <TouchableOpacity
         onPress={() => {
@@ -108,8 +109,9 @@ const Chat = ({ navigation }) => {
           });
         }}
       >
+
         <View style={styles.card}>
-          <Image source={{ uri: item.doctor.image }} style={styles.cardPhoto} />
+          <Image source={image ? { uri: image } : require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
           <View style={styles.cardContent}>
             <Text style={styles.cardTitle}>{item.doctor.name}</Text>
             <Text style={styles.cardMessage}>How are you feeling today?</Text>

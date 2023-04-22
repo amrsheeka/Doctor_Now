@@ -1170,7 +1170,7 @@ const Info = ({ navigation }) => {
               style={{ alignItems: "center" }}
               onPress={
                 () => logout().then(
-                  ()=>{navigation.navigate("LoginScreen")}
+                  ()=>{navigation.navigate("StackNavigator")}
                 )
               }
             >
