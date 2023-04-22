@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     
 
   },
-  
   Go_Back: {
     width:"10%",
     // left:1
