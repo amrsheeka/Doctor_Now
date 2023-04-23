@@ -42,4 +42,15 @@ const editDoctor = async (id,lat,long) => {
       console.log(error);
     });
 };
-export { getDoctors, deleteDoctor,getDoc,editDoctor };
+const addDoctor = async (doctor) => {
+
+  return await axios.post(`${Ip.ip}/API/doctors/insert.php`, {...doctor})
+    .then(function (response) {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+export { getDoctors, deleteDoctor,getDoc,editDoctor,addDoctor };
