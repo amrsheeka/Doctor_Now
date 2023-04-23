@@ -12,8 +12,10 @@ import {
 import Home from "./Home";
 import CurrentUser from "../consts/CurrentUser";
 import { login } from "../../database/Users";
+import { AppContext } from "../consts/AppContext";
+import { useContext } from "react";
 const LoginScreen = ({ navigation }) => {
-  const [user, setUser] = useState(CurrentUser.user);
+  const { curruser,setCurrUser} = useContext(AppContext);
   const [email, setEmail] = useState("");
   const [emailErr, setEmailErr] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +37,8 @@ const LoginScreen = ({ navigation }) => {
         setPasswordErr("");
       }
     }else{
-      login(email,password).then(()=>{
+      login(email,password).then((res)=>{
+        setCurrUser(res);
         if(CurrentUser.user.is_admin=="yes"){
           navigation.navigate('AdminStackNavigator');
         }else if(CurrentUser.user.is_doctor=="yes"){

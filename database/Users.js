@@ -59,6 +59,7 @@ const login = async (email, password) => {
 
       }
       console.log(responseJson);
+      return responseJson;
     })
     .catch((error) => {
       alert("This email not exist");
