@@ -33,41 +33,41 @@ export default function Main() {
   }, []);
 
 
-    // return (
-    //   <NavigationContainer>
-    //     <DoctorStackNavigator />
-    //   </NavigationContainer>
-    // );
-
-  if (currentUser == null) {
-    return (
-      <NavigationContainer>
-        <StackNavigator />
-      </NavigationContainer>
-    );
-  } else if (currentUser.is_admin == "yes") {
-    return (
-      <NavigationContainer>
-        <AdminStackNavigator />
-      </NavigationContainer>
-    );
-
-  }
-  else if (currentUser.is_doctor == "yes") {
     return (
       <NavigationContainer>
         <DoctorStackNavigator />
       </NavigationContainer>
     );
+
+  // if (currentUser == null) {
+  //   return (
+  //     <NavigationContainer>
+  //       <StackNavigator />
+  //     </NavigationContainer>
+  //   );
+  // } else if (currentUser.is_admin == "yes") {
+  //   return (
+  //     <NavigationContainer>
+  //       <AdminStackNavigator />
+  //     </NavigationContainer>
+  //   );
+
+  // }
+  // else if (currentUser.is_doctor == "yes") {
+  //   return (
+  //     <NavigationContainer>
+  //       <DoctorStackNavigator />
+  //     </NavigationContainer>
+  //   );
     
-  }
-   else {
-    return (
-        <NavigationContainer>
-          <Homefunc />
-        </NavigationContainer>
-    );
-  }
+  // }
+  //  else {
+  //   return (
+  //       <NavigationContainer>
+  //         <Homefunc />
+  //       </NavigationContainer>
+  //   );
+  // }
 }
 
 const styles = StyleSheet.create({

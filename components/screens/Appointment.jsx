@@ -8,7 +8,7 @@ import CurrentUser from "../consts/CurrentUser";
 import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { AppContext } from "../consts/AppContext";
-import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
+// import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
 const Appointment = ({ navigation }) => {
   let id = CurrentUser.user.id
   const { appointments, setAppointments } = useContext(AppContext);
