@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { AntDesign, Feather, MaterialIcons, SimpleLineIcons, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { logout } from "../../database/Users";
-import CurrentUser from "../consts/CurrentUser";
-import { getCurrentUser } from "../../database/Users";
+import { AppContext } from "../consts/AppContext";
 const User = ({ navigation }) => {
-  const [user, setUser] = useState(CurrentUser.user);
-  useEffect(() => {
-    async function fetchUser() {
-      const user = await getCurrentUser();
-      setUser(user);
-      console.log(user);
-    }
-    fetchUser();
-  }, []);
+  const { curruser} = useContext(AppContext);
   const handlelgout = () => {
     logout().then(() => navigation.navigate("StackNavigator"));
   }
@@ -27,7 +18,7 @@ const User = ({ navigation }) => {
             style={styles.z}
           />
           </TouchableOpacity>
-          <Text style={styles.z2}> {user.name} </Text>
+          <Text style={styles.z2}> {curruser.name} </Text>
         </View>
       </View>
       <TouchableOpacity>

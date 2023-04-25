@@ -59,6 +59,7 @@ const login = async (email, password) => {
 
       }
       console.log(responseJson);
+      return responseJson;
     })
     .catch((error) => {
       alert("This email not exist");
@@ -86,6 +87,18 @@ const getCurrentUser = async () => {
   } else {
     return null;
   }
+}
+
+const editUser = async (user) => {
+
+  return await axios.post(`${Ip.ip}/API/users/edit.php`, {...user})
+    .then(function (response) {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 
 const getFavourite = async (users_id) => {
@@ -248,4 +261,5 @@ export {
   getAppointment_by_doc_id,
   getAllAppointment,
   Update_Appointment,
+  editUser,
 };

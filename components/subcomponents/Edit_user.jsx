@@ -8,35 +8,78 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { AppContext } from "../consts/AppContext";
+import { editUser, getCurrentUser, login } from "../../database/Users";
 const Edit_user = ({ navigation, route }) => {
-  const [user, setUser] = useState(route.params.user);
+  const [nameerr, setNameErr] = useState("");
+  const [phoneerr, onChangePhoneErr] = useState("");
+  const [Address1err, onChangeAddress1Err] = useState("");
   const [name, setName] = useState(route.params.user.name);
-  const [email, setEmail] = useState(route.params.user.email);
   const [phone, onChangePhone] = useState(route.params.user.phone);
   const [Address1, onChangeAddress1] = useState(route.params.user.address);
   const [Address2, onChangeAddress2] = useState(route.params.user.address_2);
   const [age, setAge] = useState(route.params.user.age);
   const [gender, setGender] = useState(route.params.user.gender);
-  
-  const handleSave=async()=>{
-    setUser({...user,
-      email:email,
-      address:Address1,
-      address_2:Address2,
-      age:age,
-      gender:gender,
-      phone:phone,
-      name,name
-    });
-    navigation.navigate("Thk3");
+  const { curruser, setCurrUser } = useContext(AppContext);
+  const handleSave = async () => {
+    if (!name||!phone||!Address1) {
+      if (!name) {
+        setNameErr("Enter your your name.");
+      } 
+       else {
+        setNameErr("");
+      }
+      if (!phone) {
+        onChangePhoneErr("Enter your your phone.");
+      } 
+       else {
+        onChangePhoneErr("");
+      }
+      if (!Address1) {
+        onChangeAddress1Err("Enter your your address.");
+      } 
+       else {
+        onChangeAddress1Err("");
+      }
+    } else {
+      let user = {};
+      user = route.params.user;
+      const set = async () => {
+        user = {
+          ...user,
+          address: Address1,
+          address_2: Address2,
+          age: age,
+          gender: gender,
+          phone: phone,
+          name, name
+        }
+      }
+      await set().then(
+        () => {
+          editUser(user).then(
+            () => {
+              getCurrentUser().then((res) => {
+                setCurrUser(res);
+                navigation.navigate("Thk3");
+                console.log(user);
+              }
+              );
+            }
+          );
+        }
+      );
+    }
   }
+
+  
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View  style={styles.Go_Back1}>
+        <View style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
               <Ionicons name="arrow-back" size={24} color="black" />
@@ -44,84 +87,78 @@ const Edit_user = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         <View >
-        <Text style={styles.heading}>Edit User</Text>
+          <Text style={styles.heading}>Edit User</Text>
         </View>
       </View>
       <ScrollView>
-      <View>
-        <Text style={styles.text}>Email address</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setEmail}
-          value={email}
-          placeholder={"Enter Email address"}
-        />
-        <Text style={styles.text}>Name</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setName}
-          value={name}
-          placeholder={"Enter your name"}
-        />
-        <Text style={styles.text}>Phone Number</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangePhone}
-          value={phone}
-          placeholder={"Enter Phone Number"}
-        />
-         <Text style={styles.text}>Address1</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeAddress1}
-          value={Address1}
-          placeholder={"Enter Address1"}
-        />
-        <Text style={styles.text}>Address2</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeAddress2}
-          value={Address2}
-          placeholder={"Enter Address2"}
-        />
-        
-        <Text style={styles.text}>Select Your Age</Text>
         <View>
-          <Picker
-            selectedValue={age}
-            onValueChange={(value, index) => setAge(value)}
-            mode="dropdown"
-            style={styles.picker}
-          >
-            <Picker.Item label="15+" value="15+" />
-            <Picker.Item label="25+" value="25+" />
-            <Picker.Item label="35+" value="35+" />
-            <Picker.Item label="45+" value="45+" />
-          </Picker>
+          <Text style={styles.text}>Name</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={setName}
+            value={name}
+            placeholder={"Enter your name"}
+          />
+          <Text style={{ color: "red" }}>{nameerr}</Text>
+          <Text style={styles.text}>Phone Number</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={onChangePhone}
+            value={phone}
+            placeholder={"Enter Phone Number"}
+          />
+          <Text style={{ color: "red" }}>{phoneerr}</Text>
+          <Text style={styles.text}>Address1</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={onChangeAddress1}
+            value={Address1}
+            placeholder={"Enter Address1"}
+          />
+          <Text style={{ color: "red" }}>{Address1err}</Text>
+          <Text style={styles.text}>Address2</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={onChangeAddress2}
+            value={Address2}
+            placeholder={"Enter Address2"}
+          />
+
+          <Text style={styles.text}>Select Your Age</Text>
+          <View>
+            <Picker
+              selectedValue={age}
+              onValueChange={(value, index) => setAge(value)}
+              mode="dropdown"
+              style={styles.picker}
+            >
+              <Picker.Item label="15+" value="15+" />
+              <Picker.Item label="25+" value="25+" />
+              <Picker.Item label="35+" value="35+" />
+              <Picker.Item label="45+" value="45+" />
+            </Picker>
+          </View>
+          <View>
+            <Text style={styles.text}>Gender</Text>
+            <Picker
+              selectedValue={gender}
+              onValueChange={(value, index) => setGender(value)}
+              mode="dropdown"
+              style={styles.picker}
+            >
+              <Picker.Item label="male" value="male" />
+              <Picker.Item label="female" value="female" />
+            </Picker>
+          </View>
         </View>
-        <View>
-          <Text style={styles.text}>Gender</Text>
-          <Picker
-            selectedValue={gender}
-            onValueChange={(value, index) => setGender(value)}
-            mode="dropdown"
-            style={styles.picker}
-          >
-            <Picker.Item label="Select Gender" value={null} />
-            <Picker.Item label="Male" value="Male" />
-            <Picker.Item label="Female" value="Female" />
-            <Picker.Item label="Not Willing" value="NA" />
-          </Picker>
-        </View>
-      </View>
-      
+
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.button}
 
 
-          onPress={() => {handleSave()}}
+          onPress={() => { handleSave(); }}
         >
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
@@ -137,33 +174,33 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   header: {
-    flexDirection:"row",
+    flexDirection: "row",
     width: "100%",
     alignItems: "center",
     justifyContent: "flex-start",
     paddingVertical: 30,
     // marginBottom: 20,
-    
+
 
   },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
     color: "black",
-    
+
 
   },
-  
+
   Go_Back: {
-    width:"10%",
+    width: "10%",
     // left:1
-    },
-    Go_Back1: {
-      // marginTop:15,
-      width:"35%",
-     
-  
-      },
+  },
+  Go_Back1: {
+    // marginTop:15,
+    width: "35%",
+
+
+  },
   input: {
     height: 50,
     borderColor: "#ffffff",
