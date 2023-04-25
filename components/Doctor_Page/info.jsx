@@ -118,6 +118,7 @@ const Info = ({ navigation }) => {
   const [follow_up, setFollow_up] = useState(55);
   const [duration, setDuration] = useState(7);
   const [flag, setFlag] = useState(true);
+  const [schedule_summary, setSchedule_summary] = useState(true);
   const [isEnabled1, setIsEnabled1] = useState(false);
   const [isEnabled2, setIsEnabled2] = useState(false);
   const [isEnabled3, setIsEnabled3] = useState(false);
@@ -127,6 +128,8 @@ const Info = ({ navigation }) => {
   const [isEnabled7, setIsEnabled7] = useState(false);
   const [color1, setColor1] = useState("#288759");
   const [color2, setColor2] = useState("black");
+  const [color1_sechedule, setColor1_sechedule] = useState("#288759");
+  const [color2_sechedule, setColor2_sechedule] = useState("black");
   const [icon1, setIcon1] = useState("star");
   const [icon2, setIcon2] = useState("star");
   const [icon3, setIcon3] = useState("star");
@@ -202,6 +205,18 @@ const Info = ({ navigation }) => {
     setColor2("#288759");
   };
 
+  const summary = () => {
+    setSchedule_summary(true);
+    setColor1_sechedule("#288759");
+    setColor2_sechedule("black");
+  };
+
+  const management = () => {
+    setSchedule_summary(false);
+    setColor1_sechedule("black");
+    setColor2_sechedule("#288759");
+  };
+
   const edit_name = () => {
     setPage("Professional Information");
   };
@@ -266,7 +281,7 @@ const Info = ({ navigation }) => {
   // else console.log("dfsdf");
 
   //   console.log(newText);
-    
+
   //   if (exmin === exmination_duration) return setExmination_duration(newText);
   //   // else if (exmin === exmination_duration1) setExmination_duration1(newText);
   //   // else if (exmin === exmination_duration2) setExmination_duration2(newText);
@@ -277,13 +292,13 @@ const Info = ({ navigation }) => {
   // };
 
   const exmin_duration = (exmin) => {
-    if (exmin === exmination_duration) return  setExmination_duration;
-    else if (exmin ===  exmination_duration1) return setExmination_duration1;
-    else if (exmin ===  exmination_duration2) return setExmination_duration2;
-    else if (exmin ===  exmination_duration3) return setExmination_duration3;
-    else if (exmin ===  exmination_duration4) return setExmination_duration4;
-    else if (exmin ===  exmination_duration5) return setExmination_duration5;
-    else if (exmin ===  exmination_duration6) return setExmination_duration6;
+    if (exmin === exmination_duration) return setExmination_duration;
+    else if (exmin === exmination_duration1) return setExmination_duration1;
+    else if (exmin === exmination_duration2) return setExmination_duration2;
+    else if (exmin === exmination_duration3) return setExmination_duration3;
+    else if (exmin === exmination_duration4) return setExmination_duration4;
+    else if (exmin === exmination_duration5) return setExmination_duration5;
+    else if (exmin === exmination_duration6) return setExmination_duration6;
   };
   const bookings_number = (book) => {
     if (book === number_of_bookings) return setNumber_of_bookings;
@@ -453,7 +468,7 @@ const Info = ({ navigation }) => {
               //placeholder={"last name"}
               onChangeText={bookings_number(booking)}
               // onSubmitEditing={bookings_number(booking)}
-              value = {booking + ""}
+              value={booking + ""}
             />
           </View>
         ) : (
@@ -1778,431 +1793,547 @@ const Info = ({ navigation }) => {
         ) : page === "Schedule" ? (
           <View>
             <View
-              style={{
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              }}
-            >
-              <Icon6
-                name={icon23}
-                size={30}
-                color={main_color}
-                style={{ marginLeft: 5 }}
-              />
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  paddingLeft: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Working hours settings{" "}
-              </Text>
-            </View>
-            <Text
-              style={{
-                color: "black",
-                paddingLeft: 10,
-                width: "85%",
-                // marginHorizontal : 20,
-              }}
-            >
-              {" "}
-              Examination Type{" "}
-            </Text>
-            <SelectList
-              data={[
-                { value: "First In First Out" },
-                { value: "On Appointments" },
+              style={[
+                {
+                  // borderBottomWidth :2 ,
+                  // borderColor : main_color,
+                  flexDirection: "row",
+                  width: "95%",
+                  alignItems: "center",
+                  // justifyContent : "space-between",
+                  marginHorizontal: 15,
+                  paddingVertical: 5,
+                },
               ]}
-              setSelected={setSelected}
-              placeholder={selected}
-              search={false}
-              boxStyles={{
-                borderWidth: 0,
-                borderBottomWidth: 2,
-                borderRadius: 0,
-                marginHorizontal: 10,
-                borderColor: main_color,
-                paddingLeft: 5,
-              }}
-              arrowicon={<Icon4 name={icon24} size={12} color={main_color} />}
-              dropdownStyles={{
-                marginHorizontal: 10,
-                borderWidth: 0,
-                backgroundColor: "white",
-                marginTop: 2,
-              }}
-            />
-            <Text
-              style={{
-                color: "black",
-                paddingLeft: 10,
-                marginTop: 10,
-                width: "85%",
-                // marginHorizontal : 20,
-              }}
             >
-              {" "}
-              Bookings prevention{" "}
-            </Text>
-            <SelectList
-              data={[
-                { value: "Accept all bookings" },
-                { value: "By starting of working hours" },
-                { value: "1 Hour before working hours" },
-                { value: "Block same day bookings" },
-              ]}
-              setSelected={setSelected2}
-              placeholder={selected2}
-              search={false}
-              boxStyles={{
-                borderWidth: 0,
-                borderBottomWidth: 2,
-                borderRadius: 0,
-                marginHorizontal: 10,
-                borderColor: main_color,
-                paddingLeft: 5,
-              }}
-              arrowicon={<Icon4 name={icon24} size={12} color={main_color} />}
-              dropdownStyles={{
-                marginHorizontal: 10,
-                borderWidth: 0,
-                backgroundColor: "white",
-                marginTop: 2,
-              }}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              }}
-            >
-              <Icon6
-                name={icon25}
-                size={30}
-                color={main_color}
-                style={{ marginLeft: 5 }}
-              />
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  paddingLeft: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Clinic working hours{" "}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                // paddingVertical: 15,
-                marginBottom: 5,
-                alignItems: "center",
-                marginHorizontal: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  paddingLeft: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Saturday{" "}
-              </Text>
-
-              <Switch
-                trackColor={{ false: "#777777", true: main_color }}
-                thumbColor={!isEnabled1 ? "#bbbbbb" : "#009900"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={setIsEnabled1}
-                value={isEnabled1}
-              />
+              <TouchableOpacity style={{ width: "50%" }} onPress={summary}>
+                <Text
+                  style={{
+                    color: color1_sechedule,
+                    fontSize: 14,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {" "}
+                  {" Schedule Summary "}{" "}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={{ width: "50%" }} onPress={management}>
+                <Text
+                  style={{
+                    color: color2_sechedule,
+                    fontSize: 14,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {" "}
+                  {" Schedule Management "}{" "}
+                </Text>
+              </TouchableOpacity>
             </View>
 
-            {isEnabled1 ? (
-              shift(
-                "Saturday",
-                "sat_start",
-                "sat_end",
-                start,
-                end,
-                startTime,
-                endTime,
-                exmination_duration,
-                number_of_bookings
-              )
+            <View
+              style={{ backgroundColor: "white", height: 15, marginTop: 10 }}
+            ></View>
+            {schedule_summary ? (
+              <View>
+                <View style={{ alignItems: "center", marginTop: 50 }}>
+                  <Text
+                    style={{
+                      color: "#555555",
+                      fontSize: 16,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {" "}
+                    {" Get started! "}{" "}
+                  </Text>
+                </View>
+                <View style={{ alignItems: "center", marginTop: 15 }}>
+                  <Text
+                    style={{
+                      color: "#555555",
+                      fontSize: 14,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {" "}
+                    {
+                      " Add your working hours and confirm availability to  "
+                    }{" "}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "#555555",
+                      fontSize: 14,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {" "}
+                    {" recieve new Doctor Now bookings "}{" "}
+                  </Text>
+                </View>
+
+                <Image
+                  source={require("../assets/splash.png")}
+                  style={[
+                    styles.image,
+                    { alignSelf: "center", marginVertical: 50, height: 220 },
+                  ]}
+                />
+
+                <TouchableOpacity
+                  style={{ alignItems: "center"  }}
+                  onPress={management}
+                >
+                  <Text
+                    style={{
+                      backgroundColor: "#288759",
+                      paddingHorizontal: 20,
+                      paddingVertical: 10,
+                      color: "white",
+                      margin: 20,
+                    }}
+                  >
+                    {" "}
+                    Add working hours
+                  </Text>
+                </TouchableOpacity>
+              </View>
             ) : (
-              <></>
-            )}
-            <View
-              style={{
-                flexDirection: "row",
-                // paddingVertical: 15,
-                marginBottom: 5,
-                alignItems: "center",
-                marginHorizontal: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  paddingLeft: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Sunday{" "}
-              </Text>
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingVertical: 15,
+                    marginVertical: 5,
+                  }}
+                >
+                  <Icon6
+                    name={icon23}
+                    size={30}
+                    color={main_color}
+                    style={{ marginLeft: 5 }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "black",
+                      paddingLeft: 5,
+                      width: "85%",
+                    }}
+                  >
+                    {" "}
+                    Working hours settings{" "}
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    color: "black",
+                    paddingLeft: 10,
+                    width: "85%",
+                    // marginHorizontal : 20,
+                  }}
+                >
+                  {" "}
+                  Examination Type{" "}
+                </Text>
+                <SelectList
+                  data={[
+                    { value: "First In First Out" },
+                    { value: "On Appointments" },
+                  ]}
+                  setSelected={setSelected}
+                  placeholder={selected}
+                  search={false}
+                  boxStyles={{
+                    borderWidth: 0,
+                    borderBottomWidth: 2,
+                    borderRadius: 0,
+                    marginHorizontal: 10,
+                    borderColor: main_color,
+                    paddingLeft: 5,
+                  }}
+                  arrowicon={
+                    <Icon4 name={icon24} size={12} color={main_color} />
+                  }
+                  dropdownStyles={{
+                    marginHorizontal: 10,
+                    borderWidth: 0,
+                    backgroundColor: "white",
+                    marginTop: 2,
+                  }}
+                />
+                <Text
+                  style={{
+                    color: "black",
+                    paddingLeft: 10,
+                    marginTop: 10,
+                    width: "85%",
+                    // marginHorizontal : 20,
+                  }}
+                >
+                  {" "}
+                  Bookings prevention{" "}
+                </Text>
+                <SelectList
+                  data={[
+                    { value: "Accept all bookings" },
+                    { value: "By starting of working hours" },
+                    { value: "1 Hour before working hours" },
+                    { value: "Block same day bookings" },
+                  ]}
+                  setSelected={setSelected2}
+                  placeholder={selected2}
+                  search={false}
+                  boxStyles={{
+                    borderWidth: 0,
+                    borderBottomWidth: 2,
+                    borderRadius: 0,
+                    marginHorizontal: 10,
+                    borderColor: main_color,
+                    paddingLeft: 5,
+                  }}
+                  arrowicon={
+                    <Icon4 name={icon24} size={12} color={main_color} />
+                  }
+                  dropdownStyles={{
+                    marginHorizontal: 10,
+                    borderWidth: 0,
+                    backgroundColor: "white",
+                    marginTop: 2,
+                  }}
+                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingVertical: 15,
+                    marginVertical: 5,
+                  }}
+                >
+                  <Icon6
+                    name={icon25}
+                    size={30}
+                    color={main_color}
+                    style={{ marginLeft: 5 }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "black",
+                      paddingLeft: 5,
+                      width: "85%",
+                    }}
+                  >
+                    {" "}
+                    Clinic working hours{" "}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    // paddingVertical: 15,
+                    marginBottom: 5,
+                    alignItems: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "black",
+                      paddingLeft: 5,
+                      width: "85%",
+                    }}
+                  >
+                    {" "}
+                    Saturday{" "}
+                  </Text>
 
-              <Switch
-                trackColor={{ false: "#777777", true: main_color }}
-                thumbColor={!isEnabled2 ? "#bbbbbb" : "#009900"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={setIsEnabled2}
-                value={isEnabled2}
-              />
-            </View>
-            {isEnabled2 ? (
-              shift(
-                "Sunday",
-                "sun_start",
-                "sun_end",
-                start1,
-                end1,
-                startTime1,
-                endTime1,
-                exmination_duration1,
-                number_of_bookings1
-              )
-            ) : (
-              <></>
-            )}
-            <View
-              style={{
-                flexDirection: "row",
-                marginBottom: 5,
-                alignItems: "center",
-                marginHorizontal: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  paddingLeft: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Monday{" "}
-              </Text>
+                  <Switch
+                    trackColor={{ false: "#777777", true: main_color }}
+                    thumbColor={!isEnabled1 ? "#bbbbbb" : "#009900"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={setIsEnabled1}
+                    value={isEnabled1}
+                  />
+                </View>
 
-              <Switch
-                trackColor={{ false: "#777777", true: main_color }}
-                thumbColor={!isEnabled3 ? "#bbbbbb" : "#009900"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={setIsEnabled3}
-                value={isEnabled3}
-              />
-            </View>
-            {isEnabled3 ? (
-              shift(
-                "Monday",
-                "mon_start",
-                "mon_end",
-                start2,
-                end2,
-                startTime2,
-                endTime2,
-                exmination_duration2,
-                number_of_bookings2
-              )
-            ) : (
-              <></>
-            )}
-            <View
-              style={{
-                flexDirection: "row",
-                marginBottom: 5,
-                alignItems: "center",
-                marginHorizontal: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  paddingLeft: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Tuesday{" "}
-              </Text>
+                {isEnabled1 ? (
+                  shift(
+                    "Saturday",
+                    "sat_start",
+                    "sat_end",
+                    start,
+                    end,
+                    startTime,
+                    endTime,
+                    exmination_duration,
+                    number_of_bookings
+                  )
+                ) : (
+                  <></>
+                )}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    // paddingVertical: 15,
+                    marginBottom: 5,
+                    alignItems: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "black",
+                      paddingLeft: 5,
+                      width: "85%",
+                    }}
+                  >
+                    {" "}
+                    Sunday{" "}
+                  </Text>
 
-              <Switch
-                trackColor={{ false: "#777777", true: main_color }}
-                thumbColor={!isEnabled4 ? "#bbbbbb" : "#009900"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={setIsEnabled4}
-                value={isEnabled4}
-              />
-            </View>
-            {isEnabled4 ? (
-              shift(
-                "Tuesday",
-                "tues_start",
-                "tues_end",
-                start3,
-                end3,
-                startTime3,
-                endTime3,
-                exmination_duration3,
-                number_of_bookings3
-              )
-            ) : (
-              <></>
-            )}
-            <View
-              style={{
-                flexDirection: "row",
-                marginBottom: 5,
-                alignItems: "center",
-                marginHorizontal: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  paddingLeft: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Wednesday{" "}
-              </Text>
+                  <Switch
+                    trackColor={{ false: "#777777", true: main_color }}
+                    thumbColor={!isEnabled2 ? "#bbbbbb" : "#009900"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={setIsEnabled2}
+                    value={isEnabled2}
+                  />
+                </View>
+                {isEnabled2 ? (
+                  shift(
+                    "Sunday",
+                    "sun_start",
+                    "sun_end",
+                    start1,
+                    end1,
+                    startTime1,
+                    endTime1,
+                    exmination_duration1,
+                    number_of_bookings1
+                  )
+                ) : (
+                  <></>
+                )}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginBottom: 5,
+                    alignItems: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "black",
+                      paddingLeft: 5,
+                      width: "85%",
+                    }}
+                  >
+                    {" "}
+                    Monday{" "}
+                  </Text>
 
-              <Switch
-                trackColor={{ false: "#777777", true: main_color }}
-                thumbColor={!isEnabled5 ? "#bbbbbb" : "#009900"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={setIsEnabled5}
-                value={isEnabled5}
-              />
-            </View>
-            {isEnabled5 ? (
-              shift(
-                "Wendesday",
-                "wen_start",
-                "wen_end",
-                start4,
-                end4,
-                startTime4,
-                endTime4,
-                exmination_duration4,
-                number_of_bookings4
-              )
-            ) : (
-              <></>
-            )}
-            <View
-              style={{
-                flexDirection: "row",
-                marginBottom: 5,
-                alignItems: "center",
-                marginHorizontal: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  paddingLeft: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Thursday{" "}
-              </Text>
+                  <Switch
+                    trackColor={{ false: "#777777", true: main_color }}
+                    thumbColor={!isEnabled3 ? "#bbbbbb" : "#009900"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={setIsEnabled3}
+                    value={isEnabled3}
+                  />
+                </View>
+                {isEnabled3 ? (
+                  shift(
+                    "Monday",
+                    "mon_start",
+                    "mon_end",
+                    start2,
+                    end2,
+                    startTime2,
+                    endTime2,
+                    exmination_duration2,
+                    number_of_bookings2
+                  )
+                ) : (
+                  <></>
+                )}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginBottom: 5,
+                    alignItems: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "black",
+                      paddingLeft: 5,
+                      width: "85%",
+                    }}
+                  >
+                    {" "}
+                    Tuesday{" "}
+                  </Text>
 
-              <Switch
-                trackColor={{ false: "#777777", true: main_color }}
-                thumbColor={!isEnabled6 ? "#bbbbbb" : "#009900"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={setIsEnabled6}
-                value={isEnabled6}
-              />
-            </View>
-            {isEnabled6 ? (
-              shift(
-                "Thursday",
-                "thurs_start",
-                "thurs_end",
-                start5,
-                end5,
-                startTime5,
-                endTime5,
-                exmination_duration5,
-                number_of_bookings5
-              )
-            ) : (
-              <></>
-            )}
-            <View
-              style={{
-                flexDirection: "row",
-                marginBottom: 5,
-                alignItems: "center",
-                marginHorizontal: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  paddingLeft: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Friday{" "}
-              </Text>
+                  <Switch
+                    trackColor={{ false: "#777777", true: main_color }}
+                    thumbColor={!isEnabled4 ? "#bbbbbb" : "#009900"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={setIsEnabled4}
+                    value={isEnabled4}
+                  />
+                </View>
+                {isEnabled4 ? (
+                  shift(
+                    "Tuesday",
+                    "tues_start",
+                    "tues_end",
+                    start3,
+                    end3,
+                    startTime3,
+                    endTime3,
+                    exmination_duration3,
+                    number_of_bookings3
+                  )
+                ) : (
+                  <></>
+                )}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginBottom: 5,
+                    alignItems: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "black",
+                      paddingLeft: 5,
+                      width: "85%",
+                    }}
+                  >
+                    {" "}
+                    Wednesday{" "}
+                  </Text>
 
-              <Switch
-                trackColor={{ false: "#777777", true: main_color }}
-                thumbColor={!isEnabled7 ? "#bbbbbb" : "#009900"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={setIsEnabled7}
-                value={isEnabled7}
-              />
-            </View>
-            {isEnabled7 ? (
-              shift(
-                "Friday",
-                "fri_start",
-                "fri_end",
-                start6,
-                end6,
-                startTime6,
-                endTime6,
-                exmination_duration6,
-                number_of_bookings6
-              )
-            ) : (
-              <></>
+                  <Switch
+                    trackColor={{ false: "#777777", true: main_color }}
+                    thumbColor={!isEnabled5 ? "#bbbbbb" : "#009900"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={setIsEnabled5}
+                    value={isEnabled5}
+                  />
+                </View>
+                {isEnabled5 ? (
+                  shift(
+                    "Wendesday",
+                    "wen_start",
+                    "wen_end",
+                    start4,
+                    end4,
+                    startTime4,
+                    endTime4,
+                    exmination_duration4,
+                    number_of_bookings4
+                  )
+                ) : (
+                  <></>
+                )}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginBottom: 5,
+                    alignItems: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "black",
+                      paddingLeft: 5,
+                      width: "85%",
+                    }}
+                  >
+                    {" "}
+                    Thursday{" "}
+                  </Text>
+
+                  <Switch
+                    trackColor={{ false: "#777777", true: main_color }}
+                    thumbColor={!isEnabled6 ? "#bbbbbb" : "#009900"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={setIsEnabled6}
+                    value={isEnabled6}
+                  />
+                </View>
+                {isEnabled6 ? (
+                  shift(
+                    "Thursday",
+                    "thurs_start",
+                    "thurs_end",
+                    start5,
+                    end5,
+                    startTime5,
+                    endTime5,
+                    exmination_duration5,
+                    number_of_bookings5
+                  )
+                ) : (
+                  <></>
+                )}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginBottom: 5,
+                    alignItems: "center",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "black",
+                      paddingLeft: 5,
+                      width: "85%",
+                    }}
+                  >
+                    {" "}
+                    Friday{" "}
+                  </Text>
+
+                  <Switch
+                    trackColor={{ false: "#777777", true: main_color }}
+                    thumbColor={!isEnabled7 ? "#bbbbbb" : "#009900"}
+                    ios_backgroundColor="#3e3e3e"
+                    onValueChange={setIsEnabled7}
+                    value={isEnabled7}
+                  />
+                </View>
+                {isEnabled7 ? (
+                  shift(
+                    "Friday",
+                    "fri_start",
+                    "fri_end",
+                    start6,
+                    end6,
+                    startTime6,
+                    endTime6,
+                    exmination_duration6,
+                    number_of_bookings6
+                  )
+                ) : (
+                  <></>
+                )}
+              </View>
             )}
           </View>
         ) : (
@@ -2340,4 +2471,3 @@ const styles = StyleSheet.create({
 });
 
 export default Info;
-// 0100220620059

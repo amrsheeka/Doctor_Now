@@ -14,14 +14,12 @@ import Doctor from "./components/consts/Doctor";
 import { AppContext } from "./components/consts/AppContext";
 export default function Main() {
   const [currentUser, setCurrentUser] = useState(null);
-  const { curruser,setCurrUser} = useContext(AppContext);
   const {doctors, setDoctors} = useContext(AppContext);
   
   useEffect(() => {
     async function fetchUser() {
       const user = await getCurrentUser();
       setCurrentUser(user);
-      setCurrUser(user);
       console.log(user);
     }
     async function fetchDoctors() {
