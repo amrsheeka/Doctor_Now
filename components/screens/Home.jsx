@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   Animated, PanResponder,Dimensions,StatusBar
 } from "react-native";
+import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import { AppContext } from "../consts/AppContext";
@@ -19,12 +20,17 @@ import DoctorCard2 from "../subcomponents/DoctorCard2";
 import { getDoctors } from "../../database/Doctors";
 import CurrentUser from "../consts/CurrentUser";
 const Home = ({ navigation }) => {
+  const {night, setNight} = useContext(AppContext);
   const [search, setSearch] = useState("");
   const { doctors, setDoctors } = useContext(AppContext);
   const [panResponder, setPanResponder] = useState(null);
   const [scrollY, setScrollY] = useState(new Animated.Value(0));
   const height =Dimensions.get('window').height;
   const [fav, setFav] = useState([]);
+  const handleToggleDarkMode = () => {
+    setNight(!night);
+    // Here you can add logic to switch your app theme to dark mode
+  };
   async function fetchDoctor() {
     const doctor = await getDoctors();
     setDoctors(doctor);
@@ -136,7 +142,14 @@ const Home = ({ navigation }) => {
   return (
     
     <View style={styles.container}>
-      <View style={styles.header}>
+      
+      <View style={[styles.header, night && styles.buttonDark]}>
+      <TouchableOpacity
+      style={[styles.button, night && styles.buttonDark]}
+      onPress={handleToggleDarkMode}
+    >
+      <FontAwesome name="moon-o" size={24} color={night ? '#FFF' : '#000'} />
+    </TouchableOpacity>
         <View style={styles.Title}>
           <Text style={styles.heading}>
             All doctors treat,but a good doctor lets nature heal.
@@ -145,7 +158,7 @@ const Home = ({ navigation }) => {
         <View style={{ flexDirection: "row" }}>
           <View >
             <TextInput
-            style={styles.search}
+            style={[styles.search, night && styles.darklist]}
               placeholder="Search"
               placeholderTextColor="white"
               value={search}
@@ -154,7 +167,7 @@ const Home = ({ navigation }) => {
           </View>
 
           <TouchableOpacity
-            style={styles.filter}
+            style={[styles.filter, night && styles.dark2]}
             onPress={() => navigation.navigate("AllDoctors", { all: "all" })}
           >
             <Image
@@ -168,7 +181,7 @@ const Home = ({ navigation }) => {
             <Animated.View
             
             style={[
-              styles.list,
+              [styles.list, night && styles.darklist],
               {
                 transform: [
                   {
@@ -206,12 +219,6 @@ const Home = ({ navigation }) => {
             </View>
           )}
         
-
-
-
-
-
-      
     </View>
   );
 };
@@ -348,6 +355,31 @@ const styles = StyleSheet.create({
   },
   filterCard3TextVeiw: {
     flex: 1,
+  },
+  button: {
+    backgroundColor: '#FFF',
+    borderRadius: 50,
+    height: 50,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist:{
+    backgroundColor: '#142E5E',
+  },
+  dark2:{
+    backgroundColor:"#BDD3FF",
   },
 });
 
