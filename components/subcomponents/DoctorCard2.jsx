@@ -181,7 +181,8 @@ const styles = StyleSheet.create({
     backgroundColor:"#BDD3FF",
   },
   darkCard:{
-    backgroundColor:"#53636E",
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    
   },
 });
 export default memo(DoctorCard2);

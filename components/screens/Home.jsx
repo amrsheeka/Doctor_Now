@@ -361,8 +361,6 @@ const styles = StyleSheet.create({
     width: 50,
     justifyContent: 'center',
     alignItems: 'flex-end',
-    
-    
   },
   buttonDark: {
     backgroundColor: '#0D1E3D',
