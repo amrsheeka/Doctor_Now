@@ -10,7 +10,7 @@ import {
   ScrollView,
   ActivityIndicator,
   SafeAreaView,
-  Animated, PanResponder,Dimensions,StatusBar
+  Animated, PanResponder, Dimensions, StatusBar
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
@@ -20,12 +20,12 @@ import DoctorCard2 from "../subcomponents/DoctorCard2";
 import { getDoctors } from "../../database/Doctors";
 import CurrentUser from "../consts/CurrentUser";
 const Home = ({ navigation }) => {
-  const {night, setNight} = useContext(AppContext);
+  const { night, setNight } = useContext(AppContext);
   const [search, setSearch] = useState("");
   const { doctors, setDoctors } = useContext(AppContext);
   const [panResponder, setPanResponder] = useState(null);
   const [scrollY, setScrollY] = useState(new Animated.Value(0));
-  const height =Dimensions.get('window').height;
+  const height = Dimensions.get('window').height;
   const [fav, setFav] = useState([]);
   const handleToggleDarkMode = () => {
     setNight(!night);
@@ -140,25 +140,26 @@ const Home = ({ navigation }) => {
 
 
   return (
-    
-    <View style={styles.container}>
-      
+
+    <View style={[styles.container, night && styles.buttonDark]}>
       <View style={[styles.header, night && styles.buttonDark]}>
-      <TouchableOpacity
-      style={[styles.button, night && styles.buttonDark]}
-      onPress={handleToggleDarkMode}
-    >
-      <FontAwesome name="moon-o" size={24} color={night ? '#FFF' : '#000'} />
-    </TouchableOpacity>
-        <View style={styles.Title}>
-          <Text style={styles.heading}>
-            All doctors treat,but a good doctor lets nature heal.
-          </Text>
+        <View style={{flexDirection:"row",gap:60}}>
+          <View style={styles.Title}>
+            <Text style={styles.heading}>
+              All doctors treat,but a good doctor lets nature heal.
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={[styles.button, night && styles.buttonDark]}
+            onPress={handleToggleDarkMode}
+          >
+            <FontAwesome name="moon-o" size={24} color={night ? '#FFF' : '#000'} />
+          </TouchableOpacity>
         </View>
         <View style={{ flexDirection: "row" }}>
           <View >
             <TextInput
-            style={[styles.search, night && styles.darklist]}
+              style={[styles.search, night && styles.darklist]}
               placeholder="Search"
               placeholderTextColor="white"
               value={search}
@@ -177,48 +178,48 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-          {doctors.length != 0 ? (
-            <Animated.View
-            
-            style={[
-              [styles.list, night && styles.darklist],
-              {
-                transform: [
-                  {
-                    translateY: scrollY.interpolate({
-                      inputRange: [-height, height],
-                      outputRange: [0, height-200],
-                      extrapolateRight: "clamp",
-                    }),
-                    
-                  },
-                ],
-              },
-            ]}
-            {...panResponder?.panHandlers}
-          >
-            <FlatList
-              removeClippedSubviews={true}
-              data={
-                doctors.filter((doctor) =>
-                  doctor.name.toLowerCase().includes(search.toLowerCase()))
-              }
-              ListHeaderComponent={header}
-              ListFooterComponent={footer}
-              renderItem={renderDoctor}
-              initialNumToRender={7}
-              maxToRenderPerBatch={7}
-              windowSize={10}
-              keyExtractor={(item, index) => item.id}
-              
-            />
-            </Animated.View>
-          ) : (
-            <View style={{ padding: "18%" }}>
-              <ActivityIndicator size={100} color="#00ff00" />
-            </View>
-          )}
-        
+      {doctors.length != 0 ? (
+        <Animated.View
+
+          style={[
+            [styles.list, night && styles.darklist],
+            {
+              transform: [
+                {
+                  translateY: scrollY.interpolate({
+                    inputRange: [-height, height],
+                    outputRange: [0, height - 200],
+                    extrapolateRight: "clamp",
+                  }),
+
+                },
+              ],
+            },
+          ]}
+          {...panResponder?.panHandlers}
+        >
+          <FlatList
+            removeClippedSubviews={true}
+            data={
+              doctors.filter((doctor) =>
+                doctor.name.toLowerCase().includes(search.toLowerCase()))
+            }
+            ListHeaderComponent={header}
+            ListFooterComponent={footer}
+            renderItem={renderDoctor}
+            initialNumToRender={7}
+            maxToRenderPerBatch={7}
+            windowSize={10}
+            keyExtractor={(item, index) => item.id}
+
+          />
+        </Animated.View>
+      ) : (
+        <View style={{ padding: "18%" }}>
+          <ActivityIndicator size={100} color="#00ff00" />
+        </View>
+      )}
+
     </View>
   );
 };
@@ -230,11 +231,8 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#288771",
-    width: "100%",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    paddingVertical:20,
-    position:"absolute",
+    paddingVertical: 20,
+    position: "absolute",
   },
   heading: {
     fontSize: 24,
@@ -249,7 +247,7 @@ const styles = StyleSheet.create({
   list: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingTop:60,
+    paddingTop: 60,
     backgroundColor: "#fff",
   },
   search: {
@@ -258,7 +256,7 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     borderRadius: 10,
     marginVertical: 20,
-    marginLeft:15,
+    marginLeft: 15,
     flexDirection: "row",
     shadowColor: "#000",
     shadowOffset: {
@@ -275,7 +273,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: 50,
     height: 50,
-    marginLeft:"15%",
+    marginLeft: "15%",
     borderRadius: 10,
     margin: 20,
     shadowColor: "#000",
@@ -357,29 +355,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#288771',
     borderRadius: 50,
     height: 50,
     width: 50,
     justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
+    alignItems: 'flex-end',
+    
+    
   },
   buttonDark: {
     backgroundColor: '#0D1E3D',
   },
-  darklist:{
+  darklist: {
     backgroundColor: '#142E5E',
   },
-  dark2:{
-    backgroundColor:"#BDD3FF",
+  dark2: {
+    backgroundColor: "#BDD3FF",
   },
 });
 
