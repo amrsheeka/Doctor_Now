@@ -30,18 +30,18 @@ const AddDoctor = ({ navigation }) => {
     const [x, setX] = useState("");
     const [y, setY] = useState("");
 
-    const onDateChange = (event, newDate) => {
-        setShowPicker(false);
-        setDate(newDate.toDateString());
-        var timeList1 = getTimeList(item.start, item.end);
-        getAppointment_by_doc_id(item.id, newDate.toDateString()).then((res) => {
-            res.status != "failed" ? res.map((e) => {
-                timeList1 = timeList1.filter(ele => ele !== e.time.toString())
-            }) : setTimeList(timeList1);
-            setTimeList(timeList1);
-        }
-        )
-    };
+    // const onDateChange = (event, newDate) => {
+    //     setShowPicker(false);
+    //     setDate(newDate.toDateString());
+    //     var timeList1 = getTimeList(item.start, item.end);
+    //     getAppointment_by_doc_id(item.id, newDate.toDateString()).then((res) => {
+    //         res.status != "failed" ? res.map((e) => {
+    //             timeList1 = timeList1.filter(ele => ele !== e.time.toString())
+    //         }) : setTimeList(timeList1);
+    //         setTimeList(timeList1);
+    //     }
+    //     )
+    // };
 
     return (
         <View style={styles.container}>
@@ -197,7 +197,7 @@ const AddDoctor = ({ navigation }) => {
                             onChangeText={(text) => setPrice(text)}
                         />
                     </View>
-                    <Picker
+                    {/* <Picker
                         selectedValue={Time}
                         onValueChange={(value, index) => setTime(value)}
                         mode="dropdown"
@@ -206,7 +206,7 @@ const AddDoctor = ({ navigation }) => {
                         {timeList.map((e, i) => (
                             <Picker.Item label={e} value={e} key={i} />
                         ))}
-                    </Picker>
+                    </Picker> */}
 
                 </ScrollView>
 
