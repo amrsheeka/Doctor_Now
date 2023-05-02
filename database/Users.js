@@ -230,6 +230,20 @@ const getAppointment_by_doc_id = async (doctor_id, date) => {
       console.log(error);
     });
 }
+const get_doc_by_email = async (email) => {
+  return axios.post(`${Ip.ip}/API/doctors/get_doc_by_email.php`, {
+    email: email,
+  })
+    .then(function (response) {
+      console.log(response.date)
+
+      return response.data;
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
 const deleteAppointment = async (users_id, doctor_id) => {
   const res = await axios.post(`${Ip.ip}/API/doctors/del_appointment.php`, {
     users_id: users_id,
@@ -278,5 +292,6 @@ export {
   getAllAppointment,
   Update_Appointment,
   editUser,
-  getAppointment_for_Doctor
+  getAppointment_for_Doctor,
+  get_doc_by_email
 };

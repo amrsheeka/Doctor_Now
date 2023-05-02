@@ -26,6 +26,7 @@ import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
 import { logout } from "../../database/Users";
 import Appointments from "./Appointments";
+
 const Info = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
@@ -1883,7 +1884,7 @@ const Info = ({ navigation }) => {
                 />
 
                 <TouchableOpacity
-                  style={{ alignItems: "center"  }}
+                  style={{ alignItems: "center" }}
                   onPress={management}
                 >
                   <Text
@@ -2336,6 +2337,10 @@ const Info = ({ navigation }) => {
               </View>
             )}
           </View>
+        ) : page === "More" ? (
+          <View>
+            <Appointments />
+          </View>
         ) : (
           <></>
         )}
@@ -2398,7 +2403,15 @@ const Info = ({ navigation }) => {
                 style={{ paddingHorizontal: 10 }}
               />
               {page === "More" ? (
-              <Appointments/>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: "white",
+                  }}
+                >
+                  {" "}
+                  More{" "}
+                </Text>
               ) : (
                 <></>
               )}
