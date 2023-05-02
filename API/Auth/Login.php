@@ -12,10 +12,10 @@ $obj = json_decode($json, true);
 if (!empty($_SESSION)) {
     $stmt = $con->prepare("SELECT * FROM `users` where `id`= ?");
     $stmt->execute(array($_SESSION['id']));
-    $users = $stmt->fetch(PDO::FETCH_ASSOC);
-    $count = $stmt->rowCount();
-    if ($count > 0) {
-        echo json_encode($users);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $coun = $stmt->rowCount();
+    if ($coun > 0) {
+        echo json_encode($user);
     }
 }
 
