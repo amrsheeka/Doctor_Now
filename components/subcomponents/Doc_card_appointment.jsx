@@ -35,6 +35,7 @@ function Doc_card_appointment({
     users_id: users_id,
   };
   let id = CurrentUser.user.id;
+  let is_doctor = CurrentUser.user.is_doctor;
   const Delete = async () =>
     await deleteAppointment(users_id, doctor_id).then((res) => {
       console.log("its ok");
@@ -49,6 +50,7 @@ function Doc_card_appointment({
       }
     });
   return (
+   is_doctor==="no"?
     <TouchableOpacity
       onPress={() => navigation.navigate("Appointment2", { obj })}
     >
@@ -107,7 +109,44 @@ function Doc_card_appointment({
           {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableOpacity> 
+    :
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Appointment2", { obj })}
+      >
+        <View style={styles.card}>
+          <Image
+            source={
+              image
+                ? { uri: image }
+                : require("../assets/Herbal_Medicine_Male_Avatar.png")
+            }
+            defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")}
+            style={styles.cardPhoto}
+          />
+          <View style={styles.cardContent}>
+            <View style={styles.cardContent1}>
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.cardTitle}
+              >
+                User Name: {name_patient}
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row", gap: 60 }}>
+              <TouchableOpacity
+                style={styles.cardButton}
+                onPress={() => Delete()}
+              >
+                <Text style={styles.cardButtonText}>Decline </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
+          </View>
+        </View>
+      </TouchableOpacity>
   );
 }
 

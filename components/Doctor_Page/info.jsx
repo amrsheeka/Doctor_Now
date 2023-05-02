@@ -25,7 +25,7 @@ import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
 import { logout } from "../../database/Users";
-
+import Appointments from "./Appointments";
 const Info = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
@@ -2398,15 +2398,7 @@ const Info = ({ navigation }) => {
                 style={{ paddingHorizontal: 10 }}
               />
               {page === "More" ? (
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "white",
-                  }}
-                >
-                  {" "}
-                  More{" "}
-                </Text>
+              <Appointments/>
               ) : (
                 <></>
               )}
