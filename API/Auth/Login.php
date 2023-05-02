@@ -8,17 +8,6 @@ header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
-
-if (!empty($_SESSION)) {
-    $stmt = $con->prepare("SELECT * FROM `users` where `id`= ?");
-    $stmt->execute(array($_SESSION['id']));
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    $coun = $stmt->rowCount();
-    if ($coun > 0) {
-        echo json_encode($user);
-    }
-}
-
 $count = 0;
 if (empty($_SESSION) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $json = file_get_contents('php://input');

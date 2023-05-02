@@ -79,7 +79,7 @@ const logout = async () => {
 
 }
 const getCurrentUser = async () => {
-  const res = await axios.get(`${Ip.ip}/API/Auth/Login.php`);
+  const res = await axios.get(`${Ip.ip}/API/Auth/Getuser.php`);
   if (res.data != "") {
 
     CurrentUser.user = res.data;
