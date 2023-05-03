@@ -2,7 +2,7 @@
 include "../Connection.php";
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
-header("Access-Control-Allow-Headers: X-Requested-With");
+header("Access-Control-Allow-Headers: X-Requested-With,Content-Type");
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
 $stmt = $con->prepare("SELECT * FROM doctors ");

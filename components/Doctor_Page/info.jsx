@@ -166,7 +166,23 @@ const Info = ({ navigation }) => {
   const empty = false;
   const { setAppointments } = useContext(AppContext);
   const { setType } = useContext(AppContext);
-
+  const { curruser } = useContext(AppContext);
+  const [doctor, setDoctor] = useState({});
+  useEffect(() => {
+    async function getDoc() {
+      let email = curruser.email;
+      const res = await get_doc_by_email(email);
+      setDoctor(res[0]);
+    }
+    getDoc();
+  }, []);
+  
+  useEffect(() => {
+    if (doctor.length > 0) {
+      setfName(doctor.name);
+    }
+  }, [doctor]);
+  console.log(doctor);
   const back = () => {
     page === "Schedule" ? summary() : setPage("Profile");
     setOpen_password(false);
@@ -183,7 +199,7 @@ const Info = ({ navigation }) => {
           console.log(res)
           if (res.status !== "failed")
             setAppointments(res)
-            else setAppointments([]);
+          else setAppointments([]);
         })
       }
     })
@@ -634,8 +650,8 @@ const Info = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       {page === "Profile" ||
-      (page === "Schedule" && schedule_summary) ||
-      page === "More" ? (
+        (page === "Schedule" && schedule_summary) ||
+        page === "More" ? (
         <View style={[styles.header, { alignItems: "center" }]}>
           <Text style={styles.label}> {page} </Text>
         </View>
@@ -674,7 +690,7 @@ const Info = ({ navigation }) => {
                   }}
                 >
                   {" Doctor "}
-                  {fName} {lName}
+                  {doctor.name}
                 </Text>
                 <Icon
                   onPress={edit_name}
@@ -689,7 +705,7 @@ const Info = ({ navigation }) => {
               </Text>
               <View style={{ marginVertical: 5, flexDirection: "row" }}>
                 <Image
-                  source={require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
+                  source={doctor.image? {uri:doctor.image}:require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
                   style={[styles.image]}
                 />
 
