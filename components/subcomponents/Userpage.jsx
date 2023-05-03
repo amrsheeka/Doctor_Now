@@ -7,10 +7,11 @@ import { AppContext } from "../consts/AppContext";
 
 const Userpage = ({ navigation }) => {
   const { curruser} = useContext(AppContext);
+  const { night} = useContext(AppContext);
   const user = curruser;
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[styles.container,night && styles.buttonDark]}>
+    <View style={[styles.header, night && styles.buttonDark]}>
         <View  style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
@@ -19,12 +20,12 @@ const Userpage = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View >
-          <Text style={styles.heading}> Your Profile</Text>
+          <Text style={[styles.heading,night&&styles.textdark]}> Your Profile</Text>
         </View>
       </View>
       <View style={styles.z2} >
           <TouchableOpacity onPress={() => navigation.navigate("Edit_user",{user})}>
-              <MaterialIcons name="mode-edit" size={24} color="white" style={styles.z1}/>
+              <MaterialIcons name="mode-edit" size={24} color="white" style={[styles.z1,night&&styles.dark2]}/>
             </TouchableOpacity>
           </View>
       <View style={styles.content}>
@@ -34,15 +35,15 @@ const Userpage = ({ navigation }) => {
             style={styles.profilePhoto}
           />
           <View style={styles.profileInfo}>
-            <Text style={styles.profileTitle}>{user.name}</Text>
+            <Text style={[styles.profileTitle,night&&styles.textdark]}>{user.name}</Text>
             {/* <Text style={styles.profileSubtitle}>id:{user.id}</Text> */}
           </View>
         </View>
         <View style={styles.info}>
         <View style={{flexDirection:"row",gap:10}}>
           <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Email address:</Text>
-            <Text style={[styles.infoValue,]}>{user.email}</Text>
+          <Text style={[styles.infoLabel,night&&styles.textdark]}>Email address:</Text>
+          <Text style={[styles.infoValue,night&&styles.textdark]}>{user.email}</Text>
           </View>
           {/* <View>
                   <TouchableOpacity onPress={() => ""}>
@@ -52,8 +53,8 @@ const Userpage = ({ navigation }) => {
               </View>
           <View style={{flexDirection:"row",gap:10}}>
           <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Phone Number:</Text>
-            <Text style={[styles.infoValue, ]}>{user.phone}</Text>
+          <Text style={[styles.infoLabel,night&&styles.textdark]}>Phone Number:</Text>
+          <Text style={[styles.infoValue,night&&styles.textdark]}>{user.phone}</Text>
           </View>
           {/* <View>
                   <TouchableOpacity onPress={() => ""}>
@@ -63,8 +64,8 @@ const Userpage = ({ navigation }) => {
               </View>
           <View style={{flexDirection:"row",gap:10}}>
           <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>address:</Text>
-            <Text style={[styles.infoValue, ]}>{user.address}</Text>
+          <Text style={[styles.infoLabel,night&&styles.textdark]}>address:</Text>
+          <Text style={[styles.infoValue,night&&styles.textdark]}>{user.address}</Text>
           </View>
           {/* <View>
                   <TouchableOpacity onPress={() => ""}>
@@ -76,8 +77,8 @@ const Userpage = ({ navigation }) => {
             user.address_2 ?
             <View style={{flexDirection:"row",gap:10}}>
               <View style={styles.infoItem}>
-                <Text style={styles.infoLabel}>address 2:</Text>
-                <Text style={[styles.infoValue,]}>{(user.address_2)}</Text>
+              <Text style={[styles.infoLabel,night&&styles.textdark]}>address 2:</Text>
+              <Text style={[styles.infoValue,night&&styles.textdark]}>{(user.address_2)}</Text>
               </View>
                 {/* <View>
                   <TouchableOpacity onPress={() => ""}>
@@ -90,8 +91,8 @@ const Userpage = ({ navigation }) => {
           }
           <View style={{flexDirection:"row",gap:10}}>
            <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Gender:</Text>
-            <Text style={[styles.infoValue, ]}>{user.gender}</Text>
+            <Text style={[styles.infoLabel,night&&styles.textdark]}>Gender:</Text>
+            <Text style={[styles.infoValue,night&&styles.textdark]}>{user.gender}</Text>
           </View>
           {/* <View>
           <TouchableOpacity onPress={() => ""}>
@@ -101,8 +102,8 @@ const Userpage = ({ navigation }) => {
           </View>
           <View style={{flexDirection:"row",gap:10}}>
           <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Age:</Text>
-            <Text style={[styles.infoValue, ]}>{user.age} years old</Text>
+          <Text style={[styles.infoLabel,night&&styles.textdark]}>Age:</Text>
+          <Text style={[styles.infoValue,night&&styles.textdark]}>{user.age} years old</Text>
           </View>
           {/* <View>
           <TouchableOpacity onPress={() => ""}>
@@ -246,9 +247,21 @@ const styles = StyleSheet.create({
   z2:{
     width:"100%",
     // height:"35%",
-   
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist: {
+    backgroundColor: '#142E5E',
+    borderWidth: 0,
 
-  }
+  },
+  dark2: {
+    backgroundColor: "#BDD3FF",
+  },
+  textdark: {
+    color:"white"
+  },
 });
 
 export default Userpage;

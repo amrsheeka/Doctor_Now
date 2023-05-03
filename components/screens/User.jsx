@@ -5,66 +5,67 @@ import { logout } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 const User = ({ navigation }) => {
   const { curruser} = useContext(AppContext);
+  const { night} = useContext(AppContext);
   const handlelgout = () => {
     logout().then(() => navigation.navigate("StackNavigator"));
   }
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container,night && styles.buttonDark]}>
       <View>
-        <View style={styles.x}>
+        <View style={[styles.x,night && styles.darklist]}>
          <TouchableOpacity>
           <Image
             source={require("../assets/Herbal_Medicine_Male_Avatar.png")}
             style={styles.z}
           />
           </TouchableOpacity>
-          <Text style={styles.z2}> {curruser.name} </Text>
+          <Text style={[styles.z2,night&&styles.textdark]}> {curruser.name} </Text>
         </View>
       </View>
       <TouchableOpacity>
-        <View style={styles.xx}>
+        <View style={[styles.xx,night && styles.dark2]}>
           <MaterialCommunityIcons name="history" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> History </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("Userpage")}>
-        <View style={styles.xx}>
+      <View style={[styles.xx,night && styles.dark2]}>
           <Ionicons name="md-person-outline" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> Personal Details</Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
-        <View style={styles.xx}>
+      <View style={[styles.xx,night && styles.dark2]}>
           <Ionicons name="md-location-outline" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> Addres </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("Payment")}>
-        <View style={styles.xx}>
+      <View style={[styles.xx,night && styles.dark2]}>
           <MaterialIcons name="payment" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> Payment Method </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
-        <View style={styles.xx}>
+      <View style={[styles.xx,night && styles.dark2]}>
           <AntDesign name="exclamationcircleo" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> About </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
-        <View style={styles.xx}>
+      <View style={[styles.xx,night && styles.dark2]}>
           <Feather name="help-circle" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> Help </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handlelgout()}>
-        <View style={styles.xx}>
+      <View style={[styles.xx,night && styles.dark2]}>
           <SimpleLineIcons name="logout" size={28} color="black" style={styles.xxxx} />
           <Text style={styles.xxxxx}> Logout </Text>
         </View>
@@ -122,7 +123,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     backgroundColor: "#FFF",
-    borderWidth: 1,
     borderRadius: 10,
     borderColor: "#f7eceb",
     shadowColor: "#000",
@@ -144,6 +144,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 100,
 
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist: {
+    backgroundColor: '#142E5E',
+    borderWidth: 0,
+
+  },
+  dark2: {
+    backgroundColor: "#BDD3FF",
+  },
+  textdark: {
+   
+    color:"white"
   },
 });
 

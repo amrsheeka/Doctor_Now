@@ -23,6 +23,7 @@ const Edit_user = ({ navigation, route }) => {
   const [age, setAge] = useState(route.params.user.age);
   const [gender, setGender] = useState(route.params.user.gender);
   const { curruser, setCurrUser } = useContext(AppContext);
+  const { night} = useContext(AppContext);
   const handleSave = async () => {
     if (!name||!phone||!Address1) {
       if (!name) {
@@ -77,8 +78,8 @@ const Edit_user = ({ navigation, route }) => {
   
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[styles.container,night && styles.buttonDark]}>
+    <View style={[styles.header, night && styles.buttonDark]}>
         <View style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
@@ -87,50 +88,50 @@ const Edit_user = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         <View >
-          <Text style={styles.heading}>Edit User</Text>
+        <Text style={[styles.heading,night&&styles.textdark]}>Edit User</Text>
         </View>
       </View>
       <ScrollView>
         <View>
-          <Text style={styles.text}>Name</Text>
+        <Text style={[styles.text,night&&styles.textdark]}>Name</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input ,night && styles.dark2]}
             onChangeText={setName}
             value={name}
             placeholder={"Enter your name"}
           />
           <Text style={{ color: "red" }}>{nameerr}</Text>
-          <Text style={styles.text}>Phone Number</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>Phone Number</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input ,night && styles.dark2]}
             onChangeText={onChangePhone}
             value={phone}
             placeholder={"Enter Phone Number"}
           />
           <Text style={{ color: "red" }}>{phoneerr}</Text>
-          <Text style={styles.text}>Address1</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>Address1</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input ,night && styles.dark2]}
             onChangeText={onChangeAddress1}
             value={Address1}
             placeholder={"Enter Address1"}
           />
           <Text style={{ color: "red" }}>{Address1err}</Text>
-          <Text style={styles.text}>Address2</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>Address2</Text>
           <TextInput
-            style={styles.input}
+           style={[styles.input ,night && styles.dark2]}
             onChangeText={onChangeAddress2}
             value={Address2}
             placeholder={"Enter Address2"}
           />
 
-          <Text style={styles.text}>Select Your Age</Text>
+<Text style={[styles.text,night&&styles.textdark]}>Select Your Age</Text>
           <View>
             <Picker
               selectedValue={age}
               onValueChange={(value, index) => setAge(value)}
               mode="dropdown"
-              style={styles.picker}
+              style={[styles.picker ,night&&styles.darklist]}
             >
               <Picker.Item label="15+" value="15+" />
               <Picker.Item label="25+" value="25+" />
@@ -139,12 +140,12 @@ const Edit_user = ({ navigation, route }) => {
             </Picker>
           </View>
           <View>
-            <Text style={styles.text}>Gender</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>Gender</Text>
             <Picker
               selectedValue={gender}
               onValueChange={(value, index) => setGender(value)}
               mode="dropdown"
-              style={styles.picker}
+              style={[styles.picker ,night&&styles.darklist]}
             >
               <Picker.Item label="male" value="male" />
               <Picker.Item label="female" value="female" />
@@ -155,12 +156,12 @@ const Edit_user = ({ navigation, route }) => {
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button ,night&&styles.darklist]}
 
 
           onPress={() => { handleSave(); }}
         >
-          <Text style={styles.buttonText}>Save</Text>
+          <Text style={[styles.buttonText,night&&styles.textdark]}>Confirm</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -261,6 +262,24 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist: {
+    backgroundColor: '#142E5E',
+    borderWidth: 0,
+
+  },
+  dark2: {
+    backgroundColor: "#BDD3FF",
+  },
+  textdark: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    paddingTop: 10,
+    color:"white"
   },
 });
 
