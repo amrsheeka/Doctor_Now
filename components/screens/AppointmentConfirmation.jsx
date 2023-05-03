@@ -42,6 +42,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const [Time, setTime] = useState("");
   const [date, setDate] = useState(new Date().toDateString());
   const [showPicker, setShowPicker] = useState(false);
+  const { night} = useContext(AppContext);
   let image = item.image;
   const onDateChange = (event, newDate) => {
     setShowPicker(false);
@@ -87,12 +88,12 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     navigation.navigate("Chat");
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.header1}>
+    <View style={[styles.container,night && styles.buttonDark]}>
+      <View style={[styles.header1, night && styles.buttonDark]}>
         <View  style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
-              <Ionicons name="arrow-back" size={24} color="black" />
+              <Ionicons name="arrow-back" size={24} color="white" />
             </View>
           </TouchableOpacity>
         </View>
@@ -100,7 +101,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         <Text style={styles.heading}>Appointment</Text>
         </View>
       </View>
-      <View style={styles.header}>
+      <View style={[styles.header, night && styles.buttonDark]}>
         <Image
           source={
             image
@@ -110,53 +111,71 @@ const AppointmentConfirmation = ({ navigation, route }) => {
           style={styles.cardPhoto}
         />
         <View>
-          <Text style={styles.text1}> {item.name}</Text>
-          <Text style={styles.text2}> {item.describtion}</Text>
+          <Text style={[styles.text1,night&&styles.textdark1]}> {item.name}</Text>
+          <Text style={[styles.text2,night&&styles.textdark2]}> {item.describtion}</Text>
         </View>
       </View>
-      <View style={styles.body}>
-        <View style={styles.box}>
-          <Text style={styles.text}>Patients</Text>
-          <Text style={styles.text}>{1600}</Text>
+      <View style={[styles.body, night && styles.buttonDark]}>
+      <View style={[styles.box, night && styles.darklist]}>
+          <Text style={[styles.text,night&&styles.textdark]}>Patients</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>{1600}</Text>
         </View>
-        <View style={styles.box}>
-          <Text style={styles.text}>price</Text>
-          <Text style={styles.text}>{item.price}</Text>
+        <View style={[styles.box, night && styles.darklist]}>
+          <Text style={[styles.text,night&&styles.textdark]}>price</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>{item.price}</Text>
         </View>
-        <View style={styles.box}>
-          <Text style={styles.text}>Review</Text>
+        <View style={[styles.box, night && styles.darklist]}>
+          <Text style={[styles.text,night&&styles.textdark]}>Review</Text>
           <TouchableOpacity>
-            <Text style={styles.text}>3.00 K</Text>
+            <Text style={[styles.text,night&&styles.textdark]}>3.00 K</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.footer}>
-        <Button
+      <View style={[styles.footer, night && styles.buttonDark]}>
+      <TouchableOpacity onPress={() => navigation.navigate("MapScreen", item.address)}>
+            <View style={[styles.buttonloc,night&&styles.darklist]}>
+              <Text style={styles.buttonText}>Location</Text>
+            </View>
+          </TouchableOpacity>
+        {/* <Button
           color={"#73caa4"}
+          style={[night&&styles.darklist]}
           title="Location"
           onPress={() => navigation.navigate("MapScreen", item.address)}
-        />
-        <View style={{}}>
-          <Text style={styles.text3}>Working Hours</Text>
+        /> */}
+        <View style={{paddingTop:10}}>
+          <Text style={[styles.text3,night&&styles.textdark3]}>Working Hours</Text>
         </View>
         <View>
           <Picker
             selectedValue={Time}
             onValueChange={(value, index) => setTime(value)}
             mode="dropdown"
-            style={styles.picker}
+            style={[styles.picker ,night&&styles.darklist]}
           >
             {timeList.map((e, i) => (
               <Picker.Item label={e} value={e} key={i} />
             ))}
           </Picker>
         </View>
-        <View style={{ flex: 3 }}>
-          <Text style={styles.text3}>Working Days</Text>
+        <View style={{ flex: 3 ,paddingTop:10}}>
+          <Text style={[styles.text3,night&&styles.textdark3]}>Working Days</Text>
 
           <View>
-            <Text style={{ fontSize: 14 }}>Selected date: {date}</Text>
-            <Button
+            <Text style={[styles.text33,night&&styles.textdark33]}>Selected date: {date}</Text>
+            <TouchableOpacity onPress={openPicker}>
+            {showPicker && (
+              <DateTimePicker
+                value={new Date()}
+                mode="date"
+                onChange={onDateChange}
+              />
+            )}
+            <View style={[styles.buttonloc,night&&styles.darklist]}>
+              <Text style={styles.buttonText}>select date</Text>
+            </View>
+          </TouchableOpacity>
+            {/* <Button
               color={"#73caa4"}
               title="Select date"
               onPress={openPicker}
@@ -167,13 +186,13 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                 mode="date"
                 onChange={onDateChange}
               />
-            )}
+            )} */}
           </View>
         </View>
         <View
           style={{ flexDirection: "row", marginHorizontal: 10, height: "17%" }}
         >
-          <TouchableOpacity style={styles.button} onPress={chatwith}>
+          <TouchableOpacity style={[styles.button ,night&&styles.darklist]} onPress={chatwith}>
             <Ionicons
               name="ios-chatbubble-ellipses-outline"
               size={30}
@@ -181,7 +200,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button1}
+            style={[styles.button1 ,night&&styles.darklist]}
             onPress={() =>
               navigation.navigate("Details_user_to_appointment", {
                 item,
@@ -201,7 +220,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    // padding: 20,
     backgroundColor: "#ffffff",
   },
   header: {
@@ -218,6 +237,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     paddingVertical: 30,
+    backgroundColor: "#288771",
+
     // marginBottom: 20,
     
 
@@ -225,7 +246,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "black",
+    color: "white",
     
 
   },
@@ -259,10 +280,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
   },
+  textdark: {
+    paddingLeft: 10,
+    fontSize: 18,
+    textAlign: "center",
+    color:"white"
+  },
   text1: {
     paddingLeft: 5,
     fontSize: 18,
     fontWeight: "bold",
+  },
+  textdark1: {
+    paddingLeft: 5,
+    fontSize: 18,
+    fontWeight: "bold",
+    color:"white"
   },
   text3: {
     paddingLeft: 5,
@@ -270,11 +303,34 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     // padding:10
   },
+  text33: {
+    paddingLeft: 5,
+    fontSize: 16,
+    paddingVertical:5
+    // padding:10
+  },
+  textdark33: {
+    paddingLeft: 5,
+    fontSize: 16,
+    paddingVertical:5,
+    color:"white"    },
+  textdark3: {
+    paddingLeft: 5,
+    fontSize: 18,
+    fontWeight: "bold",
+  color:"white"  },
   text2: {
     paddingLeft: 5,
     fontSize: 16,
     // fontWeight:"bold",
     textAlign: "justify",
+  },
+  textdark2: {
+    paddingLeft: 5,
+    fontSize: 16,
+    // fontWeight:"bold",
+    textAlign: "justify",
+    color:"white"
   },
   text4: {
     paddingLeft: 10,
@@ -340,6 +396,13 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: "center",
     color: "white",
+    paddingVertical:10,
+  fontSize:18
+  },
+  buttonloc:{
+borderRadius:15,
+backgroundColor: "#288771",
+
   },
   picker: {
     height: 50,
@@ -347,6 +410,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
     backgroundColor: "#efefef",
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist: {
+    backgroundColor: '#142E5E',
+    borderWidth: 0,
+  },
+  dark2: {
+    backgroundColor: "#BDD3FF",
   },
 });
 

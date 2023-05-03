@@ -21,6 +21,7 @@ function Doc_card_appointment({
   users_id,
 }) {
   const { appointments, setAppointments } = useContext(AppContext);
+  const { night} = useContext(AppContext);
   let obj = {
     image: image,
     date: date,
@@ -52,7 +53,7 @@ function Doc_card_appointment({
     <TouchableOpacity
       onPress={() => navigation.navigate("Appointment2", { obj })}
     >
-      <View style={styles.card}>
+      <View style={[styles.card,night && styles.darklist]}>
         <Image
           source={
             image
@@ -67,7 +68,7 @@ function Doc_card_appointment({
             <Text
               numberOfLines={2}
               ellipsizeMode="tail"
-              style={styles.cardTitle}
+              style={[styles.cardTitle ,night && styles.cardTitle1]}
             >
               Doctor: {doc_name}
             </Text>
@@ -76,7 +77,7 @@ function Doc_card_appointment({
             <Text
               numberOfLines={2}
               ellipsizeMode="tail"
-              style={styles.cardTitle}
+              style={[styles.cardTitle ,night && styles.cardTitle1]}
             >
               Patient Name: {name_patient}
             </Text>
@@ -91,13 +92,13 @@ function Doc_card_appointment({
           </View>
           <View style={{ flexDirection: "row", gap: 60 }}>
             <TouchableOpacity
-              style={styles.cardButton}
+              style={[styles.cardButton,night && styles.buttonDark]}
               onPress={() => navigation.navigate("Update_patient", obj)}
             >
               <Text style={styles.cardButtonText}>Update </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.cardButton}
+              style={[styles.cardButton,night && styles.buttonDark]}
               onPress={() => Delete()}
             >
               <Text style={styles.cardButtonText}>Decline </Text>
@@ -139,6 +140,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "left",
   },
+  cardTitle1: {
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "left",
+    color:"white"
+  },
   cardDoctor: {
     fontSize: 14,
     color: "#555",
@@ -163,6 +170,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#eceff1",
     paddingVertical: 10,
     borderRadius: 10,
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist: {
+    backgroundColor: '#142E5E',
+  },
+  dark2: {
+    backgroundColor: "#BDD3FF",
   },
 });
 export default memo(Doc_card_appointment);

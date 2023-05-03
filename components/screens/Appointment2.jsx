@@ -27,7 +27,7 @@ const Appointment2 = ({ navigation ,route }) => {
     <View style={styles.container}>
        <View style={styles.header}>
         <View  style={styles.Go_Back1}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.navigate("Appointment")}>
             <View style={styles.Go_Back}>
               <Ionicons name="arrow-back" size={24} color="black" />
             </View>
