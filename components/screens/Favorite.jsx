@@ -19,7 +19,7 @@ const Favorite = ({ navigation, reload }) => {
     fetchDoctor();
   }, []);
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,night && styles.buttonDark]}>
       <View style={[styles.header, night && styles.buttonDark]}>
         <Text style={styles.heading}>My Favorite Doctors</Text>
       </View>
@@ -31,7 +31,8 @@ const Favorite = ({ navigation, reload }) => {
           ListEmptyComponent={() => {
             return (
               <View style={{flex:1,justifyContent:"center"}}>
-                <Image style={{ height: "100%", width: "100%",alignItems:"center" }} source={require("../assets/empty.png")} />
+                
+                <Image style={{ height: "100%", width: "100%",alignItems:"center" }}  source={night? require("../assets/empty1.png") :require("../assets/empty.png")} />
               </View>
             );
           }}

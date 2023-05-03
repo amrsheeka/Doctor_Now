@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useState,
   useLayoutEffect,
+  useContext,
 } from "react";
 import {
   View,
@@ -23,9 +24,11 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
+import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
 const Chat = ({ navigation }) => {
   const [chat, setChat] = useState([]);
+  const { night} = useContext(AppContext);
 
   async function getChat() {
     const citiesCol = collection(db, "chats");
@@ -122,8 +125,8 @@ const Chat = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[styles.container,night && styles.buttonDark]}>
+    <View style={[styles.header, night && styles.buttonDark]}>
         <Text style={styles.heading}>Chats</Text>
       </View>
       <FlatList
@@ -184,6 +187,17 @@ const styles = StyleSheet.create({
   cardMessage: {
     fontSize: 14,
     color: "#555",
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist: {
+    backgroundColor: '#142E5E',
+    borderWidth: 0,
+
+  },
+  dark2: {
+    backgroundColor: "#BDD3FF",
   },
 });
 

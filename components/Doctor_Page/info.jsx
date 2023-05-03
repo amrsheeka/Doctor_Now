@@ -24,8 +24,11 @@ import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
-import { logout } from "../../database/Users";
+import { getAppointment_for_Doctor, get_History_Apps_for_Doctor, get_doc_by_email, logout } from "../../database/Users";
 import Appointments from "./Appointments";
+import { useContext } from "react";
+import { AppContext } from "../consts/AppContext";
+import CurrentUser from "../consts/CurrentUser";
 
 const Info = ({ navigation }) => {
   const [doctor_booking, setDoctor_booking] = useState(new Array(10).fill(2));
@@ -162,6 +165,8 @@ const Info = ({ navigation }) => {
   const icon26 = "plane";
   const main_color = "#288771";
   const empty = false;
+  const { setAppointments } = useContext(AppContext);
+  const { setType } = useContext(AppContext);
 
   const back = () => {
     page === "Schedule" ? summary() : setPage("Profile");
@@ -171,7 +176,33 @@ const Info = ({ navigation }) => {
     setPage("Profile");
     setOpen_password(false);
   };
+  let email = CurrentUser.user.email
+  const HandleHistory = () => {
+    get_doc_by_email(email).then((ans) => {
+      if (ans.status !== "failed") {
+        get_History_Apps_for_Doctor(ans[0].id).then((res) => {
+          console.log(res)
+          if (res.status !== "failed")
+            setAppointments(res)
+            else setAppointments([]);
+        })
+      }
+    })
+    setType("history")
+  }
 
+  const HandleAppointments = () => {
+    get_doc_by_email(email).then((ans) => {
+      if (ans.status !== "failed") {
+        getAppointment_for_Doctor(ans[0].id).then((res) => {
+          if (res.status !== "failed")
+            setAppointments(res)
+          else setAppointments([]);
+        })
+      }
+    })
+    setType("appointments")
+  }
   const ChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
@@ -2446,6 +2477,14 @@ const Info = ({ navigation }) => {
           </View>
         ) : page === "More" ? (
           <View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={[styles.button, styles.button1]} onPress={HandleHistory} >
+                <Text style={styles.buttonText}>History</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.button1]} onPress={HandleAppointments} >
+                <Text style={styles.buttonText}>Appointments</Text>
+              </TouchableOpacity>
+            </View>
             <Appointments />
           </View>
         ) : (
@@ -2579,6 +2618,38 @@ const styles = StyleSheet.create({
     // fontStyle: "italic",
     padding: 6,
     color: "#000000",
+  }, container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  button: {
+    backgroundColor: '#008080',
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 10,
+  },
+  button1: {
+    backgroundColor: '#ff6347',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  scrollView: {
+    flex: 1,
+    width: '100%',
+  },
+  text: {
+    fontSize: 16,
+    padding: 10,
   },
 });
 
