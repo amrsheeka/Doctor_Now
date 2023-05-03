@@ -9,6 +9,7 @@ export const AppProvider = ({ children }) => {
     const [timeList, setTimeList] = useState([]);
     const [curruser, setCurrUser] = useState({});
     const [night, setNight] = useState(false);
+    const [type, setType] = useState("appointments");
     return (
         <AppContext.Provider value={{ 
             favourite, setFavourite,
@@ -16,7 +17,8 @@ export const AppProvider = ({ children }) => {
             appointments,setAppointments,
             timeList, setTimeList,
             curruser, setCurrUser,
-            night,setNight
+            night,setNight,
+            type,setType
         }}>
             {children}
         </AppContext.Provider>
