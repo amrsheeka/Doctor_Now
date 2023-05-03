@@ -33,7 +33,7 @@ import AppointmentList from "../admin/AppointmentList";
 import Sign_UP_2th_Screen from "../screens/Sign_UP_2th_Screen";
 import Info from "../Doctor_Page/info";
 import MapScreen from "../screens/MapScreen";
-import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
+import Doc_card_appointment from "../subcomponents/doc_card_appointment";
 import Update_patient from "../subcomponents/Update_patient";
 import Chatbox_photo from "../subcomponents/Chatbox_photo";
 import Thk4 from "../screens/Thk4";

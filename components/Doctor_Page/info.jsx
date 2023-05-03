@@ -24,10 +24,14 @@ import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
-import { logout } from "../../database/Users";
+import { getAppointment_for_Doctor, get_History_Apps_for_Doctor, get_doc_by_email, logout } from "../../database/Users";
 import Appointments from "./Appointments";
+import { useContext } from "react";
+import { AppContext } from "../consts/AppContext";
+import CurrentUser from "../consts/CurrentUser";
 
 const Info = ({ navigation }) => {
+  const [doctor_booking, setDoctor_booking] = useState(new Array(10).fill(2));
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
   const [show, setShow] = useState(false);
@@ -49,6 +53,7 @@ const Info = ({ navigation }) => {
 
   const [which, setWhich] = useState("sat_start");
   const [show_time, setShow_time] = useState(0);
+  const [color_plane, setColor_plane] = useState(new Array(10).fill("#ccc"));
 
   const [start, setStart] = useState("start work from...");
   const [start1, setStart1] = useState("start work from...");
@@ -92,9 +97,9 @@ const Info = ({ navigation }) => {
   const [practise_licence, setPractise_licence] = useState("");
   const [professional_licence, setProfessional_licence] = useState("");
   const [page, setPage] = useState("Profile");
-  const [color_more, setColor_more] = useState("#555555");
+  const [color_more, setColor_more] = useState("#666");
   const [color_profile, setColor_profile] = useState("white");
-  const [color_schedule, setColor_schedule] = useState("#555555");
+  const [color_schedule, setColor_schedule] = useState("#666");
   const [fName, setfName] = useState("Mohamed");
   const [lName, setlName] = useState("Essam");
   const [fullpro_title, setFullpro_title] = useState(" Consultant of dinstiy ");
@@ -156,17 +161,47 @@ const Info = ({ navigation }) => {
   const icon23 = "calendar-clock";
   const icon24 = "chevron-down";
   const icon25 = "calendar-month";
+  const icon26 = "plane";
   const main_color = "#288771";
+  const empty = false;
+  const { setAppointments } = useContext(AppContext);
+  const { setType } = useContext(AppContext);
 
   const back = () => {
-    setPage("Profile");
+    page === "Schedule" ? summary() : setPage("Profile");
     setOpen_password(false);
   };
   const save = () => {
     setPage("Profile");
     setOpen_password(false);
   };
+  let email = CurrentUser.user.email
+  const HandleHistory = () => {
+    get_doc_by_email(email).then((ans) => {
+      if (ans.status !== "failed") {
+        get_History_Apps_for_Doctor(ans[0].id).then((res) => {
+          console.log(res)
+          if (res.status !== "failed")
+            setAppointments(res)
+            else setAppointments([]);
+        })
+      }
+    })
+    setType("history")
+  }
 
+  const HandleAppointments = () => {
+    get_doc_by_email(email).then((ans) => {
+      if (ans.status !== "failed") {
+        getAppointment_for_Doctor(ans[0].id).then((res) => {
+          if (res.status !== "failed")
+            setAppointments(res)
+          else setAppointments([]);
+        })
+      }
+    })
+    setType("appointments")
+  }
   const ChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
@@ -247,19 +282,19 @@ const Info = ({ navigation }) => {
 
   const profile = () => {
     setColor_profile("white");
-    setColor_schedule("#555555");
-    setColor_more("#555555");
+    setColor_schedule("#666");
+    setColor_more("#666");
     setPage("Profile");
   };
   const schedule = () => {
-    setColor_profile("#555555");
+    setColor_profile("#666");
     setColor_schedule("white");
-    setColor_more("#555555");
+    setColor_more("#666");
     setPage("Schedule");
   };
   const more = () => {
-    setColor_profile("#555555");
-    setColor_schedule("#555555");
+    setColor_profile("#666");
+    setColor_schedule("#666");
     setColor_more("white");
     setPage("More");
   };
@@ -498,10 +533,109 @@ const Info = ({ navigation }) => {
       </View>
     );
   };
+  const update_booking = (i, newValue) => {
+    let array = { ...doctor_booking };
+    array[i] = newValue;
+    setDoctor_booking(array);
+  };
+
+  const app_days = (i) => {
+    const MONTHS = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "June",
+      "July",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const DAYS = [
+      "Saturday",
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+    ];
+    const tomorrow = new Date(new Date().getTime() + i * 24 * 60 * 60 * 1000);
+    const day = DAYS[tomorrow.getDay()];
+    const date = tomorrow.getDate();
+    const month = MONTHS[tomorrow.getMonth()];
+
+    const x = date + "  " + month;
+
+    return [day, x];
+  };
+  const plane = (i) => {
+    let arr = { ...color_plane };
+    arr[i] == "#ccc" ? (arr[i] = "#288771") : (arr[i] = "#ccc");
+    setColor_plane(arr);
+  };
+  const appoint = (i) => {
+    return (
+      <View
+        style={[
+          styles.content,
+          {
+            flexDirection: "row",
+            padding: 15,
+            marginHorizontal: 7,
+            marginBottom: 7,
+          },
+        ]}
+      >
+        <View style={{ width: "30%", merginRight: 30 }}>
+          <Text style={{ color: main_color }}>
+            {i === 0 ? "Today" : i === 1 ? "Tomorrow" : app_days(i)[0]}
+          </Text>
+          <Text>{app_days(i)[1]}</Text>
+        </View>
+        <View style={{ width: "55%", alignSelf: "center" }}>
+          <Text>
+            {doctor_booking[i] === 0
+              ? "No Bookings"
+              : doctor_booking[i] + " Bookings"}
+          </Text>
+        </View>
+        <Icon5
+          onPress={() => plane(i)}
+          name={icon26}
+          size={30}
+          color={color_plane[i]}
+          style={{ alignSelf: "center", width: "10%", marginLeft: 15 }}
+        />
+      </View>
+    );
+  };
+
+  const appoints = () => {
+    return (
+      <View>
+        <View>{appoint(0)}</View>
+        <View>{appoint(1)}</View>
+        <View>{appoint(2)}</View>
+        <View>{appoint(3)}</View>
+        <View>{appoint(4)}</View>
+        <View>{appoint(5)}</View>
+        <View>{appoint(6)}</View>
+        <View>{appoint(7)}</View>
+        <View>{appoint(8)}</View>
+        <View>{appoint(9)}</View>
+      </View>
+    );
+  };
 
   return (
     <View style={{ flex: 1 }}>
-      {page === "Profile" || page === "Schedule" || page === "More" ? (
+      {page === "Profile" ||
+      (page === "Schedule" && schedule_summary) ||
+      page === "More" ? (
         <View style={[styles.header, { alignItems: "center" }]}>
           <Text style={styles.label}> {page} </Text>
         </View>
@@ -1836,70 +1970,74 @@ const Info = ({ navigation }) => {
               style={{ backgroundColor: "white", height: 15, marginTop: 10 }}
             ></View>
             {schedule_summary ? (
-              <View>
-                <View style={{ alignItems: "center", marginTop: 50 }}>
-                  <Text
-                    style={{
-                      color: "#555555",
-                      fontSize: 16,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {" "}
-                    {" Get started! "}{" "}
-                  </Text>
-                </View>
-                <View style={{ alignItems: "center", marginTop: 15 }}>
-                  <Text
-                    style={{
-                      color: "#555555",
-                      fontSize: 14,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {" "}
-                    {
-                      " Add your working hours and confirm availability to  "
-                    }{" "}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#555555",
-                      fontSize: 14,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {" "}
-                    {" recieve new Doctor Now bookings "}{" "}
-                  </Text>
-                </View>
+              empty ? (
+                <View>
+                  <View style={{ alignItems: "center", marginTop: 50 }}>
+                    <Text
+                      style={{
+                        color: "#555555",
+                        fontSize: 16,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {" "}
+                      {" Get started! "}{" "}
+                    </Text>
+                  </View>
+                  <View style={{ alignItems: "center", marginTop: 15 }}>
+                    <Text
+                      style={{
+                        color: "#555555",
+                        fontSize: 14,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {" "}
+                      {
+                        " Add your working hours and confirm availability to  "
+                      }{" "}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#555555",
+                        fontSize: 14,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {" "}
+                      {" recieve new Doctor Now bookings "}{" "}
+                    </Text>
+                  </View>
 
-                <Image
-                  source={require("../assets/splash.png")}
-                  style={[
-                    styles.image,
-                    { alignSelf: "center", marginVertical: 50, height: 220 },
-                  ]}
-                />
+                  <Image
+                    source={require("../assets/splash.png")}
+                    style={[
+                      styles.image,
+                      { alignSelf: "center", marginVertical: 50, height: 220 },
+                    ]}
+                  />
 
-                <TouchableOpacity
-                  style={{ alignItems: "center" }}
-                  onPress={management}
-                >
-                  <Text
-                    style={{
-                      backgroundColor: "#288759",
-                      paddingHorizontal: 20,
-                      paddingVertical: 10,
-                      color: "white",
-                      margin: 20,
-                    }}
+                  <TouchableOpacity
+                    style={{ alignItems: "center" }}
+                    onPress={management}
                   >
-                    {" "}
-                    Add working hours
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                    <Text
+                      style={{
+                        backgroundColor: main_color,
+                        paddingHorizontal: 20,
+                        paddingVertical: 10,
+                        color: "white",
+                        margin: 20,
+                      }}
+                    >
+                      {" "}
+                      Add working hours
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                appoints()
+              )
             ) : (
               <View>
                 <View
@@ -2338,6 +2476,14 @@ const Info = ({ navigation }) => {
           </View>
         ) : page === "More" ? (
           <View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={[styles.button, styles.button1]} onPress={HandleHistory} >
+                <Text style={styles.buttonText}>History</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.button1]} onPress={HandleAppointments} >
+                <Text style={styles.buttonText}>Appointments</Text>
+              </TouchableOpacity>
+            </View>
             <Appointments />
           </View>
         ) : (
@@ -2471,6 +2617,38 @@ const styles = StyleSheet.create({
     // fontStyle: "italic",
     padding: 6,
     color: "#000000",
+  }, container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  button: {
+    backgroundColor: '#008080',
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 10,
+  },
+  button1: {
+    backgroundColor: '#ff6347',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  scrollView: {
+    flex: 1,
+    width: '100%',
+  },
+  text: {
+    fontSize: 16,
+    padding: 10,
   },
 });
 

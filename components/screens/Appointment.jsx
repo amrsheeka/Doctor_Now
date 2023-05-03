@@ -12,7 +12,9 @@ import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
 const Appointment = ({ navigation }) => {
   let id = CurrentUser.user.id
   const { appointments, setAppointments } = useContext(AppContext);
-  const [flag, setFlag] = useState(true)
+  const [flag, setFlag] = useState(true);
+  const { night} = useContext(AppContext);
+
   useEffect(() => {
     getAppointment(id).then((res) => {
       console.log(res);
@@ -22,12 +24,12 @@ const Appointment = ({ navigation }) => {
 
   return (
 
-    <View style={styles.container}>
-       <View style={styles.header}>
+    <View style={[styles.container, night && styles.buttonDark]}>
+      <View style={[styles.header, night && styles.buttonDark]}>
         <View  style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.navigate("Home")}>
             <View style={styles.Go_Back}>
-              <Ionicons name="arrow-back" size={24} color="black" />
+              <Ionicons name="arrow-back" size={24} color="white" />
             </View>
           </TouchableOpacity>
         </View>
@@ -48,7 +50,7 @@ const Appointment = ({ navigation }) => {
           </View>
         ) :
         <View style={{ flex: 1, justifyContent: "center" }}>
-          <Image style={{ height: "100%", width: "100%", alignItems: "center" }} source={require("../assets/empty.png")} />
+                <Image style={{ height: "100%", width: "100%",alignItems:"center" }}  source={night? require("../assets/empty1.png") :require("../assets/empty.png")} />
         </View>
       }
     </View>
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingVertical:30,
+    // paddingVertical:30,
 
   },
   // header: {
@@ -82,6 +84,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     paddingVertical: 30,
+    marginBottom: 20,
+    backgroundColor: "#288771",
+
     // marginBottom: 20,
     
 
@@ -89,7 +94,8 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "black",
+    color: "#fff",
+  
     
 
   },
@@ -108,6 +114,15 @@ const styles = StyleSheet.create({
       // justifyContent: "flex-start",
       // justifyContent: "flex-start",
   
+      },
+      buttonDark: {
+        backgroundColor: '#0D1E3D',
+      },
+      darklist: {
+        backgroundColor: '#142E5E',
+      },
+      dark2: {
+        backgroundColor: "#BDD3FF",
       },
 });
 

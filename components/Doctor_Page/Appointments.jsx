@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { ScrollView } from "react-native";
 import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity } from "react-native";
-import { getAppointment_for_Doctor, get_doc_by_email } from "../../database/Users";
+import { getAppointment_for_Doctor, get_History_Apps_for_Doctor, get_doc_by_email } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { AppContext } from "../consts/AppContext";
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
@@ -9,23 +9,39 @@ const Appointments = () => {
     let email = CurrentUser.user.email
 
     const { appointments, setAppointments } = useContext(AppContext);
+    const { type } = useContext(AppContext);
     useEffect(() => {
-        get_doc_by_email(email).then((ans) => {
-            if (ans.status !== "failed") {
-                getAppointment_for_Doctor(ans[0].id).then((res) => {
-                    if (res.status !== "failed")
-                        res.length >= 1 ? setAppointments(res) : setFlag(false);
-                })
-            }
-        })
+        if (type == "history") {
+            get_doc_by_email(email).then((ans) => {
+                if (ans.status !== "failed") {
+                    get_History_Apps_for_Doctor(ans[0].id).then((res) => {
+                        if (res.status !== "failed")
+                            res.length >= 1 ? setAppointments(res) : setFlag(false);
+                    })
+                }
+            })
+        } else {
+            get_doc_by_email(email).then((ans) => {
+                if (ans.status !== "failed") {
+                    getAppointment_for_Doctor(ans[0].id).then((res) => {
+                        if (res.status !== "failed")
+                            res.length >= 1 ? setAppointments(res) : setFlag(false);
+                    })
+                }
+            })
+        }
 
     }, [])
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <View >
-                    <Text style={styles.heading}>My Appointments</Text>
+                <View style={{paddingHorizontal:"25%"}}>
+                    {
+                        type == "history" ?
+                         <Text style={styles.heading}>My History</Text> :
+                            <Text style={styles.heading}>My Appointments</Text>
+                    }
                 </View>
             </View>
             {appointments.length !== 0 ?
@@ -34,8 +50,8 @@ const Appointments = () => {
                         <ScrollView>
                             {
                                 appointments.map((ele, idx) => {
-                                    
-                        return <Doc_card_appointment key={idx} date={ele.date} time={ele.time} name_patient={ele.name_patient} doc_name={ele.doc_name} gender={ele.gender} notes={ele.notes} date_now={ele.date_now} specialization1={ele.specialization1} image={ele.doc_image} doctor_id={ele.doctor_id} users_id={ele.users_id} />
+
+                                    return <Doc_card_appointment key={idx} date={ele.date} time={ele.time} name_patient={ele.name_patient} doc_name={ele.doc_name} gender={ele.gender} notes={ele.notes} date_now={ele.date_now} specialization1={ele.specialization1} image={ele.doc_image} doctor_id={ele.doctor_id} users_id={ele.users_id} age={ele.age} />
                                 })
                             }
                         </ScrollView>

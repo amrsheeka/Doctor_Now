@@ -15,6 +15,7 @@ const Update_patient = ({ navigation, route }) => {
   const [notes1, setNotes] = useState("")
   const [age1, setAge] = useState("")
   const { appointments, setAppointments } = useContext(AppContext);
+  const { night} = useContext(AppContext);
   useEffect(() => {
     setName_patient(obj.name_patient)
     setGender(obj.gender)
@@ -80,36 +81,36 @@ const Update_patient = ({ navigation, route }) => {
   // };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[styles.container,night && styles.buttonDark]}>
+      <View style={[styles.header, night && styles.buttonDark]}>
         <View style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
-              <Ionicons name="arrow-back" size={24} color="black" />
+              <Ionicons name="arrow-back" size={24} color="white" />
             </View>
           </TouchableOpacity>
         </View>
         <View >
-          <Text style={styles.heading}>Edit Patient</Text>
+          <Text style={[styles.heading,night&&styles.textdark]}>Edit Patient</Text>
         </View>
       </View>
       <ScrollView>
         <View>
-          <Text style={styles.text}>Patient Name</Text>
+        <Text style={[styles.text,night&&styles.textdark]}>Patient Name</Text>
           <TextInput
             placeholder="Enter Your Name"
-            style={styles.input}
+            style={[styles.input ,night && styles.dark2]}
             value={name_patient1}
             onChangeText={(text) => setName_patient(text)}
           />
           <Text style={{ color: "red" }}>{nameerr}</Text>
-          <Text style={styles.text}>Select Your Age</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>Select Your Age</Text>
           <View>
             <Picker
               selectedValue={age1}
               onValueChange={(value, index) => setAge(value)}
               mode="dropdown"
-              style={styles.picker}
+              style={[styles.picker ,night&&styles.darklist]}
             >
               <Picker.Item label="15+" value="15+" />
               <Picker.Item label="25+" value="25+" />
@@ -118,12 +119,12 @@ const Update_patient = ({ navigation, route }) => {
             </Picker>
           </View>
           <View>
-            <Text style={styles.text}>Gender</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>Gender</Text>
             <Picker
               selectedValue={gender1}
               onValueChange={(value, index) => setGender(value)}
               mode="dropdown"
-              style={styles.picker}
+              style={[styles.picker ,night&&styles.darklist]}
             >
               <Picker.Item label="Male" value="Male" />
               <Picker.Item label="Female" value="Female" />
@@ -132,13 +133,13 @@ const Update_patient = ({ navigation, route }) => {
         </View>
         <View style={styles.body}>
           <View>
-            <Text style={styles.text}>Add Notes</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>Add Notes</Text>
           </View>
           <KeyboardAvoidingView enabled={true}>
             <View>
               <TextInput
-                style={styles.input2}
-                onChangeText={setNotes}
+            style={[styles.input2 ,night && styles.dark2]}
+            onChangeText={setNotes}
                 value={notes1}
                 numberOfLines={10}
                 multiline={true}
@@ -151,7 +152,7 @@ const Update_patient = ({ navigation, route }) => {
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button ,night&&styles.darklist]}
 
 
           onPress={HandleUpdate}
@@ -257,6 +258,22 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
+    color:"white"
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist: {
+    backgroundColor: '#142E5E',
+    borderWidth: 0,
+
+  },
+  dark2: {
+    backgroundColor: "#BDD3FF",
+  },
+  textdark: {
+  
+    color:"white"
   },
 });
 

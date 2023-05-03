@@ -28,6 +28,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
   const [age, setAge] = useState(CurrentUser.user.age);
   const [gender, setGender] = useState(CurrentUser.user.gender);
   const [nameerr, setNameErr] = useState("");
+  const { night} = useContext(AppContext);
   let doc = route.params.item;
   let id = CurrentUser.user.id;
   const handleInsertAppointment = async () => {
@@ -71,12 +72,12 @@ const Details_user_to_appointment = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[styles.container,night && styles.buttonDark]}>
+      <View style={[styles.header, night && styles.buttonDark]}>
         <View style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
-              <Ionicons name="arrow-back" size={24} color="black" />
+              <Ionicons name="arrow-back" size={24} color="white" />
             </View>
           </TouchableOpacity>
         </View>
@@ -86,22 +87,22 @@ const Details_user_to_appointment = ({ navigation, route }) => {
       </View>
       <ScrollView>
         <View>
-          <Text style={styles.text}>Full Name</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>Full Name</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input ,night && styles.dark2]}
             onChangeText={onChangeText}
             value={text}
             placeholder={"Enter Full Name"}
           />
           <Text style={{ color: "red" }}>{nameerr}</Text>
-          <Text style={styles.text}>Select Your Age</Text>
+          <Text style={[styles.text,night&&styles.textdark]}>Select Your Age</Text>
           <View>
             <Picker
               selectedValue={age}
               onValueChange={(value, index) => setAge(value)}
               mode="dropdown"
-              style={styles.picker}
-            >
+              style={[styles.picker ,night&&styles.darklist]}
+              >
               <Picker.Item label="15+" value="15+" />
               <Picker.Item label="25+" value="25+" />
               <Picker.Item label="35+" value="35+" />
@@ -109,13 +110,13 @@ const Details_user_to_appointment = ({ navigation, route }) => {
             </Picker>
           </View>
           <View>
-            <Text style={styles.text}>Gender</Text>
+            <Text style={[styles.text,night&&styles.textdark]}>Gender</Text>
             <Picker
               selectedValue={gender}
               onValueChange={(value, index) => setGender(value)}
               mode="dropdown"
-              style={styles.picker}
-            >
+              style={[styles.picker ,night&&styles.darklist]}
+              >
               <Picker.Item label="Male" value="Male" />
               <Picker.Item label="Female" value="Female" />
             </Picker>
@@ -123,13 +124,13 @@ const Details_user_to_appointment = ({ navigation, route }) => {
         </View>
         <View style={styles.body}>
           <View>
-            <Text style={styles.text}>Compose Your Problem</Text>
+            <Text style={[styles.text,night&&styles.textdark]}>Compose Your Problem</Text>
           </View>
           <KeyboardAvoidingView enabled={true}>
             <View>
               <TextInput
-                style={styles.input2}
-                onChangeText={onChangeText2}
+            style={[styles.input2 ,night && styles.dark2]}
+            onChangeText={onChangeText2}
                 value={text2}
                 numberOfLines={10}
                 multiline={true}
@@ -142,7 +143,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button ,night&&styles.darklist]}
           onPress={() => handleInsertAppointment()}
         >
           <Text style={styles.buttonText}>NEXT</Text>
@@ -155,7 +156,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    // padding: 20,
     backgroundColor: "#ffffff",
   },
   header: {
@@ -164,12 +165,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     paddingVertical: 30,
-    // marginBottom: 20,
+    backgroundColor: "#288771",
   },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "black",
+    color: "white",
   },
   Go_Back: {
     width: "10%",
@@ -193,7 +194,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
-    padding: 5,
+    paddingTop: 10,
+  },
+  textdark: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    paddingTop: 10,
+    color:"white"
   },
   ageBox: {
     flexDirection: "row",
@@ -229,16 +237,29 @@ const styles = StyleSheet.create({
   },
   button: {
     fontSize: 18,
-    paddingHorizontal: "40%",
+    // paddingHorizontal: "40%",
     borderWidth: 2,
     borderRadius: 20,
     borderColor: "#ffffff",
     backgroundColor: "#288771",
     justifyContent: "center",
     height: 50,
+    
   },
   buttonText: {
     textAlign: "center",
+    color:"white"
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist: {
+    backgroundColor: '#142E5E',
+    borderWidth: 0,
+
+  },
+  dark2: {
+    backgroundColor: "#BDD3FF",
   },
 });
 

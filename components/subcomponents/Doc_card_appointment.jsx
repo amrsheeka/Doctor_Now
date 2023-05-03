@@ -1,8 +1,6 @@
 import React, { memo, useContext } from "react";
-import { useState } from "react";
-import { ScrollView, TextInput } from "react-native";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { deleteAppointment, getAllAppointment } from "../../database/Users";
+import { deleteAppointment, deleteAppointment_fromHistory, getAllAppointment, getAllAppointment_from_history, getAppointment_for_Doctor, get_History_Apps_for_Doctor, insertAppointment_toHistory } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 import { getAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
@@ -19,8 +17,12 @@ function Doc_card_appointment({
   specialization1,
   doctor_id,
   users_id,
+  age
 }) {
   const { appointments, setAppointments } = useContext(AppContext);
+  const { night } = useContext(AppContext);
+  const { type } = useContext(AppContext);
+
   let obj = {
     image: image,
     date: date,
@@ -51,6 +53,39 @@ function Doc_card_appointment({
       }
     });
   }
+  const Delete2 = async () => {
+    await deleteAppointment_fromHistory(users_id, doctor_id).then((res) => {
+      console.log("its ok");
+      if (CurrentUser.user.is_admin == "yes") {
+        getAllAppointment_from_history().then((res) => {
+          res.status != "failed" ? setAppointments(res) : setAppointments([]);
+        });
+      } else {
+        get_History_Apps_for_Doctor(doctor_id).then((res) => {
+          res.status != "failed" ? setAppointments(res) : setAppointments([]);
+        });
+      }
+    });
+  }
+  const Finish = async () => {
+    await insertAppointment_toHistory(users_id, doctor_id, date, time, name_patient, age, gender, notes, doc_name, image, specialization1
+    ).then(
+          await deleteAppointment(users_id, doctor_id).then((res) => {
+            console.log("its ok");
+            if (CurrentUser.user.is_admin == "yes") {
+              getAllAppointment().then((res) => {
+                res.status != "failed" ? setAppointments(res) : setAppointments([]);
+              });
+            } else {
+              getAppointment_for_Doctor(doctor_id).then((res) => {
+                console.log(res);
+                res.status != "failed" ? setAppointments(res) : setAppointments([]);
+              });
+            }
+          })
+    )
+
+  }
   return (
     is_doctor == "no" ?
       <TouchableOpacity
@@ -75,8 +110,6 @@ function Doc_card_appointment({
               >
                 Doctor: {doc_name}
               </Text>
-              {/* <Text numberOfLines={3} ellipsizeMode='tail'
-            style={styles.cardTitle}> {specialization1}</Text> */}
               <Text
                 numberOfLines={2}
                 ellipsizeMode="tail"
@@ -84,24 +117,16 @@ function Doc_card_appointment({
               >
                 Patient Name: {name_patient}
               </Text>
-              {/* <Text numberOfLines={2} ellipsizeMode='tail'
-            style={styles.cardTitle}>Date: {date}</Text>
-          <Text numberOfLines={2} ellipsizeMode='tail'
-            style={styles.cardTitle}>Time: {time}</Text>
-          <Text numberOfLines={2} ellipsizeMode='tail'
-            style={styles.cardTitle}>gender: {gender}</Text>
-          <Text numberOfLines={5} ellipsizeMode='tail'
-            style={styles.cardTitle}>notes: {notes}</Text> */}
             </View>
             <View style={{ flexDirection: "row", gap: 60 }}>
               <TouchableOpacity
-                style={styles.cardButton}
+                style={[styles.cardButton, night && styles.buttonDark]}
                 onPress={() => navigation.navigate("Update_patient", obj)}
               >
                 <Text style={styles.cardButtonText}>Update </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.cardButton}
+                style={[styles.cardButton, night && styles.buttonDark]}
                 onPress={() => Delete()}
               >
                 <Text style={styles.cardButtonText}>Decline </Text>
@@ -113,17 +138,17 @@ function Doc_card_appointment({
         </View>
       </TouchableOpacity>
       :
-      
-        <View style={styles.card}>
-          <View style={styles.cardContent}>
-            <View style={styles.cardContent1}>
-              <Text
-                numberOfLines={2}
-                ellipsizeMode="tail"
-                style={styles.cardTitle}
-              >
-                User Name: {name_patient}
-              </Text>
+
+      <View style={styles.card}>
+        <View style={styles.cardContent}>
+          <View style={styles.cardContent1}>
+            <Text
+              numberOfLines={2}
+              ellipsizeMode="tail"
+              style={styles.cardTitle}
+            >
+              User Name: {name_patient}
+            </Text>
             <Text
               numberOfLines={2}
               ellipsizeMode="tail"
@@ -152,19 +177,32 @@ function Doc_card_appointment({
             >
               Time: {time}
             </Text>
-            </View>
-            <View style={{ flexDirection: "row", gap: 60 }}>
-              <TouchableOpacity
-                style={styles.cardButton}
-                onPress={() => Delete()}
-              >
-                <Text style={styles.cardButtonText}>Decline </Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
           </View>
+
+          {
+            type === "history" ? (
+              <View style={{ flexDirection: "row", gap: 60 }}>
+                <TouchableOpacity
+                  style={styles.cardButton}
+                  onPress={() => Delete2()}
+                >
+                  <Text style={styles.cardButtonText}>Delete </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={{ flexDirection: "row", gap: 60 }}>
+                <TouchableOpacity
+                  style={styles.cardButton}
+                  onPress={() => Finish()}
+                >
+                  <Text style={styles.cardButtonText}> Finish </Text>
+                </TouchableOpacity>
+              </View>
+
+            )
+          }
         </View>
+      </View>
   );
 }
 
@@ -196,6 +234,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "left",
   },
+  cardTitle1: {
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "left",
+    color: "white"
+  },
   cardDoctor: {
     fontSize: 14,
     color: "#555",
@@ -220,6 +264,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#eceff1",
     paddingVertical: 10,
     borderRadius: 10,
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist: {
+    backgroundColor: '#142E5E',
+  },
+  dark2: {
+    backgroundColor: "#BDD3FF",
   },
 });
 export default memo(Doc_card_appointment);
