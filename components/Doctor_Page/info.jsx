@@ -31,7 +31,6 @@ const Info = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
   const [show, setShow] = useState(false);
-
   const [startTime, setStartTime] = useState(new Date());
   const [startTime1, setStartTime1] = useState(new Date());
   const [startTime2, setStartTime2] = useState(new Date());
