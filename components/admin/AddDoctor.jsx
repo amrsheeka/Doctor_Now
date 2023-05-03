@@ -11,38 +11,22 @@ import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native";
-import getTimeList from "../../database/getTimeList";
 const AddDoctor = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
     const [specialty1, setSpecialty1] = useState("");
     const [specialty2, setSpecialty2] = useState("");
-    const [specialty3, setSpecialty3] = useState("");
     const [type, setType] = useState("Doctor");
     const [description, setDescription] = useState("");
     const [title, setTitle] = useState("");
     const [address, setAddress] = useState("");
     const [price, setPrice] = useState("");
     const [password, setPassword] = useState("");
-    const [start, setStart] = useState("");
-    const [end, setEnd] = useState("");
+    const [start, setStart] = useState("9:30 PM");
+    const [end, setEnd] = useState("11:00 PM");
     const [x, setX] = useState("");
     const [y, setY] = useState("");
-
-    // const onDateChange = (event, newDate) => {
-    //     setShowPicker(false);
-    //     setDate(newDate.toDateString());
-    //     var timeList1 = getTimeList(item.start, item.end);
-    //     getAppointment_by_doc_id(item.id, newDate.toDateString()).then((res) => {
-    //         res.status != "failed" ? res.map((e) => {
-    //             timeList1 = timeList1.filter(ele => ele !== e.time.toString())
-    //         }) : setTimeList(timeList1);
-    //         setTimeList(timeList1);
-    //     }
-    //     )
-    // };
-
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -151,17 +135,6 @@ const AddDoctor = ({ navigation }) => {
                             onChangeText={(text) => setSpecialty2(text)}
                         />
                     </View>
-                    <View style={styles.inputContainer}>
-                        <Text style={{ fontSize: 17, fontWeight: "bold" }}>
-                            Doctor Specialization 3
-                        </Text>
-                        <TextInput
-                            placeholder="Enter the specialty 3 of Doctor"
-                            style={styles.input}
-                            value={specialty3}
-                            onChangeText={(text) => setSpecialty3(text)}
-                        />
-                    </View>
 
                     <Text style={{ fontSize: 17, fontWeight: "bold" }}>
                         Service Type
@@ -197,28 +170,33 @@ const AddDoctor = ({ navigation }) => {
                             onChangeText={(text) => setPrice(text)}
                         />
                     </View>
-                    {/* <Picker
-                        selectedValue={Time}
-                        onValueChange={(value, index) => setTime(value)}
-                        mode="dropdown"
-                        style={styles.picker}
-                    >
-                        {timeList.map((e, i) => (
-                            <Picker.Item label={e} value={e} key={i} />
-                        ))}
-                    </Picker> */}
-
                 </ScrollView>
-
             </View>
-
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.button} onPress={() => ("")}>
+                <TouchableOpacity style={styles.button} onPress={() => {
+                    navigation.navigate("MapSelect",
+                        {
+                            email: email,
+                            name: name,
+                            image: image,
+                            specialization1: specialty1,
+                            specialization2: specialty2,
+                            title: title,
+                            title1: type,
+                            describtion: description,
+                            address: address,
+                            price: price,
+                            password: password,
+                            start: start,
+                            end: end,
+                            x_coordnate: "",
+                            y_coordnate: ""
+                        }
+                    )
+                }}>
                     <Text style={styles.buttonText}>Next</Text>
                 </TouchableOpacity>
-
             </View>
-
         </View>
     );
 };
