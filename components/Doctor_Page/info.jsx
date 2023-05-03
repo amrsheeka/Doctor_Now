@@ -25,6 +25,7 @@ import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
 import { logout } from "../../database/Users";
+import Appointments from "./Appointments";
 
 const Info = ({ navigation }) => {
   const [doctor_booking, setDoctor_booking] = useState(new Array(10).fill(2));
@@ -2442,6 +2443,10 @@ const Info = ({ navigation }) => {
                 )}
               </View>
             )}
+          </View>
+        ) : page === "More" ? (
+          <View>
+            <Appointments />
           </View>
         ) : (
           <></>

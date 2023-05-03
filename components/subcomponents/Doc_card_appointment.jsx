@@ -35,7 +35,9 @@ function Doc_card_appointment({
     users_id: users_id,
   };
   let id = CurrentUser.user.id;
-  const Delete = async () =>
+  let is_doctor = CurrentUser.user.is_doctor;
+  console.log(obj)
+  const Delete = async () => {
     await deleteAppointment(users_id, doctor_id).then((res) => {
       console.log("its ok");
       if (CurrentUser.user.is_admin == "yes") {
@@ -48,39 +50,41 @@ function Doc_card_appointment({
         });
       }
     });
+  }
   return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("Appointment2", { obj })}
-    >
-      <View style={styles.card}>
-        <Image
-          source={
-            image
-              ? { uri: image }
-              : require("../assets/Herbal_Medicine_Male_Avatar.png")
-          }
-          defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")}
-          style={styles.cardPhoto}
-        />
-        <View style={styles.cardContent}>
-          <View style={styles.cardContent1}>
-            <Text
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              style={styles.cardTitle}
-            >
-              Doctor: {doc_name}
-            </Text>
-            {/* <Text numberOfLines={3} ellipsizeMode='tail'
+    is_doctor == "no" ?
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Appointment2", { obj })}
+      >
+        <View style={styles.card}>
+          <Image
+            source={
+              image
+                ? { uri: image }
+                : require("../assets/Herbal_Medicine_Male_Avatar.png")
+            }
+            defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")}
+            style={styles.cardPhoto}
+          />
+          <View style={styles.cardContent}>
+            <View style={styles.cardContent1}>
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.cardTitle}
+              >
+                Doctor: {doc_name}
+              </Text>
+              {/* <Text numberOfLines={3} ellipsizeMode='tail'
             style={styles.cardTitle}> {specialization1}</Text> */}
-            <Text
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              style={styles.cardTitle}
-            >
-              Patient Name: {name_patient}
-            </Text>
-            {/* <Text numberOfLines={2} ellipsizeMode='tail'
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.cardTitle}
+              >
+                Patient Name: {name_patient}
+              </Text>
+              {/* <Text numberOfLines={2} ellipsizeMode='tail'
             style={styles.cardTitle}>Date: {date}</Text>
           <Text numberOfLines={2} ellipsizeMode='tail'
             style={styles.cardTitle}>Time: {time}</Text>
@@ -88,26 +92,79 @@ function Doc_card_appointment({
             style={styles.cardTitle}>gender: {gender}</Text>
           <Text numberOfLines={5} ellipsizeMode='tail'
             style={styles.cardTitle}>notes: {notes}</Text> */}
-          </View>
-          <View style={{ flexDirection: "row", gap: 60 }}>
-            <TouchableOpacity
-              style={styles.cardButton}
-              onPress={() => navigation.navigate("Update_patient", obj)}
-            >
-              <Text style={styles.cardButtonText}>Update </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.cardButton}
-              onPress={() => Delete()}
-            >
-              <Text style={styles.cardButtonText}>Decline </Text>
-            </TouchableOpacity>
-          </View>
+            </View>
+            <View style={{ flexDirection: "row", gap: 60 }}>
+              <TouchableOpacity
+                style={styles.cardButton}
+                onPress={() => navigation.navigate("Update_patient", obj)}
+              >
+                <Text style={styles.cardButtonText}>Update </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cardButton}
+                onPress={() => Delete()}
+              >
+                <Text style={styles.cardButtonText}>Decline </Text>
+              </TouchableOpacity>
+            </View>
 
-          {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
+            {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      :
+      
+        <View style={styles.card}>
+          <View style={styles.cardContent}>
+            <View style={styles.cardContent1}>
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.cardTitle}
+              >
+                User Name: {name_patient}
+              </Text>
+            <Text
+              numberOfLines={2}
+              ellipsizeMode="tail"
+              style={styles.cardTitle}
+            >
+              Gender : {gender}
+            </Text>
+            <Text
+              numberOfLines={2}
+              ellipsizeMode="tail"
+              style={styles.cardTitle}
+            >
+              Nodes: {notes}
+            </Text>
+            <Text
+              numberOfLines={2}
+              ellipsizeMode="tail"
+              style={styles.cardTitle}
+            >
+              Date: {date}
+            </Text>
+            <Text
+              numberOfLines={2}
+              ellipsizeMode="tail"
+              style={styles.cardTitle}
+            >
+              Time: {time}
+            </Text>
+            </View>
+            <View style={{ flexDirection: "row", gap: 60 }}>
+              <TouchableOpacity
+                style={styles.cardButton}
+                onPress={() => Delete()}
+              >
+                <Text style={styles.cardButtonText}>Decline </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
+          </View>
+        </View>
   );
 }
 

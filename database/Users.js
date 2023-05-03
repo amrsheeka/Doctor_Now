@@ -79,7 +79,7 @@ const logout = async () => {
 
 }
 const getCurrentUser = async () => {
-  const res = await axios.get(`${Ip.ip}/API/Auth/Login.php`);
+  const res = await axios.get(`${Ip.ip}/API/Auth/Getuser.php`);
   if (res.data != "") {
 
     CurrentUser.user = res.data;
@@ -185,6 +185,22 @@ const getAppointment = async (users_id) => {
     })
     .catch(function (error) {
       console.log(error);
+ 
+    });
+}
+
+const getAppointment_for_Doctor = async (doctor_id) => {
+  return axios.post(`${Ip.ip}/API/doctors/getAppointment_For_doc.php`, {
+    doctor_id: doctor_id
+  })
+    .then(function (response) {
+      console.log(response.date)
+
+      return response.data;
+
+    })
+    .catch(function (error) {
+      console.log(error);
     });
 }
 const getAllAppointment = async () => {
@@ -203,6 +219,20 @@ const getAppointment_by_doc_id = async (doctor_id, date) => {
   return axios.post(`${Ip.ip}/API/doctors/getAppointmentsby_doc_id.php`, {
     doctor_id: doctor_id,
     date: date
+  })
+    .then(function (response) {
+      console.log(response.date)
+
+      return response.data;
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+const get_doc_by_email = async (email) => {
+  return axios.post(`${Ip.ip}/API/doctors/get_doc_by_email.php`, {
+    email: email,
   })
     .then(function (response) {
       console.log(response.date)
@@ -262,4 +292,6 @@ export {
   getAllAppointment,
   Update_Appointment,
   editUser,
+  getAppointment_for_Doctor,
+  get_doc_by_email
 };
