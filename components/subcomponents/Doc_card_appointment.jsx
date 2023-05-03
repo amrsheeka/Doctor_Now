@@ -53,40 +53,6 @@ function Doc_card_appointment({
     });
   }
   return (
-<<<<<<< HEAD
-    <TouchableOpacity
-      onPress={() => navigation.navigate("Appointment2", { obj })}
-    >
-      <View style={[styles.card,night && styles.darklist]}>
-        <Image
-          source={
-            image
-              ? { uri: image }
-              : require("../assets/Herbal_Medicine_Male_Avatar.png")
-          }
-          defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")}
-          style={styles.cardPhoto}
-        />
-        <View style={styles.cardContent}>
-          <View style={styles.cardContent1}>
-            <Text
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              style={[styles.cardTitle ,night && styles.cardTitle1]}
-            >
-              Doctor: {doc_name}
-            </Text>
-            {/* <Text numberOfLines={3} ellipsizeMode='tail'
-            style={styles.cardTitle}> {specialization1}</Text> */}
-            <Text
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              style={[styles.cardTitle ,night && styles.cardTitle1]}
-            >
-              Patient Name: {name_patient}
-            </Text>
-            {/* <Text numberOfLines={2} ellipsizeMode='tail'
-=======
     is_doctor == "no" ?
       <TouchableOpacity
         onPress={() => navigation.navigate("Appointment2", { obj })}
@@ -110,8 +76,6 @@ function Doc_card_appointment({
               >
                 Doctor: {doc_name}
               </Text>
-              {/* <Text numberOfLines={3} ellipsizeMode='tail'
-            style={styles.cardTitle}> {specialization1}</Text> */}
               <Text
                 numberOfLines={2}
                 ellipsizeMode="tail"
@@ -119,16 +83,6 @@ function Doc_card_appointment({
               >
                 Patient Name: {name_patient}
               </Text>
-              {/* <Text numberOfLines={2} ellipsizeMode='tail'
->>>>>>> ce6803077f188e0d4b9dcd9714e6aeb822f39ff8
-            style={styles.cardTitle}>Date: {date}</Text>
-          <Text numberOfLines={2} ellipsizeMode='tail'
-            style={styles.cardTitle}>Time: {time}</Text>
-          <Text numberOfLines={2} ellipsizeMode='tail'
-            style={styles.cardTitle}>gender: {gender}</Text>
-          <Text numberOfLines={5} ellipsizeMode='tail'
-            style={styles.cardTitle}>notes: {notes}</Text> */}
-<<<<<<< HEAD
           </View>
           <View style={{ flexDirection: "row", gap: 60 }}>
             <TouchableOpacity
@@ -144,23 +98,6 @@ function Doc_card_appointment({
               <Text style={styles.cardButtonText}>Decline </Text>
             </TouchableOpacity>
           </View>
-=======
-            </View>
-            <View style={{ flexDirection: "row", gap: 60 }}>
-              <TouchableOpacity
-                style={styles.cardButton}
-                onPress={() => navigation.navigate("Update_patient", obj)}
-              >
-                <Text style={styles.cardButtonText}>Update </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.cardButton}
-                onPress={() => Delete()}
-              >
-                <Text style={styles.cardButtonText}>Decline </Text>
-              </TouchableOpacity>
-            </View>
->>>>>>> ce6803077f188e0d4b9dcd9714e6aeb822f39ff8
 
             {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
           </View>
