@@ -16,7 +16,7 @@ const Appointments = () => {
                 if (ans.status !== "failed") {
                     get_History_Apps_for_Doctor(ans[0].id).then((res) => {
                         if (res.status !== "failed")
-                            res.length >= 1 ? setAppointments(res) : setFlag(false);
+                            res.length >= 1 ? setAppointments(res) : setAppointments([]);
                     })
                 }
             })
@@ -25,7 +25,7 @@ const Appointments = () => {
                 if (ans.status !== "failed") {
                     getAppointment_for_Doctor(ans[0].id).then((res) => {
                         if (res.status !== "failed")
-                            res.length >= 1 ? setAppointments(res) : setFlag(false);
+                            res.length >= 1 ? setAppointments(res) : setAppointments([]);
                     })
                 }
             })
