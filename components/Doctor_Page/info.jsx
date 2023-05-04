@@ -24,7 +24,12 @@ import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
-import { getAppointment_for_Doctor, get_History_Apps_for_Doctor, get_doc_by_email, logout } from "../../database/Users";
+import {
+  getAppointment_for_Doctor,
+  get_History_Apps_for_Doctor,
+  get_doc_by_email,
+  logout,
+} from "../../database/Users";
 import Appointments from "./Appointments";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
@@ -35,6 +40,7 @@ const Info = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
   const [show, setShow] = useState(false);
+
   const [startTime, setStartTime] = useState(new Date());
   const [startTime1, setStartTime1] = useState(new Date());
   const [startTime2, setStartTime2] = useState(new Date());
@@ -166,23 +172,7 @@ const Info = ({ navigation }) => {
   const empty = false;
   const { setAppointments } = useContext(AppContext);
   const { setType } = useContext(AppContext);
-  const { curruser } = useContext(AppContext);
-  const [doctor, setDoctor] = useState({});
-  useEffect(() => {
-    async function getDoc() {
-      let email = curruser.email;
-      const res = await get_doc_by_email(email);
-      setDoctor(res[0]);
-    }
-    getDoc();
-  }, []);
-  
-  useEffect(() => {
-    if (doctor.length > 0) {
-      setfName(doctor.name);
-    }
-  }, [doctor]);
-  console.log(doctor);
+
   const back = () => {
     page === "Schedule" ? summary() : setPage("Profile");
     setOpen_password(false);
@@ -191,33 +181,32 @@ const Info = ({ navigation }) => {
     setPage("Profile");
     setOpen_password(false);
   };
-  let email = CurrentUser.user.email
+  let email = CurrentUser.user.email;
   const HandleHistory = () => {
     get_doc_by_email(email).then((ans) => {
       if (ans.status !== "failed") {
         get_History_Apps_for_Doctor(ans[0].id).then((res) => {
-          console.log(res)
-          if (res.status !== "failed")
-            setAppointments(res)
+          console.log(res);
+          if (res.status !== "failed") setAppointments(res);
           else setAppointments([]);
-        })
+        });
       }
-    })
-    setType("history")
-  }
+    });
+    setType("history");
+  };
 
   const HandleAppointments = () => {
     get_doc_by_email(email).then((ans) => {
       if (ans.status !== "failed") {
         getAppointment_for_Doctor(ans[0].id).then((res) => {
-          if (res.status !== "failed")
-            setAppointments(res)
+          if (res.status !== "failed") setAppointments(res);
           else setAppointments([]);
-        })
+        });
       }
-    })
-    setType("appointments")
-  }
+    });
+    setType("appointments");
+  };
+
   const ChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
@@ -447,6 +436,7 @@ const Info = ({ navigation }) => {
             // flexDirection: "row",
             // width: "90%",
             marginHorizontal: 10,
+            marginBottom: 15,
             paddingVertical: 15,
           },
         ]}
@@ -647,1938 +637,2095 @@ const Info = ({ navigation }) => {
     );
   };
 
-  return (
-    <View style={{ flex: 1 }}>
-      {page === "Profile" ||
-        (page === "Schedule" && schedule_summary) ||
-        page === "More" ? (
-        <View style={[styles.header, { alignItems: "center" }]}>
-          <Text style={styles.label}> {page} </Text>
-        </View>
-      ) : (
-        <View style={[styles.header, { flexDirection: "row" }]}>
-          <Icon2
-            name={icon14}
+  // **************************************************************************************************************************
+
+  const Header = () => {
+    return (
+      <View style={[styles.header, { flexDirection: "row" }]}>
+        <Icon2
+          name={icon14}
+          size={30}
+          color="white"
+          onPress={back}
+          style={{ width: "7%", marginHorizontal: 10 }}
+        />
+        <Text style={[styles.label, { width: "78%" }]}> {page} </Text>
+
+        <Icon6
+          name={icon15}
+          size={30}
+          color="white"
+          onPress={save}
+          style={{ width: "20%" }}
+        />
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const ProCard = () => {
+    return (
+      <View style={styles.content}>
+        <View style={{ marginVertical: 5, flexDirection: "row" }}>
+          <Text
+            style={{
+              color: "black",
+              fontSize: 15,
+              fontWeight: "bold",
+              marginVertical: 5,
+              width: "90%",
+            }}
+          >
+            {" Doctor "}
+            {fName} {lName}
+          </Text>
+          <Icon
+            onPress={edit_name}
+            name={icon6}
             size={30}
-            color="white"
-            onPress={back}
-            style={{ width: "7%", marginHorizontal: 10 }}
-          />
-          <Text style={[styles.label, { width: "78%" }]}> {page} </Text>
-
-          <Icon6
-            name={icon15}
-            size={30}
-            color="white"
-            onPress={save}
-            style={{ width: "20%" }}
+            color="#288759"
+            style={{ alignSelf: "flex-end" }}
           />
         </View>
-      )}
-      <ScrollView>
-        {page === "Profile" ? (
-          <View>
-            <View style={styles.content}>
-              <View style={{ marginVertical: 5, flexDirection: "row" }}>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    fontWeight: "bold",
-                    marginVertical: 5,
-                    width: "90%",
-                  }}
-                >
-                  {" Doctor "}
-                  {doctor.name}
-                </Text>
-                <Icon
-                  onPress={edit_name}
-                  name={icon6}
-                  size={30}
-                  color="#288759"
-                  style={{ alignSelf: "flex-end" }}
-                />
-              </View>
-              <Text style={{ color: "black", fontSize: 15 }}>
-                {fullpro_title}
-              </Text>
-              <View style={{ marginVertical: 5, flexDirection: "row" }}>
-                <Image
-                  source={doctor.image? {uri:doctor.image}:require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
-                  style={[styles.image]}
-                />
+        <Text style={{ color: "black", fontSize: 15 }}>{fullpro_title}</Text>
+        <View style={{ marginVertical: 5, flexDirection: "row" }}>
+          <Image
+            source={require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
+            style={[styles.image]}
+          />
 
-                <View style={{ width: "55%", justifyContent: "center" }}>
-                  <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                    <Icon name={icon1} size={35} color="gold" />
-                    <Icon name={icon2} size={35} color="gold" />
-                    <Icon name={icon3} size={35} color="gold" />
-                    <Icon name={icon4} size={35} color="gold" />
-                    <Icon name={icon5} size={35} color="gold" />
-                  </View>
-
-                  <View>
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 15,
-                        marginTop: 10,
-                        alignSelf: "center",
-                      }}
-                    >
-                      {" "}
-                      {reviews} {" Reviews "}
-                    </Text>
-                    <TouchableOpacity
-                      style={{ alignItems: "center" }}
-                      onPress={account_settings}
-                    >
-                      <Text
-                        style={{
-                          backgroundColor: "#288759",
-                          paddingHorizontal: 20,
-                          paddingVertical: 10,
-                          color: "white",
-                          margin: 20,
-                        }}
-                      >
-                        {" "}
-                        My Account
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View style={{ marginVertical: 5, flexDirection: "row" }}>
-              <View style={{ width: "50%" }}>
-                <View style={styles.content}>
-                  <Text
-                    style={{
-                      color: "black",
-                      fontSize: 15,
-                      fontWeight: "bold",
-                      alignSelf: "center",
-                    }}
-                  >
-                    {profile_views}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "black",
-                      fontSize: 12,
-                      alignSelf: "center",
-                    }}
-                  >
-                    {" "}
-                    {" Profile Views "}{" "}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={{ width: "50%" }}>
-                <View style={styles.content}>
-                  <Text
-                    style={{
-                      color: "black",
-                      fontSize: 15,
-                      fontWeight: "bold",
-                      alignSelf: "center",
-                    }}
-                  >
-                    {bookings}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "black",
-                      fontSize: 12,
-                      alignSelf: "center",
-                    }}
-                  >
-                    {" "}
-                    {" Bookings "}{" "}
-                  </Text>
-                </View>
-              </View>
+          <View style={{ width: "55%", justifyContent: "center" }}>
+            <View style={{ flexDirection: "row", alignSelf: "center" }}>
+              <Icon name={icon1} size={35} color="gold" />
+              <Icon name={icon2} size={35} color="gold" />
+              <Icon name={icon3} size={35} color="gold" />
+              <Icon name={icon4} size={35} color="gold" />
+              <Icon name={icon5} size={35} color="gold" />
             </View>
 
-            <View
-              style={[
-                styles.content,
-                {
-                  flexDirection: "row",
-                  width: "100%",
-                  margin: 3,
-                  paddingVertical: 15,
-                },
-              ]}
-            >
-              <TouchableOpacity
-                style={{ width: "50%", alignItems: "center" }}
-                onPress={Doctor_info}
-              >
-                <Text
-                  style={{
-                    color: color1,
-                    fontSize: 15,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  {" Doctor info "}{" "}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ width: "50%", alignItems: "center" }}
-                onPress={Clinic_info}
-              >
-                <Text
-                  style={{
-                    color: color2,
-                    fontSize: 15,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  {" Clinic info "}{" "}
-                </Text>
-              </TouchableOpacity>
-              {/* </View> */}
-            </View>
-
-            {flag ? (
-              <View>
-                <TouchableOpacity onPress={about_doctor}>
-                  <View
-                    style={[
-                      styles.content,
-                      {
-                        flexDirection: "row",
-                        paddingVertical: 15,
-                        marginVertical: 5,
-                      },
-                    ]}
-                  >
-                    <Icon2
-                      name={icon7}
-                      size={25}
-                      color="#288759"
-                      style={{ width: "7%" }}
-                    />
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 15,
-                        paddingHorizontal: 5,
-                        width: "85%",
-                      }}
-                    >
-                      {" "}
-                      About the Doctor{" "}
-                    </Text>
-                    <Icon name={icon6} size={25} color="#288759" />
-                  </View>
-
-                  {about_the_doctor !== "" ? (
-                    <View style={[styles.content, { paddingVertical: 15 }]}>
-                      <View style={{ flexDirection: "row", width: "100%" }}>
-                        <Text
-                          style={{
-                            color: "black",
-                            fontSize: 15,
-                            paddingBottom: 10,
-                            paddingHorizontal: 20,
-                            width: "80%",
-                          }}
-                        >
-                          {about_the_doctor}
-                        </Text>
-                      </View>
-                    </View>
-                  ) : (
-                    <></>
-                  )}
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <View
-                    style={[
-                      styles.content,
-                      {
-                        flexDirection: "row",
-                        paddingVertical: 15,
-                        marginVertical: 5,
-                      },
-                    ]}
-                  >
-                    <Icon2
-                      name={icon8}
-                      size={25}
-                      color="#288759"
-                      style={{ width: "7%" }}
-                    />
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 15,
-                        paddingHorizontal: 5,
-                        width: "85%",
-                      }}
-                    >
-                      {" "}
-                      Education{" "}
-                    </Text>
-                    <Icon name={icon6} size={25} color="#288759" />
-                  </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                  <View
-                    style={[
-                      styles.content,
-                      {
-                        flexDirection: "row",
-                        paddingVertical: 15,
-                        marginVertical: 5,
-                      },
-                    ]}
-                  >
-                    <Icon3
-                      name={icon9}
-                      size={25}
-                      color="#288759"
-                      style={{ width: "7%" }}
-                    />
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 15,
-                        paddingHorizontal: 5,
-                        width: "85%",
-                      }}
-                    >
-                      {" "}
-                      Spoken Languages{" "}
-                    </Text>
-                    <Icon name={icon6} size={25} color="#288759" />
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View>
-                <TouchableOpacity onPress={clinic_name}>
-                  <View
-                    style={[
-                      styles.content,
-                      { flexDirection: "row", paddingVertical: 15 },
-                    ]}
-                  >
-                    <Icon2
-                      name={icon7}
-                      size={25}
-                      color="#288759"
-                      style={{ width: "7%" }}
-                    />
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 15,
-                        paddingHorizontal: 5,
-                        width: "85%",
-                      }}
-                    >
-                      {" "}
-                      Clinic Name and Number{" "}
-                    </Text>
-                    <Icon name={icon6} size={25} color="#288759" />
-                  </View>
-
-                  {nameClinic !== "" || numberClinic !== "" ? (
-                    <View style={[styles.content, { paddingVertical: 15 }]}>
-                      <Text
-                        style={{
-                          color: "black",
-                          fontSize: 15,
-                          paddingBottom: 10,
-                          paddingHorizontal: 20,
-                        }}
-                      >
-                        {nameClinic}
-                      </Text>
-                      <Text
-                        style={{
-                          color: "black",
-                          fontSize: 15,
-                          paddingHorizontal: 20,
-                        }}
-                      >
-                        {numberClinic}
-                      </Text>
-                    </View>
-                  ) : (
-                    <></>
-                  )}
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                  <View
-                    style={[
-                      styles.content,
-                      {
-                        flexDirection: "row",
-                        paddingVertical: 15,
-                        marginVertical: 5,
-                      },
-                    ]}
-                  >
-                    <Icon3
-                      name={icon10}
-                      size={25}
-                      color="#288759"
-                      style={{ width: "7%" }}
-                    />
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 15,
-                        paddingHorizontal: 5,
-                        width: "85%",
-                      }}
-                    >
-                      {" "}
-                      Clinic Photos{" "}
-                    </Text>
-                    <Icon name={icon6} size={25} color="#288759" />
-                  </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={exmination}>
-                  <View
-                    style={[
-                      styles.content,
-                      {
-                        flexDirection: "row",
-                        paddingVertical: 15,
-                      },
-                    ]}
-                  >
-                    <Icon4
-                      name={icon11}
-                      size={25}
-                      color="#288759"
-                      style={{ width: "7%" }}
-                    />
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 15,
-                        paddingHorizontal: 5,
-                        width: "85%",
-                      }}
-                    >
-                      {" "}
-                      Exmination and Follow-up{" "}
-                    </Text>
-                    <Icon name={icon6} size={25} color="#288759" />
-                  </View>
-                  {exmain !== "" || follow_up !== "" ? (
-                    <View style={[styles.content, { paddingVertical: 15 }]}>
-                      <View style={{ flexDirection: "row", width: "100%" }}>
-                        <Text
-                          style={{
-                            color: "black",
-                            fontSize: 15,
-                            paddingBottom: 10,
-                            paddingHorizontal: 20,
-                            width: "80%",
-                          }}
-                        >
-                          {" "}
-                          Exmaination Fees{" "}
-                        </Text>
-                        <Text>{exmain} EGP</Text>
-                      </View>
-                      <View style={{ flexDirection: "row", width: "100%" }}>
-                        <Text
-                          style={{
-                            color: "black",
-                            fontSize: 15,
-                            paddingHorizontal: 20,
-                            paddingBottom: 10,
-                            width: "80%",
-                          }}
-                        >
-                          {" "}
-                          Follow-up Fees{" "}
-                        </Text>
-                        <Text> {follow_up} EGP </Text>
-                      </View>
-                      <View style={{ flexDirection: "row", width: "100%" }}>
-                        <Text
-                          style={{
-                            color: "black",
-                            fontSize: 15,
-                            paddingHorizontal: 20,
-                            width: "80%",
-                          }}
-                        >
-                          {" "}
-                          Follow-up Duration{" "}
-                        </Text>
-                        <Text> {duration} Days </Text>
-                      </View>
-                    </View>
-                  ) : (
-                    <></>
-                  )}
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                  <View
-                    style={[
-                      styles.content,
-                      {
-                        flexDirection: "row",
-                        paddingVertical: 15,
-                        marginVertical: 5,
-                      },
-                    ]}
-                  >
-                    <Icon2
-                      name={icon12}
-                      size={25}
-                      color="#288759"
-                      style={{ width: "7%" }}
-                    />
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 15,
-                        paddingHorizontal: 5,
-                        width: "85%",
-                      }}
-                    >
-                      {" "}
-                      Clinic Address{" "}
-                    </Text>
-                    <Icon name={icon6} size={25} color="#288759" />
-                  </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={assistant}>
-                  <View
-                    style={[
-                      styles.content,
-                      {
-                        flexDirection: "row",
-                        paddingVertical: 15,
-                        marginTop: 5,
-                      },
-                    ]}
-                  >
-                    <Icon2
-                      name={icon7}
-                      size={25}
-                      color="#288759"
-                      style={{ width: "7%" }}
-                    />
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 15,
-                        paddingHorizontal: 5,
-                        width: "85%",
-                      }}
-                    >
-                      {" "}
-                      Assistant Name and Number{" "}
-                    </Text>
-                    <Icon name={icon6} size={25} color="#288759" />
-                  </View>
-                  {nameClinic !== "" || numberClinic !== "" ? (
-                    <View
-                      style={[
-                        styles.content,
-                        { paddingVertical: 15, marginDown: 10 },
-                      ]}
-                    >
-                      <Text
-                        style={{
-                          color: "black",
-                          fontSize: 15,
-                          paddingBottom: 10,
-                          paddingHorizontal: 20,
-                        }}
-                      >
-                        {nameAssistant}
-                      </Text>
-                      <Text
-                        style={{
-                          color: "black",
-                          fontSize: 15,
-                          paddingHorizontal: 20,
-                        }}
-                      >
-                        {numberAssistant}
-                      </Text>
-                    </View>
-                  ) : (
-                    <></>
-                  )}
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        ) : page === "Professional Information" ? (
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              }}
-            >
-              <Icon2
-                name={icon7}
-                size={25}
-                color="#288759"
-                style={{ width: "5%", marginLeft: 5 }}
-              />
+            <View>
               <Text
                 style={{
                   color: "black",
-                  paddingHorizontal: 5,
-                  width: "85%",
+                  fontSize: 15,
+                  marginTop: 10,
+                  alignSelf: "center",
                 }}
               >
                 {" "}
-                Basic Information{" "}
+                {reviews} {" Reviews "}
               </Text>
+              <TouchableOpacity
+                style={{ alignItems: "center" }}
+                onPress={account_settings}
+              >
+                <Text
+                  style={{
+                    backgroundColor: "#288759",
+                    paddingHorizontal: 20,
+                    paddingVertical: 10,
+                    color: "white",
+                    margin: 20,
+                  }}
+                >
+                  {" "}
+                  My Account
+                </Text>
+              </TouchableOpacity>
             </View>
-            <Text
-              style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              First Name{" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              defaultValue={fName}
-              //placeholder={"last name"}
-              onChangeText={setfName}
-            />
+          </View>
+        </View>
+      </View>
+    );
+  };
 
-            <Text
-              style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Last Name{" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              defaultValue={lName}
-              //placeholder={"last name"}
-              onChangeText={setlName}
-            />
+  // **************************************************************************************************************************
 
-            <Text
-              style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Birth Date{" "}
-            </Text>
-            <Text style={styles.inp} onPress={() => setShow(true)}>
-              {" "}
-              {birth}{" "}
-            </Text>
-            {show && <DateTimePicker value={date} onChange={ChangeDate} />}
-
+  const ProViewsAndBookings = () => {
+    return (
+      <View style={{ marginVertical: 5, flexDirection: "row" }}>
+        <View style={{ width: "50%" }}>
+          <View style={styles.content}>
             <Text
               style={{
                 color: "black",
                 fontSize: 15,
-                paddingBottom: 5,
-                marginTop: 20,
-                paddingHorizontal: 15,
+                fontWeight: "bold",
+                alignSelf: "center",
               }}
             >
-              Gender
+              {profile_views}
             </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginLeft: 40,
-                marginTop: 10,
-              }}
-            >
-              <RadioButton
-                status={male}
-                color={main_color}
-                value="male"
-                uncheckedColor="black"
-                onPress={clickMale}
-              />
-              <Text
-                style={{
-                  color: "black",
-                  paddingBottom: 5,
-                  width: "40%",
-                  paddingHorizontal: 5,
-                }}
-              >
-                Male
-              </Text>
-              <RadioButton
-                status={female}
-                color={main_color}
-                value="female"
-                uncheckedColor="black"
-                onPress={clickFemale}
-              />
-              <Text
-                style={{
-                  color: "black",
-                  paddingBottom: 5,
-                  paddingHorizontal: 5,
-                }}
-              >
-                Female
-              </Text>
-            </View>
-
-            <TouchableOpacity>
-              {practise_licence === "" ? (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginVertical: 40,
-                    alignItems: "center",
-                  }}
-                >
-                  <Icon5
-                    name={icon13}
-                    size={25}
-                    color={main_color}
-                    style={{ width: "10%", marginLeft: 15 }}
-                  />
-
-                  <Text style={{ fontSize: 16 }}>
-                    {" "}
-                    Upload Practice License ID photo
-                  </Text>
-                </View>
-              ) : (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginVertical: 40,
-                    alignItems: "center",
-                  }}
-                >
-                  <Image
-                    source={require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
-                    style={[
-                      styles.image,
-                      { width: "20%", marginLeft: 15, height: 50 },
-                    ]}
-                  />
-                  <Text style={{ fontSize: 16, paddingHorizontal: 20 }}>
-                    {" "}
-                    Practice License ID photo
-                  </Text>
-                </View>
-              )}
-            </TouchableOpacity>
-            <View
-              style={{
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              }}
-            >
-              <Icon2
-                name={icon8}
-                size={25}
-                color="#288759"
-                style={{ width: "7%", marginLeft: 15 }}
-              />
-              <Text
-                style={{
-                  color: "black",
-                  paddingHorizontal: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Professional Title{" "}
-              </Text>
-            </View>
             <Text
               style={{
-                fontSize: 16,
-                marginHorizontal: 10,
-                paddingVertical: 15,
+                color: "black",
+                fontSize: 12,
+                alignSelf: "center",
               }}
             >
               {" "}
-              Full Professional Title{" "}
+              {" Profile Views "}{" "}
+            </Text>
+          </View>
+        </View>
+
+        {/* ////////////////////////////////////////////////// */}
+
+        <View style={{ width: "50%" }}>
+          <View style={styles.content}>
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                fontWeight: "bold",
+                alignSelf: "center",
+              }}
+            >
+              {bookings}
+            </Text>
+            <Text
+              style={{
+                color: "black",
+                fontSize: 12,
+                alignSelf: "center",
+              }}
+            >
+              {" "}
+              {" Bookings "}{" "}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const DoctorClinicTab = () => {
+    return (
+      <View
+        style={[
+          styles.content,
+          {
+            flexDirection: "row",
+            width: "100%",
+            margin: 3,
+            paddingVertical: 15,
+          },
+        ]}
+      >
+        <TouchableOpacity
+          style={{ width: "50%", alignItems: "center" }}
+          onPress={Doctor_info}
+        >
+          <Text
+            style={{
+              color: color1,
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            {" Doctor info "}{" "}
+          </Text>
+        </TouchableOpacity>
+
+        {/* /////////////////////////////////////////////////////////////////////////// */}
+
+        <TouchableOpacity
+          style={{ width: "50%", alignItems: "center" }}
+          onPress={Clinic_info}
+        >
+          <Text
+            style={{
+              color: color2,
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            {" Clinic info "}{" "}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const DocInfo = () => {
+    return (
+      <View>
+        <TouchableOpacity onPress={about_doctor}>
+          <View
+            style={[
+              styles.content,
+              {
+                flexDirection: "row",
+                paddingVertical: 15,
+                marginTop: 5,
+              },
+            ]}
+          >
+            <Icon2
+              name={icon7}
+              size={25}
+              color="#288759"
+              style={{ width: "7%" }}
+            />
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                paddingHorizontal: 5,
+                width: "85%",
+              }}
+            >
+              {" "}
+              About the Doctor{" "}
+            </Text>
+            <Icon name={icon6} size={25} color="#288759" />
+          </View>
+
+          {about_the_doctor !== "" ? (
+            <View style={[styles.content, { paddingVertical: 15 }]}>
+              <View style={{ flexDirection: "row", width: "100%" }}>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    paddingBottom: 10,
+                    paddingHorizontal: 20,
+                    width: "80%",
+                  }}
+                >
+                  {about_the_doctor}
+                </Text>
+              </View>
+            </View>
+          ) : (
+            <></>
+          )}
+        </TouchableOpacity>
+
+        {/* ///////////////////////////////////////////// */}
+
+        <TouchableOpacity>
+          <View
+            style={[
+              styles.content,
+              {
+                flexDirection: "row",
+                paddingVertical: 15,
+                marginVertical: 5,
+              },
+            ]}
+          >
+            <Icon2
+              name={icon8}
+              size={25}
+              color="#288759"
+              style={{ width: "7%" }}
+            />
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                paddingHorizontal: 5,
+                width: "85%",
+              }}
+            >
+              {" "}
+              Education{" "}
+            </Text>
+            <Icon name={icon6} size={25} color="#288759" />
+          </View>
+        </TouchableOpacity>
+
+        {/* /////////////////////////////////////////////////////////////////// */}
+
+        <TouchableOpacity>
+          <View
+            style={[
+              styles.content,
+              {
+                flexDirection: "row",
+                paddingVertical: 15,
+                marginVertical: 5,
+              },
+            ]}
+          >
+            <Icon3
+              name={icon9}
+              size={25}
+              color="#288759"
+              style={{ width: "7%" }}
+            />
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                paddingHorizontal: 5,
+                width: "85%",
+              }}
+            >
+              {" "}
+              Spoken Languages{" "}
+            </Text>
+            <Icon name={icon6} size={25} color="#288759" />
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const ClinicInfo = () => {
+    return (
+      <View>
+        <TouchableOpacity onPress={clinic_name}>
+          <View
+            style={[
+              styles.content,
+              {
+                flexDirection: "row",
+                paddingVertical: 15,
+                marginTop: 5,
+              },
+            ]}
+          >
+            <Icon2
+              name={icon7}
+              size={25}
+              color="#288759"
+              style={{ width: "7%" }}
+            />
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                paddingHorizontal: 5,
+                width: "85%",
+              }}
+            >
+              {" "}
+              Clinic Name and Number{" "}
+            </Text>
+            <Icon name={icon6} size={25} color="#288759" />
+          </View>
+
+          {nameClinic !== "" || numberClinic !== "" ? (
+            <View style={[styles.content, { paddingVertical: 15 }]}>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                  paddingBottom: 10,
+                  paddingHorizontal: 20,
+                }}
+              >
+                {nameClinic}
+              </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                  paddingHorizontal: 20,
+                }}
+              >
+                {numberClinic}
+              </Text>
+            </View>
+          ) : (
+            <></>
+          )}
+        </TouchableOpacity>
+
+        {/* //////////////////////////////////////////////////////////////////// */}
+
+        <TouchableOpacity>
+          <View
+            style={[
+              styles.content,
+              {
+                flexDirection: "row",
+                paddingVertical: 15,
+                marginVertical: 5,
+              },
+            ]}
+          >
+            <Icon3
+              name={icon10}
+              size={25}
+              color="#288759"
+              style={{ width: "7%" }}
+            />
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                paddingHorizontal: 5,
+                width: "85%",
+              }}
+            >
+              {" "}
+              Clinic Photos{" "}
+            </Text>
+            <Icon name={icon6} size={25} color="#288759" />
+          </View>
+        </TouchableOpacity>
+
+        {/* /////////////////////////////////////////////////////////////// */}
+
+        <TouchableOpacity onPress={exmination}>
+          <View
+            style={[
+              styles.content,
+              {
+                flexDirection: "row",
+                paddingVertical: 15,
+              },
+            ]}
+          >
+            <Icon4
+              name={icon11}
+              size={25}
+              color="#288759"
+              style={{ width: "7%" }}
+            />
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                paddingHorizontal: 5,
+                width: "85%",
+              }}
+            >
+              {" "}
+              Exmination and Follow-up{" "}
+            </Text>
+            <Icon name={icon6} size={25} color="#288759" />
+          </View>
+          {exmain !== "" || follow_up !== "" ? (
+            <View style={[styles.content, { paddingVertical: 15 }]}>
+              <View style={{ flexDirection: "row", width: "100%" }}>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    paddingBottom: 10,
+                    paddingHorizontal: 20,
+                    width: "80%",
+                  }}
+                >
+                  {" "}
+                  Exmaination Fees{" "}
+                </Text>
+                <Text>{exmain} EGP</Text>
+              </View>
+              <View style={{ flexDirection: "row", width: "100%" }}>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    paddingHorizontal: 20,
+                    paddingBottom: 10,
+                    width: "80%",
+                  }}
+                >
+                  {" "}
+                  Follow-up Fees{" "}
+                </Text>
+                <Text> {follow_up} EGP </Text>
+              </View>
+              <View style={{ flexDirection: "row", width: "100%" }}>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    paddingHorizontal: 20,
+                    width: "80%",
+                  }}
+                >
+                  {" "}
+                  Follow-up Duration{" "}
+                </Text>
+                <Text> {duration} Days </Text>
+              </View>
+            </View>
+          ) : (
+            <></>
+          )}
+        </TouchableOpacity>
+
+        {/* ////////////////////////////////////////////////////////////////////////////// */}
+
+        <TouchableOpacity>
+          <View
+            style={[
+              styles.content,
+              {
+                flexDirection: "row",
+                paddingVertical: 15,
+                marginVertical: 5,
+              },
+            ]}
+          >
+            <Icon2
+              name={icon12}
+              size={25}
+              color="#288759"
+              style={{ width: "7%" }}
+            />
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                paddingHorizontal: 5,
+                width: "85%",
+              }}
+            >
+              {" "}
+              Clinic Address{" "}
+            </Text>
+            <Icon name={icon6} size={25} color="#288759" />
+          </View>
+        </TouchableOpacity>
+
+        {/* ///////////////////////////////////////////////////////////// */}
+
+        <TouchableOpacity onPress={assistant}>
+          <View
+            style={[
+              styles.content,
+              {
+                flexDirection: "row",
+                paddingVertical: 15,
+                marginTop: 5,
+              },
+            ]}
+          >
+            <Icon2
+              name={icon7}
+              size={25}
+              color="#288759"
+              style={{ width: "7%" }}
+            />
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                paddingHorizontal: 5,
+                width: "85%",
+              }}
+            >
+              {" "}
+              Assistant Name and Number{" "}
+            </Text>
+            <Icon name={icon6} size={25} color="#288759" />
+          </View>
+          {nameAssistant !== "" || numberAssistant !== "" ? (
+            <View
+              style={[styles.content, { paddingVertical: 15, marginDown: 10 }]}
+            >
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                  paddingBottom: 10,
+                  paddingHorizontal: 20,
+                }}
+              >
+                {nameAssistant}
+              </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                  paddingHorizontal: 20,
+                }}
+              >
+                {numberAssistant}
+              </Text>
+            </View>
+          ) : (
+            <></>
+          )}
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const ProsonalInformation = () => {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            paddingVertical: 15,
+            marginVertical: 5,
+          }}
+        >
+          <Icon2
+            name={icon7}
+            size={25}
+            color="#288759"
+            style={{ width: "5%", marginLeft: 5 }}
+          />
+          <Text
+            style={{
+              color: "black",
+              paddingHorizontal: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Basic Information{" "}
+          </Text>
+        </View>
+        <Text
+          style={{
+            fontSize: 16,
+            // fontStyle: "italic",
+            // fontWeight: "bold",
+            marginHorizontal: 10,
+            paddingVertical: 10,
+          }}
+        >
+          {" "}
+          First Name{" "}
+        </Text>
+        <TextInput
+          style={styles.inp}
+          defaultValue={fName}
+          //placeholder={"last name"}
+          onChangeText={setfName}
+        />
+
+        <Text
+          style={{
+            fontSize: 16,
+            // fontStyle: "italic",
+            // fontWeight: "bold",
+            marginHorizontal: 10,
+            paddingVertical: 10,
+          }}
+        >
+          {" "}
+          Last Name{" "}
+        </Text>
+        <TextInput
+          style={styles.inp}
+          defaultValue={lName}
+          //placeholder={"last name"}
+          onChangeText={setlName}
+        />
+
+        <Text
+          style={{
+            fontSize: 16,
+            // fontStyle: "italic",
+            // fontWeight: "bold",
+            marginHorizontal: 10,
+            paddingVertical: 10,
+          }}
+        >
+          {" "}
+          Birth Date{" "}
+        </Text>
+        <Text style={styles.inp} onPress={() => setShow(true)}>
+          {" "}
+          {birth}{" "}
+        </Text>
+        {show && <DateTimePicker value={date} onChange={ChangeDate} />}
+
+        <Text
+          style={{
+            color: "black",
+            fontSize: 15,
+            paddingBottom: 5,
+            marginTop: 20,
+            paddingHorizontal: 15,
+          }}
+        >
+          Gender
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginLeft: 40,
+            marginTop: 10,
+          }}
+        >
+          <RadioButton
+            status={male}
+            color={main_color}
+            value="male"
+            uncheckedColor="black"
+            onPress={clickMale}
+          />
+          <Text
+            style={{
+              color: "black",
+              paddingBottom: 5,
+              width: "40%",
+              paddingHorizontal: 5,
+            }}
+          >
+            Male
+          </Text>
+          <RadioButton
+            status={female}
+            color={main_color}
+            value="female"
+            uncheckedColor="black"
+            onPress={clickFemale}
+          />
+          <Text
+            style={{
+              color: "black",
+              paddingBottom: 5,
+              paddingHorizontal: 5,
+            }}
+          >
+            Female
+          </Text>
+        </View>
+
+        <TouchableOpacity>
+          {practise_licence === "" ? (
+            <View
+              style={{
+                flexDirection: "row",
+                marginVertical: 40,
+                alignItems: "center",
+              }}
+            >
+              <Icon5
+                name={icon13}
+                size={25}
+                color={main_color}
+                style={{ width: "10%", marginLeft: 15 }}
+              />
+
+              <Text style={{ fontSize: 16 }}>
+                {" "}
+                Upload Practice License ID photo
+              </Text>
+            </View>
+          ) : (
+            <View
+              style={{
+                flexDirection: "row",
+                marginVertical: 40,
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
+                style={[
+                  styles.image,
+                  { width: "20%", marginLeft: 15, height: 50 },
+                ]}
+              />
+              <Text style={{ fontSize: 16, paddingHorizontal: 20 }}>
+                {" "}
+                Practice License ID photo
+              </Text>
+            </View>
+          )}
+        </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: "row",
+            paddingVertical: 15,
+            marginVertical: 5,
+          }}
+        >
+          <Icon2
+            name={icon8}
+            size={25}
+            color="#288759"
+            style={{ width: "7%", marginLeft: 15 }}
+          />
+          <Text
+            style={{
+              color: "black",
+              paddingHorizontal: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Professional Title{" "}
+          </Text>
+        </View>
+        <Text
+          style={{
+            fontSize: 16,
+            marginHorizontal: 10,
+            paddingVertical: 15,
+          }}
+        >
+          {" "}
+          Full Professional Title{" "}
+        </Text>
+        <TextInput
+          style={styles.inp}
+          defaultValue={fullpro_title}
+          onChangeText={setFullpro_title}
+        />
+        <TouchableOpacity>
+          {professional_licence !== "" ? (
+            <View
+              style={{
+                flexDirection: "row",
+                marginVertical: 40,
+                alignItems: "center",
+              }}
+            >
+              <Icon5
+                name={icon13}
+                size={25}
+                color={main_color}
+                style={{ width: "10%", marginLeft: 15 }}
+              />
+
+              <Text style={{ fontSize: 16 }}>
+                {" "}
+                Upload Professional Title License photo
+              </Text>
+            </View>
+          ) : (
+            <View
+              style={{
+                flexDirection: "row",
+                marginVertical: 40,
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
+                style={[
+                  styles.image,
+                  { width: "20%", marginLeft: 15, height: 50 },
+                ]}
+              />
+              <Text style={{ fontSize: 16, paddingHorizontal: 20 }}>
+                {" "}
+                Professional Title License photo
+              </Text>
+            </View>
+          )}
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const AccountSettings = () => {
+    return (
+      <View>
+        <View
+          style={{
+            marginVertical: 5,
+            marginHorizontal: 10,
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+        >
+          <Icon6
+            name={icon17}
+            size={30}
+            color={main_color}
+            style={{ width: "7%" }}
+          />
+          <Text
+            style={{
+              fontSize: 16,
+              // fontStyle: "italic",
+              // fontWeight: "bold",
+              marginHorizontal: 10,
+              paddingVertical: 10,
+            }}
+          >
+            {" "}
+            Email address{" "}
+          </Text>
+        </View>
+        <TextInput
+          style={styles.inp}
+          defaultValue={doctor_email}
+          keyboardType="email-address"
+          //placeholder={"last name"}
+          onChangeText={setDoctor_email}
+        />
+        <View
+          style={{
+            marginVertical: 5,
+            marginHorizontal: 10,
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+        >
+          <Icon6
+            name={icon18}
+            size={30}
+            color={main_color}
+            style={{ width: "7%" }}
+          />
+          <Text
+            style={{
+              fontSize: 16,
+              // fontStyle: "italic",
+              // fontWeight: "bold",
+              marginHorizontal: 10,
+              paddingVertical: 10,
+            }}
+          >
+            {" "}
+            Mobile number{" "}
+          </Text>
+        </View>
+        <TextInput
+          style={styles.inp}
+          defaultValue={doctor_phone}
+          keyboardType="phone-pad"
+          //placeholder={"last name"}
+          onChangeText={setDoctor_phone}
+        />
+        <TouchableOpacity onPress={change_password}>
+          <View
+            style={[
+              {
+                marginHorizontal: 15,
+                marginVertical: 20,
+                flexDirection: "row",
+                alignItems: "center",
+              },
+            ]}
+          >
+            <Icon4
+              name={icon16}
+              size={25}
+              color={main_color}
+              style={{ width: "10%" }}
+            />
+            <Text
+              style={{
+                fontSize: 16,
+                // fontStyle: "italic",
+                // fontWeight: "bold",
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              Change Password{" "}
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        {open_password ? (
+          <View>
+            <Text
+              style={{
+                fontSize: 16,
+                // fontStyle: "italic",
+                // fontWeight: "bold",
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              Current Password{" "}
             </Text>
             <TextInput
               style={styles.inp}
-              defaultValue={fullpro_title}
-              onChangeText={setFullpro_title}
+              defaultValue={current_password}
+              secureTextEntry
+              onChangeText={setCurrent_password}
             />
-            <TouchableOpacity>
-              {professional_licence !== "" ? (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginVertical: 40,
-                    alignItems: "center",
-                  }}
-                >
-                  <Icon5
-                    name={icon13}
-                    size={25}
-                    color={main_color}
-                    style={{ width: "10%", marginLeft: 15 }}
-                  />
 
-                  <Text style={{ fontSize: 16 }}>
-                    {" "}
-                    Upload Professional Title License photo
-                  </Text>
-                </View>
-              ) : (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginVertical: 40,
-                    alignItems: "center",
-                  }}
-                >
-                  <Image
-                    source={require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
-                    style={[
-                      styles.image,
-                      { width: "20%", marginLeft: 15, height: 50 },
-                    ]}
-                  />
-                  <Text style={{ fontSize: 16, paddingHorizontal: 20 }}>
-                    {" "}
-                    Professional Title License photo
-                  </Text>
-                </View>
-              )}
-            </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 16,
+                // fontStyle: "italic",
+                // fontWeight: "bold",
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              New Password{" "}
+            </Text>
+            <TextInput
+              style={styles.inp}
+              defaultValue={new_password}
+              secureTextEntry
+              onChangeText={setNew_password}
+            />
+
+            <Text
+              style={{
+                fontSize: 16,
+                // fontStyle: "italic",
+                // fontWeight: "bold",
+                marginHorizontal: 10,
+                paddingVertical: 10,
+              }}
+            >
+              {" "}
+              Confirm New Password{" "}
+            </Text>
+            <TextInput
+              style={styles.inp}
+              defaultValue={confirm_new_password}
+              secureTextEntry
+              onChangeText={setConfirm_new_password}
+            />
           </View>
-        ) : page === "Account Settings" ? (
-          <View>
-            <View
-              style={{
-                marginVertical: 5,
-                marginHorizontal: 10,
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              <Icon6
-                name={icon17}
-                size={30}
-                color={main_color}
-                style={{ width: "7%" }}
-              />
+        ) : (
+          <></>
+        )}
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() =>
+            logout().then(() => {
+              navigation.navigate("StackNavigator");
+            })
+          }
+        >
+          <Text
+            style={{
+              backgroundColor: "#288759",
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              color: "white",
+              margin: 20,
+            }}
+          >
+            {" "}
+            Log out
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const AboutTheDoctor = () => {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            paddingVertical: 15,
+            marginVertical: 5,
+          }}
+        >
+          <Icon2
+            name={icon7}
+            size={25}
+            color="#288759"
+            style={{ width: "5%", marginLeft: 5 }}
+          />
+          <Text
+            style={{
+              color: "black",
+              paddingHorizontal: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            About the Doctor{" "}
+          </Text>
+        </View>
+        <TextInput
+          style={[styles.inp, { height: height }]}
+          defaultValue={about_the_doctor}
+          multiline
+          onContentSizeChange={(event) =>
+            setHeight(event.nativeEvent.contentSize.height)
+          }
+          onChangeText={setAbout_theDoctor}
+          numberOfLines={10}
+          maxLength={250}
+        />
+        <Text style={{ alignSelf: "flex-end", marginHorizontal: 30 }}>
+          {about_the_doctor.length} / 250
+        </Text>
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const ClinicNameAndNumber = () => {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            paddingVertical: 15,
+            marginVertical: 5,
+          }}
+        >
+          <Icon2
+            name={icon7}
+            size={25}
+            color="#288759"
+            style={{ width: "5%", marginLeft: 5 }}
+          />
+          <Text
+            style={{
+              color: "black",
+              paddingHorizontal: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Basic Clinic Information{" "}
+          </Text>
+        </View>
+        <Text
+          style={{
+            fontSize: 16,
+            marginHorizontal: 10,
+            paddingVertical: 10,
+          }}
+        >
+          {" "}
+          Clinic Name{" "}
+        </Text>
+        <TextInput
+          style={styles.inp}
+          defaultValue={nameClinic}
+          onChangeText={setNameClinic}
+        />
+
+        <Text
+          style={{
+            fontSize: 16,
+            marginHorizontal: 10,
+            paddingVertical: 10,
+          }}
+        >
+          {" "}
+          Clinic Phone number{" "}
+        </Text>
+        <TextInput
+          style={styles.inp}
+          keyboardType="phone-pad"
+          defaultValue={numberClinic}
+          onChangeText={setNumberClinic}
+        />
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const ExminationAndFollowUp = () => {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginVertical: 10,
+            marginHorizontal: 15,
+          }}
+        >
+          <Icon4
+            name={icon11}
+            size={25}
+            color={main_color}
+            style={{ width: "7%" }}
+          />
+          <Text
+            style={{
+              color: "black",
+              paddingHorizontal: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Exmination{" "}
+          </Text>
+        </View>
+        <Text
+          style={{
+            fontSize: 16,
+            marginHorizontal: 10,
+            paddingVertical: 10,
+          }}
+        >
+          {" "}
+          Exmination Fees (EGP){" "}
+        </Text>
+        <TextInput
+          keyboardType="phone-pad"
+          style={styles.inp}
+          defaultValue={exmain + ""}
+          onChangeText={setExmain}
+        />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: 30,
+            marginBottom: 5,
+            marginHorizontal: 15,
+          }}
+        >
+          <Icon4
+            name={icon11}
+            size={25}
+            color={main_color}
+            style={{ width: "7%" }}
+          />
+          <Text
+            style={{
+              color: "black",
+              paddingHorizontal: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Follow-up{" "}
+          </Text>
+        </View>
+        <Text
+          style={{
+            fontSize: 16,
+            marginHorizontal: 10,
+            paddingVertical: 10,
+          }}
+        >
+          {" "}
+          Follow-up Fees (EGP){" "}
+        </Text>
+        <TextInput
+          keyboardType="phone-pad"
+          style={styles.inp}
+          defaultValue={follow_up + ""}
+          onChangeText={setFollow_up}
+        />
+        <Text
+          style={{
+            fontSize: 16,
+            marginHorizontal: 10,
+            paddingVertical: 10,
+          }}
+        >
+          {" "}
+          Duration (Days){" "}
+        </Text>
+        <TextInput
+          keyboardType="phone-pad"
+          style={styles.inp}
+          defaultValue={duration + ""}
+          onChangeText={setDuration}
+        />
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const AssistantNameAndNumber = () => {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            paddingVertical: 15,
+            marginHorizontal: 10,
+            alignItems: "center",
+            marginVertical: 5,
+          }}
+        >
+          <Icon4
+            name={icon19}
+            size={25}
+            color="#288759"
+            style={{ width: "5%", marginLeft: 5 }}
+          />
+          <Text
+            style={{
+              color: "black",
+              paddingHorizontal: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Basic Assistant Information{" "}
+          </Text>
+        </View>
+        <Text
+          style={{
+            fontSize: 16,
+            marginHorizontal: 10,
+            paddingVertical: 10,
+          }}
+        >
+          {" "}
+          Assistant Name{" "}
+        </Text>
+        <TextInput
+          style={styles.inp}
+          defaultValue={nameAssistant}
+          onChangeText={setNameAssistant}
+        />
+
+        <Text
+          style={{
+            fontSize: 16,
+            marginHorizontal: 10,
+            paddingVertical: 10,
+          }}
+        >
+          {" "}
+          Assistant number{" "}
+        </Text>
+        <TextInput
+          style={styles.inp}
+          keyboardType="phone-pad"
+          defaultValue={numberAssistant}
+          onChangeText={setNumberAssistant}
+        />
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const ScheduleTab = () => {
+    return (
+      <View
+        style={[
+          {
+            // borderBottomWidth :2 ,
+            // borderColor : main_color,
+            flexDirection: "row",
+            width: "95%",
+            alignItems: "center",
+            // justifyContent : "space-between",
+            marginHorizontal: 15,
+            paddingVertical: 5,
+          },
+        ]}
+      >
+        <TouchableOpacity style={{ width: "50%" }} onPress={summary}>
+          <Text
+            style={{
+              color: color1_sechedule,
+              fontSize: 14,
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            {" Schedule Summary "}{" "}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ width: "50%" }} onPress={management}>
+          <Text
+            style={{
+              color: color2_sechedule,
+              fontSize: 14,
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            {" Schedule Management "}{" "}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const ScheduleSummaryEmpty = () => {
+    return (
+      <View>
+        <View style={{ alignItems: "center", marginTop: 50 }}>
+          <Text
+            style={{
+              color: "#555555",
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            {" Get started! "}{" "}
+          </Text>
+        </View>
+        <View style={{ alignItems: "center", marginTop: 15 }}>
+          <Text
+            style={{
+              color: "#555555",
+              fontSize: 14,
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            {" Add your working hours and confirm availability to  "}{" "}
+          </Text>
+          <Text
+            style={{
+              color: "#555555",
+              fontSize: 14,
+              fontWeight: "bold",
+            }}
+          >
+            {" "}
+            {" recieve new Doctor Now bookings "}{" "}
+          </Text>
+        </View>
+
+        <Image
+          source={require("../assets/splash.png")}
+          style={[
+            styles.image,
+            { alignSelf: "center", marginVertical: 50, height: 220 },
+          ]}
+        />
+
+        <TouchableOpacity style={{ alignItems: "center" }} onPress={management}>
+          <Text
+            style={{
+              backgroundColor: main_color,
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              color: "white",
+              margin: 20,
+            }}
+          >
+            {" "}
+            Add working hours
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const WorkingHourSettings = () => {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            paddingVertical: 15,
+            marginVertical: 5,
+          }}
+        >
+          <Icon6
+            name={icon23}
+            size={30}
+            color={main_color}
+            style={{ marginLeft: 5 }}
+          />
+          <Text
+            style={{
+              fontSize: 16,
+              color: "black",
+              paddingLeft: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Working hours settings{" "}
+          </Text>
+        </View>
+        <Text
+          style={{
+            color: "black",
+            paddingLeft: 10,
+            width: "85%",
+            // marginHorizontal : 20,
+          }}
+        >
+          {" "}
+          Examination Type{" "}
+        </Text>
+        <SelectList
+          data={[{ value: "First In First Out" }, { value: "On Appointments" }]}
+          setSelected={setSelected}
+          placeholder={selected}
+          search={false}
+          boxStyles={{
+            borderWidth: 0,
+            borderBottomWidth: 2,
+            borderRadius: 0,
+            marginHorizontal: 10,
+            borderColor: main_color,
+            paddingLeft: 5,
+          }}
+          arrowicon={<Icon4 name={icon24} size={12} color={main_color} />}
+          dropdownStyles={{
+            marginHorizontal: 10,
+            borderWidth: 0,
+            backgroundColor: "white",
+            marginTop: 2,
+          }}
+        />
+        <Text
+          style={{
+            color: "black",
+            paddingLeft: 10,
+            marginTop: 10,
+            width: "85%",
+            // marginHorizontal : 20,
+          }}
+        >
+          {" "}
+          Bookings prevention{" "}
+        </Text>
+        <SelectList
+          data={[
+            { value: "Accept all bookings" },
+            { value: "By starting of working hours" },
+            { value: "1 Hour before working hours" },
+            { value: "Block same day bookings" },
+          ]}
+          setSelected={setSelected2}
+          placeholder={selected2}
+          search={false}
+          boxStyles={{
+            borderWidth: 0,
+            borderBottomWidth: 2,
+            borderRadius: 0,
+            marginHorizontal: 10,
+            borderColor: main_color,
+            paddingLeft: 5,
+          }}
+          arrowicon={<Icon4 name={icon24} size={12} color={main_color} />}
+          dropdownStyles={{
+            marginHorizontal: 10,
+            borderWidth: 0,
+            backgroundColor: "white",
+            marginTop: 2,
+          }}
+        />
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const ClinicWorkingHours = () => {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            paddingVertical: 15,
+            marginVertical: 5,
+          }}
+        >
+          <Icon6
+            name={icon25}
+            size={30}
+            color={main_color}
+            style={{ marginLeft: 5 }}
+          />
+          <Text
+            style={{
+              fontSize: 16,
+              color: "black",
+              paddingLeft: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Clinic working hours{" "}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            // paddingVertical: 15,
+            marginBottom: 5,
+            alignItems: "center",
+            marginHorizontal: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              color: "black",
+              paddingLeft: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Saturday{" "}
+          </Text>
+
+          <Switch
+            trackColor={{ false: "#777777", true: main_color }}
+            thumbColor={!isEnabled1 ? "#bbbbbb" : "#009900"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={setIsEnabled1}
+            value={isEnabled1}
+          />
+        </View>
+
+        {isEnabled1 ? (
+          shift(
+            "Saturday",
+            "sat_start",
+            "sat_end",
+            start,
+            end,
+            startTime,
+            endTime,
+            exmination_duration,
+            number_of_bookings
+          )
+        ) : (
+          <></>
+        )}
+        <View
+          style={{
+            flexDirection: "row",
+            // paddingVertical: 15,
+            marginBottom: 5,
+            alignItems: "center",
+            marginHorizontal: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              color: "black",
+              paddingLeft: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Sunday{" "}
+          </Text>
+
+          <Switch
+            trackColor={{ false: "#777777", true: main_color }}
+            thumbColor={!isEnabled2 ? "#bbbbbb" : "#009900"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={setIsEnabled2}
+            value={isEnabled2}
+          />
+        </View>
+        {isEnabled2 ? (
+          shift(
+            "Sunday",
+            "sun_start",
+            "sun_end",
+            start1,
+            end1,
+            startTime1,
+            endTime1,
+            exmination_duration1,
+            number_of_bookings1
+          )
+        ) : (
+          <></>
+        )}
+        <View
+          style={{
+            flexDirection: "row",
+            marginBottom: 5,
+            alignItems: "center",
+            marginHorizontal: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              color: "black",
+              paddingLeft: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Monday{" "}
+          </Text>
+
+          <Switch
+            trackColor={{ false: "#777777", true: main_color }}
+            thumbColor={!isEnabled3 ? "#bbbbbb" : "#009900"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={setIsEnabled3}
+            value={isEnabled3}
+          />
+        </View>
+        {isEnabled3 ? (
+          shift(
+            "Monday",
+            "mon_start",
+            "mon_end",
+            start2,
+            end2,
+            startTime2,
+            endTime2,
+            exmination_duration2,
+            number_of_bookings2
+          )
+        ) : (
+          <></>
+        )}
+        <View
+          style={{
+            flexDirection: "row",
+            marginBottom: 5,
+            alignItems: "center",
+            marginHorizontal: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              color: "black",
+              paddingLeft: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Tuesday{" "}
+          </Text>
+
+          <Switch
+            trackColor={{ false: "#777777", true: main_color }}
+            thumbColor={!isEnabled4 ? "#bbbbbb" : "#009900"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={setIsEnabled4}
+            value={isEnabled4}
+          />
+        </View>
+        {isEnabled4 ? (
+          shift(
+            "Tuesday",
+            "tues_start",
+            "tues_end",
+            start3,
+            end3,
+            startTime3,
+            endTime3,
+            exmination_duration3,
+            number_of_bookings3
+          )
+        ) : (
+          <></>
+        )}
+        <View
+          style={{
+            flexDirection: "row",
+            marginBottom: 5,
+            alignItems: "center",
+            marginHorizontal: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              color: "black",
+              paddingLeft: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Wednesday{" "}
+          </Text>
+
+          <Switch
+            trackColor={{ false: "#777777", true: main_color }}
+            thumbColor={!isEnabled5 ? "#bbbbbb" : "#009900"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={setIsEnabled5}
+            value={isEnabled5}
+          />
+        </View>
+        {isEnabled5 ? (
+          shift(
+            "Wendesday",
+            "wen_start",
+            "wen_end",
+            start4,
+            end4,
+            startTime4,
+            endTime4,
+            exmination_duration4,
+            number_of_bookings4
+          )
+        ) : (
+          <></>
+        )}
+        <View
+          style={{
+            flexDirection: "row",
+            marginBottom: 5,
+            alignItems: "center",
+            marginHorizontal: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              color: "black",
+              paddingLeft: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Thursday{" "}
+          </Text>
+
+          <Switch
+            trackColor={{ false: "#777777", true: main_color }}
+            thumbColor={!isEnabled6 ? "#bbbbbb" : "#009900"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={setIsEnabled6}
+            value={isEnabled6}
+          />
+        </View>
+        {isEnabled6 ? (
+          shift(
+            "Thursday",
+            "thurs_start",
+            "thurs_end",
+            start5,
+            end5,
+            startTime5,
+            endTime5,
+            exmination_duration5,
+            number_of_bookings5
+          )
+        ) : (
+          <></>
+        )}
+        <View
+          style={{
+            flexDirection: "row",
+            marginBottom: 5,
+            alignItems: "center",
+            marginHorizontal: 10,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              color: "black",
+              paddingLeft: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Friday{" "}
+          </Text>
+
+          <Switch
+            trackColor={{ false: "#777777", true: main_color }}
+            thumbColor={!isEnabled7 ? "#bbbbbb" : "#009900"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={setIsEnabled7}
+            value={isEnabled7}
+          />
+        </View>
+        {isEnabled7 ? (
+          shift(
+            "Friday",
+            "fri_start",
+            "fri_end",
+            start6,
+            end6,
+            startTime6,
+            endTime6,
+            exmination_duration6,
+            number_of_bookings6
+          )
+        ) : (
+          <></>
+        )}
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const NevigateTab = () => {
+    return (
+      <View style={[styles.content, { backgroundColor: main_color }]}>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ width: "7%" }}></View>
+          <View style={{ width: "37%", justifyContent: "flex-end" }}>
+            <Icon5
+              name={icon21}
+              size={25}
+              color={color_schedule}
+              onPress={schedule}
+              style={{ paddingHorizontal: 20 }}
+            />
+            {page === "Schedule" ? (
               <Text
                 style={{
-                  fontSize: 16,
-                  // fontStyle: "italic",
-                  // fontWeight: "bold",
-                  marginHorizontal: 10,
-                  paddingVertical: 10,
+                  fontSize: 12,
+                  color: "white",
                 }}
               >
                 {" "}
-                Email address{" "}
+                Schedule{" "}
               </Text>
-            </View>
-            <TextInput
-              style={styles.inp}
-              defaultValue={doctor_email}
-              keyboardType="email-address"
-              //placeholder={"last name"}
-              onChangeText={setDoctor_email}
-            />
-            <View
-              style={{
-                marginVertical: 5,
-                marginHorizontal: 10,
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              <Icon6
-                name={icon18}
-                size={30}
-                color={main_color}
-                style={{ width: "7%" }}
-              />
-              <Text
-                style={{
-                  fontSize: 16,
-                  // fontStyle: "italic",
-                  // fontWeight: "bold",
-                  marginHorizontal: 10,
-                  paddingVertical: 10,
-                }}
-              >
-                {" "}
-                Mobile number{" "}
-              </Text>
-            </View>
-            <TextInput
-              style={styles.inp}
-              defaultValue={doctor_phone}
-              keyboardType="phone-pad"
-              //placeholder={"last name"}
-              onChangeText={setDoctor_phone}
-            />
-            <TouchableOpacity onPress={change_password}>
-              <View
-                style={[
-                  {
-                    marginHorizontal: 15,
-                    marginVertical: 20,
-                    flexDirection: "row",
-                    alignItems: "center",
-                  },
-                ]}
-              >
-                <Icon4
-                  name={icon16}
-                  size={25}
-                  color={main_color}
-                  style={{ width: "10%" }}
-                />
-                <Text
-                  style={{
-                    fontSize: 16,
-                    // fontStyle: "italic",
-                    // fontWeight: "bold",
-                    marginHorizontal: 10,
-                    paddingVertical: 10,
-                  }}
-                >
-                  {" "}
-                  Change Password{" "}
-                </Text>
-              </View>
-            </TouchableOpacity>
-
-            {open_password ? (
-              <View>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    // fontStyle: "italic",
-                    // fontWeight: "bold",
-                    marginHorizontal: 10,
-                    paddingVertical: 10,
-                  }}
-                >
-                  {" "}
-                  Current Password{" "}
-                </Text>
-                <TextInput
-                  style={styles.inp}
-                  defaultValue={current_password}
-                  secureTextEntry
-                  onChangeText={setCurrent_password}
-                />
-
-                <Text
-                  style={{
-                    fontSize: 16,
-                    // fontStyle: "italic",
-                    // fontWeight: "bold",
-                    marginHorizontal: 10,
-                    paddingVertical: 10,
-                  }}
-                >
-                  {" "}
-                  New Password{" "}
-                </Text>
-                <TextInput
-                  style={styles.inp}
-                  defaultValue={new_password}
-                  secureTextEntry
-                  onChangeText={setNew_password}
-                />
-
-                <Text
-                  style={{
-                    fontSize: 16,
-                    // fontStyle: "italic",
-                    // fontWeight: "bold",
-                    marginHorizontal: 10,
-                    paddingVertical: 10,
-                  }}
-                >
-                  {" "}
-                  Confirm New Password{" "}
-                </Text>
-                <TextInput
-                  style={styles.inp}
-                  defaultValue={confirm_new_password}
-                  secureTextEntry
-                  onChangeText={setConfirm_new_password}
-                />
-              </View>
             ) : (
               <></>
             )}
-            <TouchableOpacity
-              style={{ alignItems: "center" }}
-              onPress={() =>
-                logout().then(() => {
-                  navigation.navigate("StackNavigator");
-                })
-              }
-            >
+          </View>
+          <View style={{ width: "37%", justifyContent: "flex-end" }}>
+            <Icon4
+              name={icon20}
+              size={25}
+              color={color_profile}
+              onPress={profile}
+              style={{ paddingHorizontal: 12 }}
+            />
+            {page === "Profile" ? (
               <Text
                 style={{
-                  backgroundColor: "#288759",
-                  paddingHorizontal: 20,
-                  paddingVertical: 10,
+                  fontSize: 12,
                   color: "white",
-                  margin: 20,
                 }}
               >
                 {" "}
-                Log out
+                Profile{" "}
               </Text>
-            </TouchableOpacity>
+            ) : (
+              <></>
+            )}
           </View>
+
+          <View style={{ justifyContent: "flex-end" }}>
+            <Icon4
+              name={icon22}
+              size={25}
+              color={color_more}
+              onPress={more}
+              style={{ paddingHorizontal: 10 }}
+            />
+            {page === "More" ? (
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: "white",
+                }}
+              >
+                {" "}
+                More{" "}
+              </Text>
+            ) : (
+              <></>
+            )}
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  const More = () => {
+    return (
+      <View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[styles.button, styles.button1]}
+            onPress={HandleHistory}
+          >
+            <Text style={styles.buttonText}>History</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, styles.button1]}
+            onPress={HandleAppointments}
+          >
+            <Text style={styles.buttonText}>Appointments</Text>
+          </TouchableOpacity>
+        </View>
+        <Appointments />
+      </View>
+    );
+  };
+
+  // **************************************************************************************************************************
+
+  return (
+    <View style={{ flex: 1 }}>
+      {page === "Profile" ||
+      (page === "Schedule" && schedule_summary) ||
+      page === "More" ? (
+        <View style={[styles.header, { alignItems: "center" }]}>
+          <Text style={styles.label}> {page} </Text>
+        </View>
+      ) : (
+        Header()
+      )}
+      <ScrollView>
+        {page === "Profile" ? (
+          <View>
+            {ProCard()}
+            {ProViewsAndBookings()}
+            {DoctorClinicTab()}
+
+            {flag ? DocInfo() : ClinicInfo()}
+          </View>
+        ) : page === "Professional Information" ? (
+          ProsonalInformation()
+        ) : page === "Account Settings" ? (
+          AccountSettings()
         ) : page === "About the Doctor" ? (
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              }}
-            >
-              <Icon2
-                name={icon7}
-                size={25}
-                color="#288759"
-                style={{ width: "5%", marginLeft: 5 }}
-              />
-              <Text
-                style={{
-                  color: "black",
-                  paddingHorizontal: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                About the Doctor{" "}
-              </Text>
-            </View>
-            <TextInput
-              style={[styles.inp, { height: height }]}
-              defaultValue={about_the_doctor}
-              multiline
-              onContentSizeChange={(event) =>
-                setHeight(event.nativeEvent.contentSize.height)
-              }
-              onChangeText={setAbout_theDoctor}
-              numberOfLines={10}
-              maxLength={250}
-            />
-            <Text style={{ alignSelf: "flex-end", marginHorizontal: 30 }}>
-              {about_the_doctor.length} / 250
-            </Text>
-          </View>
+          AboutTheDoctor()
         ) : page === "Clinic Name and Number" ? (
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              }}
-            >
-              <Icon2
-                name={icon7}
-                size={25}
-                color="#288759"
-                style={{ width: "5%", marginLeft: 5 }}
-              />
-              <Text
-                style={{
-                  color: "black",
-                  paddingHorizontal: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Basic Clinic Information{" "}
-              </Text>
-            </View>
-            <Text
-              style={{
-                fontSize: 16,
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Clinic Name{" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              defaultValue={nameClinic}
-              onChangeText={setNameClinic}
-            />
-
-            <Text
-              style={{
-                fontSize: 16,
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Clinic Phone number{" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              keyboardType="phone-pad"
-              defaultValue={numberClinic}
-              onChangeText={setNumberClinic}
-            />
-          </View>
+          ClinicNameAndNumber()
         ) : page === "Exmination and Follow-up" ? (
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginVertical: 10,
-                marginHorizontal: 15,
-              }}
-            >
-              <Icon4
-                name={icon11}
-                size={25}
-                color={main_color}
-                style={{ width: "7%" }}
-              />
-              <Text
-                style={{
-                  color: "black",
-                  paddingHorizontal: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Exmination{" "}
-              </Text>
-            </View>
-            <Text
-              style={{
-                fontSize: 16,
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Exmination Fees (EGP){" "}
-            </Text>
-            <TextInput
-              keyboardType="phone-pad"
-              style={styles.inp}
-              defaultValue={exmain + ""}
-              onChangeText={setExmain}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: 30,
-                marginBottom: 5,
-                marginHorizontal: 15,
-              }}
-            >
-              <Icon4
-                name={icon11}
-                size={25}
-                color={main_color}
-                style={{ width: "7%" }}
-              />
-              <Text
-                style={{
-                  color: "black",
-                  paddingHorizontal: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Follow-up{" "}
-              </Text>
-            </View>
-            <Text
-              style={{
-                fontSize: 16,
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Follow-up Fees (EGP){" "}
-            </Text>
-            <TextInput
-              keyboardType="phone-pad"
-              style={styles.inp}
-              defaultValue={follow_up + ""}
-              onChangeText={setFollow_up}
-            />
-            <Text
-              style={{
-                fontSize: 16,
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Duration (Days){" "}
-            </Text>
-            <TextInput
-              keyboardType="phone-pad"
-              style={styles.inp}
-              defaultValue={duration + ""}
-              onChangeText={setDuration}
-            />
-          </View>
+          ExminationAndFollowUp()
         ) : page === "Assistant Name and Number" ? (
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginHorizontal: 10,
-                alignItems: "center",
-                marginVertical: 5,
-              }}
-            >
-              <Icon4
-                name={icon19}
-                size={25}
-                color="#288759"
-                style={{ width: "5%", marginLeft: 5 }}
-              />
-              <Text
-                style={{
-                  color: "black",
-                  paddingHorizontal: 5,
-                  width: "85%",
-                }}
-              >
-                {" "}
-                Basic Assistant Information{" "}
-              </Text>
-            </View>
-            <Text
-              style={{
-                fontSize: 16,
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Assistant Name{" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              defaultValue={nameAssistant}
-              onChangeText={setNameAssistant}
-            />
-
-            <Text
-              style={{
-                fontSize: 16,
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Assistant number{" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              keyboardType="phone-pad"
-              defaultValue={numberAssistant}
-              onChangeText={setNumberAssistant}
-            />
-          </View>
+          AssistantNameAndNumber()
         ) : page === "Schedule" ? (
           <View>
-            <View
-              style={[
-                {
-                  // borderBottomWidth :2 ,
-                  // borderColor : main_color,
-                  flexDirection: "row",
-                  width: "95%",
-                  alignItems: "center",
-                  // justifyContent : "space-between",
-                  marginHorizontal: 15,
-                  paddingVertical: 5,
-                },
-              ]}
-            >
-              <TouchableOpacity style={{ width: "50%" }} onPress={summary}>
-                <Text
-                  style={{
-                    color: color1_sechedule,
-                    fontSize: 14,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  {" Schedule Summary "}{" "}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ width: "50%" }} onPress={management}>
-                <Text
-                  style={{
-                    color: color2_sechedule,
-                    fontSize: 14,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {" "}
-                  {" Schedule Management "}{" "}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
+            {ScheduleTab()}
             <View
               style={{ backgroundColor: "white", height: 15, marginTop: 10 }}
             ></View>
+
             {schedule_summary ? (
               empty ? (
-                <View>
-                  <View style={{ alignItems: "center", marginTop: 50 }}>
-                    <Text
-                      style={{
-                        color: "#555555",
-                        fontSize: 16,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {" "}
-                      {" Get started! "}{" "}
-                    </Text>
-                  </View>
-                  <View style={{ alignItems: "center", marginTop: 15 }}>
-                    <Text
-                      style={{
-                        color: "#555555",
-                        fontSize: 14,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {" "}
-                      {
-                        " Add your working hours and confirm availability to  "
-                      }{" "}
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#555555",
-                        fontSize: 14,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {" "}
-                      {" recieve new Doctor Now bookings "}{" "}
-                    </Text>
-                  </View>
-
-                  <Image
-                    source={require("../assets/splash.png")}
-                    style={[
-                      styles.image,
-                      { alignSelf: "center", marginVertical: 50, height: 220 },
-                    ]}
-                  />
-
-                  <TouchableOpacity
-                    style={{ alignItems: "center" }}
-                    onPress={management}
-                  >
-                    <Text
-                      style={{
-                        backgroundColor: main_color,
-                        paddingHorizontal: 20,
-                        paddingVertical: 10,
-                        color: "white",
-                        margin: 20,
-                      }}
-                    >
-                      {" "}
-                      Add working hours
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                ScheduleSummaryEmpty()
               ) : (
                 appoints()
               )
             ) : (
               <View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    paddingVertical: 15,
-                    marginVertical: 5,
-                  }}
-                >
-                  <Icon6
-                    name={icon23}
-                    size={30}
-                    color={main_color}
-                    style={{ marginLeft: 5 }}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "black",
-                      paddingLeft: 5,
-                      width: "85%",
-                    }}
-                  >
-                    {" "}
-                    Working hours settings{" "}
-                  </Text>
-                </View>
-                <Text
-                  style={{
-                    color: "black",
-                    paddingLeft: 10,
-                    width: "85%",
-                    // marginHorizontal : 20,
-                  }}
-                >
-                  {" "}
-                  Examination Type{" "}
-                </Text>
-                <SelectList
-                  data={[
-                    { value: "First In First Out" },
-                    { value: "On Appointments" },
-                  ]}
-                  setSelected={setSelected}
-                  placeholder={selected}
-                  search={false}
-                  boxStyles={{
-                    borderWidth: 0,
-                    borderBottomWidth: 2,
-                    borderRadius: 0,
-                    marginHorizontal: 10,
-                    borderColor: main_color,
-                    paddingLeft: 5,
-                  }}
-                  arrowicon={
-                    <Icon4 name={icon24} size={12} color={main_color} />
-                  }
-                  dropdownStyles={{
-                    marginHorizontal: 10,
-                    borderWidth: 0,
-                    backgroundColor: "white",
-                    marginTop: 2,
-                  }}
-                />
-                <Text
-                  style={{
-                    color: "black",
-                    paddingLeft: 10,
-                    marginTop: 10,
-                    width: "85%",
-                    // marginHorizontal : 20,
-                  }}
-                >
-                  {" "}
-                  Bookings prevention{" "}
-                </Text>
-                <SelectList
-                  data={[
-                    { value: "Accept all bookings" },
-                    { value: "By starting of working hours" },
-                    { value: "1 Hour before working hours" },
-                    { value: "Block same day bookings" },
-                  ]}
-                  setSelected={setSelected2}
-                  placeholder={selected2}
-                  search={false}
-                  boxStyles={{
-                    borderWidth: 0,
-                    borderBottomWidth: 2,
-                    borderRadius: 0,
-                    marginHorizontal: 10,
-                    borderColor: main_color,
-                    paddingLeft: 5,
-                  }}
-                  arrowicon={
-                    <Icon4 name={icon24} size={12} color={main_color} />
-                  }
-                  dropdownStyles={{
-                    marginHorizontal: 10,
-                    borderWidth: 0,
-                    backgroundColor: "white",
-                    marginTop: 2,
-                  }}
-                />
-                <View
-                  style={{
-                    flexDirection: "row",
-                    paddingVertical: 15,
-                    marginVertical: 5,
-                  }}
-                >
-                  <Icon6
-                    name={icon25}
-                    size={30}
-                    color={main_color}
-                    style={{ marginLeft: 5 }}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "black",
-                      paddingLeft: 5,
-                      width: "85%",
-                    }}
-                  >
-                    {" "}
-                    Clinic working hours{" "}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    // paddingVertical: 15,
-                    marginBottom: 5,
-                    alignItems: "center",
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "black",
-                      paddingLeft: 5,
-                      width: "85%",
-                    }}
-                  >
-                    {" "}
-                    Saturday{" "}
-                  </Text>
-
-                  <Switch
-                    trackColor={{ false: "#777777", true: main_color }}
-                    thumbColor={!isEnabled1 ? "#bbbbbb" : "#009900"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={setIsEnabled1}
-                    value={isEnabled1}
-                  />
-                </View>
-
-                {isEnabled1 ? (
-                  shift(
-                    "Saturday",
-                    "sat_start",
-                    "sat_end",
-                    start,
-                    end,
-                    startTime,
-                    endTime,
-                    exmination_duration,
-                    number_of_bookings
-                  )
-                ) : (
-                  <></>
-                )}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    // paddingVertical: 15,
-                    marginBottom: 5,
-                    alignItems: "center",
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "black",
-                      paddingLeft: 5,
-                      width: "85%",
-                    }}
-                  >
-                    {" "}
-                    Sunday{" "}
-                  </Text>
-
-                  <Switch
-                    trackColor={{ false: "#777777", true: main_color }}
-                    thumbColor={!isEnabled2 ? "#bbbbbb" : "#009900"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={setIsEnabled2}
-                    value={isEnabled2}
-                  />
-                </View>
-                {isEnabled2 ? (
-                  shift(
-                    "Sunday",
-                    "sun_start",
-                    "sun_end",
-                    start1,
-                    end1,
-                    startTime1,
-                    endTime1,
-                    exmination_duration1,
-                    number_of_bookings1
-                  )
-                ) : (
-                  <></>
-                )}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginBottom: 5,
-                    alignItems: "center",
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "black",
-                      paddingLeft: 5,
-                      width: "85%",
-                    }}
-                  >
-                    {" "}
-                    Monday{" "}
-                  </Text>
-
-                  <Switch
-                    trackColor={{ false: "#777777", true: main_color }}
-                    thumbColor={!isEnabled3 ? "#bbbbbb" : "#009900"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={setIsEnabled3}
-                    value={isEnabled3}
-                  />
-                </View>
-                {isEnabled3 ? (
-                  shift(
-                    "Monday",
-                    "mon_start",
-                    "mon_end",
-                    start2,
-                    end2,
-                    startTime2,
-                    endTime2,
-                    exmination_duration2,
-                    number_of_bookings2
-                  )
-                ) : (
-                  <></>
-                )}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginBottom: 5,
-                    alignItems: "center",
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "black",
-                      paddingLeft: 5,
-                      width: "85%",
-                    }}
-                  >
-                    {" "}
-                    Tuesday{" "}
-                  </Text>
-
-                  <Switch
-                    trackColor={{ false: "#777777", true: main_color }}
-                    thumbColor={!isEnabled4 ? "#bbbbbb" : "#009900"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={setIsEnabled4}
-                    value={isEnabled4}
-                  />
-                </View>
-                {isEnabled4 ? (
-                  shift(
-                    "Tuesday",
-                    "tues_start",
-                    "tues_end",
-                    start3,
-                    end3,
-                    startTime3,
-                    endTime3,
-                    exmination_duration3,
-                    number_of_bookings3
-                  )
-                ) : (
-                  <></>
-                )}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginBottom: 5,
-                    alignItems: "center",
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "black",
-                      paddingLeft: 5,
-                      width: "85%",
-                    }}
-                  >
-                    {" "}
-                    Wednesday{" "}
-                  </Text>
-
-                  <Switch
-                    trackColor={{ false: "#777777", true: main_color }}
-                    thumbColor={!isEnabled5 ? "#bbbbbb" : "#009900"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={setIsEnabled5}
-                    value={isEnabled5}
-                  />
-                </View>
-                {isEnabled5 ? (
-                  shift(
-                    "Wendesday",
-                    "wen_start",
-                    "wen_end",
-                    start4,
-                    end4,
-                    startTime4,
-                    endTime4,
-                    exmination_duration4,
-                    number_of_bookings4
-                  )
-                ) : (
-                  <></>
-                )}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginBottom: 5,
-                    alignItems: "center",
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "black",
-                      paddingLeft: 5,
-                      width: "85%",
-                    }}
-                  >
-                    {" "}
-                    Thursday{" "}
-                  </Text>
-
-                  <Switch
-                    trackColor={{ false: "#777777", true: main_color }}
-                    thumbColor={!isEnabled6 ? "#bbbbbb" : "#009900"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={setIsEnabled6}
-                    value={isEnabled6}
-                  />
-                </View>
-                {isEnabled6 ? (
-                  shift(
-                    "Thursday",
-                    "thurs_start",
-                    "thurs_end",
-                    start5,
-                    end5,
-                    startTime5,
-                    endTime5,
-                    exmination_duration5,
-                    number_of_bookings5
-                  )
-                ) : (
-                  <></>
-                )}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginBottom: 5,
-                    alignItems: "center",
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "black",
-                      paddingLeft: 5,
-                      width: "85%",
-                    }}
-                  >
-                    {" "}
-                    Friday{" "}
-                  </Text>
-
-                  <Switch
-                    trackColor={{ false: "#777777", true: main_color }}
-                    thumbColor={!isEnabled7 ? "#bbbbbb" : "#009900"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={setIsEnabled7}
-                    value={isEnabled7}
-                  />
-                </View>
-                {isEnabled7 ? (
-                  shift(
-                    "Friday",
-                    "fri_start",
-                    "fri_end",
-                    start6,
-                    end6,
-                    startTime6,
-                    endTime6,
-                    exmination_duration6,
-                    number_of_bookings6
-                  )
-                ) : (
-                  <></>
-                )}
+                {WorkingHourSettings()}
+                {ClinicWorkingHours()}
               </View>
             )}
           </View>
         ) : page === "More" ? (
-          <View>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={[styles.button, styles.button1]} onPress={HandleHistory} >
-                <Text style={styles.buttonText}>History</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.button1]} onPress={HandleAppointments} >
-                <Text style={styles.buttonText}>Appointments</Text>
-              </TouchableOpacity>
-            </View>
-            <Appointments />
-          </View>
+          More()
         ) : (
           <></>
         )}
       </ScrollView>
-      {page === "Profile" || page === "Schedule" || page === "More" ? (
-        <View style={[styles.content, { backgroundColor: main_color }]}>
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ width: "7%" }}></View>
-            <View style={{ width: "37%", justifyContent: "flex-end" }}>
-              <Icon5
-                name={icon21}
-                size={25}
-                color={color_schedule}
-                onPress={schedule}
-                style={{ paddingHorizontal: 20 }}
-              />
-              {page === "Schedule" ? (
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "white",
-                  }}
-                >
-                  {" "}
-                  Schedule{" "}
-                </Text>
-              ) : (
-                <></>
-              )}
-            </View>
-            <View style={{ width: "37%", justifyContent: "flex-end" }}>
-              <Icon4
-                name={icon20}
-                size={25}
-                color={color_profile}
-                onPress={profile}
-                style={{ paddingHorizontal: 12 }}
-              />
-              {page === "Profile" ? (
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "white",
-                  }}
-                >
-                  {" "}
-                  Profile{" "}
-                </Text>
-              ) : (
-                <></>
-              )}
-            </View>
-
-            <View style={{ justifyContent: "flex-end" }}>
-              <Icon4
-                name={icon22}
-                size={25}
-                color={color_more}
-                onPress={more}
-                style={{ paddingHorizontal: 10 }}
-              />
-              {page === "More" ? (
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: "white",
-                  }}
-                >
-                  {" "}
-                  More{" "}
-                </Text>
-              ) : (
-                <></>
-              )}
-            </View>
-          </View>
-        </View>
+      {page === "Profile" ||
+      (page === "Schedule" && schedule_summary) ||
+      page === "More" ? (
+        NevigateTab()
       ) : (
         <></>
       )}
@@ -2633,34 +2780,35 @@ const styles = StyleSheet.create({
     // fontStyle: "italic",
     padding: 6,
     color: "#000000",
-  }, container: {
+  },
+  container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 20,
     marginBottom: 10,
   },
   button: {
-    backgroundColor: '#008080',
+    backgroundColor: "#008080",
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 10,
   },
   button1: {
-    backgroundColor: '#ff6347',
+    backgroundColor: "#ff6347",
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
   },
   scrollView: {
     flex: 1,
-    width: '100%',
+    width: "100%",
   },
   text: {
     fontSize: 16,
