@@ -19,7 +19,7 @@ $describtion = $obj['describtion'];
 // $specialization = $obj['specialization'];
 $specialization1 = $obj['specialization1'];
 $specialization2 = $obj['specialization2'];
-$specialization3 = $obj['specialization3'];
+// $specialization3 = $obj['specialization3'];
 $address = $obj['address'];
 $price = $obj['price'];
 $password = $obj['password'];
@@ -36,8 +36,8 @@ $x_coordnate = $obj['x_coordnate'];
 $y_coordnate = $obj['y_coordnate'];
 $stmt1 = $con->prepare("INSERT INTO `users`(`email`,`name`,`password`,`address`,`image`,`is_doctor`,created_at ) VALUES (?,?,?,?,?,'yes',NOW())");
 $stmt1->execute(array($email,   $name, $password, $address, $image));
-$stmt = $con->prepare("INSERT INTO `doctors`(`email`,`title`, `image`, `name`, `title1`, `describtion`,   `specialization1`, `specialization2`, `specialization3`, `address`, `price`, `start`, `end`,`x_coordnate`,`y_coordnate`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-$stmt->execute(array($email, $title, $image, $name, $title1, $describtion, $specialization1, $specialization2, $specialization3, $address, $price, $start, $end, $x_coordnate, $y_coordnate));
+$stmt = $con->prepare("INSERT INTO `doctors`(`email`,`title`, `image`, `name`, `title1`, `describtion`,   `specialization1`, `specialization2`, `address`, `price`, `start`, `end`,`x_coordnate`,`y_coordnate`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$stmt->execute(array($email, $title, $image, $name, $title1, $describtion, $specialization1, $specialization2, $address, $price, $start, $end, $x_coordnate, $y_coordnate));
 
 
 $count = $stmt->rowCount();
