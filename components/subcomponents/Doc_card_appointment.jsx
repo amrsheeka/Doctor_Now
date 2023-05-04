@@ -1,6 +1,6 @@
 import React, { memo, useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { deleteAppointment, deleteAppointment_fromHistory, getAllAppointment, getAllAppointment_from_history, getAppointment_for_Doctor, get_History_Apps_for_Doctor, insertAppointment_toHistory } from "../../database/Users";
+import { deleteAppointment, deleteAppointment_fromHistory, getAllAppointment, getAllAppointment_from_history, getAppointment_for_Doctor, get_History_Apps_for_Doctor, get_History_Apps_for_User, insertAppointment_toHistory } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 import { getAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
@@ -40,18 +40,22 @@ function Doc_card_appointment({
   let is_doctor = CurrentUser.user.is_doctor;
   console.log(obj)
   const Delete = async () => {
-    await deleteAppointment(users_id, doctor_id).then((res) => {
-      console.log("its ok");
-      if (CurrentUser.user.is_admin == "yes") {
-        getAllAppointment().then((res) => {
-          res.status != "failed" ? setAppointments(res) : setAppointments([]);
-        });
-      } else {
-        getAppointment(id).then((res) => {
-          res.status != "failed" ? setAppointments(res) : setAppointments([]);
-        });
-      }
-    });
+    await insertAppointment_toHistory(users_id, doctor_id, date, time, name_patient, age, gender, notes, doc_name, image, specialization1
+    ).then(
+      async() => {
+      await deleteAppointment(users_id, doctor_id).then((res) => {
+        console.log("its ok");
+        if (CurrentUser.user.is_admin == "yes") {
+          getAllAppointment().then((res) => {
+            res.status != "failed" ? setAppointments(res) : setAppointments([]);
+          });
+        } else {
+          getAppointment(id).then((res) => {
+            res.status != "failed" ? setAppointments(res) : setAppointments([]);
+          });
+        }
+      });
+    })
   }
   const Delete2 = async () => {
     await deleteAppointment_fromHistory(users_id, doctor_id).then((res) => {
@@ -61,28 +65,34 @@ function Doc_card_appointment({
           res.status != "failed" ? setAppointments(res) : setAppointments([]);
         });
       } else {
-        get_History_Apps_for_Doctor(doctor_id).then((res) => {
-          res.status != "failed" ? setAppointments(res) : setAppointments([]);
-        });
+        if (CurrentUser.user.is_doctor == "yes  ") {
+          get_History_Apps_for_Doctor(doctor_id).then((res) => {
+            res.status != "failed" ? setAppointments(res) : setAppointments([]);
+          });
+        }else{
+          get_History_Apps_for_User(users_id).then((res) => {
+            res.status != "failed" ? setAppointments(res) : setAppointments([]);
+          });
+        }
       }
     });
   }
   const Finish = async () => {
     await insertAppointment_toHistory(users_id, doctor_id, date, time, name_patient, age, gender, notes, doc_name, image, specialization1
     ).then(
-          await deleteAppointment(users_id, doctor_id).then((res) => {
-            console.log("its ok");
-            if (CurrentUser.user.is_admin == "yes") {
-              getAllAppointment().then((res) => {
-                res.status != "failed" ? setAppointments(res) : setAppointments([]);
-              });
-            } else {
-              getAppointment_for_Doctor(doctor_id).then((res) => {
-                console.log(res);
-                res.status != "failed" ? setAppointments(res) : setAppointments([]);
-              });
-            }
-          })
+      await deleteAppointment(users_id, doctor_id).then((res) => {
+        console.log("its ok");
+        if (CurrentUser.user.is_admin == "yes") {
+          getAllAppointment().then((res) => {
+            res.status != "failed" ? setAppointments(res) : setAppointments([]);
+          });
+        } else {
+          getAppointment_for_Doctor(doctor_id).then((res) => {
+            console.log(res);
+            res.status != "failed" ? setAppointments(res) : setAppointments([]);
+          });
+        }
+      })
     )
 
   }
@@ -118,20 +128,36 @@ function Doc_card_appointment({
                 Patient Name: {name_patient}
               </Text>
             </View>
-            <View style={{ flexDirection: "row", gap: 60 }}>
-              <TouchableOpacity
-                style={[styles.cardButton, night && styles.buttonDark]}
-                onPress={() => navigation.navigate("Update_patient", obj)}
-              >
-                <Text style={styles.cardButtonText}>Update </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.cardButton, night && styles.buttonDark]}
-                onPress={() => Delete()}
-              >
-                <Text style={styles.cardButtonText}>Decline </Text>
-              </TouchableOpacity>
-            </View>
+        
+              {
+                type != "history" ?
+                  (
+                  <View style={{ flexDirection: "row", gap: 60 }}>
+                      <TouchableOpacity
+                        style={[styles.cardButton, night && styles.buttonDark]}
+                        onPress={() => navigation.navigate("Update_patient", obj)}
+                      >
+                        <Text style={styles.cardButtonText}>Update </Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        style={[styles.cardButton, night && styles.buttonDark]}
+                        onPress={() => Delete()}
+                      >
+                        <Text style={styles.cardButtonText}>Decline </Text>
+                      </TouchableOpacity>
+                    </View>
+                  ) :
+                  (
+                    <TouchableOpacity
+                      style={[styles.cardButton, night && styles.buttonDark]}
+                      onPress={() => Delete2()}
+                    >
+                      <Text style={styles.cardButtonText}>Delete </Text>
+                    </TouchableOpacity>
+                  )
+              }
+
 
             {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
           </View>
