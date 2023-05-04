@@ -59,6 +59,7 @@ const login = async (email, password) => {
 
       }
       console.log(responseJson);
+      return responseJson;
     })
     .catch((error) => {
       alert("This email not exist");
@@ -78,7 +79,7 @@ const logout = async () => {
 
 }
 const getCurrentUser = async () => {
-  const res = await axios.get(`${Ip.ip}/API/Auth/Login.php`);
+  const res = await axios.get(`${Ip.ip}/API/Auth/Getuser.php`);
   if (res.data != "") {
 
     CurrentUser.user = res.data;
@@ -172,6 +173,27 @@ const insertAppointment = async (users_id, doctor_id, date, time, name_patient, 
       console.log(error);
     });
 };
+const insertAppointment_toHistory = async (users_id, doctor_id, date, time, name_patient, age, gender, notes, doc_name, doc_image, specialization1) => {
+  const res = await axios.post(`${Ip.ip}/API/doctors/insert_to_historty.php`, {
+    users_id: users_id,
+    doctor_id: doctor_id,
+    date: date,
+    time: time,
+    name_patient: name_patient,
+    age: age,
+    gender: gender,
+    notes: notes,
+    doc_name: doc_name,
+    doc_image: doc_image,
+    specialization1: specialization1
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 const getAppointment = async (users_id) => {
   return axios.post(`${Ip.ip}/API/doctors/getAppointment.php`, {
     users_id: users_id
@@ -184,10 +206,51 @@ const getAppointment = async (users_id) => {
     })
     .catch(function (error) {
       console.log(error);
+ 
+    });
+}
+
+const getAppointment_for_Doctor = async (doctor_id) => {
+  return axios.post(`${Ip.ip}/API/doctors/getAppointment_For_doc.php`, {
+    doctor_id: doctor_id
+  })
+    .then(function (response) {
+      console.log(response.date)
+
+      return response.data;
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+const get_History_Apps_for_Doctor = async (doctor_id) => {
+  return axios.post(`${Ip.ip}/API/doctors/Get_History_apps_doc.php`, {
+    doctor_id: doctor_id
+  })
+    .then(function (response) {
+      console.log(response.date)
+      return response.data;
+
+    })
+    .catch(function (error) {
+      console.log(error);
     });
 }
 const getAllAppointment = async () => {
   return axios.post(`${Ip.ip}/API/doctors/getAllAppointments.php`)
+    .then(function (response) {
+      console.log(response.date)
+
+      return response.data;
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+const getAllAppointment_from_history = async () => {
+  return axios.post(`${Ip.ip}/API/doctors/getAllAppointments_fromHistory.php`)
     .then(function (response) {
       console.log(response.date)
 
@@ -213,6 +276,20 @@ const getAppointment_by_doc_id = async (doctor_id, date) => {
       console.log(error);
     });
 }
+const get_doc_by_email = async (email) => {
+  return axios.post(`${Ip.ip}/API/doctors/get_doc_by_email.php`, {
+    email: email,
+  })
+    .then(function (response) {
+      console.log(response.date)
+
+      return response.data;
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
 const deleteAppointment = async (users_id, doctor_id) => {
   const res = await axios.post(`${Ip.ip}/API/doctors/del_appointment.php`, {
     users_id: users_id,
@@ -225,7 +302,18 @@ const deleteAppointment = async (users_id, doctor_id) => {
       console.log(error);
     });
 };
-
+const deleteAppointment_fromHistory = async (users_id, doctor_id) => {
+  const res = await axios.post(`${Ip.ip}/API/doctors/del_app_history.php`, {
+    users_id: users_id,
+    doctor_id: doctor_id
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 const Update_Appointment = async (users_id, doctor_id,date,time, name_patient, gender, notes, age) => {
   const res = await axios.post(`${Ip.ip}/API/doctors/Update_Appointment.php`, {
     users_id: users_id,
@@ -261,4 +349,10 @@ export {
   getAllAppointment,
   Update_Appointment,
   editUser,
+  getAppointment_for_Doctor,
+  get_doc_by_email,
+  get_History_Apps_for_Doctor,
+  deleteAppointment_fromHistory,
+  insertAppointment_toHistory,
+  getAllAppointment_from_history
 };

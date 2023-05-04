@@ -21,72 +21,73 @@ const Appointment2 = ({ navigation ,route }) => {
 //       res.length >= 1 ? setAppointments(res) : setFlag(false);
 //     })
 //   }, [])
+const { night} = useContext(AppContext);
 
   return (
 
-    <View style={styles.container}>
-       <View style={styles.header}>
+    <View style={[styles.container,night && styles.buttonDark]}>
+    <View style={[styles.header, night && styles.buttonDark]}>
         <View  style={styles.Go_Back1}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.navigate("Appointment")}>
             <View style={styles.Go_Back}>
               <Ionicons name="arrow-back" size={24} color="black" />
             </View>
           </TouchableOpacity>
         </View>
         <View >
-        <Text style={styles.heading}>My Appointments</Text>
+        <Text style={[styles.heading,night&&styles.textdark]}>My Appointment</Text>
         </View>
       </View>
           <View style={styles.content}> 
           <View style={styles.profile}>
           <Image source={appointment.image ? { uri: appointment.image } : require("../assets/Herbal_Medicine_Male_Avatar.png")}
         defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.photo} />
-               <Text style={styles.text}>{appointment.doc_name}</Text>
+               <Text style={[styles.text,night&&styles.textdark]}>{appointment.doc_name}</Text>
           </View>
           <View style={styles.bigblock}>
-        <Text style={styles.text2}>Patient Information</Text>
+        <Text style={[styles.text2,night&&styles.textdark]}>Patient Information</Text>
         <View style={styles.block}>
         <Text numberOfLines={2} ellipsizeMode='tail'
-            style={styles.cardTitle}>Patient Name:</Text>
-            <Text style={styles.cardTitle1}> {appointment.name_patient}</Text>
+            style={[styles.cardTitle, night && styles.dark2]}>Patient Name:</Text>
+            <Text style={[styles.cardTitle1, night && styles.dark2]}> {appointment.name_patient}</Text>
         </View>
         
         <View style={styles.block}>
             <Text numberOfLines={2} ellipsizeMode='tail'
-            style={styles.cardTitle}>Date: </Text>
-            <Text style={styles.cardTitle1}>{appointment.date}</Text>
+            style={[styles.cardTitle, night && styles.dark2]}>Date: </Text>
+            <Text style={[styles.cardTitle1, night && styles.dark2]}>{appointment.date}</Text>
             </View>
           
             <View style={styles.block}>
             <Text numberOfLines={2} ellipsizeMode='tail'
-            style={styles.cardTitle}>Time:</Text>
-            <Text style={styles.cardTitle1}> {appointment.time}</Text>
+            style={[styles.cardTitle, night && styles.dark2]}>Time:</Text>
+            <Text style={[styles.cardTitle1, night && styles.dark2]}> {appointment.time}</Text>
             </View>
           
             <View style={styles.block}>
             <Text numberOfLines={2} ellipsizeMode='tail'
-            style={styles.cardTitle}>gender: </Text>
-            <Text style={styles.cardTitle1}>{appointment.gender}</Text>
+            style={[styles.cardTitle, night && styles.dark2]}>gender: </Text>
+            <Text style={[styles.cardTitle1, night && styles.dark2]}>{appointment.gender}</Text>
             </View>
           
             <View style={styles.block}>
             <Text numberOfLines={5} ellipsizeMode='tail'
-            style={styles.cardTitle}>notes: </Text>
-            <Text style={styles.cardTitle1}>{appointment.notes}</Text>
+            style={[styles.cardTitle, night && styles.dark2]}>notes: </Text>
+            <Text style={[styles.cardTitle1, night && styles.dark2]}>{appointment.notes}</Text>
             </View>
             <View style={styles.block}>
-            <Text style={styles.cardTitle}>create at:  </Text>
-            <Text style={styles.cardTitle1}>{appointment.date_now}</Text>
+            <Text style={[styles.cardTitle, night && styles.dark2]}>create at:  </Text>
+            <Text style={[styles.cardTitle1, night && styles.dark2]}>{appointment.date_now}</Text>
             </View>
 
         </View>
         <View style={{flexDirection:"row", gap:60}}>
-        <TouchableOpacity style={styles.cardButton}
+        <TouchableOpacity style={[styles.cardButton, night && styles.darklist]}
           onPress={() =>""}
         >
           <Text style={styles.cardButtonText}>Update </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.cardButton}
+        <TouchableOpacity style={[styles.cardButton, night && styles.darklist]}
           onPress={() => ""}
         >
           <Text style={styles.cardButtonText}>Decline </Text>
@@ -102,7 +103,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingVertical:30,
 
   },
  
@@ -221,6 +221,24 @@ const styles = StyleSheet.create({
             textAlign: "center",
           }, inputContainer: {
             width: "100%",
+          },
+          buttonDark: {
+            backgroundColor: '#0D1E3D',
+          },
+          darklist: {
+            backgroundColor: '#142E5E',
+            borderWidth: 0,
+        
+          },
+          dark2: {
+            backgroundColor: "#BDD3FF",
+          },
+          textdark: {
+            fontSize: 18,
+            fontWeight: "bold",
+            marginBottom: 10,
+            paddingTop: 10,
+            color:"white"
           },
 });
 

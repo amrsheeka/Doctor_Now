@@ -6,6 +6,7 @@ import CurrentUser from "../consts/CurrentUser";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
 const Favorite = ({ navigation, reload }) => {
   const { favourite, setFavourite } = useContext(AppContext);
+  const { night} = useContext(AppContext);
   const renderDoctor = ({ item }) => {
     return (<DoctorCard2 reload={fetchDoctor} doctor={item} navigation={navigation} />
     );
@@ -18,8 +19,8 @@ const Favorite = ({ navigation, reload }) => {
     fetchDoctor();
   }, []);
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[styles.container,night && styles.buttonDark]}>
+      <View style={[styles.header, night && styles.buttonDark]}>
         <Text style={styles.heading}>My Favorite Doctors</Text>
       </View>
       {favourite.length !== 0 ?
@@ -30,7 +31,8 @@ const Favorite = ({ navigation, reload }) => {
           ListEmptyComponent={() => {
             return (
               <View style={{flex:1,justifyContent:"center"}}>
-                <Image style={{ height: "100%", width: "100%",alignItems:"center" }} source={require("../assets/empty.png")} />
+                
+                <Image style={{ height: "100%", width: "100%",alignItems:"center" }}  source={night? require("../assets/empty1.png") :require("../assets/empty.png")} />
               </View>
             );
           }}
@@ -62,6 +64,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#fff",
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist: {
+    backgroundColor: '#142E5E',
+  },
+  dark2: {
+    backgroundColor: "#BDD3FF",
   },
 });
 

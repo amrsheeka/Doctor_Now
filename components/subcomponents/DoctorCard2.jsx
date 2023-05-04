@@ -9,6 +9,7 @@ import { getFavourite } from "../../database/Users";
 import getTimeList from "../../database/getTimeList";
 const DoctorCard2 = ({ navigation, doctor, reload }) => {
   let image = doctor.image;
+  const {night} = useContext(AppContext);
   const { favourite, setFavourite } = useContext(AppContext);
   const { timeList, setTimeList } = useContext(AppContext)
   const [infav, setInfav] = useState(false);
@@ -77,7 +78,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
     <TouchableOpacity
       key={doctor.id}
       onPress={() => navigation.navigate("Doctorbage", { doctor })}>
-      <View style={styles.card}>
+      <View style={[styles.card, night && styles.darkCard]}>
 
         <Image source={image ? { uri: image } : require("../assets/Herbal_Medicine_Male_Avatar.png")}
           defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")} style={styles.cardPhoto} />
@@ -91,7 +92,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
             <Text numberOfLines={2} ellipsizeMode='tail'
               style={styles.cardDoctor}>{doctor.title + "," + doctor.specialization1 + "," + doctor.specialization1}</Text>
           </View>
-          <TouchableOpacity style={styles.cardButton}
+          <TouchableOpacity style={[styles.cardButton, night && styles.buttonDark]}
             onPress={() => {
               fetch();
               navigation.navigate("AppointmentConfirmation", { doctor })
@@ -108,13 +109,13 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
               <MaterialIcons
                 name="favorite"
                 size={30}
-                color="#288771"
+                color={night? "#0D1E3D":"#288771"}
               />
             ) : (
               <MaterialIcons
                 name="favorite-border"
                 size={30}
-                color="#288771"
+                color={night? "#0D1E3D":"#288771"}
               />
             )
           }
@@ -169,6 +170,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  buttonDark: {
+    backgroundColor: '#0D1E3D',
+  },
+  darklist:{
+    backgroundColor: '#142E5E',
+  },
+  dark2:{
+    backgroundColor:"#BDD3FF",
+  },
+  darkCard:{
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    
   },
 });
 export default memo(DoctorCard2);

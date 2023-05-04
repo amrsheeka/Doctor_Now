@@ -124,6 +124,7 @@ const SignUpScreen = ({ navigation, route }) => {
         </Text>
         <TextInput
           placeholder="Enter Your Email"
+          keyboardType="email-address"
           style={styles.input}
           value={email}
           onChangeText={(text) => setEmail(text)}
@@ -134,6 +135,7 @@ const SignUpScreen = ({ navigation, route }) => {
         </Text>
         <TextInput
           placeholder="Enter Your Password"
+          keyboardType="visible-password"
           style={styles.input}
           secureTextEntry
           value={password}

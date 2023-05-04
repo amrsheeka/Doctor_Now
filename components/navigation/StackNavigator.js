@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import MapSelect from "../admin/MapSelect";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -36,6 +36,7 @@ import MapScreen from "../screens/MapScreen";
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
 import Update_patient from "../subcomponents/Update_patient";
 import Chatbox_photo from "../subcomponents/Chatbox_photo";
+import Thk4 from "../screens/Thk4";
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
@@ -358,6 +359,18 @@ const AdminStackNavigator = () => {
           headerShown: false,
           tabBarVisible: false,
           tabBarButton: () => null,
+        }}
+      />
+      <Stack.Screen
+        name="MapSelect"
+        component={MapSelect}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Thk4"
+        component={Thk4}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
