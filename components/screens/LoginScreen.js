@@ -68,6 +68,7 @@ const LoginScreen = ({ navigation }) => {
         <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Email</Text>
         <TextInput
           placeholder="Email"
+          keyboardType="email-address"
           style={[styles.input2]}
           value={email}
           onChangeText={(text) => setEmail(text)}
@@ -77,6 +78,7 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.passwordContainer}>
           <TextInput
             placeholder="Password"
+            keyboardType={showPasswordIcon?"visible-password":"default"}
             style={styles.input}
             secureTextEntry={!showPasswordIcon}
             value={password}
