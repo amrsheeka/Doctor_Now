@@ -39,7 +39,6 @@ $stmt1->execute(array($email,   $name, $password, $address, $image));
 $stmt = $con->prepare("INSERT INTO `doctors`(`email`,`title`, `image`, `name`, `title1`, `describtion`, `charactristic`, `charactristic_2`, `specialization`, `specialization1`, `specialization2`, `specialization3`, `address`, `price`, `start`, `end`,`x_coordnate`,`y_coordnate`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 $stmt->execute(array($email, $title, $image, $name, $title1, $describtion, $charactristic, $charactristic_2, $specialization, $specialization1, $specialization2, $specialization3, $address, $price, $start, $end, $x_coordnate, $y_coordnate));
 
-
 $count = $stmt->rowCount();
 if ($count > 0) {
     echo json_encode(array("status" => "success"));
