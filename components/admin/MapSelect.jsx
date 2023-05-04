@@ -1,81 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-// import MapView, { Marker } from 'react-native-maps';
-// import * as Location from 'expo-location';
+import MapView, { Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
 import { addDoctor } from '../../database/Doctors';
 
 export default function MapSelect({ navigation, route }) {
-    // let item = route.params;
-    // const [doctor, setDoctor] = useState(item);
-    // const [latitude, setLatitude] = useState(30.05839515);
-    // const [longitude, setLongitude] = useState(31.202023080983963);
-    // const [initialRegion, setInitialRegion] = useState({
-    //     latitude: latitude,
-    //     longitude: longitude,
-    //     latitudeDelta: 0.0922,
-    //     longitudeDelta: 0.0421,
-    // });
-    // const [markerCoords, setMarkerCoords] = useState(null);
+    let item = route.params;
+    const [doctor, setDoctor] = useState(item);
+    const [latitude, setLatitude] = useState(30.05839515);
+    const [longitude, setLongitude] = useState(31.202023080983963);
+    const [initialRegion, setInitialRegion] = useState({
+        latitude: latitude,
+        longitude: longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    });
+    const [markerCoords, setMarkerCoords] = useState(null);
 
-    // async function getlocation() {
-    //     let { status } = await Location.requestForegroundPermissionsAsync();
-    //     if (status !== 'granted') {
-    //         // handle permission denied
+    async function getlocation() {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            // handle permission denied
 
-    //     } else {
-    //         let location = await Location.getCurrentPositionAsync({});
-    //         setLatitude(location.coords.latitude);
-    //         setLongitude(location.coords.longitude);
-    //         setInitialRegion({
-    //             latitude: location.coords.latitude,
-    //             longitude: location.coords.longitude,
-    //             latitudeDelta: 0.0922,
-    //             longitudeDelta: 0.0421,
-    //         });
-    //     }
-    // }
+        } else {
+            let location = await Location.getCurrentPositionAsync({});
+            setLatitude(location.coords.latitude);
+            setLongitude(location.coords.longitude);
+            setInitialRegion({
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+            });
+        }
+    }
 
-    // useEffect(() => {
-    //     getlocation();
-    // }, []);
+    useEffect(() => {
+        getlocation();
+    }, []);
 
-    // function handleMapPress(event) {
-    //     setMarkerCoords(event.nativeEvent.coordinate);
-    // }
-    // async function handleConfirmPress() {
-    //     if (markerCoords) {
-    //         setDoctor({
-    //             ...doctor,
-    //             x_coordnate:markerCoords.latitude,
-    //             y_coordnate:markerCoords.longitude
-    //         })
-    //     } else {
-    //         alert("Select Location");
-    //     }
-    // }
-    // async function addDoctors(){
-    //     if(markerCoords){
-    //         addDoctor(doctor);
-    //     }
-    //     console.log(doctor);
-        
-    // }
-    // return (
-    //     <View style={styles.container}>
-    //         <MapView style={styles.map} initialRegion={initialRegion} onPress={handleMapPress}>
-    //             {
-    //                 markerCoords && <Marker coordinate={markerCoords} />
-    //             }
-    //         </MapView>
-    //         <TouchableOpacity style={styles.confirmButton} onPress={()=>handleConfirmPress().then(
-    //             ()=>{
-    //                 addDoctors().then(()=>{navigation.navigate("Thk4")})
-    //             }
-    //         )}>
-    //             <Text style={styles.confirmButtonText}>Confirm</Text>
-    //         </TouchableOpacity>
-    //     </View>
-    // );
+    function handleMapPress(event) {
+        setMarkerCoords(event.nativeEvent.coordinate);
+    }
+    async function handleConfirmPress() {
+        if (markerCoords) {
+            let doc = doctor;
+
+            doc = {
+                ...doc, x_coordnate: markerCoords.latitude,
+                y_coordnate: markerCoords.longitude
+            }
+
+            console.log(markerCoords, doctor.x_coordnate);
+            addDoctor(doc).then(
+                ()=>{
+                    navigation.navigate("Thk4");
+                }
+            )
+        } else {
+            alert("Select Location");
+        }
+    }
+    return (
+        <View style={styles.container}>
+            <MapView style={styles.map} initialRegion={initialRegion} onPress={handleMapPress}>
+                {
+                    markerCoords && <Marker coordinate={markerCoords} />
+                }
+            </MapView>
+            <TouchableOpacity style={styles.confirmButton} onPress={() => handleConfirmPress()}>
+                <Text style={styles.confirmButtonText}>Confirm</Text>
+            </TouchableOpacity>
+        </View>
+    );
 
 }
 

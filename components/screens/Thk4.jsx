@@ -17,7 +17,7 @@ const Thk4 = ({ navigation, route }) => {
             </View>
             <View style={styles.footer}>
                 <TouchableOpacity style={styles.button}
-                    onPress={() => navigation.navigate("AllDoctors", { all: "all" })}>
+                    onPress={() => navigation.navigate("AdminHome")}>
                     <Text style={styles.buttonText}>Thanks</Text>
                 </TouchableOpacity>
             </View>
