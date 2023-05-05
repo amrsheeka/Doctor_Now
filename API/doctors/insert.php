@@ -36,9 +36,27 @@ $x_coordnate = $obj['x_coordnate'];
 $y_coordnate = $obj['y_coordnate'];
 $stmt1 = $con->prepare("INSERT INTO `users`(`email`,`name`,`password`,`address`,`image`,`is_doctor`,created_at ) VALUES (?,?,?,?,?,'yes',NOW())");
 $stmt1->execute(array($email,   $name, $password, $address, $image));
-$stmt = $con->prepare("INSERT INTO `doctors`(`email`,`title`, `image`, `name`, `title1`, `describtion`,   `specialization1`, `specialization2`, `address`, `price`, `start`, `end`,`x_coordnate`,`y_coordnate`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$stmt = $con->prepare("INSERT INTO `doctors`(`email`,`title`, `image`, `name`,
+ `title1`, `describtion`,   `specialization1`, `specialization2`, `address`, 
+ `price`, `start`, `end`,`x_coordnate`,`y_coordnate`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 $stmt->execute(array($email, $title, $image, $name, $title1, $describtion, $specialization1, $specialization2, $address, $price, $start, $end, $x_coordnate, $y_coordnate));
-
+//INSERT INTO `schedule`(`id`, `doctor_id`, `start`, `end`, `day`, `avilable`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]','[value-6]')
+$stmt2 = $con->prepare("INSERT INTO schedule (doctor_id, day)
+SELECT id, 'Saturday' FROM doctors
+UNION
+SELECT id, 'Sunday' FROM doctors
+UNION
+SELECT id, 'Monday' FROM doctors
+UNION
+SELECT id, 'Tuesday' FROM doctors
+UNION
+SELECT id, 'Wednesday' FROM doctors
+UNION
+SELECT id, 'Thursday' FROM doctors
+UNION
+SELECT id, 'Friday' FROM doctors
+");
+$stmt2->execute();
 $count = $stmt->rowCount();
 if ($count > 0) {
     echo json_encode(array("status" => "success"));
