@@ -25,8 +25,8 @@ const Details_user_to_appointment = ({ navigation, route }) => {
   const { appointments, setAppointments } = useContext(AppContext);
   const { timeList, setTimeList } = useContext(AppContext);
   const [text2, onChangeText2] = useState("");
-  const [age, setAge] = useState(CurrentUser.user.age);
-  const [gender, setGender] = useState(CurrentUser.user.gender);
+  const [age, setAge] = useState('15+');
+  const [gender, setGender] = useState("male");
   const [nameerr, setNameErr] = useState("");
   const { night} = useContext(AppContext);
   let doc = route.params.item;
@@ -41,8 +41,8 @@ const Details_user_to_appointment = ({ navigation, route }) => {
         route.params.date,
         route.params.Time,
         text,
-        CurrentUser.user.age,
-        CurrentUser.user.gender,
+        age,
+        gender,
         text2,
         doc.name,
         doc.image,
@@ -103,7 +103,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
               mode="dropdown"
               style={[styles.picker ,night&&styles.darklist]}
               >
-              <Picker.Item label="15+" value="15+" />
+              <Picker.Item label="15+" value="15+"/>
               <Picker.Item label="25+" value="25+" />
               <Picker.Item label="35+" value="35+" />
               <Picker.Item label="45+" value="45+" />

@@ -237,6 +237,19 @@ const get_History_Apps_for_Doctor = async (doctor_id) => {
       console.log(error);
     });
 }
+const get_History_Apps_for_User = async (users_id) => {
+  return axios.post(`${Ip.ip}/API/doctors/Get_History_apps_user.php`, {
+    users_id: users_id
+  })
+    .then(function (response) {
+      console.log(response.date)
+      return response.data;
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
 const getAllAppointment = async () => {
   return axios.post(`${Ip.ip}/API/doctors/getAllAppointments.php`)
     .then(function (response) {
@@ -354,5 +367,6 @@ export {
   get_History_Apps_for_Doctor,
   deleteAppointment_fromHistory,
   insertAppointment_toHistory,
-  getAllAppointment_from_history
+  getAllAppointment_from_history,
+  get_History_Apps_for_User
 };
