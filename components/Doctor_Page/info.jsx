@@ -34,7 +34,7 @@ import Appointments from "./Appointments";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
-import { editDoctor } from "../../database/Doctors";
+import { editDoctor, getDocSchedule } from "../../database/Doctors";
 
 const Info = ({ navigation }) => {
   const [doctor_booking, setDoctor_booking] = useState(new Array(10).fill(2));
@@ -170,7 +170,7 @@ const Info = ({ navigation }) => {
   const icon26 = "plane";
   const main_color = "#288771";
   const empty = false;
-  
+  const { schedules,setSchedules } = useContext(AppContext);
   const { setAppointments } = useContext(AppContext);
   const { setType } = useContext(AppContext);
   const { curruser } = useContext(AppContext);
@@ -179,10 +179,39 @@ const Info = ({ navigation }) => {
     let email = CurrentUser.user.email;
     return await get_doc_by_email(email);
   }
+  async function getSchedule(id) {
+    return await getDocSchedule(id);
+  }
   useEffect(() => {
     getDoc().then(
       (res)=>{
         setDoctor(res[0]);
+        getSchedule(res[0].id).then(
+          (res1)=>{
+            setSchedules( res1);
+            setIsEnabled1(res1[0].avilable=="yes"?true:false);
+            setIsEnabled2(res1[1].avilable=="yes"?true:false);
+            setIsEnabled3(res1[2].avilable=="yes"?true:false);
+            setIsEnabled4(res1[3].avilable=="yes"?true:false);
+            setIsEnabled5(res1[4].avilable=="yes"?true:false);
+            setIsEnabled6(res1[5].avilable=="yes"?true:false);
+            setIsEnabled7(res1[6].avilable=="yes"?true:false);
+            setStart(res1[0].start);
+            setStart1(res1[1].start);
+            setStart2(res1[2].start);
+            setStart3(res1[3].start);
+            setStart4(res1[4].start);
+            setStart5(res1[5].start);
+            setStart6(res1[6].start);
+            setEnd(res1[0].end);
+            setEnd1(res1[1].end);
+            setEnd2(res1[2].end);
+            setEnd3(res1[3].end);
+            setEnd4(res1[4].end);
+            setEnd5(res1[5].end);
+            setEnd6(res1[6].end);
+          }
+        )
       }
     )
   }, []);
