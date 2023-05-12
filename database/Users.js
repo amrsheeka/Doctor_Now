@@ -294,7 +294,7 @@ const get_doc_by_email = async (email) => {
     email: email,
   })
     .then(function (response) {
-      console.log(response.date)
+      //console.log(response.date)
 
       return response.data;
 

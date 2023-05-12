@@ -34,6 +34,7 @@ import Appointments from "./Appointments";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
+import { editDoctor } from "../../database/Doctors";
 
 const Info = ({ navigation }) => {
   const [doctor_booking, setDoctor_booking] = useState(new Array(10).fill(2));
@@ -106,12 +107,11 @@ const Info = ({ navigation }) => {
   const [color_more, setColor_more] = useState("#666");
   const [color_profile, setColor_profile] = useState("white");
   const [color_schedule, setColor_schedule] = useState("#666");
-  const [fName, setfName] = useState("Mohamed");
-  const [lName, setlName] = useState("Essam");
+  const [fName, setfName] = useState("");
   const [fullpro_title, setFullpro_title] = useState(" Consultant of dinstiy ");
 
-  const [doctor_email, setDoctor_email] = useState("moh.essam@gmail.com");
-  const [doctor_phone, setDoctor_phone] = useState("1092297298");
+  const [doctor_email, setDoctor_email] = useState("");
+  const [doctor_phone, setDoctor_phone] = useState("");
   const [open_password, setOpen_password] = useState(false);
 
   const [current_password, setCurrent_password] = useState("");
@@ -170,9 +170,22 @@ const Info = ({ navigation }) => {
   const icon26 = "plane";
   const main_color = "#288771";
   const empty = false;
+  
   const { setAppointments } = useContext(AppContext);
   const { setType } = useContext(AppContext);
-
+  const { curruser } = useContext(AppContext);
+  const {doctor, setDoctor} = useContext(AppContext);
+  async function getDoc() {
+    let email = CurrentUser.user.email;
+    return await get_doc_by_email(email);
+  }
+  useEffect(() => {
+    getDoc().then(
+      (res)=>{
+        setDoctor(res[0]);
+      }
+    )
+  }, []);
   const back = () => {
     page === "Schedule" ? summary() : setPage("Profile");
     setOpen_password(false);
@@ -678,7 +691,7 @@ const Info = ({ navigation }) => {
             }}
           >
             {" Doctor "}
-            {fName} {lName}
+            {doctor.name}
           </Text>
           <Icon
             onPress={edit_name}
@@ -691,7 +704,7 @@ const Info = ({ navigation }) => {
         <Text style={{ color: "black", fontSize: 15 }}>{fullpro_title}</Text>
         <View style={{ marginVertical: 5, flexDirection: "row" }}>
           <Image
-            source={require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
+            source={doctor.image?{uri:doctor.image}:require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
             style={[styles.image]}
           />
 
@@ -1297,34 +1310,16 @@ const Info = ({ navigation }) => {
           }}
         >
           {" "}
-          First Name{" "}
+          Full Name{" "}
         </Text>
         <TextInput
           style={styles.inp}
-          defaultValue={fName}
+          defaultValue={doctor.name}
           //placeholder={"last name"}
           onChangeText={setfName}
         />
 
-        <Text
-          style={{
-            fontSize: 16,
-            // fontStyle: "italic",
-            // fontWeight: "bold",
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Last Name{" "}
-        </Text>
-        <TextInput
-          style={styles.inp}
-          defaultValue={lName}
-          //placeholder={"last name"}
-          onChangeText={setlName}
-        />
-
+        
         <Text
           style={{
             fontSize: 16,
@@ -1427,7 +1422,7 @@ const Info = ({ navigation }) => {
               }}
             >
               <Image
-                source={require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
+                source={doctor.image?{uri:doctor.image}:require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
                 style={[
                   styles.image,
                   { width: "20%", marginLeft: 15, height: 50 },
@@ -1509,7 +1504,7 @@ const Info = ({ navigation }) => {
               }}
             >
               <Image
-                source={require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
+                source={doctor.image?{uri:doctor.image}:require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
                 style={[
                   styles.image,
                   { width: "20%", marginLeft: 15, height: 50 },
@@ -1560,7 +1555,7 @@ const Info = ({ navigation }) => {
         </View>
         <TextInput
           style={styles.inp}
-          defaultValue={doctor_email}
+          defaultValue={doctor.email}
           keyboardType="email-address"
           //placeholder={"last name"}
           onChangeText={setDoctor_email}
@@ -1594,7 +1589,7 @@ const Info = ({ navigation }) => {
         </View>
         <TextInput
           style={styles.inp}
-          defaultValue={doctor_phone}
+          defaultValue={CurrentUser.user.phone}
           keyboardType="phone-pad"
           //placeholder={"last name"}
           onChangeText={setDoctor_phone}
@@ -1823,7 +1818,7 @@ const Info = ({ navigation }) => {
         <TextInput
           style={styles.inp}
           keyboardType="phone-pad"
-          defaultValue={numberClinic}
+          defaultValue={CurrentUser.user.phone}
           onChangeText={setNumberClinic}
         />
       </View>
@@ -2663,7 +2658,7 @@ const Info = ({ navigation }) => {
   };
 
   // **************************************************************************************************************************
-
+if(Object.keys(doctor).length !== 0){
   return (
     <View style={{ flex: 1 }}>
       {page === "Profile" ||
@@ -2732,6 +2727,8 @@ const Info = ({ navigation }) => {
       <StatusBar style="light" backgroundColor="#288759" />
     </View>
   );
+}
+  
 };
 
 const styles = StyleSheet.create({
