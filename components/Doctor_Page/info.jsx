@@ -2367,7 +2367,21 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled2 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={setIsEnabled2}
+            onValueChange={
+              (e)=>{
+                setIsEnabled2(e);
+                updateSchedules(
+                  {
+                    day:schedules[1].day,
+                    doctor_id:schedules[1].doctor_id,
+                    start:schedules[1].start,
+                    end:schedules[1].end,
+                    id:schedules[1].id,
+                    avilable:e?"yes":"no",
+                  }
+                )
+              }
+            }
             value={isEnabled2}
           />
         </View>
@@ -2410,7 +2424,22 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled3 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={setIsEnabled3}
+            onValueChange={
+              (e)=>{
+                setIsEnabled3(e);
+                console.log(e)
+                updateSchedules(
+                  {
+                    day:schedules[2].day,
+                    doctor_id:schedules[2].doctor_id,
+                    start:schedules[2].start,
+                    end:schedules[2].end,
+                    id:schedules[2].id,
+                    avilable:e?"yes":"no",
+                  }
+                )
+              }
+            }
             value={isEnabled3}
           />
         </View>
@@ -2453,7 +2482,22 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled4 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={setIsEnabled4}
+            onValueChange={
+              (e)=>{
+                setIsEnabled4(e);
+                console.log(e)
+                updateSchedules(
+                  {
+                    day:schedules[3].day,
+                    doctor_id:schedules[3].doctor_id,
+                    start:schedules[3].start,
+                    end:schedules[3].end,
+                    id:schedules[3].id,
+                    avilable:e?"yes":"no",
+                  }
+                )
+              }
+            }
             value={isEnabled4}
           />
         </View>
@@ -2496,7 +2540,22 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled5 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={setIsEnabled5}
+            onValueChange={
+              (e)=>{
+                setIsEnabled5(e);
+                console.log(e)
+                updateSchedules(
+                  {
+                    day:schedules[4].day,
+                    doctor_id:schedules[4].doctor_id,
+                    start:schedules[4].start,
+                    end:schedules[4].end,
+                    id:schedules[4].id,
+                    avilable:e?"yes":"no",
+                  }
+                )
+              }
+            }
             value={isEnabled5}
           />
         </View>
@@ -2539,7 +2598,22 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled6 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={setIsEnabled6}
+            onValueChange={
+              (e)=>{
+                setIsEnabled6(e);
+                console.log(e)
+                updateSchedules(
+                  {
+                    day:schedules[5].day,
+                    doctor_id:schedules[5].doctor_id,
+                    start:schedules[5].start,
+                    end:schedules[5].end,
+                    id:schedules[5].id,
+                    avilable:e?"yes":"no",
+                  }
+                )
+              }
+            }
             value={isEnabled6}
           />
         </View>
@@ -2582,7 +2656,22 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled7 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={setIsEnabled7}
+            onValueChange={
+              (e)=>{
+                setIsEnabled7(e);
+                console.log(e)
+                updateSchedules(
+                  {
+                    day:schedules[6].day,
+                    doctor_id:schedules[6].doctor_id,
+                    start:schedules[6].start,
+                    end:schedules[6].end,
+                    id:schedules[6].id,
+                    avilable:e?"yes":"no",
+                  }
+                )
+              }
+            }
             value={isEnabled7}
           />
         </View>
