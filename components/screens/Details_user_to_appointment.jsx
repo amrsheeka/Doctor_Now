@@ -20,6 +20,7 @@ import CurrentUser from "../consts/CurrentUser";
 import { AppContext } from "../consts/AppContext";
 import { getAppointment } from "../../database/Users";
 import getTimeList from "../../database/getTimeList";
+import { updateSchedule } from "../../database/Doctors";
 const Details_user_to_appointment = ({ navigation, route }) => {
   const [text, onChangeText] = useState(CurrentUser.user.name);
   const { appointments, setAppointments } = useContext(AppContext);
@@ -28,13 +29,17 @@ const Details_user_to_appointment = ({ navigation, route }) => {
   const [age, setAge] = useState('15+');
   const [gender, setGender] = useState("male");
   const [nameerr, setNameErr] = useState("");
-  const { night} = useContext(AppContext);
+  const { night } = useContext(AppContext);
+  let choosenDay = route.params.choose;
   let doc = route.params.item;
   let id = CurrentUser.user.id;
   const handleInsertAppointment = async () => {
     if (!text) {
       setNameErr("Enter your your name.");
     } else {
+      await updateSchedule(route.params.choose).then((res)=>{
+       console.log(res)
+      });
       await insertAppointment(
         CurrentUser.user.id,
         doc.id,
@@ -48,31 +53,36 @@ const Details_user_to_appointment = ({ navigation, route }) => {
         doc.image,
         doc.specialization1
       ).then((res) => {
-        console.log("its ok");
-        navigation.navigate("Thk", { doc });
-        getAppointment(id).then((res) => {
-          setAppointments(res);
-        });
-        var timeList1 = getTimeList(doc.start, doc.end);
-        getAppointment_by_doc_id(doc.id, new Date().toDateString()).then(
-          (res) => {
-            res.status != "failed"
-              ? res.map((e) => {
+        if (res.status == "failed") {
+          alert("you have appointmented with this doctor")
+        } else {
+          console.log("its ok");
+          navigation.navigate("Thk", { doc });
+          getAppointment(id).then((res) => {
+
+            res.status !="failed"?setAppointments(res):setAppointments(appointments);
+          });
+          var timeList1 = getTimeList(doc.start, doc.end);
+          getAppointment_by_doc_id(doc.id, new Date().toDateString()).then(
+            (res) => {
+              res.status != "failed"
+                ? res.map((e) => {
                   timeList1 = timeList1.filter(
                     (ele) => ele !== e.time.toString()
                   );
                 })
-              : setTimeList(timeList1);
-            setTimeList(timeList1);
-          }
-        );
+                : setTimeList(timeList1);
+              setTimeList(timeList1);
+            }
+          );
+        }
       });
       // console.log(CurrentUser.user.age)
     }
   };
 
   return (
-    <View style={[styles.container,night && styles.buttonDark]}>
+    <View style={[styles.container, night && styles.buttonDark]}>
       <View style={[styles.header, night && styles.buttonDark]}>
         <View style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -87,36 +97,36 @@ const Details_user_to_appointment = ({ navigation, route }) => {
       </View>
       <ScrollView>
         <View>
-          <Text style={[styles.text,night&&styles.textdark]}>Full Name</Text>
+          <Text style={[styles.text, night && styles.textdark]}>Full Name</Text>
           <TextInput
-            style={[styles.input ,night && styles.dark2]}
+            style={[styles.input, night && styles.dark2]}
             onChangeText={onChangeText}
             value={text}
             placeholder={"Enter Full Name"}
           />
           <Text style={{ color: "red" }}>{nameerr}</Text>
-          <Text style={[styles.text,night&&styles.textdark]}>Select Your Age</Text>
+          <Text style={[styles.text, night && styles.textdark]}>Select Your Age</Text>
           <View>
             <Picker
               selectedValue={age}
               onValueChange={(value, index) => setAge(value)}
               mode="dropdown"
-              style={[styles.picker ,night&&styles.darklist]}
-              >
-              <Picker.Item label="15+" value="15+"/>
+              style={[styles.picker, night && styles.darklist]}
+            >
+              <Picker.Item label="15+" value="15+" />
               <Picker.Item label="25+" value="25+" />
               <Picker.Item label="35+" value="35+" />
               <Picker.Item label="45+" value="45+" />
             </Picker>
           </View>
           <View>
-            <Text style={[styles.text,night&&styles.textdark]}>Gender</Text>
+            <Text style={[styles.text, night && styles.textdark]}>Gender</Text>
             <Picker
               selectedValue={gender}
               onValueChange={(value, index) => setGender(value)}
               mode="dropdown"
-              style={[styles.picker ,night&&styles.darklist]}
-              >
+              style={[styles.picker, night && styles.darklist]}
+            >
               <Picker.Item label="Male" value="Male" />
               <Picker.Item label="Female" value="Female" />
             </Picker>
@@ -124,13 +134,13 @@ const Details_user_to_appointment = ({ navigation, route }) => {
         </View>
         <View style={styles.body}>
           <View>
-            <Text style={[styles.text,night&&styles.textdark]}>Compose Your Problem</Text>
+            <Text style={[styles.text, night && styles.textdark]}>Compose Your Problem</Text>
           </View>
           <KeyboardAvoidingView enabled={true}>
             <View>
               <TextInput
-            style={[styles.input2 ,night && styles.dark2]}
-            onChangeText={onChangeText2}
+                style={[styles.input2, night && styles.dark2]}
+                onChangeText={onChangeText2}
                 value={text2}
                 numberOfLines={10}
                 multiline={true}
@@ -143,7 +153,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
-          style={[styles.button ,night&&styles.darklist]}
+          style={[styles.button, night && styles.darklist]}
           onPress={() => handleInsertAppointment()}
         >
           <Text style={styles.buttonText}>NEXT</Text>
@@ -201,7 +211,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     paddingTop: 10,
-    color:"white"
+    color: "white"
   },
   ageBox: {
     flexDirection: "row",
@@ -244,11 +254,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#288771",
     justifyContent: "center",
     height: 50,
-    
+
   },
   buttonText: {
     textAlign: "center",
-    color:"white"
+    color: "white"
   },
   buttonDark: {
     backgroundColor: '#0D1E3D',
