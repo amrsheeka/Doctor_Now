@@ -34,7 +34,7 @@ import Appointments from "./Appointments";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
-import { editDoctor, getDocSchedule } from "../../database/Doctors";
+import { editDoctor, getDocSchedule,updateSchedule } from "../../database/Doctors";
 
 const Info = ({ navigation }) => {
   const [doctor_booking, setDoctor_booking] = useState(new Array(10).fill(2));
@@ -180,15 +180,8 @@ const Info = ({ navigation }) => {
     return await get_doc_by_email(email);
   }
   async function getSchedule(id) {
-    return await getDocSchedule(id);
-  }
-  useEffect(() => {
-    getDoc().then(
-      (res)=>{
-        setDoctor(res[0]);
-        getSchedule(res[0].id).then(
-          (res1)=>{
-            setSchedules( res1);
+    const res =  await getDocSchedule(id).then((res1)=>{
+      setSchedules( res1);
             setIsEnabled1(res1[0].avilable=="yes"?true:false);
             setIsEnabled2(res1[1].avilable=="yes"?true:false);
             setIsEnabled3(res1[2].avilable=="yes"?true:false);
@@ -210,8 +203,25 @@ const Info = ({ navigation }) => {
             setEnd4(res1[4].end);
             setEnd5(res1[5].end);
             setEnd6(res1[6].end);
-          }
-        )
+    })
+    return res;
+  }
+  async function updateSchedules(schedule) {
+    await updateSchedule(
+      {
+        ...schedule
+      }
+    ).then(
+      ()=>{
+        getSchedule(doctor.id);
+      }
+    )
+  }
+  useEffect(() => {
+    getDoc().then(
+      (res)=>{
+        setDoctor(res[0]);
+        getSchedule(res[0].id);
       }
     )
   }, []);
@@ -2246,7 +2256,6 @@ const Info = ({ navigation }) => {
   };
 
   // **************************************************************************************************************************
-
   const ClinicWorkingHours = () => {
     return (
       <View>
@@ -2300,7 +2309,20 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled1 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={setIsEnabled1}
+            onValueChange={(e)=>{
+              setIsEnabled1(e);
+              console.log(e)
+              updateSchedules(
+                {
+                  day:schedules[0].day,
+                  doctor_id:schedules[0].doctor_id,
+                  start:schedules[0].start,
+                  end:schedules[0].end,
+                  id:schedules[0].id,
+                  avilable:e?"yes":"no",
+                }
+              )
+            } }
             value={isEnabled1}
           />
         </View>
