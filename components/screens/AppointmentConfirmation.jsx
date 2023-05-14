@@ -44,7 +44,6 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const { night } = useContext(AppContext);
   const { curruser } = useContext(AppContext);
   const [Days, setDays] = useState([]);
-  const [choose, setchoose]=useState();
   const today = new Date(); // current date
   const currentDayOfWeek = today.getDay(); // Sunday is 0, Monday is 1, etc.
   const daysUntilFriday = currentDayOfWeek <= 5 ? 5 - currentDayOfWeek : 6;
@@ -52,20 +51,14 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const onDateChange = (event, newDate) => {
     setShowPicker(false);
     var flag = 0;
-
     const options = { weekday: 'long' };
     const dayOfWeek = newDate.toLocaleDateString('en-US', options).split(',')[0];
     for (let i = 0; i < Days.length; i++) {
       if (Days[i].day == dayOfWeek && Days[i].avilable == "yes") {
-        if (timeList.length() == 1)
-          setchoose({ ...Days[i], avilable: "no" });
-        else
-          setchoose(Days[i]);
         flag = 1;
         break;
       }
     }
-    console.log(choose);
     if (flag == 0) {
       alert("You Try to Choose Unavailable Day please Choose anther day !");
       return;
@@ -78,14 +71,19 @@ const AppointmentConfirmation = ({ navigation, route }) => {
           timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
         })
         : setTimeList(timeList1);
-      setTimeList(timeList1);
+      if (timeList1.length == 0) {
+        alert("Sorry all appointments today are complete please choose anther day !")
+        setTimeList([]);
+        return;
+      } else {
+        setTimeList(timeList1); 
+      }
     });
   };
 
 
   useEffect(() => {
     getDocDays();
-    console.log(item.start, item.end);
     var timeList1 = getTimeList(item.start, item.end);
     getAppointment_by_doc_id(item.id, date).then((res) => {
       res.status != "failed"
@@ -103,8 +101,6 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       if (res.status != "failed") {
         res = res.filter((ele) => ele.avilable !== "no")
         setDays(res);
-        setchoose(res[0])
-        console.log(choose);
       }
     })
   }
@@ -280,7 +276,6 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                 item,
                 Time,
                 date,
-                choose
               })
             }
           >
