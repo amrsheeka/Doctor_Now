@@ -196,13 +196,27 @@ const Info = ({ navigation }) => {
             setStart4(res1[4].start);
             setStart5(res1[5].start);
             setStart6(res1[6].start);
-            setEnd(res1[0].end);
+            setEnd( res1[0].end);
             setEnd1(res1[1].end);
             setEnd2(res1[2].end);
             setEnd3(res1[3].end);
             setEnd4(res1[4].end);
             setEnd5(res1[5].end);
             setEnd6(res1[6].end);
+            // setStartTime(res1[0].start);
+            // setStartTime1(res1[1].start);
+            // setStartTime2(res1[2].start);
+            // setStartTime3(res1[3].start);
+            // setStartTime4(res1[4].start);
+            // setStartTime5(res1[5].start);
+            // setStartTime6(res1[6].start);
+            // setEndTime(res1[0].end);
+            // setEndTime1(res1[1].end);
+            // setEndTime2(res1[2].end);
+            // setEndTime3(res1[3].end);
+            // setEndTime4(res1[4].end);
+            // setEndTime5(res1[5].end);
+            // setEndTime6(res1[6].end);
     })
     return res;
   }
