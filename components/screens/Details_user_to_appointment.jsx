@@ -30,16 +30,12 @@ const Details_user_to_appointment = ({ navigation, route }) => {
   const [gender, setGender] = useState("male");
   const [nameerr, setNameErr] = useState("");
   const { night } = useContext(AppContext);
-  let choosenDay = route.params.choose;
   let doc = route.params.item;
   let id = CurrentUser.user.id;
   const handleInsertAppointment = async () => {
     if (!text) {
       setNameErr("Enter your your name.");
     } else {
-      await updateSchedule(route.params.choose).then((res)=>{
-       console.log(res)
-      });
       await insertAppointment(
         CurrentUser.user.id,
         doc.id,
@@ -52,14 +48,13 @@ const Details_user_to_appointment = ({ navigation, route }) => {
         doc.name,
         doc.image,
         doc.specialization1
-      ).then((res) => {
-        if (res.status == "failed") {
+      ).then((response) => {
+        if (response == "failed") {
           alert("you have appointmented with this doctor")
         } else {
           console.log("its ok");
           navigation.navigate("Thk", { doc });
           getAppointment(id).then((res) => {
-
             res.status !="failed"?setAppointments(res):setAppointments(appointments);
           });
           var timeList1 = getTimeList(doc.start, doc.end);
