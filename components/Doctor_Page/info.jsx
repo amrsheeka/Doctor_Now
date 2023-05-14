@@ -189,31 +189,44 @@ const Info = ({ navigation }) => {
     return await get_doc_by_email(email);
   }
   async function getSchedule(id) {
-    const res = await getDocSchedule(id).then((res1) => {
-      setSchedules(res1);
-      // console.log(res1);
-      setIsEnabled1(res1[0].avilable == "yes" ? true : false);
-      setIsEnabled2(res1[1].avilable == "yes" ? true : false);
-      setIsEnabled3(res1[2].avilable == "yes" ? true : false);
-      setIsEnabled4(res1[3].avilable == "yes" ? true : false);
-      setIsEnabled5(res1[4].avilable == "yes" ? true : false);
-      setIsEnabled6(res1[5].avilable == "yes" ? true : false);
-      setIsEnabled7(res1[6].avilable == "yes" ? true : false);
-      setStart(res1[0].start);
-      setStart1(res1[1].start);
-      setStart2(res1[2].start);
-      setStart3(res1[3].start);
-      setStart4(res1[4].start);
-      setStart5(res1[5].start);
-      setStart6(res1[6].start);
-      setEnd(res1[0].end);
-      setEnd1(res1[1].end);
-      setEnd2(res1[2].end);
-      setEnd3(res1[3].end);
-      setEnd4(res1[4].end);
-      setEnd5(res1[5].end);
-      setEnd6(res1[6].end);
-    });
+    const res =  await getDocSchedule(id).then((res1)=>{
+      setSchedules( res1);
+            setIsEnabled1(res1[0].avilable=="yes"?true:false);
+            setIsEnabled2(res1[1].avilable=="yes"?true:false);
+            setIsEnabled3(res1[2].avilable=="yes"?true:false);
+            setIsEnabled4(res1[3].avilable=="yes"?true:false);
+            setIsEnabled5(res1[4].avilable=="yes"?true:false);
+            setIsEnabled6(res1[5].avilable=="yes"?true:false);
+            setIsEnabled7(res1[6].avilable=="yes"?true:false);
+            setStart(res1[0].start);
+            setStart1(res1[1].start);
+            setStart2(res1[2].start);
+            setStart3(res1[3].start);
+            setStart4(res1[4].start);
+            setStart5(res1[5].start);
+            setStart6(res1[6].start);
+            setEnd( res1[0].end);
+            setEnd1(res1[1].end);
+            setEnd2(res1[2].end);
+            setEnd3(res1[3].end);
+            setEnd4(res1[4].end);
+            setEnd5(res1[5].end);
+            setEnd6(res1[6].end);
+            // setStartTime(res1[0].start);
+            // setStartTime1(res1[1].start);
+            // setStartTime2(res1[2].start);
+            // setStartTime3(res1[3].start);
+            // setStartTime4(res1[4].start);
+            // setStartTime5(res1[5].start);
+            // setStartTime6(res1[6].start);
+            // setEndTime(res1[0].end);
+            // setEndTime1(res1[1].end);
+            // setEndTime2(res1[2].end);
+            // setEndTime3(res1[3].end);
+            // setEndTime4(res1[4].end);
+            // setEndTime5(res1[5].end);
+            // setEndTime6(res1[6].end);
+    })
     return res;
   }
 
@@ -452,7 +465,7 @@ const Info = ({ navigation }) => {
     else if (book === number_of_bookings5) return setNumber_of_bookings5;
     else if (book === number_of_bookings6) return setNumber_of_bookings6;
   };
-  const ChangeTime = (event, selectedTime) => {
+  const ChangeTime =async (event, selectedTime) => {
     const currentTime = selectedTime;
 
     let tempTime = new Date(currentTime);
@@ -477,49 +490,196 @@ const Info = ({ navigation }) => {
       hour.toString() + ":" + minutes.toString() + " " + TimeType.toString();
     setShow_time(0);
     if (which === "sat_start") {
-      setStartTime(currentTime);
-      setStart(fTime);
+      //setStartTime(currentTime);
+      //setStart(fTime);
+      updateSchedules(
+        {
+          day:schedules[0].day,
+          doctor_id:schedules[0].doctor_id,
+          start:fTime,
+          end:schedules[0].end,
+          id:schedules[0].id,
+          avilable:schedules[0].avilable,
+        }
+      );
     } else if (which === "sat_end") {
-      setEndTime(currentTime);
-      setEnd(fTime);
+      //setEndTime(currentTime);
+      //setEnd(fTime);
+      updateSchedules(
+        {
+          day:schedules[0].day,
+          doctor_id:schedules[0].doctor_id,
+          start:schedules[0].start,
+          end:fTime,
+          id:schedules[0].id,
+          avilable:schedules[0].avilable,
+        }
+      );
     } else if (which === "sun_start") {
-      setStartTime1(currentTime);
-      setStart1(fTime);
+      //setStartTime1(currentTime);
+      //setStart1(fTime);
+      updateSchedules(
+        {
+          day:schedules[1].day,
+          doctor_id:schedules[1].doctor_id,
+          start:fTime,
+          end:schedules[1].end,
+          id:schedules[1].id,
+          avilable:schedules[1].avilable,
+        }
+      );
     } else if (which === "sun_end") {
-      setEndTime1(currentTime);
-      setEnd1(fTime);
+      //setEndTime1(currentTime);
+      //setEnd1(fTime);
+      updateSchedules(
+        {
+          day:schedules[1].day,
+          doctor_id:schedules[1].doctor_id,
+          start:schedules[1].start,
+          end:fTime,
+          id:schedules[1].id,
+          avilable:schedules[1].avilable,
+        }
+      );
     } else if (which === "mon_start") {
-      setStartTime2(currentTime);
-      setStart2(fTime);
+      //setStartTime2(currentTime);
+      //setStart2(fTime);
+      updateSchedules(
+        {
+          day:schedules[2].day,
+          doctor_id:schedules[2].doctor_id,
+          start:fTime,
+          end:schedules[2].end,
+          id:schedules[2].id,
+          avilable:schedules[2].avilable,
+        }
+      );
     } else if (which === "mon_end") {
-      setEndTime2(currentTime);
-      setEnd2(fTime);
+      //setEndTime2(currentTime);
+      //setEnd2(fTime);
+      updateSchedules(
+        {
+          day:schedules[2].day,
+          doctor_id:schedules[2].doctor_id,
+          start:schedules[2].start,
+          end:fTime,
+          id:schedules[2].id,
+          avilable:schedules[2].avilable,
+        }
+      );
     } else if (which === "tues_start") {
-      setStartTime3(currentTime);
-      setStart3(fTime);
+      //setStartTime3(currentTime);
+      //setStart3(fTime);
+      updateSchedules(
+        {
+          day:schedules[3].day,
+          doctor_id:schedules[3].doctor_id,
+          start:fTime,
+          end:schedules[3].end,
+          id:schedules[3].id,
+          avilable:schedules[3].avilable,
+        }
+      );
     } else if (which === "tues_end") {
-      setEndTime3(currentTime);
-      setEnd3(fTime);
+      //setEndTime3(currentTime);
+      //setEnd3(fTime);
+      updateSchedules(
+        {
+          day:schedules[3].day,
+          doctor_id:schedules[3].doctor_id,
+          start:schedules[3].start,
+          end:fTime,
+          id:schedules[3].id,
+          avilable:schedules[3].avilable,
+        }
+      );
     } else if (which === "wen_start") {
-      setStartTime4(currentTime);
-      setStart4(fTime);
+      //setStartTime4(currentTime);
+      //setStart4(fTime);
+      updateSchedules(
+        {
+          day:schedules[4].day,
+          doctor_id:schedules[4].doctor_id,
+          start:fTime,
+          end:schedules[4].enad,
+          id:schedules[4].id,
+          avilable:schedules[4].avilable,
+        }
+      );
     } else if (which === "wen_end") {
-      setEndTime4(currentTime);
-      setEnd4(fTime);
+      //setEndTime4(currentTime);
+      //setEnd4(fTime);
+      updateSchedules(
+        {
+          day:schedules[4].day,
+          doctor_id:schedules[4].doctor_id,
+          start:schedules[4].start,
+          end:fTime,
+          id:schedules[4].id,
+          avilable:schedules[4].avilable,
+        }
+      );
     } else if (which === "thurs_start") {
-      setStartTime5(currentTime);
-      setStart5(fTime);
+      //setStartTime5(currentTime);
+      //setStart5(fTime);
+      updateSchedules(
+        {
+          day:schedules[5].day,
+          doctor_id:schedules[5].doctor_id,
+          start:fTime,
+          end:schedules[5].end,
+          id:schedules[5].id,
+          avilable:schedules[5].avilable,
+        }
+      );
     } else if (which === "thurs_end") {
-      setEndTime5(currentTime);
-      setEnd5(fTime);
+      //setEndTime5(currentTime);
+      //setEnd5(fTime);
+      updateSchedules(
+        {
+          day:schedules[5].day,
+          doctor_id:schedules[5].doctor_id,
+          start:schedules[5].start,
+          end:fTime,
+          id:schedules[5].id,
+          avilable:schedules[5].avilable,
+        }
+      );
     } else if (which === "fri_start") {
-      setStartTime6(currentTime);
-      setStart6(fTime);
+      //setStartTime6(currentTime);
+      //setStart6(fTime);
+      updateSchedules(
+        {
+          day:schedules[6].day,
+          doctor_id:schedules[6].doctor_id,
+          start:fTime,
+          end:schedules[6].end,
+          id:schedules[6].id,
+          avilable:schedules[6].avilable,
+        }
+      );
     } else if (which === "fri_end") {
-      setEndTime6(currentTime);
-      setEnd6(fTime);
+      //setEndTime6(currentTime);
+      //setEnd6(fTime);
+      updateSchedules(
+        {
+          day:schedules[6].day,
+          doctor_id:schedules[6].doctor_id,
+          start:schedules[6].start,
+          end:fTime,
+          id:schedules[6].id,
+          avilable:schedules[6].avilable,
+        }
+      );
     }
   };
+  const ChangeTime1 =async (event, selectedTime)=>{
+    ChangeTime(event,selectedTime).then(
+      ()=>{
+        console.log(start)
+      }
+    )
+  }
   const shift = (
     day,
     day_start,
@@ -559,7 +719,7 @@ const Info = ({ navigation }) => {
           {show_time === 1 && (
             <DateTimePicker
               value={start_time}
-              onChange={ChangeTime}
+              onChange={ChangeTime1}
               mode={"time"}
               is24Hour={false}
             />
@@ -576,7 +736,7 @@ const Info = ({ navigation }) => {
           {show_time === 10 && (
             <DateTimePicker
               value={end_time}
-              onChange={ChangeTime}
+              onChange={ChangeTime1}
               mode={"time"}
               is24Hour={false}
             />

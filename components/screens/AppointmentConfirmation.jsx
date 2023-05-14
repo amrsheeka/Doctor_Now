@@ -33,6 +33,7 @@ import getTimeList from "../../database/getTimeList";
 import { getAppointment_by_doc_id, insertReviews } from "../../database/Users";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
+import { getDocSchedule } from "../../database/Doctors";
 
 const AppointmentConfirmation = ({ navigation, route }) => {
   let item = route.params.doctor;
@@ -42,32 +43,67 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const [showPicker, setShowPicker] = useState(false);
   const { night } = useContext(AppContext);
   const { curruser } = useContext(AppContext);
+  const [Days, setDays] = useState([]);
+  const today = new Date(); // current date
+  const currentDayOfWeek = today.getDay(); // Sunday is 0, Monday is 1, etc.
+  const daysUntilFriday = currentDayOfWeek <= 5 ? 5 - currentDayOfWeek : 6;
   let image = item.image;
   const onDateChange = (event, newDate) => {
     setShowPicker(false);
+    var flag = 0;
+    const options = { weekday: 'long' };
+    const dayOfWeek = newDate.toLocaleDateString('en-US', options).split(',')[0];
+    for (let i = 0; i < Days.length; i++) {
+      if (Days[i].day == dayOfWeek && Days[i].avilable == "yes") {
+        flag = 1;
+        break;
+      }
+    }
+    if (flag == 0) {
+      alert("You Try to Choose Unavailable Day please Choose anther day !");
+      return;
+    }
     setDate(newDate.toDateString());
     var timeList1 = getTimeList(item.start, item.end);
     getAppointment_by_doc_id(item.id, newDate.toDateString()).then((res) => {
       res.status != "failed"
         ? res.map((e) => {
-            timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
-          })
+          timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
+        })
         : setTimeList(timeList1);
-      setTimeList(timeList1);
+      if (timeList1.length == 0) {
+        alert("Sorry all appointments today are complete please choose anther day !")
+        setTimeList([]);
+        return;
+      } else {
+        setTimeList(timeList1); 
+      }
     });
   };
+
+
   useEffect(() => {
+    getDocDays();
     var timeList1 = getTimeList(item.start, item.end);
     getAppointment_by_doc_id(item.id, date).then((res) => {
       res.status != "failed"
         ? res.map((e) => {
-            timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
-          })
+          timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
+        })
         : setTimeList(timeList1);
     });
     setTimeList(timeList1);
   }, []);
 
+
+  const getDocDays = async () => {
+    await getDocSchedule(item.id).then((res) => {
+      if (res.status != "failed") {
+        res = res.filter((ele) => ele.avilable !== "no")
+        setDays(res);
+      }
+    })
+  }
   const openPicker = () => {
     setShowPicker(true);
   };
@@ -173,17 +209,33 @@ const AppointmentConfirmation = ({ navigation, route }) => {
           <Text style={[styles.text3, night && styles.textdark3]}>
             Working Days
           </Text>
-
+          <View>
+            <View>
+              {Days ?
+                <Picker
+                  selectedValue={Days}
+                  mode="dropdown"
+                  style={[styles.picker, night && styles.darklist]}
+                >
+                  {Days.map((e, i) => (
+                    <Picker.Item label={e.day} key={i} />
+                  ))}
+                </Picker> : <Text>Not Available this week ! </Text>}
+            </View>
+          </View>
           <View>
             <Text style={[styles.text33, night && styles.textdark33]}>
               Selected date: {date}
             </Text>
+
             <TouchableOpacity onPress={openPicker}>
               {showPicker && (
                 <DateTimePicker
                   value={new Date()}
                   mode="date"
                   onChange={onDateChange}
+                  maximumDate={new Date(new Date().getTime() + daysUntilFriday * 24 * 3600 * 1000)} // 7 days from now
+                  minimumDate={new Date()} // current day
                 />
               )}
               <View style={[styles.buttonloc, night && styles.darklist]}>
@@ -254,7 +306,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingVertical: 30,
+    paddingVertical: 5,
     backgroundColor: "#288771",
 
     // marginBottom: 20,

@@ -188,7 +188,8 @@ const insertAppointment = async (
       specialization1: specialization1,
     })
     .then(function (response) {
-      console.log(response.data);
+      console.log(response.data.status);
+      return response.data.status
     })
     .catch(function (error) {
       console.log(error);
