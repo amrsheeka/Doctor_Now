@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { insertReviews, getReviews } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
@@ -27,29 +28,53 @@ const Doctorbage = ({ navigation, route }) => {
     });
   };
 
-  const get = async (id) => {
+  async function get(id) {
     const list = getReviews(id).then((res) => {
       console.log(res);
     });
-    console.log(list);
-  };
+    setAllrev(list);
+  }
+
+  useEffect(() => {
+    get(item.id);
+    console.log(allrev);
+  }, []);
+
+  const Item = ({ title }) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title.text}</Text>
+    </View>
+  );
 
   return (
     <View>
       <Text> {item.name}</Text>
-      <TextInput
-        placeholder="Text"
-        keyboardType="email-address"
-        onChangeText={(text) => setText(text)}
-        style={[styles.input2]}
-      />
-      <TouchableOpacity onPress={() => InsertRev()}>
-        <Text style={styles.text}>add</Text>
-      </TouchableOpacity>
+      <View style={styles.senbutt}>
+        <TextInput
+          placeholder="Text"
+          keyboardType="email-address"
+          onChangeText={(text) => setText(text)}
+          style={[styles.input2]}
+        />
+        <TouchableOpacity onPress={() => InsertRev()}>
+          <Text style={styles.text}>add</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => get(item.id)}>
+          <Text style={styles.text}>get</Text>
+        </TouchableOpacity>
+      </View>
 
-      <TouchableOpacity onPress={() => get(item.id)}>
-        <Text style={styles.text}>get</Text>
-      </TouchableOpacity>
+      {allrev.length != 0 ? (
+        <FlatList
+          data={allrev}
+          renderItem={({ item }) => <Text> {item.text}</Text>}
+          keyExtractor={(item) => item.id}
+        />
+      ) : (
+        <View style={{ padding: "18%" }}>
+          <ActivityIndicator size={100} color="#00ff00" />
+        </View>
+      )}
     </View>
   );
 };
@@ -74,6 +99,18 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     color: "#288771",
+  },
+  item: {
+    backgroundColor: "#f9c2ff",
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
+  },
+  senbutt: {
+    //flexDirection: "row",
   },
 });
 

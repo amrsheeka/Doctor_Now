@@ -12,7 +12,7 @@ function getTimeList(startTime, endTime) {
 
     // console.log(startDate,endDate,startHour, endHour, startMin, endMin, mode)
     timeList.push(startDate.substring(3))
-    while (startHour <= endHour) {
+    while (startHour < endHour) {
         if (startHour == endHour && endMin <= startMin)
             break;
         startMin += 15;
