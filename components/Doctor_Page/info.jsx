@@ -14,7 +14,9 @@ import {
   ActivityIndicator,
   SafeAreaView,
   Switch,
+  Alert,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import { RadioButton } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -34,7 +36,12 @@ import Appointments from "./Appointments";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
-import { editDoctor, getDocSchedule,updateSchedule } from "../../database/Doctors";
+import {
+  editDoctor,
+  getDocSchedule,
+  updateSchedule,
+  updateDoctor,
+} from "../../database/Doctors";
 
 const Info = ({ navigation }) => {
   const [doctor_booking, setDoctor_booking] = useState(new Array(10).fill(2));
@@ -96,11 +103,12 @@ const Info = ({ navigation }) => {
 
   const [selected, setSelected] = useState("First In First Out");
   const [selected2, setSelected2] = useState("Accept all bookings");
+  const [selected3, setSelected3] = useState("Pulmonologist");
   const [profile_views, setProfileviews] = useState(10);
   const [bookings, setBookings] = useState(9);
   const [reviews, setReviews] = useState(25);
-  const [male, setMale] = useState("unchecked");
-  const [female, setFemale] = useState("unchecked");
+  const [doc_radio, setDoc_radio] = useState("unchecked");
+  const [center_radio, setCenter_radio] = useState("unchecked");
   const [practise_licence, setPractise_licence] = useState("");
   const [professional_licence, setProfessional_licence] = useState("");
   const [page, setPage] = useState("Profile");
@@ -170,69 +178,112 @@ const Info = ({ navigation }) => {
   const icon26 = "plane";
   const main_color = "#288771";
   const empty = false;
-  const { schedules,setSchedules } = useContext(AppContext);
+  const { schedules, setSchedules } = useContext(AppContext);
   const { setAppointments } = useContext(AppContext);
   const { setType } = useContext(AppContext);
   const { curruser } = useContext(AppContext);
-  const {doctor, setDoctor} = useContext(AppContext);
+  const { doctor, setDoctor } = useContext(AppContext);
+  const [image, setImage] = useState();
   async function getDoc() {
     let email = CurrentUser.user.email;
     return await get_doc_by_email(email);
   }
   async function getSchedule(id) {
-    const res =  await getDocSchedule(id).then((res1)=>{
-      setSchedules( res1);
-            setIsEnabled1(res1[0].avilable=="yes"?true:false);
-            setIsEnabled2(res1[1].avilable=="yes"?true:false);
-            setIsEnabled3(res1[2].avilable=="yes"?true:false);
-            setIsEnabled4(res1[3].avilable=="yes"?true:false);
-            setIsEnabled5(res1[4].avilable=="yes"?true:false);
-            setIsEnabled6(res1[5].avilable=="yes"?true:false);
-            setIsEnabled7(res1[6].avilable=="yes"?true:false);
-            setStart(res1[0].start);
-            setStart1(res1[1].start);
-            setStart2(res1[2].start);
-            setStart3(res1[3].start);
-            setStart4(res1[4].start);
-            setStart5(res1[5].start);
-            setStart6(res1[6].start);
-            setEnd(res1[0].end);
-            setEnd1(res1[1].end);
-            setEnd2(res1[2].end);
-            setEnd3(res1[3].end);
-            setEnd4(res1[4].end);
-            setEnd5(res1[5].end);
-            setEnd6(res1[6].end);
-    })
+    const res = await getDocSchedule(id).then((res1) => {
+      setSchedules(res1);
+      // console.log(res1);
+      setIsEnabled1(res1[0].avilable == "yes" ? true : false);
+      setIsEnabled2(res1[1].avilable == "yes" ? true : false);
+      setIsEnabled3(res1[2].avilable == "yes" ? true : false);
+      setIsEnabled4(res1[3].avilable == "yes" ? true : false);
+      setIsEnabled5(res1[4].avilable == "yes" ? true : false);
+      setIsEnabled6(res1[5].avilable == "yes" ? true : false);
+      setIsEnabled7(res1[6].avilable == "yes" ? true : false);
+      setStart(res1[0].start);
+      setStart1(res1[1].start);
+      setStart2(res1[2].start);
+      setStart3(res1[3].start);
+      setStart4(res1[4].start);
+      setStart5(res1[5].start);
+      setStart6(res1[6].start);
+      setEnd(res1[0].end);
+      setEnd1(res1[1].end);
+      setEnd2(res1[2].end);
+      setEnd3(res1[3].end);
+      setEnd4(res1[4].end);
+      setEnd5(res1[5].end);
+      setEnd6(res1[6].end);
+    });
     return res;
   }
+
+  async function update_Doctor_info(doctor) {
+    await updateDoctor({
+      ...doctor,
+    }).then(() => {
+      getDoc();
+    });
+  }
+
   async function updateSchedules(schedule) {
-    await updateSchedule(
-      {
-        ...schedule
-      }
-    ).then(
-      ()=>{
-        getSchedule(doctor.id);
-      }
-    )
+    await updateSchedule({
+      ...schedule,
+    }).then(() => {
+      getSchedule(doctor.id);
+    });
   }
   useEffect(() => {
-    getDoc().then(
-      (res)=>{
-        setDoctor(res[0]);
-        getSchedule(res[0].id);
-      }
-    )
+    getDoc().then((res) => {
+      setfName(res[0].name);
+      setAbout_theDoctor(res[0].describtion);
+      setDoctor_phone(res[0].number);
+      setSelected3(res[0].title);
+      setFullpro_title(res[0].specialization1);
+      setImage(res[0].image);
+      setExmain(res[0].price);      
+      res[0].title1 == "Doctor"
+        ? setDoc_radio("checked")
+        : setCenter_radio("checked");
+      setDoctor(res[0]);
+      getSchedule(res[0].id);
+    });
   }, []);
+
   const back = () => {
     page === "Schedule" ? summary() : setPage("Profile");
     setOpen_password(false);
   };
   const save = () => {
+    if (fName.length < 10) {
+      alert("you must insert the full name");
+      return;
+    }
+
+    if (doctor_phone.length != 5 && doctor_phone.length != 11) {
+      alert("you must insert the correct number");
+      return;
+    }
+
+    update_Doctor_info({
+      ...doctor,
+      name: fName,
+      describtion: about_the_doctor,
+      number: doctor_phone,
+      title: selected3,
+      specialization1: fullpro_title,
+      title1: doc_radio == "checked" ? "Doctor" : "Clinic",
+      price: exmain,
+    }).then(() => {
+      getDoc().then((res) => {
+        setDoctor(res[0]);
+        console.log(res[0]);
+      });
+    });
+
     setPage("Profile");
     setOpen_password(false);
   };
+
   let email = CurrentUser.user.email;
   const HandleHistory = () => {
     get_doc_by_email(email).then((ans) => {
@@ -275,15 +326,15 @@ const Info = ({ navigation }) => {
   };
   /////////////////////////////////////
 
-  const clickMale = () => {
-    setMale("checked");
-    setFemale("unchecked");
-  };
+  // const clickMale = () => {
+  //   setMale("checked");
+  //   setFemale("unchecked");
+  // };
 
-  const clickFemale = () => {
-    setMale("unchecked");
-    setFemale("checked");
-  };
+  // const clickFemale = () => {
+  //   setMale("unchecked");
+  //   setFemale("checked");
+  // };
 
   const Doctor_info = () => {
     setFlag(true);
@@ -318,7 +369,7 @@ const Info = ({ navigation }) => {
   };
 
   const change_password = () => {
-    setOpen_password(true);
+    setOpen_password(!open_password);
   };
 
   const about_doctor = () => {
@@ -613,13 +664,13 @@ const Info = ({ navigation }) => {
       "Dec",
     ];
     const DAYS = [
-      "Saturday",
       "Sunday",
       "Monday",
       "Tuesday",
       "Wednesday",
       "Thursday",
       "Friday",
+      "Saturday",
     ];
     const tomorrow = new Date(new Date().getTime() + i * 24 * 60 * 60 * 1000);
     const day = DAYS[tomorrow.getDay()];
@@ -648,13 +699,13 @@ const Info = ({ navigation }) => {
           },
         ]}
       >
-        <View style={{ width: "30%", merginRight: 30 }}>
+        <View style={{ width: "40%", merginRight: 30 }}>
           <Text style={{ color: main_color }}>
             {i === 0 ? "Today" : i === 1 ? "Tomorrow" : app_days(i)[0]}
           </Text>
           <Text>{app_days(i)[1]}</Text>
         </View>
-        <View style={{ width: "55%", alignSelf: "center" }}>
+        <View style={{ width: "45%", alignSelf: "center" }}>
           <Text>
             {doctor_booking[i] === 0
               ? "No Bookings"
@@ -716,6 +767,27 @@ const Info = ({ navigation }) => {
 
   // **************************************************************************************************************************
 
+  const selectFile = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.uri);
+    }
+
+    update_Doctor_info({
+      ...doctor,
+      image: image,
+    }).then(() => {
+      getDoc().then((res) => {
+        setDoctor(res[0]);
+        console.log(res[0]);
+      });
+    });
+  };
   const ProCard = () => {
     return (
       <View style={styles.content}>
@@ -729,8 +801,7 @@ const Info = ({ navigation }) => {
               width: "90%",
             }}
           >
-            {" Doctor "}
-            {doctor.name}
+            {doc_radio == "checked" ? "Doctor" : "Center"} {fName}
           </Text>
           <Icon
             onPress={edit_name}
@@ -740,12 +811,23 @@ const Info = ({ navigation }) => {
             style={{ alignSelf: "flex-end" }}
           />
         </View>
-        <Text style={{ color: "black", fontSize: 15 }}>{fullpro_title}</Text>
-        <View style={{ marginVertical: 5, flexDirection: "row" }}>
-          <Image
-            source={doctor.image?{uri:doctor.image}:require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
-            style={[styles.image]}
-          />
+        <Text style={{ color: "black", fontSize: 15 }}>
+          {selected3} - {fullpro_title}{" "}
+        </Text>
+
+        <View
+          style={{ marginVertical: 5, flexDirection: "row", width: "100%" }}
+        >
+          <TouchableOpacity style={{ width: "45%" }} onPress={selectFile}>
+            <Image
+              source={
+                doctor.image
+                  ? { uri: image }
+                  : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
+              }
+              style={[styles.image, { width: "100%" }]}
+            />
+          </TouchableOpacity>
 
           <View style={{ width: "55%", justifyContent: "center" }}>
             <View style={{ flexDirection: "row", alignSelf: "center" }}>
@@ -1312,7 +1394,7 @@ const Info = ({ navigation }) => {
 
   // **************************************************************************************************************************
 
-  const ProsonalInformation = () => {
+  const PersonalInformation = () => {
     return (
       <View>
         <View
@@ -1353,13 +1435,12 @@ const Info = ({ navigation }) => {
         </Text>
         <TextInput
           style={styles.inp}
-          defaultValue={doctor.name}
+          defaultValue={fName}
           //placeholder={"last name"}
           onChangeText={setfName}
         />
 
-        
-        <Text
+        {/* <Text
           style={{
             fontSize: 16,
             // fontStyle: "italic",
@@ -1376,7 +1457,7 @@ const Info = ({ navigation }) => {
           {birth}{" "}
         </Text>
         {show && <DateTimePicker value={date} onChange={ChangeDate} />}
-
+        */}
         <Text
           style={{
             color: "black",
@@ -1386,7 +1467,7 @@ const Info = ({ navigation }) => {
             paddingHorizontal: 15,
           }}
         >
-          Gender
+          Title1
         </Text>
         <View
           style={{
@@ -1397,11 +1478,14 @@ const Info = ({ navigation }) => {
           }}
         >
           <RadioButton
-            status={male}
+            status={doc_radio}
             color={main_color}
-            value="male"
+            value="Doctor"
             uncheckedColor="black"
-            onPress={clickMale}
+            onPress={() => {
+              setDoc_radio("checked");
+              setCenter_radio("unchecked");
+            }}
           />
           <Text
             style={{
@@ -1411,14 +1495,17 @@ const Info = ({ navigation }) => {
               paddingHorizontal: 5,
             }}
           >
-            Male
+            Doctor
           </Text>
           <RadioButton
-            status={female}
+            status={center_radio}
             color={main_color}
-            value="female"
+            value="Center"
             uncheckedColor="black"
-            onPress={clickFemale}
+            onPress={() => {
+              setDoc_radio("unchecked");
+              setCenter_radio("checked");
+            }}
           />
           <Text
             style={{
@@ -1427,10 +1514,10 @@ const Info = ({ navigation }) => {
               paddingHorizontal: 5,
             }}
           >
-            Female
+            Center
           </Text>
         </View>
-
+        {/*
         <TouchableOpacity>
           {practise_licence === "" ? (
             <View
@@ -1461,7 +1548,11 @@ const Info = ({ navigation }) => {
               }}
             >
               <Image
-                source={doctor.image?{uri:doctor.image}:require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
+                source={
+                  doctor.image
+                    ? { uri: doctor.image }
+                    : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
+                }
                 style={[
                   styles.image,
                   { width: "20%", marginLeft: 15, height: 50 },
@@ -1473,7 +1564,7 @@ const Info = ({ navigation }) => {
               </Text>
             </View>
           )}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View
           style={{
             flexDirection: "row",
@@ -1506,14 +1597,67 @@ const Info = ({ navigation }) => {
           }}
         >
           {" "}
+          Professional Title{" "}
+        </Text>
+
+        <SelectList
+          data={[
+            { value: "Pulmonologist" },
+            { value: "Psychiatrist" },
+            { value: "Internist" },
+            { value: "Hematologist" },
+            { value: "Plastic Surgeon" },
+            { value: "Cardiologist" },
+            { value: "Neurosurgeon" },
+            { value: "Endocrinologist" },
+            { value: "ENT Doctor" },
+            { value: "Neurosurgeon" },
+            { value: "Infertility Specialist" },
+            { value: "Andrologist" },
+          ]}
+          setSelected={setSelected3}
+          placeholder={selected3}
+          search={true}
+          boxStyles={{
+            borderWidth: 0,
+            borderBottomWidth: 2,
+            borderRadius: 0,
+            marginHorizontal: 10,
+            borderColor: main_color,
+            width: "90%",
+            paddingLeft: 5,
+            marginBottom: 10,
+          }}
+          arrowicon={<Icon4 name={icon24} size={12} color={main_color} />}
+          searchicon={<Icon4 name={"search"} size={15} color={main_color} />}
+          searchPlaceholder="   search"
+          closeicon={<Icon name={"close"} size={15} color={main_color} />}
+          dropdownStyles={{
+            marginHorizontal: 10,
+            borderWidth: 0,
+            backgroundColor: "white",
+            marginTop: 2,
+            width: "90%",
+          }}
+        />
+
+        <Text
+          style={{
+            fontSize: 16,
+            marginHorizontal: 10,
+            paddingVertical: 15,
+          }}
+        >
+          {" "}
           Full Professional Title{" "}
         </Text>
+
         <TextInput
           style={styles.inp}
           defaultValue={fullpro_title}
           onChangeText={setFullpro_title}
         />
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           {professional_licence !== "" ? (
             <View
               style={{
@@ -1543,7 +1687,11 @@ const Info = ({ navigation }) => {
               }}
             >
               <Image
-                source={doctor.image?{uri:doctor.image}:require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")}
+                source={
+                  doctor.image
+                    ? { uri: doctor.image }
+                    : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
+                }
                 style={[
                   styles.image,
                   { width: "20%", marginLeft: 15, height: 50 },
@@ -1555,7 +1703,7 @@ const Info = ({ navigation }) => {
               </Text>
             </View>
           )}
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   };
@@ -1628,7 +1776,7 @@ const Info = ({ navigation }) => {
         </View>
         <TextInput
           style={styles.inp}
-          defaultValue={CurrentUser.user.phone}
+          defaultValue={doctor_phone}
           keyboardType="phone-pad"
           //placeholder={"last name"}
           onChangeText={setDoctor_phone}
@@ -1866,7 +2014,7 @@ const Info = ({ navigation }) => {
 
   // **************************************************************************************************************************
 
-  const ExminationAndFollowUp = () => {
+  const  ExminationAndFollowUp = () => {
     return (
       <View>
         <View
@@ -2063,6 +2211,7 @@ const Info = ({ navigation }) => {
               color: color1_sechedule,
               fontSize: 14,
               fontWeight: "bold",
+              alignSelf: "center",
             }}
           >
             {" "}
@@ -2075,6 +2224,7 @@ const Info = ({ navigation }) => {
               color: color2_sechedule,
               fontSize: 14,
               fontWeight: "bold",
+              alignSelf: "center",
             }}
           >
             {" "}
@@ -2309,20 +2459,18 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled1 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={(e)=>{
+            onValueChange={(e) => {
               setIsEnabled1(e);
-              console.log(e)
-              updateSchedules(
-                {
-                  day:schedules[0].day,
-                  doctor_id:schedules[0].doctor_id,
-                  start:schedules[0].start,
-                  end:schedules[0].end,
-                  id:schedules[0].id,
-                  avilable:e?"yes":"no",
-                }
-              )
-            } }
+              console.log(e);
+              updateSchedules({
+                day: schedules[0].day,
+                doctor_id: schedules[0].doctor_id,
+                start: schedules[0].start,
+                end: schedules[0].end,
+                id: schedules[0].id,
+                avilable: e ? "yes" : "no",
+              });
+            }}
             value={isEnabled1}
           />
         </View>
@@ -2367,21 +2515,17 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled2 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={
-              (e)=>{
-                setIsEnabled2(e);
-                updateSchedules(
-                  {
-                    day:schedules[1].day,
-                    doctor_id:schedules[1].doctor_id,
-                    start:schedules[1].start,
-                    end:schedules[1].end,
-                    id:schedules[1].id,
-                    avilable:e?"yes":"no",
-                  }
-                )
-              }
-            }
+            onValueChange={(e) => {
+              setIsEnabled2(e);
+              updateSchedules({
+                day: schedules[1].day,
+                doctor_id: schedules[1].doctor_id,
+                start: schedules[1].start,
+                end: schedules[1].end,
+                id: schedules[1].id,
+                avilable: e ? "yes" : "no",
+              });
+            }}
             value={isEnabled2}
           />
         </View>
@@ -2424,22 +2568,18 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled3 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={
-              (e)=>{
-                setIsEnabled3(e);
-                console.log(e)
-                updateSchedules(
-                  {
-                    day:schedules[2].day,
-                    doctor_id:schedules[2].doctor_id,
-                    start:schedules[2].start,
-                    end:schedules[2].end,
-                    id:schedules[2].id,
-                    avilable:e?"yes":"no",
-                  }
-                )
-              }
-            }
+            onValueChange={(e) => {
+              setIsEnabled3(e);
+              console.log(e);
+              updateSchedules({
+                day: schedules[2].day,
+                doctor_id: schedules[2].doctor_id,
+                start: schedules[2].start,
+                end: schedules[2].end,
+                id: schedules[2].id,
+                avilable: e ? "yes" : "no",
+              });
+            }}
             value={isEnabled3}
           />
         </View>
@@ -2482,22 +2622,18 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled4 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={
-              (e)=>{
-                setIsEnabled4(e);
-                console.log(e)
-                updateSchedules(
-                  {
-                    day:schedules[3].day,
-                    doctor_id:schedules[3].doctor_id,
-                    start:schedules[3].start,
-                    end:schedules[3].end,
-                    id:schedules[3].id,
-                    avilable:e?"yes":"no",
-                  }
-                )
-              }
-            }
+            onValueChange={(e) => {
+              setIsEnabled4(e);
+              console.log(e);
+              updateSchedules({
+                day: schedules[3].day,
+                doctor_id: schedules[3].doctor_id,
+                start: schedules[3].start,
+                end: schedules[3].end,
+                id: schedules[3].id,
+                avilable: e ? "yes" : "no",
+              });
+            }}
             value={isEnabled4}
           />
         </View>
@@ -2540,22 +2676,18 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled5 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={
-              (e)=>{
-                setIsEnabled5(e);
-                console.log(e)
-                updateSchedules(
-                  {
-                    day:schedules[4].day,
-                    doctor_id:schedules[4].doctor_id,
-                    start:schedules[4].start,
-                    end:schedules[4].end,
-                    id:schedules[4].id,
-                    avilable:e?"yes":"no",
-                  }
-                )
-              }
-            }
+            onValueChange={(e) => {
+              setIsEnabled5(e);
+              console.log(e);
+              updateSchedules({
+                day: schedules[4].day,
+                doctor_id: schedules[4].doctor_id,
+                start: schedules[4].start,
+                end: schedules[4].end,
+                id: schedules[4].id,
+                avilable: e ? "yes" : "no",
+              });
+            }}
             value={isEnabled5}
           />
         </View>
@@ -2598,22 +2730,18 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled6 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={
-              (e)=>{
-                setIsEnabled6(e);
-                console.log(e)
-                updateSchedules(
-                  {
-                    day:schedules[5].day,
-                    doctor_id:schedules[5].doctor_id,
-                    start:schedules[5].start,
-                    end:schedules[5].end,
-                    id:schedules[5].id,
-                    avilable:e?"yes":"no",
-                  }
-                )
-              }
-            }
+            onValueChange={(e) => {
+              setIsEnabled6(e);
+              console.log(e);
+              updateSchedules({
+                day: schedules[5].day,
+                doctor_id: schedules[5].doctor_id,
+                start: schedules[5].start,
+                end: schedules[5].end,
+                id: schedules[5].id,
+                avilable: e ? "yes" : "no",
+              });
+            }}
             value={isEnabled6}
           />
         </View>
@@ -2656,22 +2784,18 @@ const Info = ({ navigation }) => {
             trackColor={{ false: "#777777", true: main_color }}
             thumbColor={!isEnabled7 ? "#bbbbbb" : "#009900"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={
-              (e)=>{
-                setIsEnabled7(e);
-                console.log(e)
-                updateSchedules(
-                  {
-                    day:schedules[6].day,
-                    doctor_id:schedules[6].doctor_id,
-                    start:schedules[6].start,
-                    end:schedules[6].end,
-                    id:schedules[6].id,
-                    avilable:e?"yes":"no",
-                  }
-                )
-              }
-            }
+            onValueChange={(e) => {
+              setIsEnabled7(e);
+              console.log(e);
+              updateSchedules({
+                day: schedules[6].day,
+                doctor_id: schedules[6].doctor_id,
+                start: schedules[6].start,
+                end: schedules[6].end,
+                id: schedules[6].id,
+                avilable: e ? "yes" : "no",
+              });
+            }}
             value={isEnabled7}
           />
         </View>
@@ -2798,77 +2922,76 @@ const Info = ({ navigation }) => {
   };
 
   // **************************************************************************************************************************
-if(Object.keys(doctor).length !== 0){
-  return (
-    <View style={{ flex: 1 }}>
-      {page === "Profile" ||
-      (page === "Schedule" && schedule_summary) ||
-      page === "More" ? (
-        <View style={[styles.header, { alignItems: "center" }]}>
-          <Text style={styles.label}> {page} </Text>
-        </View>
-      ) : (
-        Header()
-      )}
-      <ScrollView>
-        {page === "Profile" ? (
-          <View>
-            {ProCard()}
-            {ProViewsAndBookings()}
-            {DoctorClinicTab()}
-
-            {flag ? DocInfo() : ClinicInfo()}
+  if (Object.keys(doctor).length !== 0) {
+    return (
+      <View style={{ flex: 1 }}>
+        {page === "Profile" ||
+        (page === "Schedule" && schedule_summary) ||
+        page === "More" ? (
+          <View style={[styles.header, { alignItems: "center" }]}>
+            <Text style={styles.label}> {page} </Text>
           </View>
-        ) : page === "Professional Information" ? (
-          ProsonalInformation()
-        ) : page === "Account Settings" ? (
-          AccountSettings()
-        ) : page === "About the Doctor" ? (
-          AboutTheDoctor()
-        ) : page === "Clinic Name and Number" ? (
-          ClinicNameAndNumber()
-        ) : page === "Exmination and Follow-up" ? (
-          ExminationAndFollowUp()
-        ) : page === "Assistant Name and Number" ? (
-          AssistantNameAndNumber()
-        ) : page === "Schedule" ? (
-          <View>
-            {ScheduleTab()}
-            <View
-              style={{ backgroundColor: "white", height: 15, marginTop: 10 }}
-            ></View>
+        ) : (
+          Header()
+        )}
+        <ScrollView>
+          {page === "Profile" ? (
+            <View>
+              {ProCard()}
+              {ProViewsAndBookings()}
+              {DoctorClinicTab()}
 
-            {schedule_summary ? (
-              empty ? (
-                ScheduleSummaryEmpty()
+              {flag ? DocInfo() : ClinicInfo()}
+            </View>
+          ) : page === "Professional Information" ? (
+            PersonalInformation()
+          ) : page === "Account Settings" ? (
+            AccountSettings()
+          ) : page === "About the Doctor" ? (
+            AboutTheDoctor()
+          ) : page === "Clinic Name and Number" ? (
+            ClinicNameAndNumber()
+          ) : page === "Exmination and Follow-up" ? (
+            ExminationAndFollowUp()
+          ) : page === "Assistant Name and Number" ? (
+            AssistantNameAndNumber()
+          ) : page === "Schedule" ? (
+            <View>
+              {ScheduleTab()}
+              <View
+                style={{ backgroundColor: "white", height: 15, marginTop: 10 }}
+              ></View>
+
+              {schedule_summary ? (
+                empty ? (
+                  ScheduleSummaryEmpty()
+                ) : (
+                  appoints()
+                )
               ) : (
-                appoints()
-              )
-            ) : (
-              <View>
-                {WorkingHourSettings()}
-                {ClinicWorkingHours()}
-              </View>
-            )}
-          </View>
-        ) : page === "More" ? (
-          More()
+                <View>
+                  {WorkingHourSettings()}
+                  {ClinicWorkingHours()}
+                </View>
+              )}
+            </View>
+          ) : page === "More" ? (
+            More()
+          ) : (
+            <></>
+          )}
+        </ScrollView>
+        {page === "Profile" ||
+        (page === "Schedule" && schedule_summary) ||
+        page === "More" ? (
+          NevigateTab()
         ) : (
           <></>
         )}
-      </ScrollView>
-      {page === "Profile" ||
-      (page === "Schedule" && schedule_summary) ||
-      page === "More" ? (
-        NevigateTab()
-      ) : (
-        <></>
-      )}
-      <StatusBar style="light" backgroundColor="#288759" />
-    </View>
-  );
-}
-  
+        <StatusBar style="light" backgroundColor="#288759" />
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

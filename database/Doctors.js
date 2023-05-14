@@ -42,6 +42,20 @@ const editDoctor = async (id,lat,long) => {
       console.log(error);
     });
 };
+
+const updateDoctor = async (doctor) => {
+  const res = await axios.post(`${Ip.ip}/API/doctors/update_doctors.php`, {
+   ...doctor
+  })
+    .then(function (response) {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
 const addDoctor = async (doctor) => {
 
   return await axios.post(`${Ip.ip}/API/doctors/insert.php`, {...doctor})
@@ -84,5 +98,7 @@ export {
   editDoctor,
   addDoctor,
   getDocSchedule,
+  updateDoctor,
   updateSchedule,
+
 };
