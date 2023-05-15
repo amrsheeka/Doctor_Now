@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 // import MapView, { Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
+// import * as Location from 'expo-location';
 import { addDoctor } from '../../database/Doctors';
 
 export default function MapSelect({ navigation, route }) {
