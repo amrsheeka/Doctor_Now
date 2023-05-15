@@ -33,7 +33,7 @@ $y_coordnate = $obj['y_coordnate'];
 $stmt = $con->prepare("UPDATE `doctors` SET `title`=?,`image`=?,`name`=?,`title1`=?,
 `describtion`=?,`charactristic`=?,`charactristic_2`=?,`specialization`=?,
 `specialization1`=?,`specialization2`=?,`specialization3`=?,`address`=?,
-`price`=?,`number`=?,`status`=?,`schedule_type`=?,`intervall`=?`x_coordnate`=?,
+`price`=?,`number`=?,`status`=?,`schedule_type`=?,`intervall`=?,`x_coordnate`=?,
 `y_coordnate`=? WHERE id = ?");
 $stmt->execute(array($title, $image, $name, $title1,
  $describtion, $charactristic, $charactristic_2, $specialization,
