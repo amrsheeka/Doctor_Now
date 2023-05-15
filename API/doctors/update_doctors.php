@@ -25,15 +25,20 @@ $price = $obj['price'];
 // $currency = $obj['currency'];
 $number = $obj['number'];
 $status = $obj['status'];
+$schedule_type = $obj['schedule_type'];
+$intervall = $obj['intervall'];
 $x_coordnate = $obj['x_coordnate'];
 $y_coordnate = $obj['y_coordnate'];
 
 $stmt = $con->prepare("UPDATE `doctors` SET `title`=?,`image`=?,`name`=?,`title1`=?,
 `describtion`=?,`charactristic`=?,`charactristic_2`=?,`specialization`=?,
 `specialization1`=?,`specialization2`=?,`specialization3`=?,`address`=?,
-`price`=?,`number`=?,`status`=?,`x_coordnate`=?,
+`price`=?,`number`=?,`status`=?,`schedule_type`=?,`intervall`=?`x_coordnate`=?,
 `y_coordnate`=? WHERE id = ?");
-$stmt->execute(array($title, $image, $name, $title1, $describtion, $charactristic, $charactristic_2, $specialization, $specialization1, $specialization2, $specialization3, $address, $price,  $number, $status, $x_coordnate, $y_coordnate, $id));
+$stmt->execute(array($title, $image, $name, $title1,
+ $describtion, $charactristic, $charactristic_2, $specialization,
+  $specialization1, $specialization2, $specialization3, $address, $price,
+    $number, $status,$schedule_type,$intervall, $x_coordnate, $y_coordnate, $id));
 $schedule = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
 if ($count > 0) {

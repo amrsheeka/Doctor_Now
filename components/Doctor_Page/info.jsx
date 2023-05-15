@@ -188,6 +188,18 @@ const Info = ({ navigation }) => {
     let email = CurrentUser.user.email;
     return await get_doc_by_email(email);
   }
+  async function handleExaminType(type){
+    setSelected(type);
+    let doc = {...doctor};
+    if(type=="First In First Out"){
+      doc.schedule_type="fifo";
+    }else if(type=="On Appointments"){
+      doc.schedule_type="on appointment";
+    }else if(type=="Timer"){
+      doc.schedule_type="special";
+    } 
+    update_Doctor_info(doc);
+  }
   async function getSchedule(id) {
     const res =  await getDocSchedule(id).then((res1)=>{
       setSchedules( res1);
@@ -253,7 +265,14 @@ const Info = ({ navigation }) => {
       setSelected3(res[0].title);
       setFullpro_title(res[0].specialization1);
       setImage(res[0].image);
-      setExmain(res[0].price);      
+      setExmain(res[0].price);
+      if(res[0].schedule_type=="fifo"){
+        setSelected("First In First Out");
+      }else if(res[0].schedule_type=="on appointment"){
+        setSelected("On Appointments");
+      }else if(res[0].schedule_type=="special"){
+        setSelected("Timer");
+      }      
       res[0].title1 == "Doctor"
         ? setDoc_radio("checked")
         : setCenter_radio("checked");
@@ -2503,8 +2522,8 @@ const Info = ({ navigation }) => {
           Examination Type{" "}
         </Text>
         <SelectList
-          data={[{ value: "First In First Out" }, { value: "On Appointments" }]}
-          setSelected={setSelected}
+          data={[{ value: "First In First Out" }, { value: "On Appointments"},{value:"Timer"}]}
+          setSelected={handleExaminType}
           placeholder={selected}
           search={false}
           boxStyles={{
