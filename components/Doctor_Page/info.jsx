@@ -26,6 +26,10 @@ import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
+import ProCard from "./ProCard";
+import Personal_Information from "./Personal_Information";
+import My_Account from "./My_Account";
+
 import {
   getAppointment_for_Doctor,
   get_History_Apps_for_Doctor,
@@ -118,8 +122,8 @@ const Info = ({ navigation }) => {
   const [fName, setfName] = useState("");
   const [fullpro_title, setFullpro_title] = useState(" Consultant of dinstiy ");
 
-  const [doctor_email, setDoctor_email] = useState("");
-  const [doctor_phone, setDoctor_phone] = useState("");
+  const [doctor_email, setDoctor_email] = useState();
+  const [doctor_phone, setDoctor_phone] = useState();
   const [open_password, setOpen_password] = useState(false);
 
   const [current_password, setCurrent_password] = useState("");
@@ -189,44 +193,44 @@ const Info = ({ navigation }) => {
     return await get_doc_by_email(email);
   }
   async function getSchedule(id) {
-    const res =  await getDocSchedule(id).then((res1)=>{
-      setSchedules( res1);
-            setIsEnabled1(res1[0].avilable=="yes"?true:false);
-            setIsEnabled2(res1[1].avilable=="yes"?true:false);
-            setIsEnabled3(res1[2].avilable=="yes"?true:false);
-            setIsEnabled4(res1[3].avilable=="yes"?true:false);
-            setIsEnabled5(res1[4].avilable=="yes"?true:false);
-            setIsEnabled6(res1[5].avilable=="yes"?true:false);
-            setIsEnabled7(res1[6].avilable=="yes"?true:false);
-            setStart(res1[0].start);
-            setStart1(res1[1].start);
-            setStart2(res1[2].start);
-            setStart3(res1[3].start);
-            setStart4(res1[4].start);
-            setStart5(res1[5].start);
-            setStart6(res1[6].start);
-            setEnd( res1[0].end);
-            setEnd1(res1[1].end);
-            setEnd2(res1[2].end);
-            setEnd3(res1[3].end);
-            setEnd4(res1[4].end);
-            setEnd5(res1[5].end);
-            setEnd6(res1[6].end);
-            // setStartTime(res1[0].start);
-            // setStartTime1(res1[1].start);
-            // setStartTime2(res1[2].start);
-            // setStartTime3(res1[3].start);
-            // setStartTime4(res1[4].start);
-            // setStartTime5(res1[5].start);
-            // setStartTime6(res1[6].start);
-            // setEndTime(res1[0].end);
-            // setEndTime1(res1[1].end);
-            // setEndTime2(res1[2].end);
-            // setEndTime3(res1[3].end);
-            // setEndTime4(res1[4].end);
-            // setEndTime5(res1[5].end);
-            // setEndTime6(res1[6].end);
-    })
+    const res = await getDocSchedule(id).then((res1) => {
+      setSchedules(res1);
+      setIsEnabled1(res1[0].avilable == "yes" ? true : false);
+      setIsEnabled2(res1[1].avilable == "yes" ? true : false);
+      setIsEnabled3(res1[2].avilable == "yes" ? true : false);
+      setIsEnabled4(res1[3].avilable == "yes" ? true : false);
+      setIsEnabled5(res1[4].avilable == "yes" ? true : false);
+      setIsEnabled6(res1[5].avilable == "yes" ? true : false);
+      setIsEnabled7(res1[6].avilable == "yes" ? true : false);
+      setStart(res1[0].start);
+      setStart1(res1[1].start);
+      setStart2(res1[2].start);
+      setStart3(res1[3].start);
+      setStart4(res1[4].start);
+      setStart5(res1[5].start);
+      setStart6(res1[6].start);
+      setEnd(res1[0].end);
+      setEnd1(res1[1].end);
+      setEnd2(res1[2].end);
+      setEnd3(res1[3].end);
+      setEnd4(res1[4].end);
+      setEnd5(res1[5].end);
+      setEnd6(res1[6].end);
+      // setStartTime(res1[0].start);
+      // setStartTime1(res1[1].start);
+      // setStartTime2(res1[2].start);
+      // setStartTime3(res1[3].start);
+      // setStartTime4(res1[4].start);
+      // setStartTime5(res1[5].start);
+      // setStartTime6(res1[6].start);
+      // setEndTime(res1[0].end);
+      // setEndTime1(res1[1].end);
+      // setEndTime2(res1[2].end);
+      // setEndTime3(res1[3].end);
+      // setEndTime4(res1[4].end);
+      // setEndTime5(res1[5].end);
+      // setEndTime6(res1[6].end);
+    });
     return res;
   }
 
@@ -247,13 +251,14 @@ const Info = ({ navigation }) => {
   }
   useEffect(() => {
     getDoc().then((res) => {
+      setDoctor_email(res[0].email);
       setfName(res[0].name);
       setAbout_theDoctor(res[0].describtion);
       setDoctor_phone(res[0].number);
       setSelected3(res[0].title);
       setFullpro_title(res[0].specialization1);
       setImage(res[0].image);
-      setExmain(res[0].price);      
+      setExmain(res[0].price);
       res[0].title1 == "Doctor"
         ? setDoc_radio("checked")
         : setCenter_radio("checked");
@@ -263,6 +268,18 @@ const Info = ({ navigation }) => {
   }, []);
 
   const back = () => {
+    setDoc_radio("unchecked");
+    setCenter_radio("unchecked");
+    setfName(doctor.name);
+    setAbout_theDoctor(doctor.describtion);
+    setDoctor_phone(doctor.number);
+    setSelected3(doctor.title);
+    setFullpro_title(doctor.specialization1);
+    setExmain(doctor.price);
+    doctor.title1 == "Doctor"
+      ? setDoc_radio("checked")
+      : setCenter_radio("checked");
+
     page === "Schedule" ? summary() : setPage("Profile");
     setOpen_password(false);
   };
@@ -465,7 +482,7 @@ const Info = ({ navigation }) => {
     else if (book === number_of_bookings5) return setNumber_of_bookings5;
     else if (book === number_of_bookings6) return setNumber_of_bookings6;
   };
-  const ChangeTime =async (event, selectedTime) => {
+  const ChangeTime = async (event, selectedTime) => {
     const currentTime = selectedTime;
 
     let tempTime = new Date(currentTime);
@@ -492,194 +509,164 @@ const Info = ({ navigation }) => {
     if (which === "sat_start") {
       //setStartTime(currentTime);
       //setStart(fTime);
-      updateSchedules(
-        {
-          day:schedules[0].day,
-          doctor_id:schedules[0].doctor_id,
-          start:fTime,
-          end:schedules[0].end,
-          id:schedules[0].id,
-          avilable:schedules[0].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[0].day,
+        doctor_id: schedules[0].doctor_id,
+        start: fTime,
+        end: schedules[0].end,
+        id: schedules[0].id,
+        avilable: schedules[0].avilable,
+      });
     } else if (which === "sat_end") {
       //setEndTime(currentTime);
       //setEnd(fTime);
-      updateSchedules(
-        {
-          day:schedules[0].day,
-          doctor_id:schedules[0].doctor_id,
-          start:schedules[0].start,
-          end:fTime,
-          id:schedules[0].id,
-          avilable:schedules[0].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[0].day,
+        doctor_id: schedules[0].doctor_id,
+        start: schedules[0].start,
+        end: fTime,
+        id: schedules[0].id,
+        avilable: schedules[0].avilable,
+      });
     } else if (which === "sun_start") {
       //setStartTime1(currentTime);
       //setStart1(fTime);
-      updateSchedules(
-        {
-          day:schedules[1].day,
-          doctor_id:schedules[1].doctor_id,
-          start:fTime,
-          end:schedules[1].end,
-          id:schedules[1].id,
-          avilable:schedules[1].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[1].day,
+        doctor_id: schedules[1].doctor_id,
+        start: fTime,
+        end: schedules[1].end,
+        id: schedules[1].id,
+        avilable: schedules[1].avilable,
+      });
     } else if (which === "sun_end") {
       //setEndTime1(currentTime);
       //setEnd1(fTime);
-      updateSchedules(
-        {
-          day:schedules[1].day,
-          doctor_id:schedules[1].doctor_id,
-          start:schedules[1].start,
-          end:fTime,
-          id:schedules[1].id,
-          avilable:schedules[1].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[1].day,
+        doctor_id: schedules[1].doctor_id,
+        start: schedules[1].start,
+        end: fTime,
+        id: schedules[1].id,
+        avilable: schedules[1].avilable,
+      });
     } else if (which === "mon_start") {
       //setStartTime2(currentTime);
       //setStart2(fTime);
-      updateSchedules(
-        {
-          day:schedules[2].day,
-          doctor_id:schedules[2].doctor_id,
-          start:fTime,
-          end:schedules[2].end,
-          id:schedules[2].id,
-          avilable:schedules[2].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[2].day,
+        doctor_id: schedules[2].doctor_id,
+        start: fTime,
+        end: schedules[2].end,
+        id: schedules[2].id,
+        avilable: schedules[2].avilable,
+      });
     } else if (which === "mon_end") {
       //setEndTime2(currentTime);
       //setEnd2(fTime);
-      updateSchedules(
-        {
-          day:schedules[2].day,
-          doctor_id:schedules[2].doctor_id,
-          start:schedules[2].start,
-          end:fTime,
-          id:schedules[2].id,
-          avilable:schedules[2].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[2].day,
+        doctor_id: schedules[2].doctor_id,
+        start: schedules[2].start,
+        end: fTime,
+        id: schedules[2].id,
+        avilable: schedules[2].avilable,
+      });
     } else if (which === "tues_start") {
       //setStartTime3(currentTime);
       //setStart3(fTime);
-      updateSchedules(
-        {
-          day:schedules[3].day,
-          doctor_id:schedules[3].doctor_id,
-          start:fTime,
-          end:schedules[3].end,
-          id:schedules[3].id,
-          avilable:schedules[3].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[3].day,
+        doctor_id: schedules[3].doctor_id,
+        start: fTime,
+        end: schedules[3].end,
+        id: schedules[3].id,
+        avilable: schedules[3].avilable,
+      });
     } else if (which === "tues_end") {
       //setEndTime3(currentTime);
       //setEnd3(fTime);
-      updateSchedules(
-        {
-          day:schedules[3].day,
-          doctor_id:schedules[3].doctor_id,
-          start:schedules[3].start,
-          end:fTime,
-          id:schedules[3].id,
-          avilable:schedules[3].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[3].day,
+        doctor_id: schedules[3].doctor_id,
+        start: schedules[3].start,
+        end: fTime,
+        id: schedules[3].id,
+        avilable: schedules[3].avilable,
+      });
     } else if (which === "wen_start") {
       //setStartTime4(currentTime);
       //setStart4(fTime);
-      updateSchedules(
-        {
-          day:schedules[4].day,
-          doctor_id:schedules[4].doctor_id,
-          start:fTime,
-          end:schedules[4].enad,
-          id:schedules[4].id,
-          avilable:schedules[4].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[4].day,
+        doctor_id: schedules[4].doctor_id,
+        start: fTime,
+        end: schedules[4].enad,
+        id: schedules[4].id,
+        avilable: schedules[4].avilable,
+      });
     } else if (which === "wen_end") {
       //setEndTime4(currentTime);
       //setEnd4(fTime);
-      updateSchedules(
-        {
-          day:schedules[4].day,
-          doctor_id:schedules[4].doctor_id,
-          start:schedules[4].start,
-          end:fTime,
-          id:schedules[4].id,
-          avilable:schedules[4].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[4].day,
+        doctor_id: schedules[4].doctor_id,
+        start: schedules[4].start,
+        end: fTime,
+        id: schedules[4].id,
+        avilable: schedules[4].avilable,
+      });
     } else if (which === "thurs_start") {
       //setStartTime5(currentTime);
       //setStart5(fTime);
-      updateSchedules(
-        {
-          day:schedules[5].day,
-          doctor_id:schedules[5].doctor_id,
-          start:fTime,
-          end:schedules[5].end,
-          id:schedules[5].id,
-          avilable:schedules[5].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[5].day,
+        doctor_id: schedules[5].doctor_id,
+        start: fTime,
+        end: schedules[5].end,
+        id: schedules[5].id,
+        avilable: schedules[5].avilable,
+      });
     } else if (which === "thurs_end") {
       //setEndTime5(currentTime);
       //setEnd5(fTime);
-      updateSchedules(
-        {
-          day:schedules[5].day,
-          doctor_id:schedules[5].doctor_id,
-          start:schedules[5].start,
-          end:fTime,
-          id:schedules[5].id,
-          avilable:schedules[5].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[5].day,
+        doctor_id: schedules[5].doctor_id,
+        start: schedules[5].start,
+        end: fTime,
+        id: schedules[5].id,
+        avilable: schedules[5].avilable,
+      });
     } else if (which === "fri_start") {
       //setStartTime6(currentTime);
       //setStart6(fTime);
-      updateSchedules(
-        {
-          day:schedules[6].day,
-          doctor_id:schedules[6].doctor_id,
-          start:fTime,
-          end:schedules[6].end,
-          id:schedules[6].id,
-          avilable:schedules[6].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[6].day,
+        doctor_id: schedules[6].doctor_id,
+        start: fTime,
+        end: schedules[6].end,
+        id: schedules[6].id,
+        avilable: schedules[6].avilable,
+      });
     } else if (which === "fri_end") {
       //setEndTime6(currentTime);
       //setEnd6(fTime);
-      updateSchedules(
-        {
-          day:schedules[6].day,
-          doctor_id:schedules[6].doctor_id,
-          start:schedules[6].start,
-          end:fTime,
-          id:schedules[6].id,
-          avilable:schedules[6].avilable,
-        }
-      );
+      updateSchedules({
+        day: schedules[6].day,
+        doctor_id: schedules[6].doctor_id,
+        start: schedules[6].start,
+        end: fTime,
+        id: schedules[6].id,
+        avilable: schedules[6].avilable,
+      });
     }
   };
-  const ChangeTime1 =async (event, selectedTime)=>{
-    ChangeTime(event,selectedTime).then(
-      ()=>{
-        console.log(start)
-      }
-    )
-  }
+  const ChangeTime1 = async (event, selectedTime) => {
+    ChangeTime(event, selectedTime).then(() => {
+      console.log(start);
+    });
+  };
   const shift = (
     day,
     day_start,
@@ -947,91 +934,6 @@ const Info = ({ navigation }) => {
         console.log(res[0]);
       });
     });
-  };
-  const ProCard = () => {
-    return (
-      <View style={styles.content}>
-        <View style={{ marginVertical: 5, flexDirection: "row" }}>
-          <Text
-            style={{
-              color: "black",
-              fontSize: 15,
-              fontWeight: "bold",
-              marginVertical: 5,
-              width: "90%",
-            }}
-          >
-            {doc_radio == "checked" ? "Doctor" : "Center"} {fName}
-          </Text>
-          <Icon
-            onPress={edit_name}
-            name={icon6}
-            size={30}
-            color="#288759"
-            style={{ alignSelf: "flex-end" }}
-          />
-        </View>
-        <Text style={{ color: "black", fontSize: 15 }}>
-          {selected3} - {fullpro_title}{" "}
-        </Text>
-
-        <View
-          style={{ marginVertical: 5, flexDirection: "row", width: "100%" }}
-        >
-          <TouchableOpacity style={{ width: "45%" }} onPress={selectFile}>
-            <Image
-              source={
-                doctor.image
-                  ? { uri: image }
-                  : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
-              }
-              style={[styles.image, { width: "100%" }]}
-            />
-          </TouchableOpacity>
-
-          <View style={{ width: "55%", justifyContent: "center" }}>
-            <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              <Icon name={icon1} size={35} color="gold" />
-              <Icon name={icon2} size={35} color="gold" />
-              <Icon name={icon3} size={35} color="gold" />
-              <Icon name={icon4} size={35} color="gold" />
-              <Icon name={icon5} size={35} color="gold" />
-            </View>
-
-            <View>
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 15,
-                  marginTop: 10,
-                  alignSelf: "center",
-                }}
-              >
-                {" "}
-                {reviews} {" Reviews "}
-              </Text>
-              <TouchableOpacity
-                style={{ alignItems: "center" }}
-                onPress={account_settings}
-              >
-                <Text
-                  style={{
-                    backgroundColor: "#288759",
-                    paddingHorizontal: 20,
-                    paddingVertical: 10,
-                    color: "white",
-                    margin: 20,
-                  }}
-                >
-                  {" "}
-                  My Account
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </View>
-    );
   };
 
   // **************************************************************************************************************************
@@ -1553,512 +1455,19 @@ const Info = ({ navigation }) => {
   };
 
   // **************************************************************************************************************************
-
-  const PersonalInformation = () => {
-    return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingVertical: 15,
-            marginVertical: 5,
-          }}
-        >
-          <Icon2
-            name={icon7}
-            size={25}
-            color="#288759"
-            style={{ width: "5%", marginLeft: 5 }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            Basic Information{" "}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            // fontStyle: "italic",
-            // fontWeight: "bold",
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Full Name{" "}
-        </Text>
-        <TextInput
-          style={styles.inp}
-          defaultValue={fName}
-          //placeholder={"last name"}
-          onChangeText={setfName}
-        />
-
-        {/* <Text
-          style={{
-            fontSize: 16,
-            // fontStyle: "italic",
-            // fontWeight: "bold",
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Birth Date{" "}
-        </Text>
-        <Text style={styles.inp} onPress={() => setShow(true)}>
-          {" "}
-          {birth}{" "}
-        </Text>
-        {show && <DateTimePicker value={date} onChange={ChangeDate} />}
-        */}
-        <Text
-          style={{
-            color: "black",
-            fontSize: 15,
-            paddingBottom: 5,
-            marginTop: 20,
-            paddingHorizontal: 15,
-          }}
-        >
-          Title1
-        </Text>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginLeft: 40,
-            marginTop: 10,
-          }}
-        >
-          <RadioButton
-            status={doc_radio}
-            color={main_color}
-            value="Doctor"
-            uncheckedColor="black"
-            onPress={() => {
-              setDoc_radio("checked");
-              setCenter_radio("unchecked");
-            }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingBottom: 5,
-              width: "40%",
-              paddingHorizontal: 5,
-            }}
-          >
-            Doctor
-          </Text>
-          <RadioButton
-            status={center_radio}
-            color={main_color}
-            value="Center"
-            uncheckedColor="black"
-            onPress={() => {
-              setDoc_radio("unchecked");
-              setCenter_radio("checked");
-            }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingBottom: 5,
-              paddingHorizontal: 5,
-            }}
-          >
-            Center
-          </Text>
-        </View>
-        {/*
-        <TouchableOpacity>
-          {practise_licence === "" ? (
-            <View
-              style={{
-                flexDirection: "row",
-                marginVertical: 40,
-                alignItems: "center",
-              }}
-            >
-              <Icon5
-                name={icon13}
-                size={25}
-                color={main_color}
-                style={{ width: "10%", marginLeft: 15 }}
-              />
-
-              <Text style={{ fontSize: 16 }}>
-                {" "}
-                Upload Practice License ID photo
-              </Text>
-            </View>
-          ) : (
-            <View
-              style={{
-                flexDirection: "row",
-                marginVertical: 40,
-                alignItems: "center",
-              }}
-            >
-              <Image
-                source={
-                  doctor.image
-                    ? { uri: doctor.image }
-                    : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
-                }
-                style={[
-                  styles.image,
-                  { width: "20%", marginLeft: 15, height: 50 },
-                ]}
-              />
-              <Text style={{ fontSize: 16, paddingHorizontal: 20 }}>
-                {" "}
-                Practice License ID photo
-              </Text>
-            </View>
-          )}
-        </TouchableOpacity> */}
-        <View
-          style={{
-            flexDirection: "row",
-            paddingVertical: 15,
-            marginVertical: 5,
-          }}
-        >
-          <Icon2
-            name={icon8}
-            size={25}
-            color="#288759"
-            style={{ width: "7%", marginLeft: 15 }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            Professional Title{" "}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 15,
-          }}
-        >
-          {" "}
-          Professional Title{" "}
-        </Text>
-
-        <SelectList
-          data={[
-            { value: "Pulmonologist" },
-            { value: "Psychiatrist" },
-            { value: "Internist" },
-            { value: "Hematologist" },
-            { value: "Plastic Surgeon" },
-            { value: "Cardiologist" },
-            { value: "Neurosurgeon" },
-            { value: "Endocrinologist" },
-            { value: "ENT Doctor" },
-            { value: "Neurosurgeon" },
-            { value: "Infertility Specialist" },
-            { value: "Andrologist" },
-          ]}
-          setSelected={setSelected3}
-          placeholder={selected3}
-          search={true}
-          boxStyles={{
-            borderWidth: 0,
-            borderBottomWidth: 2,
-            borderRadius: 0,
-            marginHorizontal: 10,
-            borderColor: main_color,
-            width: "90%",
-            paddingLeft: 5,
-            marginBottom: 10,
-          }}
-          arrowicon={<Icon4 name={icon24} size={12} color={main_color} />}
-          searchicon={<Icon4 name={"search"} size={15} color={main_color} />}
-          searchPlaceholder="   search"
-          closeicon={<Icon name={"close"} size={15} color={main_color} />}
-          dropdownStyles={{
-            marginHorizontal: 10,
-            borderWidth: 0,
-            backgroundColor: "white",
-            marginTop: 2,
-            width: "90%",
-          }}
-        />
-
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 15,
-          }}
-        >
-          {" "}
-          Full Professional Title{" "}
-        </Text>
-
-        <TextInput
-          style={styles.inp}
-          defaultValue={fullpro_title}
-          onChangeText={setFullpro_title}
-        />
-        {/* <TouchableOpacity>
-          {professional_licence !== "" ? (
-            <View
-              style={{
-                flexDirection: "row",
-                marginVertical: 40,
-                alignItems: "center",
-              }}
-            >
-              <Icon5
-                name={icon13}
-                size={25}
-                color={main_color}
-                style={{ width: "10%", marginLeft: 15 }}
-              />
-
-              <Text style={{ fontSize: 16 }}>
-                {" "}
-                Upload Professional Title License photo
-              </Text>
-            </View>
-          ) : (
-            <View
-              style={{
-                flexDirection: "row",
-                marginVertical: 40,
-                alignItems: "center",
-              }}
-            >
-              <Image
-                source={
-                  doctor.image
-                    ? { uri: doctor.image }
-                    : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
-                }
-                style={[
-                  styles.image,
-                  { width: "20%", marginLeft: 15, height: 50 },
-                ]}
-              />
-              <Text style={{ fontSize: 16, paddingHorizontal: 20 }}>
-                {" "}
-                Professional Title License photo
-              </Text>
-            </View>
-          )}
-        </TouchableOpacity> */}
-      </View>
-    );
+  const click_doctor = () => {
+    setDoc_radio("checked");
+    setCenter_radio("unchecked");
   };
+  const click_center = () => {
+    setDoc_radio("unchecked");
+    setCenter_radio("checked");
+  };
+  
 
   // **************************************************************************************************************************
 
-  const AccountSettings = () => {
-    return (
-      <View>
-        <View
-          style={{
-            marginVertical: 5,
-            marginHorizontal: 10,
-            alignItems: "center",
-            flexDirection: "row",
-          }}
-        >
-          <Icon6
-            name={icon17}
-            size={30}
-            color={main_color}
-            style={{ width: "7%" }}
-          />
-          <Text
-            style={{
-              fontSize: 16,
-              // fontStyle: "italic",
-              // fontWeight: "bold",
-              marginHorizontal: 10,
-              paddingVertical: 10,
-            }}
-          >
-            {" "}
-            Email address{" "}
-          </Text>
-        </View>
-        <TextInput
-          style={styles.inp}
-          defaultValue={doctor.email}
-          keyboardType="email-address"
-          //placeholder={"last name"}
-          onChangeText={setDoctor_email}
-        />
-        <View
-          style={{
-            marginVertical: 5,
-            marginHorizontal: 10,
-            alignItems: "center",
-            flexDirection: "row",
-          }}
-        >
-          <Icon6
-            name={icon18}
-            size={30}
-            color={main_color}
-            style={{ width: "7%" }}
-          />
-          <Text
-            style={{
-              fontSize: 16,
-              // fontStyle: "italic",
-              // fontWeight: "bold",
-              marginHorizontal: 10,
-              paddingVertical: 10,
-            }}
-          >
-            {" "}
-            Mobile number{" "}
-          </Text>
-        </View>
-        <TextInput
-          style={styles.inp}
-          defaultValue={doctor_phone}
-          keyboardType="phone-pad"
-          //placeholder={"last name"}
-          onChangeText={setDoctor_phone}
-        />
-        <TouchableOpacity onPress={change_password}>
-          <View
-            style={[
-              {
-                marginHorizontal: 15,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems: "center",
-              },
-            ]}
-          >
-            <Icon4
-              name={icon16}
-              size={25}
-              color={main_color}
-              style={{ width: "10%" }}
-            />
-            <Text
-              style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Change Password{" "}
-            </Text>
-          </View>
-        </TouchableOpacity>
-
-        {open_password ? (
-          <View>
-            <Text
-              style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Current Password{" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              defaultValue={current_password}
-              secureTextEntry
-              onChangeText={setCurrent_password}
-            />
-
-            <Text
-              style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              New Password{" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              defaultValue={new_password}
-              secureTextEntry
-              onChangeText={setNew_password}
-            />
-
-            <Text
-              style={{
-                fontSize: 16,
-                // fontStyle: "italic",
-                // fontWeight: "bold",
-                marginHorizontal: 10,
-                paddingVertical: 10,
-              }}
-            >
-              {" "}
-              Confirm New Password{" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              defaultValue={confirm_new_password}
-              secureTextEntry
-              onChangeText={setConfirm_new_password}
-            />
-          </View>
-        ) : (
-          <></>
-        )}
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          onPress={() =>
-            logout().then(() => {
-              navigation.navigate("StackNavigator");
-            })
-          }
-        >
-          <Text
-            style={{
-              backgroundColor: "#288759",
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              color: "white",
-              margin: 20,
-            }}
-          >
-            {" "}
-            Log out
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  
 
   // **************************************************************************************************************************
 
@@ -2174,7 +1583,7 @@ const Info = ({ navigation }) => {
 
   // **************************************************************************************************************************
 
-  const  ExminationAndFollowUp = () => {
+  const ExminationAndFollowUp = () => {
     return (
       <View>
         <View
@@ -3097,16 +2506,55 @@ const Info = ({ navigation }) => {
         <ScrollView>
           {page === "Profile" ? (
             <View>
-              {ProCard()}
+              {
+                <ProCard
+                  title1={doc_radio == "checked" ? "Doctor" : "Center"}
+                  fullName={fName}
+                  specialization={selected3}
+                  specialization2={fullpro_title}
+                  image={image}
+                  reviews={reviews}
+                  fun1={edit_name}
+                  fun2={selectFile}
+                  fun3={account_settings}
+                />
+              }
               {ProViewsAndBookings()}
               {DoctorClinicTab()}
 
               {flag ? DocInfo() : ClinicInfo()}
             </View>
           ) : page === "Professional Information" ? (
-            PersonalInformation()
+            <Personal_Information
+              fullName={fName}
+              fun1={setfName}
+              doc_radio={doc_radio}
+              fun2={click_doctor}
+              center_radio={center_radio}
+              fun3={click_center}
+              specialization={selected3}
+              fun4={setSelected3}
+              specialization2={fullpro_title}
+              fun5={setFullpro_title}
+            />
           ) : page === "Account Settings" ? (
-            AccountSettings()
+            <My_Account
+              email={doctor_email}
+              fun1={setDoctor_email}
+              number={doctor_phone}
+              fun2={setDoctor_phone}
+              current_password={current_password}
+              fun3={setCurrent_password}
+              new_password={new_password}
+              fun4={setNew_password}
+              confirm_password={confirm_new_password}
+              fun5={setConfirm_new_password}
+              fun6={() =>
+                logout().then(() => {
+                  navigation.navigate("StackNavigator");
+                })
+              }
+            />
           ) : page === "About the Doctor" ? (
             AboutTheDoctor()
           ) : page === "Clinic Name and Number" ? (
