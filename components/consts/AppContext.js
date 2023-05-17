@@ -12,6 +12,7 @@ export const AppProvider = ({ children }) => {
     const [doctor, setDoctor] = useState({});
     const [type, setType] = useState("appointments");
     const [schedules, setSchedules] = useState([]);
+    const [flag, setFlag] = useState(false);
     return (
         <AppContext.Provider value={{ 
             favourite, setFavourite,
