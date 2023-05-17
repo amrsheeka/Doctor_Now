@@ -11,7 +11,12 @@ import {
   Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { insertReviews, getReviews } from "../../database/Users";
+import {
+  insertReviews,
+  getReviews,
+  getRate,
+  insertRate,
+} from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 import { Rating, AirbnbRating } from "react-native-elements";
 

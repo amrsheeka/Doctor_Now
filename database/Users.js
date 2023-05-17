@@ -189,7 +189,7 @@ const insertAppointment = async (
     })
     .then(function (response) {
       console.log(response.data.status);
-      return response.data.status
+      return response.data.status;
     })
     .catch(function (error) {
       console.log(error);
@@ -420,6 +420,32 @@ const insertReviews = async (users_id, doctor_id, text, user_name) => {
     });
 };
 
+const getRate = async (doctor_id) => {
+  return axios
+    .post(`${Ip.ip}/API/rate/get_rate.php`, {
+      doctor_id: doctor_id,
+    })
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+const insertRate = async (users_id, doctor_id, rate) => {
+  const res = await axios
+    .post(`${Ip.ip}/API/reviews/insert_rev.php`, {
+      users_id: users_id,
+      doctor_id: doctor_id,
+      rate: rate,
+    })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 export {
   sighnup,
   login,
@@ -445,4 +471,6 @@ export {
   get_History_Apps_for_User,
   getReviews,
   insertReviews,
+  getRate,
+  insertRate,
 };
