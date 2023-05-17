@@ -135,7 +135,7 @@ const Homefunc: React.FC<Props> = ({ barColor }) => {
         component={Favorite}
         options={{
           tabBarIcon: ({ tintColor, focused }) => (
-            <MaterialIcons name= {focused?"favorite" : "favorite-border"} color={"#288771"} size={30} />
+            <MaterialIcons name= {focused?"favorite" : "favorite-border"} color={"#288771"} size={focused? 35:25} />
           ),
           headerShown: false,
         }}
@@ -147,7 +147,7 @@ const Homefunc: React.FC<Props> = ({ barColor }) => {
         options={{
           
           tabBarIcon: ({ tintColor, focused }) => <Ionicons 
-          name={focused?"ios-calendar":"calendar-sharp"} color={"#288771"} size={30} />,
+          name={focused?"ios-calendar":"calendar-sharp"} color={"#288771"} size={focused? 35:25} />,
           headerShown: false,
         }}
       />
@@ -256,7 +256,7 @@ const Homefunc: React.FC<Props> = ({ barColor }) => {
         component={Chat}
         options={{
           tabBarIcon: ({ tintColor, focused }) => (
-            <Ionicons name={focused?"chatbox-ellipses":"chatbox-ellipses-outline"} color={"#288771"} size={30} />
+            <Ionicons name={focused?"chatbox-ellipses":"chatbox-ellipses-outline"} color={"#288771"} size={focused? 35:25} />
           ),
           headerShown: false,
         }}
@@ -349,7 +349,7 @@ const Homefunc: React.FC<Props> = ({ barColor }) => {
         options={{
 
           tabBarIcon: ({ tintColor, focused }) => 
-          <FontAwesome name={focused?"user":"user-o"} color={"#288771"} size={30} />,
+          <FontAwesome name={focused?"user":"user-o"} color={"#288771"} size={focused? 35:25} />,
           headerShown: false,
         }}
       />
