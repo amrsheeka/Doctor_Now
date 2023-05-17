@@ -109,7 +109,7 @@ const Info = ({ navigation }) => {
   const [selected2, setSelected2] = useState("Accept all bookings");
   const [selected3, setSelected3] = useState("Pulmonologist");
   const [profile_views, setProfileviews] = useState(10);
-  const [bookings, setBookings] = useState(9);
+  const [bookings, setBookings] = useState(0);
   const [reviews, setReviews] = useState(25);
   const [doc_radio, setDoc_radio] = useState("unchecked");
   const [center_radio, setCenter_radio] = useState("unchecked");
@@ -183,7 +183,7 @@ const Info = ({ navigation }) => {
   const main_color = "#288771";
   const empty = false;
   const { schedules, setSchedules } = useContext(AppContext);
-  const { setAppointments } = useContext(AppContext);
+  const { appointments,setAppointments } = useContext(AppContext);
   const { setType } = useContext(AppContext);
   const { curruser } = useContext(AppContext);
   const { doctor, setDoctor } = useContext(AppContext);
@@ -228,6 +228,7 @@ const Info = ({ navigation }) => {
       setEnd4(res1[4].end);
       setEnd5(res1[5].end);
       setEnd6(res1[6].end);
+      setBookings(appointments);
       // setStartTime(res1[0].start);
       // setStartTime1(res1[1].start);
       // setStartTime2(res1[2].start);
@@ -997,7 +998,7 @@ const Info = ({ navigation }) => {
                 alignSelf: "center",
               }}
             >
-              {bookings}
+              {appointments.length}
             </Text>
             <Text
               style={{

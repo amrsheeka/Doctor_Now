@@ -33,20 +33,20 @@ const Doctorbage = ({ navigation, route }) => {
   };
 
   async function get(id) {
-    const list = getReviews(id).then((res) => {
-      console.log(res);
+    getReviews(id).then((res) => {
+      setAllrev(res);
     });
-    setAllrev(list);
+    
   }
 
   useEffect(() => {
     get(item.id);
-    console.log(allrev);
+    // console.log(allrev);
   }, []);
 
   const Item = ({ title }) => (
     <View>
-      <Text>{title.text}</Text>
+      <Text>{title.user_name}: {title.text}</Text>
     </View>
   );
   const sasasf = () => {
