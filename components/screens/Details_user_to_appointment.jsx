@@ -30,6 +30,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
   const [gender, setGender] = useState("male");
   const [nameerr, setNameErr] = useState("");
   const { night } = useContext(AppContext);
+  const { length,setLength } = useContext(AppContext);
   let doc = route.params.item;
   let id = CurrentUser.user.id;
   const handleInsertAppointment = async () => {
@@ -72,6 +73,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
           );
         }
       });
+      setLength(length-1);
       // console.log(CurrentUser.user.age)
     }
   };

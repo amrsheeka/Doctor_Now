@@ -49,7 +49,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const currentDayOfWeek = today.getDay(); // Sunday is 0, Monday is 1, etc.
   const daysUntilFriday = currentDayOfWeek <= 5 ? 5 - currentDayOfWeek : 6;
   let image = item.image;
-  const [length, setLength] = useState(10);
+  const {length, setLength} = useContext(AppContext);
   const onDateChange = (event, newDate) => {
     setShowPicker(false);
     var flag = 0;
@@ -91,7 +91,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     getDocDays();
     var timeList1 = getTimeList(item.start, item.end);
     getAppointment_by_doc_id(item.id, date).then((res) => {
-      
+
       if (res.status != "failed") {
         res.map((e) => {
           timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
@@ -215,10 +215,16 @@ const AppointmentConfirmation = ({ navigation, route }) => {
               </View>
               :
               <View style={{ paddingTop: 10 }}>
-                <Text style={[styles.text3, night && styles.textdark3]}>
-                  Take Your Order Now and wait until your number come .
-                  Available today {length} bookings.
-                </Text>
+                {length > 0 ?
+                  <Text style={[styles.text3, night && styles.textdark3]}>
+                    Available today {length} bookings.
+                    if you book now you will be number {10 - length + 1}.
+                  </Text>
+                  :
+                  <Text style={[styles.text3, night && styles.textdark3]}>
+                    All appointments are booked
+                  </Text>
+                }
               </View>
           }
           {type === "special" ?
