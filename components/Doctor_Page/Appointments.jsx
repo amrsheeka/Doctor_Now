@@ -7,12 +7,16 @@ import { AppContext } from "../consts/AppContext";
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
 const Appointments = () => {
     let email = CurrentUser.user.email
-
+    const [schedule_type, set_schedule_type] = useState("");
     const { appointments, setAppointments } = useContext(AppContext);
     const { type } = useContext(AppContext);
     useEffect(() => {
+
         if (type == "history") {
             get_doc_by_email(email).then((ans) => {
+
+                set_schedule_type(ans[0].schedule_type);
+
                 if (ans.status !== "failed") {
                     get_History_Apps_for_Doctor(ans[0].id).then((res) => {
                         if (res.status !== "failed")
@@ -22,6 +26,9 @@ const Appointments = () => {
             })
         } else {
             get_doc_by_email(email).then((ans) => {
+
+                set_schedule_type(ans[0].schedule_type);
+
                 if (ans.status !== "failed") {
                     getAppointment_for_Doctor(ans[0].id).then((res) => {
                         if (res.status !== "failed")
@@ -30,16 +37,17 @@ const Appointments = () => {
                 }
             })
         }
+        console.log(schedule_type)
 
     }, [])
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <View style={{paddingHorizontal:"25%"}}>
+                <View style={{ paddingHorizontal: "25%" }}>
                     {
                         type == "history" ?
-                         <Text style={styles.heading}>My History</Text> :
+                            <Text style={styles.heading}>My History</Text> :
                             <Text style={styles.heading}>My Appointments</Text>
                     }
                 </View>
@@ -51,7 +59,7 @@ const Appointments = () => {
                             {
                                 appointments.map((ele, idx) => {
 
-                                    return <Doc_card_appointment key={idx} date={ele.date} time={ele.time} name_patient={ele.name_patient} doc_name={ele.doc_name} gender={ele.gender} notes={ele.notes} date_now={ele.date_now} specialization1={ele.specialization1} image={ele.doc_image} doctor_id={ele.doctor_id} users_id={ele.users_id} age={ele.age} />
+                                    return <Doc_card_appointment number={idx+1} key={idx} date={ele.date} time={ele.time} name_patient={ele.name_patient} doc_name={ele.doc_name} gender={ele.gender} notes={ele.notes} date_now={ele.date_now} specialization1={ele.specialization1} image={ele.doc_image} doctor_id={ele.doctor_id} users_id={ele.users_id} age={ele.age} schedule_type={schedule_type} />
                                 })
                             }
                         </ScrollView>
