@@ -10,9 +10,10 @@ $start = $obj['start'];
 $end = $obj['end'];
 $avilable = $obj['avilable'];
 $day = $obj['day'];
+$number = $obj['number'];
 
-$stmt = $con->prepare("UPDATE `schedule` SET `start`=?,`end`=? , `avilable`=? WHERE `id` =? ");
-$stmt->execute(array($start, $end, $avilable, $id));
+$stmt = $con->prepare("UPDATE `schedule` SET `start`=?,`end`=? , `avilable`=?, 'number'=? WHERE `id` =? ");
+$stmt->execute(array($start, $end, $avilable, $number,$id));
 $schedule = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
 if ($count > 0) {

@@ -44,10 +44,12 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const { night } = useContext(AppContext);
   const { curruser } = useContext(AppContext);
   const [Days, setDays] = useState([]);
+  const [type, setType] = useState("");
   const today = new Date(); // current date
   const currentDayOfWeek = today.getDay(); // Sunday is 0, Monday is 1, etc.
   const daysUntilFriday = currentDayOfWeek <= 5 ? 5 - currentDayOfWeek : 6;
   let image = item.image;
+  const [length, setLength] = useState(10);
   const onDateChange = (event, newDate) => {
     setShowPicker(false);
     var flag = 0;
@@ -59,6 +61,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         break;
       }
     }
+
     if (flag == 0) {
       alert("You Try to Choose Unavailable Day please Choose anther day !");
       return;
@@ -72,25 +75,32 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         })
         : setTimeList(timeList1);
       if (timeList1.length == 0) {
-        alert("Sorry all appointments today are complete please choose anther day !")
+        alert("Sorry all appointments in this day are complete please choose anther day !")
         setTimeList([]);
         return;
       } else {
-        setTimeList(timeList1); 
+        setTimeList(timeList1);
       }
     });
   };
 
 
   useEffect(() => {
+    console.log(item.schedule_type);
+    setType(item.schedule_type);
     getDocDays();
     var timeList1 = getTimeList(item.start, item.end);
     getAppointment_by_doc_id(item.id, date).then((res) => {
-      res.status != "failed"
-        ? res.map((e) => {
+      
+      if (res.status != "failed") {
+        res.map((e) => {
           timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
-        })
-        : setTimeList(timeList1);
+        }
+        )
+        setLength(10 - res.length);
+        // console.log(res.length)
+      }
+
     });
     setTimeList(timeList1);
   }, []);
@@ -150,13 +160,13 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             {" "}
             {item.name}
           </Text>
-          <Text style={[styles.text2, night && styles.textdark2]}>
+          <Text numberOfLines={5} style={[styles.text2, night && styles.textdark2]}>
             {" "}
             {item.describtion}
           </Text>
         </View>
       </View>
-      <View style={[styles.body, night && styles.buttonDark]}>
+      <View style={[styles.header3, night && styles.buttonDark]}>
         <View style={[styles.box, night && styles.darklist]}>
           <Text style={[styles.text, night && styles.textdark]}>Patients</Text>
           <Text style={[styles.text, night && styles.textdark]}>{1600}</Text>
@@ -174,75 +184,117 @@ const AppointmentConfirmation = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={[styles.footer, night && styles.buttonDark]}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("MapScreen", item.address)}
-        >
-          <View style={[styles.buttonloc, night && styles.darklist]}>
-            <Text style={styles.buttonText}>Location</Text>
-          </View>
-        </TouchableOpacity>
-        {/* <Button
+      <View style={[styles.body, night && styles.buttonDark]}>
+        <ScrollView>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("MapScreen", item.address)}
+          >
+            <View style={[styles.buttonloc, night && styles.darklist]}>
+              <Text style={styles.buttonText}>Location</Text>
+            </View>
+          </TouchableOpacity>
+          {/* <Button
           color={"#73caa4"}
           style={[night&&styles.darklist]}
           title="Location"
           onPress={() => navigation.navigate("MapScreen", item.address)}
         /> */}
-        <View style={{ paddingTop: 10 }}>
-          <Text style={[styles.text3, night && styles.textdark3]}>
-            Working Hours
-          </Text>
-        </View>
-        <View>
-          <Picker
-            selectedValue={Time}
-            onValueChange={(value, index) => setTime(value)}
-            mode="dropdown"
-            style={[styles.picker, night && styles.darklist]}
-          >
-            {timeList.map((e, i) => (
-              <Picker.Item label={e} value={e} key={i} />
-            ))}
-          </Picker>
-        </View>
-        <View style={{ flex: 3, paddingTop: 10 }}>
-          <Text style={[styles.text3, night && styles.textdark3]}>
-            Working Days
-          </Text>
-          <View>
-            <View>
-              {Days ?
-                <Picker
-                  selectedValue={Days}
-                  mode="dropdown"
-                  style={[styles.picker, night && styles.darklist]}
-                >
-                  {Days.map((e, i) => (
-                    <Picker.Item label={e.day} key={i} />
-                  ))}
-                </Picker> : <Text>Not Available this week ! </Text>}
-            </View>
-          </View>
-          <View>
-            <Text style={[styles.text33, night && styles.textdark33]}>
-              Selected date: {date}
-            </Text>
 
-            <TouchableOpacity onPress={openPicker}>
-              {showPicker && (
-                <DateTimePicker
-                  value={new Date()}
-                  mode="date"
-                  onChange={onDateChange}
-                  maximumDate={new Date(new Date().getTime() + daysUntilFriday * 24 * 3600 * 1000)} // 7 days from now
-                  minimumDate={new Date()} // current day
-                />
-              )}
-              <View style={[styles.buttonloc, night && styles.darklist]}>
-                <Text style={styles.buttonText}>select date</Text>
+          {type === "special"
+            ? <View style={{ paddingTop: 10 }}>
+              <Text style={[styles.text3, night && styles.textdark3]}>
+                Working Hours
+              </Text>
+            </View>
+            :
+            type === "fifo" ?
+              <View style={{ paddingTop: 10 }}>
+                <Text style={[styles.text3, night && styles.textdark3]}>
+                  As You Come As You Treat without waiting
+                </Text>
               </View>
-            </TouchableOpacity>
-            {/* <Button
+              :
+              <View style={{ paddingTop: 10 }}>
+                <Text style={[styles.text3, night && styles.textdark3]}>
+                  Take Your Order Now and wait until your number come .
+                  Available today {length} bookings.
+                </Text>
+              </View>
+          }
+          {type === "special" ?
+            <View>
+              <Picker
+                selectedValue={Time}
+                onValueChange={(value, index) => setTime(value)}
+                mode="dropdown"
+                style={[styles.picker, night && styles.darklist]}
+              >
+                {timeList.map((e, i) => (
+                  <Picker.Item label={e} value={e} key={i} />
+                ))}
+              </Picker>
+            </View> : <></>
+          }
+          <View style={{ paddingTop: 10 }}>
+            <Text style={[styles.text3, night && styles.textdark3]}>
+              Working Days
+            </Text>
+            <View>
+              <View>
+                {Days ?
+
+                  <View
+                    style={[styles.row, night && styles.darklist]}
+                  >
+
+                    <ScrollView horizontal={true}>
+                      {
+                        Days.map((e, i) => (
+
+                          <View key={i} style={styles.itm}>
+                            <Text> {e.day} </Text>
+                          </View>
+                        ))}
+                    </ScrollView>
+
+
+                  </View>
+                  :
+                  <Text>Not Available this week ! </Text>
+                }
+              </View>
+            </View>
+            <View>
+
+              {type === "special" ?
+                <View>
+                  <Text style={[styles.text33, night && styles.textdark33]}>
+                    Selected date: {date}
+                  </Text>
+
+                  <TouchableOpacity onPress={openPicker}>
+                    {showPicker && (
+                      <DateTimePicker
+                        value={new Date()}
+                        mode="date"
+                        onChange={onDateChange}
+                        maximumDate={new Date(new Date().getTime() + daysUntilFriday * 24 * 3600 * 1000)} // 7 days from now
+                        minimumDate={new Date()} // current day
+                      />
+                    )}
+                    <View style={[styles.buttonloc, night && styles.darklist]}>
+                      <Text style={styles.buttonText}>select date</Text>
+                    </View>
+
+                  </TouchableOpacity>
+
+                </View>
+                :
+                <></>
+
+              }
+
+              {/* <Button
               color={"#73caa4"}
               title="Select date"
               onPress={openPicker}
@@ -254,10 +306,13 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                 onChange={onDateChange}
               />
             )} */}
+            </View>
           </View>
-        </View>
+        </ScrollView>
+      </View>
+      <View style={styles.footer}>
         <View
-          style={{ flexDirection: "row", marginHorizontal: 10, height: "17%" }}
+          style={{ flexDirection: "row", height: "40%", marginHorizontal: 30 }}
         >
           <TouchableOpacity
             style={[styles.button, night && styles.darklist]}
@@ -301,6 +356,22 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 10,
   },
+  header3: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    flexDirection: "row",
+    // marginVertical: 6,
+    margin: 5,
+    padding: 10,
+  },
+  itm: {
+    width: 100,
+    height: 40,
+    backgroundColor: '#288771',
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   header1: {
     flexDirection: "row",
     width: "100%",
@@ -308,15 +379,17 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     paddingVertical: 5,
     backgroundColor: "#288771",
-
+    flex: 1
     // marginBottom: 20,
   },
   heading: {
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
-  },
-
+  }, row: {
+    flexDirection: "row"
+  }
+  ,
   Go_Back: {
     width: "10%",
     // left:1
@@ -326,12 +399,12 @@ const styles = StyleSheet.create({
     width: "35%",
   },
   body: {
-    flex: 1,
-    flexDirection: "row",
+    flex: 4,
+    flexDirection: "column",
     justifyContent: "space-between",
   },
   footer: {
-    flex: 5,
+    flex: 2,
     borderRadius: 10,
     backgroundColor: "#ffffff",
     shadowRadius: 2,
@@ -386,7 +459,7 @@ const styles = StyleSheet.create({
   },
   text2: {
     paddingLeft: 5,
-    fontSize: 16,
+    fontSize: 14,
     // fontWeight:"bold",
     textAlign: "justify",
   },

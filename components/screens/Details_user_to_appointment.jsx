@@ -55,7 +55,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
           console.log("its ok");
           navigation.navigate("Thk", { doc });
           getAppointment(id).then((res) => {
-            res.status !="failed"?setAppointments(res):setAppointments(appointments);
+            res.status != "failed" ? setAppointments(res) : setAppointments(appointments);
           });
           var timeList1 = getTimeList(doc.start, doc.end);
           getAppointment_by_doc_id(doc.id, new Date().toDateString()).then(
@@ -90,62 +90,67 @@ const Details_user_to_appointment = ({ navigation, route }) => {
           <Text style={styles.heading}>Appointment</Text>
         </View>
       </View>
-      <ScrollView>
-        <View>
-          <Text style={[styles.text, night && styles.textdark]}>Full Name</Text>
-          <TextInput
-            style={[styles.input, night && styles.dark2]}
-            onChangeText={onChangeText}
-            value={text}
-            placeholder={"Enter Full Name"}
-          />
-          <Text style={{ color: "red" }}>{nameerr}</Text>
-          <Text style={[styles.text, night && styles.textdark]}>Select Your Age</Text>
-          <View>
-            <Picker
-              selectedValue={age}
-              onValueChange={(value, index) => setAge(value)}
-              mode="dropdown"
-              style={[styles.picker, night && styles.darklist]}
-            >
-              <Picker.Item label="15+" value="15+" />
-              <Picker.Item label="25+" value="25+" />
-              <Picker.Item label="35+" value="35+" />
-              <Picker.Item label="45+" value="45+" />
-            </Picker>
-          </View>
-          <View>
-            <Text style={[styles.text, night && styles.textdark]}>Gender</Text>
-            <Picker
-              selectedValue={gender}
-              onValueChange={(value, index) => setGender(value)}
-              mode="dropdown"
-              style={[styles.picker, night && styles.darklist]}
-            >
-              <Picker.Item label="Male" value="Male" />
-              <Picker.Item label="Female" value="Female" />
-            </Picker>
-          </View>
-        </View>
-        <View style={styles.body}>
-          <View>
-            <Text style={[styles.text, night && styles.textdark]}>Compose Your Problem</Text>
-          </View>
-          <KeyboardAvoidingView enabled={true}>
+
+      <View style={styles.body}>
+        <ScrollView>
+
+          <View >
+            <Text style={[styles.text, night && styles.textdark]}>Full Name</Text>
+            <TextInput
+              style={[styles.input, night && styles.dark2]}
+              onChangeText={onChangeText}
+              value={text}
+              placeholder={"Enter Full Name"}
+            />
+            <Text style={{ color: "red" }}>{nameerr}</Text>
+            <Text style={[styles.text, night && styles.textdark]}>Select Your Age</Text>
             <View>
-              <TextInput
-                style={[styles.input2, night && styles.dark2]}
-                onChangeText={onChangeText2}
-                value={text2}
-                numberOfLines={10}
-                multiline={true}
-                maxLength={600}
-                placeholder={"Don't exceed 600 characters..."}
-              />
+              <Picker
+                selectedValue={age}
+                onValueChange={(value, index) => setAge(value)}
+                mode="dropdown"
+                style={[styles.picker, night && styles.darklist]}
+              >
+                <Picker.Item label="15+" value="15+" />
+                <Picker.Item label="25+" value="25+" />
+                <Picker.Item label="35+" value="35+" />
+                <Picker.Item label="45+" value="45+" />
+              </Picker>
             </View>
-          </KeyboardAvoidingView>
-        </View>
-      </ScrollView>
+            <View>
+              <Text style={[styles.text, night && styles.textdark]}>Gender</Text>
+              <Picker
+                selectedValue={gender}
+                onValueChange={(value, index) => setGender(value)}
+                mode="dropdown"
+                style={[styles.picker, night && styles.darklist]}
+              >
+                <Picker.Item label="Male" value="Male" />
+                <Picker.Item label="Female" value="Female" />
+              </Picker>
+            </View>
+          </View>
+          <View>
+            <View>
+              <Text style={[styles.text, night && styles.textdark]}>Compose Your Problem</Text>
+            </View>
+            <KeyboardAvoidingView enabled={true}>
+              <View>
+                <TextInput
+                  style={[styles.input2, night && styles.dark2]}
+                  onChangeText={onChangeText2}
+                  value={text2}
+                  numberOfLines={10}
+                  multiline={true}
+                  maxLength={600}
+                  placeholder={"Don't exceed 600 characters..."}
+                />
+              </View>
+            </KeyboardAvoidingView>
+          </View>
+        </ScrollView>
+      </View>
+
       <View style={styles.footer}>
         <TouchableOpacity
           style={[styles.button, night && styles.darklist]}
@@ -171,6 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     paddingVertical: 30,
     backgroundColor: "#288771",
+    flex: 0.5
   },
   heading: {
     fontSize: 24,
@@ -228,7 +234,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#efefef",
   },
   body: {
-    flex: 1,
+    flex: 4,
   },
 
   input2: {
@@ -242,7 +248,7 @@ const styles = StyleSheet.create({
   },
   button: {
     fontSize: 18,
-    // paddingHorizontal: "40%",
+    paddingHorizontal: "20%",
     borderWidth: 2,
     borderRadius: 20,
     borderColor: "#ffffff",
@@ -266,6 +272,9 @@ const styles = StyleSheet.create({
   dark2: {
     backgroundColor: "#BDD3FF",
   },
+  footer: {
+    flex:1,
+  }
 });
 
 export default Details_user_to_appointment;
