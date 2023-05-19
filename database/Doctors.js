@@ -18,9 +18,9 @@ const deleteDoctor = async (id) => {
       console.log(error);
     });
 };
-const getDoc = async (doctor_id) => {
-  return axios.post(`${Ip.ip}/API/doctors/getdoc.php`, {
-    id: doctor_id
+const getDoc = async (id) => {
+  return axios.post(`${Ip.ip}/API/doctors/get_doc_by_id.php`, {
+    id: id
   })
     .then(function (response) {
       return response.data;

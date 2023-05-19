@@ -11,7 +11,12 @@ import {
   Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { insertReviews, getReviews } from "../../database/Users";
+import {
+  insertReviews,
+  getReviews,
+  getRate,
+  insertRate,
+} from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 import { Rating, AirbnbRating } from "react-native-elements";
 
@@ -19,39 +24,36 @@ const Doctorbage = ({ navigation, route }) => {
   let item = route.params.doctor;
   let image = item.image;
   const { curruser } = useContext(AppContext);
-
   const [text, setText] = useState("");
   const [count, setCount] = useState(0);
-  const [allrev, setAllrev] = useState([]);
-  // console.log(curruser.id, "  curruser.id");
-  // console.log(item.id, "       item.id");
-  // console.log(curruser.name, "curruser.name");
+  const { rev, setRev } = useContext(AppContext);
+
+  async function get(id) {
+    getReviews(id).then((res) => {
+      setRev(res);
+    });
+  }
+
   const InsertRev = async () => {
     insertReviews(curruser.id, item.id, text, curruser.name).then((res) => {
+      get(item.id);
       console.log(res);
     });
   };
-
-  async function get(id) {
-    const list = getReviews(id).then((res) => {
-      console.log(res);
-    });
-    setAllrev(list);
-  }
-
-  useEffect(() => {
-    get(item.id);
-    console.log(allrev);
-  }, []);
 
   const Item = ({ title }) => (
     <View>
-      <Text>{title.text}</Text>
+      <Text>
+        {title.user_name}: {title.text}
+      </Text>
     </View>
   );
   const sasasf = () => {
-    console.log("Rating is: ");
+    console.log("Rating is: ", Rating.name);
   };
+  function ratingCompleted(rating) {
+    console.log("Rating is: " + rating);
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header1}>
@@ -81,7 +83,7 @@ const Doctorbage = ({ navigation, route }) => {
           <Text style={styles.text2}> {item.describtion}</Text>
         </View>
       </View>
-      {/*//////////////////////////////  */}
+      {/*//////////////////////////////*/}
 
       <View style={styles.body}>
         <View style={styles.box}>
@@ -106,14 +108,16 @@ const Doctorbage = ({ navigation, route }) => {
       {/* ////////////////////////// */}
 
       <View style={styles.rate}>
-        <AirbnbRating
+        <Rating
+          showRating
           count={5}
           reviews={["Terrible", "Bad", "OKay", "Good", "Amazing"]}
-          onFinishRating={sasasf}
+          onFinishRating={(res) => {
+            console.log(res);
+          }}
         />
         <Text style={styles.ratetext}> rate this doctor</Text>
       </View>
-
       {/* ///////////////////////// */}
       <View style={styles.senbutt}>
         <Text> Add Reviewe to this doctor</Text>
@@ -126,15 +130,12 @@ const Doctorbage = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => InsertRev()}>
           <Text style={styles.text}>add</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => get(item.id)}>
-          <Text style={styles.text}>get</Text>
-        </TouchableOpacity>
       </View>
       {/* ///////////////////////// */}
 
-      {allrev.length != 0 ? (
+      {rev.length != 0 ? (
         <FlatList
-          data={allrev}
+          data={rev}
           renderItem={({ item }) => <Item title={item} />}
           keyExtractor={(item) => item.id}
         />

@@ -32,7 +32,7 @@ const Thk = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     header: {
-        flex: 2,
+        flex: 1,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 
     },
     body: {
-        flex: 3,
+        flex: 2,
         padding:10
     },
     heading: {
@@ -49,16 +49,16 @@ const styles = StyleSheet.create({
         color: "black",
         textAlign:"center"
     },
-    // footer: {
-    //     flex: 0.5,
-    //     borderRadius: 10,
-    //     elevation: 6,
-    //     borderColor: '#288771',
-    //     marginHorizontal: 4,
-    //     marginVertical: 6,
-    //     paddingHorizontal: 40,
-    //     paddingVertical: 10
-    // },
+    footer: {
+        flex: 1,
+        borderRadius: 10,
+        elevation: 6,
+        borderColor: '#288771',
+        marginHorizontal: 4,
+        marginVertical: 6,
+        paddingHorizontal: 40,
+        paddingVertical: 10
+    },
     text: {
         fontSize: 18,
         lineHeight: 35 * 0.75,

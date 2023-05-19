@@ -15,6 +15,7 @@ const Appointment = ({ navigation }) => {
   const { type, setType } = useContext(AppContext);
   const { night } = useContext(AppContext);
   const [active, setActive] = useState(false);
+  
   const HandleHistory = () => {
     setActive(true)
     setType("history")
