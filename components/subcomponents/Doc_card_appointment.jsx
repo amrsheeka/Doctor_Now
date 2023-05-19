@@ -17,7 +17,9 @@ function Doc_card_appointment({
   specialization1,
   doctor_id,
   users_id,
-  age
+  age,
+  schedule_type,
+  number
 }) {
   const { appointments, setAppointments } = useContext(AppContext);
   const { night } = useContext(AppContext);
@@ -35,6 +37,8 @@ function Doc_card_appointment({
     specialization1: specialization1,
     doctor_id: doctor_id,
     users_id: users_id,
+    schedule_type: schedule_type,
+    number: number
   };
   let id = CurrentUser.user.id;
   let is_doctor = CurrentUser.user.is_doctor;
@@ -42,20 +46,20 @@ function Doc_card_appointment({
   const Delete = async () => {
     await insertAppointment_toHistory(users_id, doctor_id, date, time, name_patient, age, gender, notes, doc_name, image, specialization1
     ).then(
-      async() => {
-      await deleteAppointment(users_id, doctor_id).then((res) => {
-        console.log("its ok");
-        if (CurrentUser.user.is_admin == "yes") {
-          getAllAppointment().then((res) => {
-            res.status != "failed" ? setAppointments(res) : setAppointments([]);
-          });
-        } else {
-          getAppointment(id).then((res) => {
-            res.status != "failed" ? setAppointments(res) : setAppointments([]);
-          });
-        }
-      });
-    })
+      async () => {
+        await deleteAppointment(users_id, doctor_id).then((res) => {
+          console.log("its ok");
+          if (CurrentUser.user.is_admin == "yes") {
+            getAllAppointment().then((res) => {
+              res.status != "failed" ? setAppointments(res) : setAppointments([]);
+            });
+          } else {
+            getAppointment(id).then((res) => {
+              res.status != "failed" ? setAppointments(res) : setAppointments([]);
+            });
+          }
+        });
+      })
   }
   const Delete2 = async () => {
     await deleteAppointment_fromHistory(users_id, doctor_id).then((res) => {
@@ -69,7 +73,7 @@ function Doc_card_appointment({
           get_History_Apps_for_Doctor(doctor_id).then((res) => {
             res.status != "failed" ? setAppointments(res) : setAppointments([]);
           });
-        }else{
+        } else {
           get_History_Apps_for_User(users_id).then((res) => {
             res.status != "failed" ? setAppointments(res) : setAppointments([]);
           });
@@ -128,35 +132,35 @@ function Doc_card_appointment({
                 Patient Name: {name_patient}
               </Text>
             </View>
-        
-              {
-                type != "history" ?
-                  (
-                  <View style={{ flexDirection: "row", gap: 60 }}>
-                      <TouchableOpacity
-                        style={[styles.cardButton, night && styles.buttonDark]}
-                        onPress={() => navigation.navigate("Update_patient", obj)}
-                      >
-                        <Text style={styles.cardButtonText}>Update </Text>
-                      </TouchableOpacity>
 
-                      <TouchableOpacity
-                        style={[styles.cardButton, night && styles.buttonDark]}
-                        onPress={() => Delete()}
-                      >
-                        <Text style={styles.cardButtonText}>Decline </Text>
-                      </TouchableOpacity>
-                    </View>
-                  ) :
-                  (
+            {
+              type != "history" ?
+                (
+                  <View style={{ flexDirection: "row", gap: 60 }}>
                     <TouchableOpacity
                       style={[styles.cardButton, night && styles.buttonDark]}
-                      onPress={() => Delete2()}
+                      onPress={() => navigation.navigate("Update_patient", obj)}
                     >
-                      <Text style={styles.cardButtonText}>Delete </Text>
+                      <Text style={styles.cardButtonText}>Update </Text>
                     </TouchableOpacity>
-                  )
-              }
+
+                    <TouchableOpacity
+                      style={[styles.cardButton, night && styles.buttonDark]}
+                      onPress={() => Delete()}
+                    >
+                      <Text style={styles.cardButtonText}>Decline </Text>
+                    </TouchableOpacity>
+                  </View>
+                ) :
+                (
+                  <TouchableOpacity
+                    style={[styles.cardButton, night && styles.buttonDark]}
+                    onPress={() => Delete2()}
+                  >
+                    <Text style={styles.cardButtonText}>Delete </Text>
+                  </TouchableOpacity>
+                )
+            }
 
 
             {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
@@ -168,6 +172,17 @@ function Doc_card_appointment({
       <View style={styles.card}>
         <View style={styles.cardContent}>
           <View style={styles.cardContent1}>
+            {obj.schedule_type !== "special" ?
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.cardTitle}
+              >
+                Patient Number: {obj.number}
+              </Text>
+
+              : <></>
+            }
             <Text
               numberOfLines={2}
               ellipsizeMode="tail"
@@ -189,20 +204,29 @@ function Doc_card_appointment({
             >
               Nodes: {notes}
             </Text>
-            <Text
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              style={styles.cardTitle}
-            >
-              Date: {date}
-            </Text>
-            <Text
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              style={styles.cardTitle}
-            >
-              Time: {time}
-            </Text>
+            {
+              obj.schedule_type === "special" ?
+                <View>
+
+                  <Text
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                    style={styles.cardTitle}
+                  >
+                    Date: {date}
+                  </Text>
+                  <Text
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                    style={styles.cardTitle}
+                  >
+                    Time: {time}
+                  </Text>
+
+                </View> :
+                <></>
+           }
+
           </View>
 
           {
