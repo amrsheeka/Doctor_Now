@@ -17,7 +17,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { night } = useContext(AppContext);
   const { favourite, setFavourite } = useContext(AppContext);
   const { timeList, setTimeList } = useContext(AppContext);
-  const [allrev, setAllrev] = useState([]);
+  const { rev, setRev } = useContext(AppContext);
   const [infav, setInfav] = useState(false);
 
   async function fetchDoctor() {
@@ -83,19 +83,22 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
 
   async function get(id) {
     getReviews(id).then((res) => {
-      setAllrev(res);
+      setRev(res);
     });
   }
 
-  useEffect(() => {
-    get(doctor.id);
-  }, []);
   //console.log(allrev);
-
+  async function handelRout() {
+    get(doctor.id).then(() => {
+      navigation.navigate("Doctorbage", { doctor });
+    });
+  }
   return (
     <TouchableOpacity
       key={doctor.id}
-      onPress={() => navigation.navigate("Doctorbage", { doctor, allrev })}
+      onPress={() => {
+        handelRout();
+      }}
     >
       <View style={[styles.card, night && styles.darkCard]}>
         <Image

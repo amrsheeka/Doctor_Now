@@ -22,15 +22,21 @@ import { Rating, AirbnbRating } from "react-native-elements";
 
 const Doctorbage = ({ navigation, route }) => {
   let item = route.params.doctor;
-  let rate = route.params.allrev;
   let image = item.image;
   const { curruser } = useContext(AppContext);
-
   const [text, setText] = useState("");
   const [count, setCount] = useState(0);
+  const { rev, setRev } = useContext(AppContext);
+
+  async function get(id) {
+    getReviews(id).then((res) => {
+      setRev(res);
+    });
+  }
 
   const InsertRev = async () => {
     insertReviews(curruser.id, item.id, text, curruser.name).then((res) => {
+      get(item.id);
       console.log(res);
     });
   };
@@ -77,7 +83,7 @@ const Doctorbage = ({ navigation, route }) => {
           <Text style={styles.text2}> {item.describtion}</Text>
         </View>
       </View>
-      {/*//////////////////////////////  */}
+      {/*//////////////////////////////*/}
 
       <View style={styles.body}>
         <View style={styles.box}>
@@ -106,7 +112,9 @@ const Doctorbage = ({ navigation, route }) => {
           showRating
           count={5}
           reviews={["Terrible", "Bad", "OKay", "Good", "Amazing"]}
-          onFinishRating={this.ratingCompleted}
+          onFinishRating={(res) => {
+            console.log(res);
+          }}
         />
         <Text style={styles.ratetext}> rate this doctor</Text>
       </View>
@@ -125,9 +133,9 @@ const Doctorbage = ({ navigation, route }) => {
       </View>
       {/* ///////////////////////// */}
 
-      {rate.length != 0 ? (
+      {rev.length != 0 ? (
         <FlatList
-          data={rate}
+          data={rev}
           renderItem={({ item }) => <Item title={item} />}
           keyExtractor={(item) => item.id}
         />
