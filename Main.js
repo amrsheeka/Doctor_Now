@@ -14,13 +14,13 @@ import Doctor from "./components/consts/Doctor";
 import { AppContext } from "./components/consts/AppContext";
 export default function Main() {
   const [currentUser, setCurrentUser] = useState(null);
-  const {doctors, setDoctors} = useContext(AppContext);
-  const {curruser, setCurrUser} = useContext(AppContext);
+  const { doctors, setDoctors } = useContext(AppContext);
+  const { curruser, setCurrUser } = useContext(AppContext);
   useEffect(() => {
     async function fetchUser() {
       const user = await getCurrentUser();
       setCurrentUser(user);
-      setCurrUser(user)
+      setCurrUser(user);
       console.log(user);
     }
     async function fetchDoctors() {
@@ -32,13 +32,6 @@ export default function Main() {
     fetchUser();
     fetchDoctors();
   }, []);
-
-
-    // return (
-    //   <NavigationContainer>
-    //     <DoctorStackNavigator />
-    //   </NavigationContainer>
-    // );
 
   if (currentUser == null) {
     return (
@@ -52,25 +45,20 @@ export default function Main() {
         <AdminStackNavigator />
       </NavigationContainer>
     );
-
-  }
-  else if (currentUser.is_doctor == "yes") {
+  } else if (currentUser.is_doctor == "yes") {
     return (
       <NavigationContainer>
         <DoctorStackNavigator />
       </NavigationContainer>
     );
-    
-  }
-   else {
+  } else {
     return (
-        <NavigationContainer>
-          <Homefunc />
-        </NavigationContainer>
+      <NavigationContainer>
+        <Homefunc />
+      </NavigationContainer>
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

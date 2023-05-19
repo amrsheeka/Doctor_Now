@@ -7,6 +7,7 @@ import {
   deleteFavourite,
   getAppointment_by_doc_id,
 } from "../../database/Users";
+import { getReviews } from "../../database/Users";
 import { getinFavourite } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { getFavourite } from "../../database/Users";
@@ -16,11 +17,14 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { night } = useContext(AppContext);
   const { favourite, setFavourite } = useContext(AppContext);
   const { timeList, setTimeList } = useContext(AppContext);
+  const { rev, setRev } = useContext(AppContext);
   const [infav, setInfav] = useState(false);
+
   async function fetchDoctor() {
     const filt = await getFavourite(CurrentUser.user.id);
     setFavourite(filt);
   }
+
   async function fetchFavouriteinfav() {
     try {
       const fav = await getinFavourite(CurrentUser.user.id, doctor.id).then(
@@ -36,6 +40,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       console.log(err);
     }
   }
+
   function fetch() {
     var timeList1 = getTimeList(doctor.start, doctor.end);
     getAppointment_by_doc_id(doctor.id, new Date().toDateString()).then(
@@ -49,6 +54,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       }
     );
   }
+
   useEffect(() => {
     fetchFavouriteinfav();
   }, []);
@@ -75,10 +81,24 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
     setInfav(!infav);
   };
 
+  async function get(id) {
+    getReviews(id).then((res) => {
+      setRev(res);
+    });
+  }
+
+  //console.log(allrev);
+  async function handelRout() {
+    get(doctor.id).then(() => {
+      navigation.navigate("Doctorbage", { doctor });
+    });
+  }
   return (
     <TouchableOpacity
       key={doctor.id}
-      onPress={() => navigation.navigate("Doctorbage", { doctor })}
+      onPress={() => {
+        handelRout();
+      }}
     >
       <View style={[styles.card, night && styles.darkCard]}>
         <Image
