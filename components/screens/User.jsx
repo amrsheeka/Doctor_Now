@@ -10,6 +10,7 @@ const User = ({ navigation }) => {
     logout().then(() => navigation.navigate("StackNavigator"));
   }
   return (
+    <View style={{flex:1,marginBottom:"20%"}}>
     <ScrollView style={[styles.container,night && styles.buttonDark]}>
       <View>
         <View style={[styles.x,night && styles.darklist]}>
@@ -71,6 +72,7 @@ const User = ({ navigation }) => {
         </View>
       </TouchableOpacity>
     </ScrollView>
+    </View>
   );
 };
 
