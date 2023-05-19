@@ -4,11 +4,14 @@ import {
   Text,
   View,
   KeyboardAvoidingView,
-  TextInput,
+  // TextInput,
   Button,
   TouchableOpacity,
+  ScrollView,
   Image
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { TextInput } from 'react-native-paper';
 import CurrentUser from "../consts/CurrentUser";
 import { login } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
@@ -23,6 +26,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
   const [showPasswordIcon, setShowPasswordIcon] = useState(false);
+  const main_color = "#288771";
 
   const navigateSignUp = () => {
     navigation.navigate("Sign_UP_2th_Screen");
@@ -59,37 +63,43 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.icon}>
-        <Image source={require("../assets/splash.png")} />
+        <Image style = {{height : 150 , width: 150 }}source={require("../assets/splash.png")} />
       </View>
       <View >
         <Text style={styles.greeting}>Welcome to Doctor Now!</Text>
       </View>
       <View style={styles.inputContainer}>
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Email</Text>
+
         <TextInput
-          placeholder="Email"
-          keyboardType="email-address"
-          style={[styles.input2]}
+          label= {"Email"}
+          mode = 'outlined'
+          keyboardType= {"email-address"}
+          style={{marginTop : 30 }}
           value={email}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={setEmail}
+          outlineStyle = {{borderColor : main_color, borderRadius : 10, color : "red"  }}
+          left = {<TextInput.Icon icon = 'email' />}
+          
+          activeOutlineColor = {main_color}  
+
+
+
         />
         <Text style={{ color: "red" }}>{emailErr}</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }} >Password</Text>
-        <View style={styles.passwordContainer}>
-          <TextInput
-            placeholder="Password"
-            keyboardType={showPasswordIcon?"visible-password":"default"}
-            style={styles.input}
-            secureTextEntry={!showPasswordIcon}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
-          <TouchableOpacity onPress={() => setShowPasswordIcon(!showPasswordIcon)} style={styles.passwordIcon}>
-            <Icon name={showPasswordIcon ? "visibility-off" : "visibility"} size={25} color="#aaa" />
-          </TouchableOpacity>
-
+        <TextInput
+          label= {"password"}
+          mode = 'outlined'
+          style={{marginTop : 20}}
+          value={password}
+          onChangeText={setPassword}
+          outlineStyle = {{borderColor : main_color, borderRadius : 10}}
+          secureTextEntry={!showPasswordIcon}
+          activeOutlineColor = {main_color} 
+          left = {<TextInput.Icon icon = 'lock' />}
+          right={<TextInput.Icon icon ={showPasswordIcon ? 'eye-off' : 'eye'} onPress={() => setShowPasswordIcon(!showPasswordIcon)} iconColor = "grey" />}
+          
+        />
           <Text style={{ color: "red" }}>{passwordErr}</Text>
-        </View>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -102,13 +112,15 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles.textContainer}>
             <Text> Not have account?</Text>
             <TouchableOpacity onPress={() => navigateSignUp()}>
-              <Text style={styles.text}>SignUp</Text>
+              <Text style={styles.text}> SignUp</Text>
             </TouchableOpacity>
 
           </View>
         </View>
       </View>
+      <StatusBar style ='auto' backgroundColor="#fafafa" />
     </View>
+    
   );
 
 
@@ -119,7 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    // backgroundColor: "white",
   },
   greeting: {
     fontSize: 28,
@@ -131,11 +143,11 @@ const styles = StyleSheet.create({
 
   },
   input: {
-    backgroundColor: "#eceff1",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 10,
+    // backgroundColor: "#eceff1",
+    // paddingHorizontal: 15,
+    // paddingVertical: 10,
+    // borderRadius: 10,
+    // marginTop: 10,
     flexDirection:"row",
     width:"100%",
     justifyContent:"center"
@@ -143,11 +155,12 @@ const styles = StyleSheet.create({
   },
   input2: {
     backgroundColor: "#eceff1",
-    paddingHorizontal: 15,
-    paddingVertical: 14,
-    borderRadius: 10,
+    // paddingHorizontal: 15,
+    // paddingVertical: 14,
+    // borderRadius: 20,
     marginTop: 10,
-    flexDirection:"row",
+    borderColor : "#288771",
+    // flexDirection:"row",
     width:"100%",
     justifyContent:"center"
 
@@ -156,7 +169,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
+    // marginTop: 20,
 
   },
   button: {
@@ -197,7 +210,7 @@ const styles = StyleSheet.create({
   icon: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 120,
 
   },
   greeting: {
@@ -207,12 +220,12 @@ const styles = StyleSheet.create({
   },
   passwordContainer:{
     flexDirection:"row",
-    width:"100%",
-    justifyContent:"center",
-    backgroundColor: "#eceff1",
-    paddingHorizontal: 20,
+    // width:"100%",
+    // justifyContent:"center",
+    // backgroundColor: "#eceff1",
+    // paddingHorizontal: 20,
     //paddingVertical: 10,
-    borderRadius: 10,
+    // borderRadius: 10,
   },
   passwordIcon:{
     alignSelf:"center",

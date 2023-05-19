@@ -29,12 +29,20 @@ import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
 import ProCard from "./ProCard";
 import Personal_Information from "./Personal_Information";
 import My_Account from "./My_Account";
+import About_The_Doctor from "./About_The_Doctor";
+import Doctor_Info from "./Doctor_Info";
+import Clinic_Info from "./Clinic_Info";
+import Clinic_Name_And_Number from "./Clinic_Name_And_Number";
+import Exmination_And_FollowUp from "./Exmination_And_FollowUp";
+import Assistant_Name_And_Number from "./Assistant_Name_And_Number";
+import Number_Views_bookings_And_Tab from "./Number_Views_bookings_And_Tab";
 
 import {
   getAppointment_for_Doctor,
   get_History_Apps_for_Doctor,
   get_doc_by_email,
   logout,
+  getAppointment_by_doc_id,
 } from "../../database/Users";
 import Appointments from "./Appointments";
 import { useContext } from "react";
@@ -48,7 +56,7 @@ import {
 } from "../../database/Doctors";
 
 const Info = ({ navigation }) => {
-  const [doctor_booking, setDoctor_booking] = useState(new Array(10).fill(2));
+  const [doctor_booking, setDoctor_booking] = useState({});
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
   const [show, setShow] = useState(false);
@@ -130,16 +138,16 @@ const Info = ({ navigation }) => {
   const [new_password, setNew_password] = useState("");
   const [confirm_new_password, setConfirm_new_password] = useState("");
 
-  const [about_the_doctor, setAbout_theDoctor] = useState("hi");
+  const [about_the_doctor, setAbout_theDoctor] = useState("");
   const [height, setHeight] = useState(0);
 
   const [nameClinic, setNameClinic] = useState("Essam Clinic");
   const [numberClinic, setNumberClinic] = useState("01012453522");
   const [nameAssistant, setNameAssistant] = useState("doctor sheeka");
   const [numberAssistant, setNumberAssistant] = useState("01016232521");
-  const [exmain, setExmain] = useState(100);
-  const [follow_up, setFollow_up] = useState(55);
-  const [duration, setDuration] = useState(7);
+  const [exmain, setExmain] = useState("100");
+  const [follow_up, setFollow_up] = useState("55");
+  const [duration, setDuration] = useState("7");
   const [flag, setFlag] = useState(true);
   const [schedule_summary, setSchedule_summary] = useState(true);
   const [isEnabled1, setIsEnabled1] = useState(false);
@@ -149,9 +157,9 @@ const Info = ({ navigation }) => {
   const [isEnabled5, setIsEnabled5] = useState(false);
   const [isEnabled6, setIsEnabled6] = useState(false);
   const [isEnabled7, setIsEnabled7] = useState(false);
-  const [color1, setColor1] = useState("#288759");
+  const [color1, setColor1] = useState("#288771");
   const [color2, setColor2] = useState("black");
-  const [color1_sechedule, setColor1_sechedule] = useState("#288759");
+  const [color1_sechedule, setColor1_sechedule] = useState("#288771");
   const [color2_sechedule, setColor2_sechedule] = useState("black");
   const [icon1, setIcon1] = useState("star");
   const [icon2, setIcon2] = useState("star");
@@ -242,6 +250,17 @@ const Info = ({ navigation }) => {
     });
   }
 
+  async function get_number_of_booking(i, id, date) {
+    await getAppointment_by_doc_id(id, date).then((res) => {
+      console.log(res);
+      let array = { ...doctor_booking };
+      array[i] = res.length ? res.length : 0;
+      setDoctor_booking({ ...array });
+      console.log(array);
+      console.log(doctor_booking);
+    });
+  }
+
   async function updateSchedules(schedule) {
     await updateSchedule({
       ...schedule,
@@ -263,6 +282,15 @@ const Info = ({ navigation }) => {
         ? setDoc_radio("checked")
         : setCenter_radio("checked");
       setDoctor(res[0]);
+      for (let i = 0; i < 1; i++) {
+        get_number_of_booking(
+          i,
+          res[0].id,
+          new Date(
+            new Date().getTime() + i * 24 * 60 * 60 * 1000
+          ).toDateString()
+        );
+      }
       getSchedule(res[0].id);
     });
   }, []);
@@ -825,7 +853,6 @@ const Info = ({ navigation }) => {
     const month = MONTHS[tomorrow.getMonth()];
 
     const x = date + "  " + month;
-
     return [day, x];
   };
   const plane = (i) => {
@@ -860,7 +887,7 @@ const Info = ({ navigation }) => {
           </Text>
         </View>
         <Icon5
-          onPress={() => plane(i)}
+          onPress={() => plane(i)} // get_number_of_booking(i,doctor.id,new Date(new Date().getTime() + i * 24 * 60 * 60 * 1000).toDateString())
           name={icon26}
           size={30}
           color={color_plane[i]}
@@ -938,521 +965,9 @@ const Info = ({ navigation }) => {
 
   // **************************************************************************************************************************
 
-  const ProViewsAndBookings = () => {
-    return (
-      <View style={{ marginVertical: 5, flexDirection: "row" }}>
-        <View style={{ width: "50%" }}>
-          <View style={styles.content}>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                fontWeight: "bold",
-                alignSelf: "center",
-              }}
-            >
-              {profile_views}
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 12,
-                alignSelf: "center",
-              }}
-            >
-              {" "}
-              {" Profile Views "}{" "}
-            </Text>
-          </View>
-        </View>
-
-        {/* ////////////////////////////////////////////////// */}
-
-        <View style={{ width: "50%" }}>
-          <View style={styles.content}>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                fontWeight: "bold",
-                alignSelf: "center",
-              }}
-            >
-              {bookings}
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 12,
-                alignSelf: "center",
-              }}
-            >
-              {" "}
-              {" Bookings "}{" "}
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
-  };
-
   // **************************************************************************************************************************
 
-  const DoctorClinicTab = () => {
-    return (
-      <View
-        style={[
-          styles.content,
-          {
-            flexDirection: "row",
-            width: "100%",
-            margin: 3,
-            paddingVertical: 15,
-          },
-        ]}
-      >
-        <TouchableOpacity
-          style={{ width: "50%", alignItems: "center" }}
-          onPress={Doctor_info}
-        >
-          <Text
-            style={{
-              color: color1,
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" Doctor info "}{" "}
-          </Text>
-        </TouchableOpacity>
-
-        {/* /////////////////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity
-          style={{ width: "50%", alignItems: "center" }}
-          onPress={Clinic_info}
-        >
-          <Text
-            style={{
-              color: color2,
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" Clinic info "}{" "}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
   // **************************************************************************************************************************
-
-  const DocInfo = () => {
-    return (
-      <View>
-        <TouchableOpacity onPress={about_doctor}>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginTop: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={icon7}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              About the Doctor{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-
-          {about_the_doctor !== "" ? (
-            <View style={[styles.content, { paddingVertical: 15 }]}>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    paddingBottom: 10,
-                    paddingHorizontal: 20,
-                    width: "80%",
-                  }}
-                >
-                  {about_the_doctor}
-                </Text>
-              </View>
-            </View>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-
-        {/* ///////////////////////////////////////////// */}
-
-        <TouchableOpacity>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={icon8}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Education{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-        </TouchableOpacity>
-
-        {/* /////////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              },
-            ]}
-          >
-            <Icon3
-              name={icon9}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Spoken Languages{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
-  // **************************************************************************************************************************
-
-  const ClinicInfo = () => {
-    return (
-      <View>
-        <TouchableOpacity onPress={clinic_name}>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginTop: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={icon7}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Clinic Name and Number{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-
-          {nameClinic !== "" || numberClinic !== "" ? (
-            <View style={[styles.content, { paddingVertical: 15 }]}>
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 15,
-                  paddingBottom: 10,
-                  paddingHorizontal: 20,
-                }}
-              >
-                {nameClinic}
-              </Text>
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 15,
-                  paddingHorizontal: 20,
-                }}
-              >
-                {numberClinic}
-              </Text>
-            </View>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-
-        {/* //////////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              },
-            ]}
-          >
-            <Icon3
-              name={icon10}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Clinic Photos{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-        </TouchableOpacity>
-
-        {/* /////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity onPress={exmination}>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-              },
-            ]}
-          >
-            <Icon4
-              name={icon11}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Exmination and Follow-up{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-          {exmain !== "" || follow_up !== "" ? (
-            <View style={[styles.content, { paddingVertical: 15 }]}>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    paddingBottom: 10,
-                    paddingHorizontal: 20,
-                    width: "80%",
-                  }}
-                >
-                  {" "}
-                  Exmaination Fees{" "}
-                </Text>
-                <Text>{exmain} EGP</Text>
-              </View>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    paddingHorizontal: 20,
-                    paddingBottom: 10,
-                    width: "80%",
-                  }}
-                >
-                  {" "}
-                  Follow-up Fees{" "}
-                </Text>
-                <Text> {follow_up} EGP </Text>
-              </View>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    paddingHorizontal: 20,
-                    width: "80%",
-                  }}
-                >
-                  {" "}
-                  Follow-up Duration{" "}
-                </Text>
-                <Text> {duration} Days </Text>
-              </View>
-            </View>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-
-        {/* ////////////////////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={icon12}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Clinic Address{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-        </TouchableOpacity>
-
-        {/* ///////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity onPress={assistant}>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginTop: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={icon7}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Assistant Name and Number{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-          {nameAssistant !== "" || numberAssistant !== "" ? (
-            <View
-              style={[styles.content, { paddingVertical: 15, marginDown: 10 }]}
-            >
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 15,
-                  paddingBottom: 10,
-                  paddingHorizontal: 20,
-                }}
-              >
-                {nameAssistant}
-              </Text>
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 15,
-                  paddingHorizontal: 20,
-                }}
-              >
-                {numberAssistant}
-              </Text>
-            </View>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-      </View>
-    );
-  };
 
   // **************************************************************************************************************************
   const click_doctor = () => {
@@ -1463,298 +978,16 @@ const Info = ({ navigation }) => {
     setDoc_radio("unchecked");
     setCenter_radio("checked");
   };
-  
 
   // **************************************************************************************************************************
 
-  
+  // **************************************************************************************************************************
 
   // **************************************************************************************************************************
 
-  const AboutTheDoctor = () => {
-    return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingVertical: 15,
-            marginVertical: 5,
-          }}
-        >
-          <Icon2
-            name={icon7}
-            size={25}
-            color="#288759"
-            style={{ width: "5%", marginLeft: 5 }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            About the Doctor{" "}
-          </Text>
-        </View>
-        <TextInput
-          style={[styles.inp, { height: height }]}
-          defaultValue={about_the_doctor}
-          multiline
-          onContentSizeChange={(event) =>
-            setHeight(event.nativeEvent.contentSize.height)
-          }
-          onChangeText={setAbout_theDoctor}
-          numberOfLines={10}
-          maxLength={250}
-        />
-        <Text style={{ alignSelf: "flex-end", marginHorizontal: 30 }}>
-          {about_the_doctor.length} / 250
-        </Text>
-      </View>
-    );
-  };
-
   // **************************************************************************************************************************
 
-  const ClinicNameAndNumber = () => {
-    return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingVertical: 15,
-            marginVertical: 5,
-          }}
-        >
-          <Icon2
-            name={icon7}
-            size={25}
-            color="#288759"
-            style={{ width: "5%", marginLeft: 5 }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            Basic Clinic Information{" "}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Clinic Name{" "}
-        </Text>
-        <TextInput
-          style={styles.inp}
-          defaultValue={nameClinic}
-          onChangeText={setNameClinic}
-        />
-
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Clinic Phone number{" "}
-        </Text>
-        <TextInput
-          style={styles.inp}
-          keyboardType="phone-pad"
-          defaultValue={CurrentUser.user.phone}
-          onChangeText={setNumberClinic}
-        />
-      </View>
-    );
-  };
-
   // **************************************************************************************************************************
-
-  const ExminationAndFollowUp = () => {
-    return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginVertical: 10,
-            marginHorizontal: 15,
-          }}
-        >
-          <Icon4
-            name={icon11}
-            size={25}
-            color={main_color}
-            style={{ width: "7%" }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            Exmination{" "}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Exmination Fees (EGP){" "}
-        </Text>
-        <TextInput
-          keyboardType="phone-pad"
-          style={styles.inp}
-          defaultValue={exmain + ""}
-          onChangeText={setExmain}
-        />
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginTop: 30,
-            marginBottom: 5,
-            marginHorizontal: 15,
-          }}
-        >
-          <Icon4
-            name={icon11}
-            size={25}
-            color={main_color}
-            style={{ width: "7%" }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            Follow-up{" "}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Follow-up Fees (EGP){" "}
-        </Text>
-        <TextInput
-          keyboardType="phone-pad"
-          style={styles.inp}
-          defaultValue={follow_up + ""}
-          onChangeText={setFollow_up}
-        />
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Duration (Days){" "}
-        </Text>
-        <TextInput
-          keyboardType="phone-pad"
-          style={styles.inp}
-          defaultValue={duration + ""}
-          onChangeText={setDuration}
-        />
-      </View>
-    );
-  };
-
-  // **************************************************************************************************************************
-
-  const AssistantNameAndNumber = () => {
-    return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingVertical: 15,
-            marginHorizontal: 10,
-            alignItems: "center",
-            marginVertical: 5,
-          }}
-        >
-          <Icon4
-            name={icon19}
-            size={25}
-            color="#288759"
-            style={{ width: "5%", marginLeft: 5 }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            Basic Assistant Information{" "}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Assistant Name{" "}
-        </Text>
-        <TextInput
-          style={styles.inp}
-          defaultValue={nameAssistant}
-          onChangeText={setNameAssistant}
-        />
-
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Assistant number{" "}
-        </Text>
-        <TextInput
-          style={styles.inp}
-          keyboardType="phone-pad"
-          defaultValue={numberAssistant}
-          onChangeText={setNumberAssistant}
-        />
-      </View>
-    );
-  };
 
   // **************************************************************************************************************************
 
@@ -2519,10 +1752,31 @@ const Info = ({ navigation }) => {
                   fun3={account_settings}
                 />
               }
-              {ProViewsAndBookings()}
-              {DoctorClinicTab()}
+              <Number_Views_bookings_And_Tab
+                profile_views={profile_views}
+                bookings={bookings}
+                fun1={Doctor_info}
+                fun2={Clinic_info}
+                color1={color1}
+                color2={color2}
+              />
 
-              {flag ? DocInfo() : ClinicInfo()}
+              {flag ? (
+                <Doctor_Info desc={about_the_doctor} fun1={about_doctor} />
+              ) : (
+                <Clinic_Info
+                  nameClinic={nameClinic}
+                  numberClinic={numberClinic}
+                  exmain={exmain}
+                  follow_up={follow_up}
+                  duration={duration}
+                  nameAssistant={nameAssistant}
+                  numberAssistant={numberAssistant}
+                  fun1={clinic_name}
+                  fun2={exmination}
+                  fun3={assistant}
+                />
+              )}
             </View>
           ) : page === "Professional Information" ? (
             <Personal_Information
@@ -2556,13 +1810,35 @@ const Info = ({ navigation }) => {
               }
             />
           ) : page === "About the Doctor" ? (
-            AboutTheDoctor()
+            <About_The_Doctor
+              desc={about_the_doctor}
+              fun1={setAbout_theDoctor}
+              height={height}
+              fun2={(event) => setHeight(event.nativeEvent.contentSize.height)}
+            />
           ) : page === "Clinic Name and Number" ? (
-            ClinicNameAndNumber()
+            <Clinic_Name_And_Number
+              nameClinic={nameClinic}
+              fun1={setNameClinic}
+              numberClinic={numberClinic}
+              fun2={setNumberClinic}
+            />
           ) : page === "Exmination and Follow-up" ? (
-            ExminationAndFollowUp()
+            <Exmination_And_FollowUp
+              exmain={exmain}
+              fun1={setExmain}
+              follow_up={follow_up}
+              fun2={setFollow_up}
+              duration={duration}
+              fun3={setDuration}
+            />
           ) : page === "Assistant Name and Number" ? (
-            AssistantNameAndNumber()
+            <Assistant_Name_And_Number
+              nameAssistant={nameAssistant}
+              fun1={setNameAssistant}
+              numberAssistant={numberAssistant}
+              fun2={setNumberAssistant}
+            />
           ) : page === "Schedule" ? (
             <View>
               {ScheduleTab()}

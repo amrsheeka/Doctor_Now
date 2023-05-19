@@ -7,9 +7,9 @@ const sighnup = async (
   password,
   phone,
   address,
-  address2,
+  // address2,
   age,
-  gender,
+  // gender,
   confirm
 ) => {
   return fetch(`${Ip.ip}/API/Auth/signup.php`, {
@@ -25,10 +25,10 @@ const sighnup = async (
       password: password,
       phone: phone,
       address: address,
-      address_2: address2,
+      // address_2: 'f',
       confirm: confirm,
       age: age,
-      gender: gender,
+      // gender: 'male',
     }),
   })
     .then((response) => response.json())

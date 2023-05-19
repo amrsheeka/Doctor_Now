@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SelectList } from "react-native-dropdown-select-list";
+
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
-import { logout } from "../../database/Users";
+
 
 const My_Account = ({
   email,
@@ -26,12 +26,6 @@ const My_Account = ({
   fun6,
 }) => {
   const [open_password, setOpen_password] = useState(false);
- 
-
-
-  const icon16 = "user-lock";
-  const icon17 = "email";
-  const icon18 = "phone";
   const main_color = "#288771";
 
 
