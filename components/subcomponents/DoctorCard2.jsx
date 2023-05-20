@@ -152,13 +152,13 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
             <MaterialIcons
               name="favorite"
               size={30}
-              color={night ? "#0D1E3D" : "#288771"}
+              color={night ? "#dfd9d9" : "#288771"}
             />
           ) : (
             <MaterialIcons
               name="favorite-border"
               size={30}
-              color={night ? "#0D1E3D" : "#288771"}
+                color={night ? "#288771" : "#288771"}
             />
           )}
         </TouchableOpacity>
@@ -209,16 +209,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   buttonDark: {
-    backgroundColor: "#0D1E3D",
+    backgroundColor: "#288771",
   },
-  darklist: {
-    backgroundColor: "#142E5E",
-  },
-  dark2: {
-    backgroundColor: "#BDD3FF",
-  },
+  // darklist: {
+  //   backgroundColor: "#e33030",
+  // },
+  // dark2: {
+  //   backgroundColor: "#d61919",
+  // },
   darkCard: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    backgroundColor: "#303030",
   },
 });
 export default memo(DoctorCard2);
