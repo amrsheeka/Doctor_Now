@@ -116,9 +116,9 @@ const Info = ({ navigation }) => {
   const [selected, setSelected] = useState("First In First Out");
   const [selected2, setSelected2] = useState("Accept all bookings");
   const [selected3, setSelected3] = useState("Pulmonologist");
-  const [profile_views, setProfileviews] = useState(10);
-  const [bookings, setBookings] = useState(0);
-  const [reviews, setReviews] = useState(25);
+  const [profile_views, setProfileviews] = useState("10");
+  const [bookings, setBookings] = useState("9");
+  const [reviews, setReviews] = useState("25");
   const [doc_radio, setDoc_radio] = useState("unchecked");
   const [center_radio, setCenter_radio] = useState("unchecked");
   const [practise_licence, setPractise_licence] = useState("");
@@ -167,6 +167,8 @@ const Info = ({ navigation }) => {
   const [icon4, setIcon4] = useState("star");
   const [icon5, setIcon5] = useState("star");
 
+  const [whichDay, setWhichDay] = useState(0);
+
   const icon6 = "edit";
   const icon7 = "info";
   const icon8 = "graduation-cap";
@@ -191,7 +193,7 @@ const Info = ({ navigation }) => {
   const main_color = "#288771";
   const empty = false;
   const { schedules, setSchedules } = useContext(AppContext);
-  const { appointments,setAppointments } = useContext(AppContext);
+  const { appointments, setAppointments } = useContext(AppContext);
   const { setType } = useContext(AppContext);
   const { curruser } = useContext(AppContext);
   const { doctor, setDoctor } = useContext(AppContext);
@@ -200,16 +202,16 @@ const Info = ({ navigation }) => {
     let email = CurrentUser.user.email;
     return await get_doc_by_email(email);
   }
-  async function handleExaminType(type){
+  async function handleExaminType(type) {
     setSelected(type);
-    let doc = {...doctor};
-    if(type=="First In First Out"){
-      doc.schedule_type="fifo";
-    }else if(type=="On Appointments"){
-      doc.schedule_type="on appointment";
-    }else if(type=="Timer"){
-      doc.schedule_type="special";
-    } 
+    let doc = { ...doctor };
+    if (type == "First In First Out") {
+      doc.schedule_type = "fifo";
+    } else if (type == "On Appointments") {
+      doc.schedule_type = "on appointment";
+    } else if (type == "Timer") {
+      doc.schedule_type = "special";
+    }
     update_Doctor_info(doc);
   }
   async function getSchedule(id) {
@@ -236,7 +238,7 @@ const Info = ({ navigation }) => {
       setEnd4(res1[4].end);
       setEnd5(res1[5].end);
       setEnd6(res1[6].end);
-      setBookings(appointments);
+      // setBookings(appointments);
       // setStartTime(res1[0].start);
       // setStartTime1(res1[1].start);
       // setStartTime2(res1[2].start);
@@ -265,11 +267,13 @@ const Info = ({ navigation }) => {
 
   async function get_number_of_booking(i, id, date) {
     await getAppointment_by_doc_id(id, date).then((res) => {
-      console.log(res);
-      let array = { ...doctor_booking };
-      array[i] = res.length ? res.length : 0;
-      setDoctor_booking({ ...array });
-      console.log(array);
+      // console.log(res);
+      let x;
+      if (res.status !== "failed") 
+        x = res.length;
+       else 
+        x = 0;
+      setDoctor_booking({ ...doctor_booking, [i]: x });
       console.log(doctor_booking);
     });
   }
@@ -281,6 +285,8 @@ const Info = ({ navigation }) => {
       getSchedule(doctor.id);
     });
   }
+  
+
   useEffect(() => {
     getDoc().then((res) => {
       setDoctor_email(res[0].email);
@@ -291,26 +297,17 @@ const Info = ({ navigation }) => {
       setFullpro_title(res[0].specialization1);
       setImage(res[0].image);
       setExmain(res[0].price);
-      if(res[0].schedule_type=="fifo"){
+      if (res[0].schedule_type == "fifo") {
         setSelected("First In First Out");
-      }else if(res[0].schedule_type=="on appointment"){
+      } else if (res[0].schedule_type == "on appointment") {
         setSelected("On Appointments");
-      }else if(res[0].schedule_type=="special"){
+      } else if (res[0].schedule_type == "special") {
         setSelected("Timer");
-      }      
+      }
       res[0].title1 == "Doctor"
         ? setDoc_radio("checked")
         : setCenter_radio("checked");
       setDoctor(res[0]);
-      for (let i = 0; i < 1; i++) {
-        get_number_of_booking(
-          i,
-          res[0].id,
-          new Date(
-            new Date().getTime() + i * 24 * 60 * 60 * 1000
-          ).toDateString()
-        );
-      }
       getSchedule(res[0].id);
     });
   }, []);
@@ -328,7 +325,7 @@ const Info = ({ navigation }) => {
       ? setDoc_radio("checked")
       : setCenter_radio("checked");
 
-    page === "Schedule" ? summary() : setPage("Profile");
+    page === "Schedule" ? summary() : profile();
     setOpen_password(false);
   };
   const save = () => {
@@ -376,16 +373,21 @@ const Info = ({ navigation }) => {
     setType("history");
   };
 
-  const HandleAppointments = () => {
-    get_doc_by_email(email).then((ans) => {
-      if (ans.status !== "failed") {
-        getAppointment_for_Doctor(ans[0].id).then((res) => {
-          if (res.status !== "failed") setAppointments(res);
-          else setAppointments([]);
-        });
-      }
-    });
-    setType("appointments");
+  const HandleAppointments = (i) => {
+    // get_doc_by_email(email).then((ans) => {
+    //   if (ans.status !== "failed") {
+    //     getAppointment_for_Doctor(ans[0].id).then((res) => {
+    //       if (res.status !== "failed") setAppointments(res);
+    //       else setAppointments([]);
+    //     });
+    //   }
+    // });
+    // setType("appointments");
+    let date = new Date(
+      new Date().getTime() + i * 24 * 60 * 60 * 1000
+    ).toDateString();
+    // console.log(date , doctor.id, CurrentUser.user.id);
+    <Appointments />;
   };
 
   const ChangeDate = (event, selectedDate) => {
@@ -880,40 +882,58 @@ const Info = ({ navigation }) => {
     arr[i] == "#ccc" ? (arr[i] = "#288771") : (arr[i] = "#ccc");
     setColor_plane(arr);
   };
+
   const appoint = (i) => {
     return (
-      <View
-        style={[
-          styles.content,
-          {
-            flexDirection: "row",
-            padding: 15,
-            marginHorizontal: 7,
-            marginBottom: 7,
-          },
-        ]}
+      <TouchableOpacity
+        onPress={() => {
+          setWhichDay(i);
+          setPage("Appointments");
+        }}
       >
-        <View style={{ width: "40%", merginRight: 30 }}>
-          <Text style={{ color: main_color }}>
-            {i === 0 ? "Today" : i === 1 ? "Tomorrow" : app_days(i)[0]}
-          </Text>
-          <Text>{app_days(i)[1]}</Text>
+        <View
+          style={[
+            styles.content,
+            {
+              flexDirection: "row",
+              padding: 15,
+              marginHorizontal: 7,
+              marginBottom: 7,
+            },
+          ]}
+        >
+          <View style={{ width: "40%", merginRight: 30 }}>
+            <Text style={{ color: main_color }}>
+              {i === 0 ? "Today" : i === 1 ? "Tomorrow" : app_days(i)[0]}
+            </Text>
+            <Text>{app_days(i)[1]}</Text>
+          </View>
+          <View style={{ width: "45%", alignSelf: "center" }}>
+            <Text>
+              {doctor_booking[i] === 0
+                ? "No Bookings"
+                : doctor_booking[i] + " Bookings"}
+            </Text>
+          </View>
+          <Icon5
+            onPress={() => {
+              get_number_of_booking(
+                i,
+                doctor.id,
+                new Date(
+                  new Date().getTime() + i * 24 * 60 * 60 * 1000
+                ).toDateString()
+              );
+            plane(i);
+            }
+            } // get_number_of_booking(i,doctor.id,new Date(new Date().getTime() + i * 24 * 60 * 60 * 1000).toDateString())
+            name={icon26}
+            size={30}
+            color={color_plane[i]}
+            style={{ alignSelf: "center", width: "10%", marginLeft: 15 }}
+          />
         </View>
-        <View style={{ width: "45%", alignSelf: "center" }}>
-          <Text>
-            {doctor_booking[i] === 0
-              ? "No Bookings"
-              : doctor_booking[i] + " Bookings"}
-          </Text>
-        </View>
-        <Icon5
-          onPress={() => plane(i)} // get_number_of_booking(i,doctor.id,new Date(new Date().getTime() + i * 24 * 60 * 60 * 1000).toDateString())
-          name={icon26}
-          size={30}
-          color={color_plane[i]}
-          style={{ alignSelf: "center", width: "10%", marginLeft: 15 }}
-        />
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -947,7 +967,7 @@ const Info = ({ navigation }) => {
           style={{ width: "7%", marginHorizontal: 10 }}
         />
         <Text style={[styles.label, { width: "78%" }]}> {page} </Text>
-
+        {page != "Appointments" ? (
         <Icon6
           name={icon15}
           size={30}
@@ -955,6 +975,7 @@ const Info = ({ navigation }) => {
           onPress={save}
           style={{ width: "20%" }}
         />
+        ) :(<></>)}
       </View>
     );
   };
@@ -1165,7 +1186,11 @@ const Info = ({ navigation }) => {
           Examination Type{" "}
         </Text>
         <SelectList
-          data={[{ value: "First In First Out" }, { value: "On Appointments"},{value:"Timer"}]}
+          data={[
+            { value: "First In First Out" },
+            { value: "On Appointments" },
+            { value: "Timer" },
+          ]}
           setSelected={handleExaminType}
           placeholder={selected}
           search={false}
@@ -1724,7 +1749,7 @@ const Info = ({ navigation }) => {
   const More = () => {
     return (
       <View>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.button, styles.button1]}
             onPress={HandleHistory}
@@ -1737,7 +1762,7 @@ const Info = ({ navigation }) => {
           >
             <Text style={styles.buttonText}>Appointments</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <Appointments />
       </View>
     );
@@ -1881,7 +1906,16 @@ const Info = ({ navigation }) => {
             </View>
           ) : page === "More" ? (
             More()
+          ) : page === "Appointments" ? (
+            <Appointments
+              id={doctor.id}
+              date={new Date(
+                new Date().getTime() + whichDay * 24 * 60 * 60 * 1000
+              ).toDateString()}
+              fun1 = {() => profile()}
+            />
           ) : (
+            // HandleAppointments(whichDay)
             <></>
           )}
         </ScrollView>
