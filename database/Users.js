@@ -432,12 +432,12 @@ const getRate = async (doctor_id) => {
       console.log(error);
     });
 };
-const insertRate = async (users_id, doctor_id, rate) => {
+const insertRate = async (users_id, doctor_id, rate_count) => {
   const res = await axios
-    .post(`${Ip.ip}/API/reviews/insert_rev.php`, {
+    .post(`${Ip.ip}/API/rate/insert_rate.php`, {
       users_id: users_id,
       doctor_id: doctor_id,
-      rate: rate,
+      rate_count: rate_count,
     })
     .then(function (response) {
       console.log(response.data);
