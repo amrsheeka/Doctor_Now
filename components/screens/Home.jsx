@@ -363,13 +363,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
+    backgroundColor: '#288771',
   },
   darklist: {
-    backgroundColor: '#142E5E',
+    backgroundColor: '#262424',
   },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: "#1d1c1c",
   },
 });
 
