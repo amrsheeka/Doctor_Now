@@ -258,10 +258,12 @@ const getAppointment_for_Doctor = async (doctor_id) => {
       console.log(error);
     });
 };
-const get_History_Apps_for_Doctor = async (doctor_id) => {
+
+const get_History_Apps_for_Doctor = async (doctor_id, date) => {
   return axios
     .post(`${Ip.ip}/API/doctors/Get_History_apps_doc.php`, {
       doctor_id: doctor_id,
+      date: date,
     })
     .then(function (response) {
       console.log(response.date);

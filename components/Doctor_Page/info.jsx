@@ -4,28 +4,24 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  FlatList,
-  Platform,
   Image,
   TextInput,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
-  SafeAreaView,
   Switch,
-  Alert,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { RadioButton } from "react-native-paper";
+
 import { StatusBar } from "expo-status-bar";
 import DateTimePicker from "@react-native-community/datetimepicker";
+
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
 import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
+
 import ProCard from "./ProCard";
 import Personal_Information from "./Personal_Information";
 import My_Account from "./My_Account";
@@ -36,6 +32,9 @@ import Clinic_Name_And_Number from "./Clinic_Name_And_Number";
 import Exmination_And_FollowUp from "./Exmination_And_FollowUp";
 import Assistant_Name_And_Number from "./Assistant_Name_And_Number";
 import Number_Views_bookings_And_Tab from "./Number_Views_bookings_And_Tab";
+import Schedule_Summary from "./Schedule_Summary";
+import More from "./More";
+import Appointments_History from "./Appointments_History";
 
 import {
   getAppointment_for_Doctor,
@@ -56,6 +55,8 @@ import {
 } from "../../database/Doctors";
 
 const Info = ({ navigation }) => {
+  const main_color = "#288771";
+
   const [doctor_booking, setDoctor_booking] = useState({});
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
@@ -157,9 +158,9 @@ const Info = ({ navigation }) => {
   const [isEnabled5, setIsEnabled5] = useState(false);
   const [isEnabled6, setIsEnabled6] = useState(false);
   const [isEnabled7, setIsEnabled7] = useState(false);
-  const [color1, setColor1] = useState("#288771");
+  const [color1, setColor1] = useState(main_color);
   const [color2, setColor2] = useState("black");
-  const [color1_sechedule, setColor1_sechedule] = useState("#288771");
+  const [color1_sechedule, setColor1_sechedule] = useState(main_color);
   const [color2_sechedule, setColor2_sechedule] = useState("black");
   const [icon1, setIcon1] = useState("star");
   const [icon2, setIcon2] = useState("star");
@@ -169,20 +170,6 @@ const Info = ({ navigation }) => {
 
   const [whichDay, setWhichDay] = useState(0);
 
-  const icon6 = "edit";
-  const icon7 = "info";
-  const icon8 = "graduation-cap";
-  const icon9 = "world";
-  const icon10 = "photograph";
-  const icon11 = "file-invoice-dollar";
-  const icon12 = "location-pin";
-  const icon13 = "drivers-license";
-  const icon14 = "arrow-left";
-  const icon15 = "content-save-check";
-  const icon16 = "user-lock";
-  const icon17 = "email";
-  const icon18 = "phone";
-  const icon19 = "user-nurse";
   const icon20 = "user-md";
   const icon21 = "calendar";
   const icon22 = "bars";
@@ -190,14 +177,16 @@ const Info = ({ navigation }) => {
   const icon24 = "chevron-down";
   const icon25 = "calendar-month";
   const icon26 = "plane";
-  const main_color = "#288771";
+
   const empty = false;
+
   const { schedules, setSchedules } = useContext(AppContext);
   const { appointments, setAppointments } = useContext(AppContext);
   const { setType } = useContext(AppContext);
   const { curruser } = useContext(AppContext);
   const { doctor, setDoctor } = useContext(AppContext);
   const [image, setImage] = useState();
+
   async function getDoc() {
     let email = CurrentUser.user.email;
     return await get_doc_by_email(email);
@@ -269,10 +258,8 @@ const Info = ({ navigation }) => {
     await getAppointment_by_doc_id(id, date).then((res) => {
       // console.log(res);
       let x;
-      if (res.status !== "failed") 
-        x = res.length;
-       else 
-        x = 0;
+      if (res.status !== "failed") x = res.length;
+      else x = 0;
       setDoctor_booking({ ...doctor_booking, [i]: x });
       console.log(doctor_booking);
     });
@@ -285,7 +272,6 @@ const Info = ({ navigation }) => {
       getSchedule(doctor.id);
     });
   }
-  
 
   useEffect(() => {
     getDoc().then((res) => {
@@ -390,82 +376,30 @@ const Info = ({ navigation }) => {
     <Appointments />;
   };
 
-  const ChangeDate = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
-    setShow(false);
-    let tempDate = new Date(currentDate);
-    let fDate =
-      tempDate.getDate() +
-      "/" +
-      (tempDate.getMonth() + 1) +
-      "/" +
-      tempDate.getFullYear();
-
-    setBirth(fDate);
-  };
   /////////////////////////////////////
-
-  // const clickMale = () => {
-  //   setMale("checked");
-  //   setFemale("unchecked");
-  // };
-
-  // const clickFemale = () => {
-  //   setMale("unchecked");
-  //   setFemale("checked");
-  // };
 
   const Doctor_info = () => {
     setFlag(true);
-    setColor1("#288759");
+    setColor1(main_color);
     setColor2("black");
   };
 
   const Clinic_info = () => {
     setFlag(false);
     setColor1("black");
-    setColor2("#288759");
+    setColor2(main_color);
   };
 
   const summary = () => {
     setSchedule_summary(true);
-    setColor1_sechedule("#288759");
+    setColor1_sechedule(main_color);
     setColor2_sechedule("black");
   };
 
   const management = () => {
     setSchedule_summary(false);
     setColor1_sechedule("black");
-    setColor2_sechedule("#288759");
-  };
-
-  const edit_name = () => {
-    setPage("Professional Information");
-  };
-
-  const account_settings = () => {
-    setPage("Account Settings");
-  };
-
-  const change_password = () => {
-    setOpen_password(!open_password);
-  };
-
-  const about_doctor = () => {
-    setPage("About the Doctor");
-  };
-
-  const clinic_name = () => {
-    setPage("Clinic Name and Number");
-  };
-
-  const exmination = () => {
-    setPage("Exmination and Follow-up");
-  };
-
-  const assistant = () => {
-    setPage("Assistant Name and Number");
+    setColor2_sechedule(main_color);
   };
 
   const profile = () => {
@@ -486,33 +420,6 @@ const Info = ({ navigation }) => {
     setColor_more("white");
     setPage("More");
   };
-
-  // const handleSubmit = (exmin) => {
-  //   let newText = "30 Mins";
-  //   if (
-  //     !(
-  //       exmin.toString().includes("M") ||
-  //       exmin.toString().includes("i") ||
-  //       exmin.toString().includes("n") ||
-  //       exmin.toString().includes("s") ||
-  //       exmin < 5
-  //     )
-  //   ){
-  //   newText = exmination_duration + " Mins";
-  //   // console.log(newText);
-  // }
-  // else console.log("dfsdf");
-
-  //   console.log(newText);
-
-  //   if (exmin === exmination_duration) return setExmination_duration(newText);
-  //   // else if (exmin === exmination_duration1) setExmination_duration1(newText);
-  //   // else if (exmin === exmination_duration2) setExmination_duration2(newText);
-  //   // else if (exmin === exmination_duration3) setExmination_duration3(newText);
-  //   // else if (exmin === exmination_duration4) setExmination_duration4(newText);
-  //   // else if (exmin === exmination_duration5) setExmination_duration5(newText);
-  //   // else if (exmin === exmination_duration6) setExmination_duration6(newText);
-  // };
 
   const exmin_duration = (exmin) => {
     if (exmin === exmination_duration) return setExmination_duration;
@@ -557,8 +464,6 @@ const Info = ({ navigation }) => {
       hour.toString() + ":" + minutes.toString() + " " + TimeType.toString();
     setShow_time(0);
     if (which === "sat_start") {
-      //setStartTime(currentTime);
-      //setStart(fTime);
       updateSchedules({
         day: schedules[0].day,
         doctor_id: schedules[0].doctor_id,
@@ -568,8 +473,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[0].avilable,
       });
     } else if (which === "sat_end") {
-      //setEndTime(currentTime);
-      //setEnd(fTime);
       updateSchedules({
         day: schedules[0].day,
         doctor_id: schedules[0].doctor_id,
@@ -579,8 +482,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[0].avilable,
       });
     } else if (which === "sun_start") {
-      //setStartTime1(currentTime);
-      //setStart1(fTime);
       updateSchedules({
         day: schedules[1].day,
         doctor_id: schedules[1].doctor_id,
@@ -590,8 +491,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[1].avilable,
       });
     } else if (which === "sun_end") {
-      //setEndTime1(currentTime);
-      //setEnd1(fTime);
       updateSchedules({
         day: schedules[1].day,
         doctor_id: schedules[1].doctor_id,
@@ -601,8 +500,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[1].avilable,
       });
     } else if (which === "mon_start") {
-      //setStartTime2(currentTime);
-      //setStart2(fTime);
       updateSchedules({
         day: schedules[2].day,
         doctor_id: schedules[2].doctor_id,
@@ -612,8 +509,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[2].avilable,
       });
     } else if (which === "mon_end") {
-      //setEndTime2(currentTime);
-      //setEnd2(fTime);
       updateSchedules({
         day: schedules[2].day,
         doctor_id: schedules[2].doctor_id,
@@ -623,8 +518,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[2].avilable,
       });
     } else if (which === "tues_start") {
-      //setStartTime3(currentTime);
-      //setStart3(fTime);
       updateSchedules({
         day: schedules[3].day,
         doctor_id: schedules[3].doctor_id,
@@ -634,8 +527,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[3].avilable,
       });
     } else if (which === "tues_end") {
-      //setEndTime3(currentTime);
-      //setEnd3(fTime);
       updateSchedules({
         day: schedules[3].day,
         doctor_id: schedules[3].doctor_id,
@@ -645,8 +536,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[3].avilable,
       });
     } else if (which === "wen_start") {
-      //setStartTime4(currentTime);
-      //setStart4(fTime);
       updateSchedules({
         day: schedules[4].day,
         doctor_id: schedules[4].doctor_id,
@@ -656,8 +545,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[4].avilable,
       });
     } else if (which === "wen_end") {
-      //setEndTime4(currentTime);
-      //setEnd4(fTime);
       updateSchedules({
         day: schedules[4].day,
         doctor_id: schedules[4].doctor_id,
@@ -667,8 +554,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[4].avilable,
       });
     } else if (which === "thurs_start") {
-      //setStartTime5(currentTime);
-      //setStart5(fTime);
       updateSchedules({
         day: schedules[5].day,
         doctor_id: schedules[5].doctor_id,
@@ -678,8 +563,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[5].avilable,
       });
     } else if (which === "thurs_end") {
-      //setEndTime5(currentTime);
-      //setEnd5(fTime);
       updateSchedules({
         day: schedules[5].day,
         doctor_id: schedules[5].doctor_id,
@@ -717,6 +600,7 @@ const Info = ({ navigation }) => {
       console.log(start);
     });
   };
+
   const shift = (
     day,
     day_start,
@@ -839,143 +723,31 @@ const Info = ({ navigation }) => {
       </View>
     );
   };
-  const update_booking = (i, newValue) => {
-    let array = { ...doctor_booking };
-    array[i] = newValue;
-    setDoctor_booking(array);
-  };
-
-  const app_days = (i) => {
-    const MONTHS = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "June",
-      "July",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const DAYS = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const tomorrow = new Date(new Date().getTime() + i * 24 * 60 * 60 * 1000);
-    const day = DAYS[tomorrow.getDay()];
-    const date = tomorrow.getDate();
-    const month = MONTHS[tomorrow.getMonth()];
-
-    const x = date + "  " + month;
-    return [day, x];
-  };
-  const plane = (i) => {
-    let arr = { ...color_plane };
-    arr[i] == "#ccc" ? (arr[i] = "#288771") : (arr[i] = "#ccc");
-    setColor_plane(arr);
-  };
-
-  const appoint = (i) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          setWhichDay(i);
-          setPage("Appointments");
-        }}
-      >
-        <View
-          style={[
-            styles.content,
-            {
-              flexDirection: "row",
-              padding: 15,
-              marginHorizontal: 7,
-              marginBottom: 7,
-            },
-          ]}
-        >
-          <View style={{ width: "40%", merginRight: 30 }}>
-            <Text style={{ color: main_color }}>
-              {i === 0 ? "Today" : i === 1 ? "Tomorrow" : app_days(i)[0]}
-            </Text>
-            <Text>{app_days(i)[1]}</Text>
-          </View>
-          <View style={{ width: "45%", alignSelf: "center" }}>
-            <Text>
-              {doctor_booking[i] === 0
-                ? "No Bookings"
-                : doctor_booking[i] + " Bookings"}
-            </Text>
-          </View>
-          <Icon5
-            onPress={() => {
-              get_number_of_booking(
-                i,
-                doctor.id,
-                new Date(
-                  new Date().getTime() + i * 24 * 60 * 60 * 1000
-                ).toDateString()
-              );
-            plane(i);
-            }
-            } // get_number_of_booking(i,doctor.id,new Date(new Date().getTime() + i * 24 * 60 * 60 * 1000).toDateString())
-            name={icon26}
-            size={30}
-            color={color_plane[i]}
-            style={{ alignSelf: "center", width: "10%", marginLeft: 15 }}
-          />
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  const appoints = () => {
-    return (
-      <View>
-        <View>{appoint(0)}</View>
-        <View>{appoint(1)}</View>
-        <View>{appoint(2)}</View>
-        <View>{appoint(3)}</View>
-        <View>{appoint(4)}</View>
-        <View>{appoint(5)}</View>
-        <View>{appoint(6)}</View>
-        <View>{appoint(7)}</View>
-        <View>{appoint(8)}</View>
-        <View>{appoint(9)}</View>
-      </View>
-    );
-  };
 
   // **************************************************************************************************************************
 
   const Header = () => {
     return (
-      <View style={[styles.header, { flexDirection: "row" }]}>
+      <View style={[styles.header, { flexDirection: "row"}]}>
         <Icon2
-          name={icon14}
+          name={"arrow-left"}
           size={30}
           color="white"
           onPress={back}
           style={{ width: "7%", marginHorizontal: 10 }}
         />
-        <Text style={[styles.label, { width: "78%" }]}> {page} </Text>
-        {page != "Appointments" ? (
-        <Icon6
-          name={icon15}
-          size={30}
-          color="white"
-          onPress={save}
-          style={{ width: "20%" }}
-        />
-        ) :(<></>)}
+        <Text style={[styles.label, { width: "75%" }]}> {page} </Text>
+        {page == "Appointments" || page == "Appointments History" ? (
+          <></>
+        ) : (
+          <Icon6
+            name={"content-save-check"}
+            size={30}
+            color="white"
+            onPress={save}
+            style={{ width: "20%" }}
+          />
+        )}
       </View>
     );
   };
@@ -1079,70 +851,6 @@ const Info = ({ navigation }) => {
   };
 
   // **************************************************************************************************************************
-
-  const ScheduleSummaryEmpty = () => {
-    return (
-      <View>
-        <View style={{ alignItems: "center", marginTop: 50 }}>
-          <Text
-            style={{
-              color: "#555555",
-              fontSize: 16,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" Get started! "}{" "}
-          </Text>
-        </View>
-        <View style={{ alignItems: "center", marginTop: 15 }}>
-          <Text
-            style={{
-              color: "#555555",
-              fontSize: 14,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" Add your working hours and confirm availability to  "}{" "}
-          </Text>
-          <Text
-            style={{
-              color: "#555555",
-              fontSize: 14,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" recieve new Doctor Now bookings "}{" "}
-          </Text>
-        </View>
-
-        <Image
-          source={require("../assets/splash.png")}
-          style={[
-            styles.image,
-            { alignSelf: "center", marginVertical: 50, height: 220 },
-          ]}
-        />
-
-        <TouchableOpacity style={{ alignItems: "center" }} onPress={management}>
-          <Text
-            style={{
-              backgroundColor: main_color,
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              color: "white",
-              margin: 20,
-            }}
-          >
-            {" "}
-            Add working hours
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
 
   // **************************************************************************************************************************
 
@@ -1746,27 +1454,27 @@ const Info = ({ navigation }) => {
 
   // **************************************************************************************************************************
 
-  const More = () => {
-    return (
-      <View>
-        {/* <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.button, styles.button1]}
-            onPress={HandleHistory}
-          >
-            <Text style={styles.buttonText}>History</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.button1]}
-            onPress={HandleAppointments}
-          >
-            <Text style={styles.buttonText}>Appointments</Text>
-          </TouchableOpacity>
-        </View> */}
-        <Appointments />
-      </View>
-    );
-  };
+  // const More = () => {
+  //   return (
+  //     <View>
+  //       {/* <View style={styles.buttonContainer}>
+  //         <TouchableOpacity
+  //           style={[styles.button, styles.button1]}
+  //           onPress={HandleHistory}
+  //         >
+  //           <Text style={styles.buttonText}>History</Text>
+  //         </TouchableOpacity>
+  //         <TouchableOpacity
+  //           style={[styles.button, styles.button1]}
+  //           onPress={HandleAppointments}
+  //         >
+  //           <Text style={styles.buttonText}>Appointments</Text>
+  //         </TouchableOpacity>
+  //       </View> */}
+  //       <Appointments />
+  //     </View>
+  //   );
+  // };
 
   // **************************************************************************************************************************
   if (Object.keys(doctor).length !== 0) {
@@ -1792,9 +1500,9 @@ const Info = ({ navigation }) => {
                   specialization2={fullpro_title}
                   image={image}
                   reviews={reviews}
-                  fun1={edit_name}
+                  fun1={() => setPage("Professional Information")}
                   fun2={selectFile}
-                  fun3={account_settings}
+                  fun3={() => setPage("Account Settings")}
                 />
               }
               <Number_Views_bookings_And_Tab
@@ -1807,7 +1515,10 @@ const Info = ({ navigation }) => {
               />
 
               {flag ? (
-                <Doctor_Info desc={about_the_doctor} fun1={about_doctor} />
+                <Doctor_Info
+                  desc={about_the_doctor}
+                  fun1={() => setPage("About the Doctor")}
+                />
               ) : (
                 <Clinic_Info
                   nameClinic={nameClinic}
@@ -1817,9 +1528,9 @@ const Info = ({ navigation }) => {
                   duration={duration}
                   nameAssistant={nameAssistant}
                   numberAssistant={numberAssistant}
-                  fun1={clinic_name}
-                  fun2={exmination}
-                  fun3={assistant}
+                  fun1={() => setPage("Clinic Name and Number")}
+                  fun2={() => setPage("Exmination and Follow-up")}
+                  fun3={() => setPage("Assistant Name and Number")}
                 />
               )}
             </View>
@@ -1892,11 +1603,17 @@ const Info = ({ navigation }) => {
               ></View>
 
               {schedule_summary ? (
-                empty ? (
-                  ScheduleSummaryEmpty()
-                ) : (
-                  appoints()
-                )
+                <Schedule_Summary
+                  fun1={setWhichDay}
+                  fun2={() => setPage("Appointments")}
+                  doctor_booking={doctor_booking}
+                  id={doctor.id}
+                  fun3={get_number_of_booking}
+                  color_plane={color_plane}
+                  fun4={setColor_plane}
+                  empty={empty}
+                  fun5={() => management()}
+                />
               ) : (
                 <View>
                   {WorkingHourSettings()}
@@ -1905,17 +1622,18 @@ const Info = ({ navigation }) => {
               )}
             </View>
           ) : page === "More" ? (
-            More()
+            <More fun1={() => setPage("Appointments History")} />
           ) : page === "Appointments" ? (
             <Appointments
               id={doctor.id}
               date={new Date(
                 new Date().getTime() + whichDay * 24 * 60 * 60 * 1000
               ).toDateString()}
-              fun1 = {() => profile()}
+              fun1={() => profile()}
             />
+          ) : page === "Appointments History" ? (
+            <Appointments_History id={doctor.id}/>
           ) : (
-            // HandleAppointments(whichDay)
             <></>
           )}
         </ScrollView>

@@ -30,7 +30,7 @@ const main_color = "#288771";
             setAppointments(res) ;
         else 
             setAppointments([]);
-        console.log(Appointments);
+        console.log(appointments);
       });
 
     // if (type == "history") {
@@ -89,6 +89,7 @@ const main_color = "#288771";
                   doctor_id={ele.doctor_id}
                   users_id={ele.users_id}
                   age={ele.age}
+                  appointment_history={false}
                 //   schedule_type={schedule_type}
                 />
               );

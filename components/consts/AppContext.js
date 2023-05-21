@@ -6,6 +6,7 @@ export const AppProvider = ({ children }) => {
   const [favourite, setFavourite] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [appointments_History, setAppointments_History] = useState([]);
   const [timeList, setTimeList] = useState([]);
   const [curruser, setCurrUser] = useState({});
   const [night, setNight] = useState(false);
@@ -38,6 +39,8 @@ export const AppProvider = ({ children }) => {
         setSchedules,
         rev,
         setRev,
+        appointments_History,
+        setAppointments_History,
       }}
     >
       {children}

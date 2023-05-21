@@ -1,5 +1,12 @@
 import React, { memo, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import {
   deleteAppointment,
   deleteAppointment_fromHistory,
@@ -16,6 +23,12 @@ import { getAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { useState } from "react";
 import FlipCard from "react-native-flip-card";
+
+import Icon2 from "react-native-vector-icons/Entypo";
+import Icon4 from "react-native-vector-icons/FontAwesome5";
+import Icon5 from "react-native-vector-icons/FontAwesome";
+import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
+// import { TextInput } from "react-native-paper";
 function Doc_card_appointment({
   navigation,
   image,
@@ -32,12 +45,19 @@ function Doc_card_appointment({
   age,
   schedule_type,
   number,
+  appointment_history,
 }) {
   const { appointments, setAppointments } = useContext(AppContext);
   const { night } = useContext(AppContext);
   const { type } = useContext(AppContext);
 
   const [clickNotes, setClickNotes] = useState(false);
+  const [finish, setFinish] = useState(false);
+  const [Diagnosis, setDiagnosis] = useState("");
+  const [Therapeutic_Description, setTherapeutic_Description] = useState("");
+  const [height, setHeight] = useState(0);
+  const [height2, setHeight2] = useState(0);
+
   const main_color = "#288771";
   let obj = {
     image: image,
@@ -134,6 +154,7 @@ function Doc_card_appointment({
       })
     );
   };
+
   return is_doctor == "no" ? (
     <TouchableOpacity
       onPress={() => navigation.navigate("Appointment2", { obj })}
@@ -204,10 +225,10 @@ function Doc_card_appointment({
         flipHorizontal={true}
         flipVertical={false}
         flip={clickNotes}
-        clickable = {false}
+        clickable={false}
         // onFlipEnd={(isFlipEnd)=>{console.log('isFlipEnd', isFlipEnd)}}
       >
-        <View >
+        <View>
           <View style={{ flexDirection: "row" }}>
             <Text
               style={{
@@ -221,13 +242,29 @@ function Doc_card_appointment({
               Time: {time}
             </Text>
 
-            <Icon
-              onPress={() => alert("Do it, Fahim")}
-              name={"carryout"}
-              size={30}
-              color={main_color}
-              style={{ alignSelf: "flex-end" }}
-            />
+            {!appointment_history ? (
+              <Icon4
+                onPress={() => {
+                  setFinish(true);
+                  setClickNotes(true);
+                }}
+                name={"marker"}
+                size={25}
+                color={main_color}
+                style={{ alignSelf: "flex-end" }}
+              />
+            ) : (
+              <Icon2
+                onPress={() => {
+                  setFinish(true);
+                  setClickNotes(true);
+                }}
+                name={"trash"}
+                size={25}
+                color={main_color}
+                style={{ alignSelf: "flex-end" }}
+              />
+            )}
           </View>
           <View style={{ flexDirection: "row", width: "100%" }}>
             <View style={{ width: "35%" }}>
@@ -288,7 +325,7 @@ function Doc_card_appointment({
                     fontSize: 15,
                     marginTop: 10,
                     marginHorizontal: 10,
-                    width: "70%",
+                    width: "60%",
                     // alignSelf: "center",
                   }}
                 >
@@ -303,73 +340,170 @@ function Doc_card_appointment({
                       marginVertical: 5,
                       color: main_color,
                       marginTop: 10,
-                      // marginHorizontal : 10,
+                      marginHorizontal : 15,
                       alignSelf: "center",
                       // width: "45%",
                     }}
                   >
-                    Notes
+                    {!appointment_history? "Notes" : "Report"}
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
         </View>
-        <TouchableOpacity onPress = {() => setClickNotes(false)}>
-        <View style = {{backgroundColor : main_color , minHeight : 200}}>
-          <Text
-            style={{
-              color: "black",
-              fontSize: 15,
-              fontWeight: "bold",
-              marginVertical: 5,
-              color: "black",
-              marginTop: 10,
-              // marginHorizontal : 10,
-              alignSelf: "center",
-              // width: "45%",
-            }}
-          >
-            Notes: 
-          </Text>
-          {notes.length != 0 ? (
-          <Text
-            style={{
-              color: "black",
-              fontSize: 15,
-              fontWeight: "bold",
-              marginVertical: 5,
-              color: "white",
-              marginHorizontal : 10,
+        {!finish ? (
+          <TouchableOpacity onPress={() => setClickNotes(false)}>
+            <View style={{ backgroundColor: main_color, minHeight: 200 }}>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  marginVertical: 5,
+                  color: "black",
+                  marginTop: 10,
+                  // marginHorizontal : 10,
+                  alignSelf: "center",
+                  // width: "45%",
+                }}
+              >
+                Notes:
+              </Text>
+              {notes.length != 0 ? (
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    marginVertical: 5,
+                    color: "white",
+                    marginHorizontal: 10,
 
-              // marginHorizontal : 10,
-              // alignSelf: "center",
-              // width: "45%",
-            }}
-          >
-            {notes} 
-          </Text>
-          ) : (
-          <Text
-            style={{
-              color: "black",
-              fontSize: 15,
-              fontWeight: "bold",
-              marginVertical: 5,
-              color: "white",
-              marginTop: 50,
+                    // marginHorizontal : 10,
+                    // alignSelf: "center",
+                    // width: "45%",
+                  }}
+                >
+                  {notes}
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    marginVertical: 5,
+                    color: "white",
+                    marginTop: 50,
 
-              // marginHorizontal : 10,
-              alignSelf: "center",
-              justifyContent : "center",
-              // width: "45%",
-            }}
-          >
-            {"No Notes"} 
-          </Text>)}
-        </View>
-        </TouchableOpacity>
+                    // marginHorizontal : 10,
+                    alignSelf: "center",
+                    justifyContent: "center",
+                    // width: "45%",
+                  }}
+                >
+                  {"No Notes"}
+                </Text>
+              )}
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <View style={{ backgroundColor: "white", minHeight: 200 }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Icon2
+                name={"arrow-left"}
+                size={30}
+                color="black"
+                onPress={() => {
+                  setClickNotes(false);
+                  setFinish(false);
+                }}
+                style={{ width: "40%", marginHorizontal: 10 }}
+              />
+              <Text
+                style={{
+                  color: main_color,
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  marginVertical: 5,
+                  marginTop: 10,
+                  // textAlign : "center",
+                  // marginHorizontal : 10,
+                  // alignSelf: "center",
+                  width: "45%",
+                }}
+              >
+                Report
+              </Text>
 
+              <Icon
+                name={"carryout"}
+                size={30}
+                color="black"
+                onPress={() => {
+                  setClickNotes(false);
+                  setFinish(false);
+                }}
+                style={{}}
+              />
+            </View>
+
+            <Text
+              style={{
+                color: main_color,
+                fontSize: 15,
+                fontWeight: "bold",
+                marginVertical: 5,
+                marginTop: 10,
+                marginHorizontal: 5,
+                // marginHorizontal : 10,
+                // alignSelf: "center",
+                // width: "45%",
+              }}
+            >
+              {"Diagnosis:"}
+            </Text>
+            <TextInput
+              style={[styles.inp, { height: height }]}
+              multiline
+              onContentSizeChange={(event) =>
+                setHeight(event.nativeEvent.contentSize.height)
+              }
+              value={Diagnosis}
+              onChangeText={setDiagnosis}
+              numberOfLines={10}
+              maxLength={250}
+              autoFocus
+            />
+            <Text
+              style={{
+                color: main_color,
+                fontSize: 15,
+                fontWeight: "bold",
+                marginVertical: 5,
+                marginTop: 10,
+                marginHorizontal: 5,
+                // marginHorizontal : 10,
+                // alignSelf: "center",
+                // width: "45%",
+              }}
+            >
+              {"Therapeutic description:"}
+            </Text>
+            <TextInput
+              style={[styles.inp, { height: height2 }]}
+              multiline
+              onContentSizeChange={(event) =>
+                setHeight2(event.nativeEvent.contentSize.height)
+              }
+              value={Therapeutic_Description}
+              onChangeText={setTherapeutic_Description}
+              numberOfLines={10}
+              maxLength={250}
+            />
+          </View>
+        )}
       </FlipCard>
     </View>
 
@@ -427,6 +561,19 @@ const styles = StyleSheet.create({
     width: "45%",
     height: 140,
     marginVertical: 10,
+  },
+  inp: {
+    width: "95%",
+    height: 40,
+    borderWidth: 0.5,
+    borderColor: "#288771",
+    borderRadius: 10,
+    marginBottom: 5,
+    marginHorizontal: 10,
+    fontSize: 16,
+    // fontStyle: "italic",
+    padding: 10,
+    color: "#000000",
   },
   card: {
     flexDirection: "row",
