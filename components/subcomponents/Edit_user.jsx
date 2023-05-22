@@ -156,7 +156,7 @@ const Edit_user = ({ navigation, route }) => {
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
-          style={[styles.button ,night&&styles.darklist]}
+          style={[styles.button ]}
 
 
           onPress={() => { handleSave(); }}
@@ -255,7 +255,7 @@ paddingVertical:50
   button: {
     fontSize: 18,
     paddingHorizontal: "40%",
-    borderWidth: 2,
+    
     borderRadius: 20,
     borderColor: "#ffffff",
     backgroundColor: "#288771",

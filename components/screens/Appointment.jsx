@@ -155,14 +155,15 @@ const styles = StyleSheet.create({
 
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
-  },
-  darklist: {
-    backgroundColor: '#142E5E',
+    backgroundColor: '#1d1c1c',
+    color:"white",
   },
   dark2: {
-    backgroundColor: "#BDD3FF",
-  }, buttonContainer: {
+    backgroundColor: '#262424',
+    color:"white",
+    borderColor:'#262424'
+  },
+   buttonContainer: {
     flexDirection: 'row',
     marginTop: 20,
     marginBottom: 10,
