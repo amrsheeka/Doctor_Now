@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Fontisto";
 
-
 // import { MaterialIcons } from "@expo/vector-icons";
 import { AppContext, AppProvider } from "../consts/AppContext";
 
@@ -111,6 +110,250 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
 
   const main_color = "#288771";
 
+  const Face_Card = () => {
+    return (
+      <View>
+        <View style={{ marginVertical: 5, flexDirection: "row" }}>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={{
+              color: "black",
+              fontSize: 15,
+              fontWeight: "bold",
+              marginVertical: 5,
+              width: "90%",
+            }}
+          >
+            {doctor.title1} {doctor.name}
+          </Text>
+
+          <Icon
+            onPress={() => click_heart(CurrentUser.user.id, doctor.id)}
+            name={heart}
+            size={30}
+            color={night ? "#dfd9d9" : main_color}
+          />
+        </View>
+        <Text
+          style={{ color: "black", fontSize: 15 }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {doctor.title} - {doctor.specialization1}
+        </Text>
+        <View
+          style={{ marginVertical: 5, flexDirection: "row", width: "100%" }}
+        >
+          <View style={{ width: "45%" }}>
+            {/*  onPress={fun2} */}
+            <Image
+              source={
+                image
+                  ? { uri: image }
+                  : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
+              }
+              style={[styles.image, { width: "100%" }]}
+            />
+          </View>
+
+          <View style={{ width: "55%", justifyContent: "center" }}>
+            <TouchableOpacity onPress={() => setClickReadMore(true)}>
+              <Text
+                style={{
+                  alignSelf: "center",
+                  color: main_color,
+                  marginVertical: 5,
+                }}
+              >
+                Read More
+              </Text>
+            </TouchableOpacity>
+            <View style={{ flexDirection: "row", alignSelf: "center" }}>
+              <Icon name={icon1} size={35} color="gold" />
+              <Icon name={icon2} size={35} color="gold" />
+              <Icon name={icon3} size={35} color="gold" />
+              <Icon name={icon4} size={35} color="gold" />
+              <Icon name={icon5} size={35} color="gold" />
+            </View>
+
+            <View>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                  marginTop: 10,
+                  alignSelf: "center",
+                }}
+              >
+                {" "}
+                {"25"} {" Reviews "}
+              </Text>
+              <TouchableOpacity
+                style={{
+                  alignItems: "center",
+                  width: "100%",
+                  borderRadius: 10,
+                }}
+                onPress={() => {
+                  fetch();
+                  navigation.navigate("AppointmentConfirmation", { doctor });
+                }}
+              >
+                <Text
+                  style={{
+                    backgroundColor: main_color,
+
+                    paddingHorizontal: 10,
+                    paddingVertical: 10,
+                    color: "white",
+                    margin: 20,
+                  }}
+                >
+                  {" "}
+                  Make Appointment
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const Back_Card = () => {
+    return (
+      <TouchableOpacity onPress={() => setClickReadMore(false)}>
+        <View style={{ backgroundColor: main_color, minHeight: 250 }}>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 15,
+              fontWeight: "bold",
+              marginVertical: 5,
+              marginTop: 10,
+              // marginHorizontal : 10,
+              alignSelf: "center",
+              // width: "45%",
+            }}
+          >
+            Extra Information:
+          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Icon2
+              name={"info"}
+              size={30}
+              color={"white"}
+              style={{ width: "5%", marginLeft: 5 }}
+            />
+            <Text
+              style={{
+                color: "white",
+                fontSize: 15,
+                fontWeight: "bold",
+                marginVertical: 5,
+                marginTop: 10,
+                marginHorizontal: 5,
+                // marginHorizontal : 10,
+                // alignSelf: "center",
+                // width: "45%",
+              }}
+            >
+              {"About The Doctor:"}
+            </Text>
+          </View>
+          <Text
+            style={{
+              fontSize: 15,
+              // fontWeight: "bold",
+              marginVertical: 5,
+              color: "white",
+              marginHorizontal: 5,
+              // borderWidth: 0.5,
+              // borderColor: main_color,
+              paddingHorizontal: 10,
+
+              // marginHorizontal : 10,
+              // alignSelf: "center",
+              // width: "45%",
+            }}
+          >
+            {doctor.describtion}
+          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Icon
+              name={"location-pin"}
+              size={30}
+              color={"white"}
+              style={{ marginVertical: 10 }}
+            />
+            <Text
+              style={{
+                color: "white",
+                fontSize: 15,
+                fontWeight: "bold",
+                // marginVertical: 5,
+                // marginTop: 10,
+                // marginHorizontal: 5,
+                // marginHorizontal : 10,
+                // alignSelf: "center",
+                // width: "45%",
+              }}
+            >
+              {" Clinic Address:"}
+            </Text>
+          </View>
+          <Text
+            style={{
+              fontSize: 15,
+              marginBottom: 10,
+              color: "white",
+              marginHorizontal: 20,
+            }}
+          >
+            {doctor.address}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginHorizontal: 5,
+              marginVertical: 10,
+            }}
+          >
+            <Icon2
+              style={{ marginVertical: 10, marginRight: 10 }}
+              name={"wallet"}
+              size={30}
+              color={"white"}
+            />
+            <View style={{ width: "40%" }}>
+              <Text style={{ color: "white" }}>
+                {" "}
+                {doctor.price} {"EGP"}
+              </Text>
+              <Text style={{ color: "white" }}> Consultation Fees</Text>
+            </View>
+
+            <Icon2
+              name={"clock"}
+              size={30}
+              color={"white"}
+              style={{ marginVertical: 10, marginHorizontal: 10 }}
+            />
+            <View style={{ width: "45%" }}>
+              <Text style={{ color: "white" }}>
+                {" "}
+                {"30"} {"Minutes"}
+              </Text>
+              <Text style={{ color: "white" }}> Wating Time</Text>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View>
       <FlipCard
@@ -123,235 +366,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
         clickable={false}
         // onFlipEnd={(isFlipEnd)=>{console.log('isFlipEnd', isFlipEnd)}}
       >
-        <View>
-          <View style={{ marginVertical: 5, flexDirection: "row" }}>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              style={{
-                color: "black",
-                fontSize: 15,
-                fontWeight: "bold",
-                marginVertical: 5,
-                width: "90%",
-              }}
-            >
-              {doctor.title1} {doctor.name}
-            </Text>
-
-            <Icon
-              onPress={() => click_heart(CurrentUser.user.id, doctor.id)}
-              name={heart}
-              size={30}
-              color={night ? "#dfd9d9" : "#288771"}
-            />
-          </View>
-          <Text
-            style={{ color: "black", fontSize: 15 }}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {doctor.title} - {doctor.specialization1}
-          </Text>
-          <View
-            style={{ marginVertical: 5, flexDirection: "row", width: "100%" }}
-          >
-            <View style={{ width: "45%" }}>
-              {/*  onPress={fun2} */}
-              <Image
-                source={
-                  image
-                    ? { uri: image }
-                    : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
-                }
-                style={[styles.image, { width: "100%" }]}
-              />
-            </View>
-
-            <View style={{ width: "55%", justifyContent: "center" }}>
-              <TouchableOpacity onPress={() => setClickReadMore(true)}>
-                <Text
-                  style={{
-                    alignSelf: "center",
-                    color: main_color,
-                    marginVertical: 5,
-                  }}
-                >
-                  Read More
-                </Text>
-              </TouchableOpacity>
-              <View style={{ flexDirection: "row", alignSelf: "center" }}>
-                <Icon name={icon1} size={35} color="gold" />
-                <Icon name={icon2} size={35} color="gold" />
-                <Icon name={icon3} size={35} color="gold" />
-                <Icon name={icon4} size={35} color="gold" />
-                <Icon name={icon5} size={35} color="gold" />
-              </View>
-
-              <View>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    marginTop: 10,
-                    alignSelf: "center",
-                  }}
-                >
-                  {" "}
-                  {"25"} {" Reviews "}
-                </Text>
-                <TouchableOpacity
-                  style={{ alignItems: "center", width: "100%" }}
-                  onPress={() => {
-                    fetch();
-                    navigation.navigate("AppointmentConfirmation", { doctor });
-                  }}
-                >
-                  <Text
-                    style={{
-                      backgroundColor: main_color,
-                      paddingHorizontal: 10,
-                      paddingVertical: 10,
-                      color: "white",
-                      margin: 20,
-                    }}
-                  >
-                    {" "}
-                    Make Appointment
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </View>
-        <TouchableOpacity onPress={() => setClickReadMore(false)}>
-          <View style={{ backgroundColor: main_color, minHeight: 250 }}>
-            <Text
-              style={{
-                color: "white",
-                fontSize: 15,
-                fontWeight: "bold",
-                marginVertical: 5,
-                marginTop: 10,
-                // marginHorizontal : 10,
-                alignSelf: "center",
-                // width: "45%",
-              }}
-            >
-              Extra Information:
-            </Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Icon2
-                name={"info"}
-                size={30}
-                color={"white"}
-                style={{ width: "5%", marginLeft: 5 }}
-              />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 15,
-                  fontWeight: "bold",
-                  marginVertical: 5,
-                  marginTop: 10,
-                  marginHorizontal: 5,
-                  // marginHorizontal : 10,
-                  // alignSelf: "center",
-                  // width: "45%",
-                }}
-              >
-                {"About The Doctor:"}
-              </Text>
-            </View>
-            <Text
-              style={{
-                fontSize: 15,
-                // fontWeight: "bold",
-                marginVertical: 5,
-                color: "white",
-                marginHorizontal: 5,
-                // borderWidth: 0.5,
-                // borderColor: main_color,
-                paddingHorizontal: 10,
-
-                // marginHorizontal : 10,
-                // alignSelf: "center",
-                // width: "45%",
-              }}
-            >
-              {doctor.describtion}
-            </Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Icon
-                name={"location-pin"}
-                size={30}
-                color={"white"}
-                style={{ marginVertical: 10 }}
-              />
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 15,
-                  fontWeight: "bold",
-                  // marginVertical: 5,
-                  // marginTop: 10,
-                  // marginHorizontal: 5,
-                  // marginHorizontal : 10,
-                  // alignSelf: "center",
-                  // width: "45%",
-                }}
-              >
-                {" Clinic Address:"}
-              </Text>
-            </View>
-            <Text
-              style={{
-                fontSize: 15,
-                marginBottom: 10,
-                color: "white",
-                marginHorizontal: 20,
-              }}
-            >
-              {doctor.address}
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginHorizontal: 5,
-                marginVertical: 10,
-              }}
-            >
-              <Icon2
-                style={{ marginVertical: 10, marginRight: 10 }}
-                name={"wallet"}
-                size={30}
-                color={"white"}
-              />
-              <View style={{ width: "40%" }}>
-                <Text style={{ color: "white" }}>
-                  {" "}
-                  {doctor.price} {"EGP"}
-                </Text>
-                <Text style={{ color: "white" }}> Consultation Fees</Text>
-              </View>
-
-              <Icon2
-                name={"clock"}
-                size={30}
-                color={"white"}
-                style={{ marginVertical: 10, marginHorizontal: 10 }}
-              />
-              <View style={{ width: "45%" }}>
-                <Text style={{ color: "white" }}>
-                  {" "}
-                  {"30"} {"Minutes"}
-                </Text>
-                <Text style={{ color: "white" }}> Wating Time</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
+        {Face_Card()}
+        {Back_Card()}
       </FlipCard>
     </View>
   );
