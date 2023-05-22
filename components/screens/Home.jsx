@@ -367,6 +367,7 @@ const styles = StyleSheet.create({
   },
   darklist: {
     backgroundColor: '#262424',
+    color:"white"
   },
   dark2: {
     backgroundColor: "#1d1c1c",

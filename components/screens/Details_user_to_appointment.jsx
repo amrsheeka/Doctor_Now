@@ -111,7 +111,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
                 selectedValue={age}
                 onValueChange={(value, index) => setAge(value)}
                 mode="dropdown"
-                style={[styles.picker, night && styles.darklist]}
+                style={[styles.picker, night && styles.dark2]}
               >
                 <Picker.Item label="15+" value="15+" />
                 <Picker.Item label="25+" value="25+" />
@@ -125,7 +125,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
                 selectedValue={gender}
                 onValueChange={(value, index) => setGender(value)}
                 mode="dropdown"
-                style={[styles.picker, night && styles.darklist]}
+                style={[styles.picker, night && styles.dark2]}
               >
                 <Picker.Item label="Male" value="Male" />
                 <Picker.Item label="Female" value="Female" />
@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     marginBottom: 10,
     backgroundColor: "#efefef",
+    
   },
   text: {
     fontSize: 18,
@@ -264,15 +265,18 @@ const styles = StyleSheet.create({
     color: "white"
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
+    backgroundColor: '#1d1c1c',
+    
   },
-  darklist: {
-    backgroundColor: '#142E5E',
-    borderWidth: 0,
+  // darklist: {
+  //   backgroundColor: '#288771',
+  //   borderColor:'#1d1c1c'
 
-  },
+  // },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: '#262424',
+    borderColor:'#262424',
+    color:"white"
   },
   footer: {
     flex:1,
