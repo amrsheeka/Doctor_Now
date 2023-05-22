@@ -26,6 +26,7 @@ const AllDoctors = ({ navigation, route }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const { night} = useContext(AppContext);
   const [reload, setReload] = useState(false); // add reload state
 
   async function getlocation() {
@@ -97,8 +98,8 @@ const AllDoctors = ({ navigation, route }) => {
 
   if (all === "all") {
     return (
-      <View style={styles.container}>
-         <View style={styles.header}>
+      <View style={[styles.container,night && styles.buttonDark]}>
+      <View style={styles.header}>
         <View  style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
@@ -107,7 +108,7 @@ const AllDoctors = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         <View >
-        <Text style={styles.heading}>All Doctors</Text>
+        <Text style={[styles.heading,night && styles.buttonDark]}>All Doctors</Text>
         </View>
       </View>
         <View style={{ flexDirection: "row" }}>
@@ -121,10 +122,10 @@ const AllDoctors = ({ navigation, route }) => {
           <View style ={{flexDirection:"row",flex:3}}>
 
           </View>
-          <View style={styles.searchContainer}>
+          <View style={[styles.searchContainer,night && styles.dark2]}>
             <Ionicons name="search" size={24} color="gray" style={styles.searchIcon} />
             <TextInput
-              style={styles.searchInput}
+              style={[styles.searchInput,night && styles.dark2]}
               placeholder="Search doctors by name"
               value={searchQuery}
               onChangeText={(text) => setSearchQuery(text)}
@@ -153,7 +154,7 @@ const AllDoctors = ({ navigation, route }) => {
 
             <Picker
               selectedValue={selectedValue}
-              style={{ height: 50, width: 250 }}
+              style={[{ height: 50, width: 250 },night && styles.buttonDark]}
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedValue(itemValue)
               }
@@ -193,16 +194,16 @@ const AllDoctors = ({ navigation, route }) => {
   } else if (filterd === "Stomach") {
     let dataa = doctors.filter((e) => e.title === "Internist");
     return (
-      <View style={styles.container}>
+      <View style={[styles.container,night && styles.buttonDark]}>
         <View style={styles.header}>
-          <Text style={styles.heading}>All Stomach Doctors</Text>
+        <Text style={[styles.heading,night && styles.buttonDark]}>All Stomach Doctors</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        {/* <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={styles.xx}>
             <Ionicons name="arrow-back" size={24} color="black" />
             <Text>back</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <FlatList
           data={dataa}
@@ -219,16 +220,16 @@ const AllDoctors = ({ navigation, route }) => {
   } else if (filterd === "Dentist") {
     let dataa =doctors.filter((e) => e.title === "Dentist");
     return (
-      <View style={styles.container}>
+      <View style={[styles.container,night && styles.buttonDark]}>
         <View style={styles.header}>
-          <Text style={styles.heading}>All Dentist Doctors</Text>
+        <Text style={[styles.heading,night && styles.buttonDark]}>All Dentist Doctors</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        {/* <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={styles.xx}>
             <Ionicons name="arrow-back" size={24} color="black" />
             <Text>back</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <FlatList
           data={dataa}
@@ -245,16 +246,16 @@ const AllDoctors = ({ navigation, route }) => {
   } else if (filterd === "Surgery") {
     let dataa = doctors.filter((e) => e.title === "General Surgeon");
     return (
-      <View style={styles.container}>
+      <View style={[styles.container,night && styles.buttonDark]}>
         <View style={styles.header}>
-          <Text style={styles.heading}>All Surgery Doctors</Text>
+        <Text style={[styles.heading,night && styles.buttonDark]}>All Surgery Doctors</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        {/* <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={styles.xx}>
             <Ionicons name="arrow-back" size={24} color="black" />
             <Text>back</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <FlatList
           data={dataa}
@@ -376,6 +377,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 10,
    },
+   buttonDark: {
+    backgroundColor: '#1d1c1c',
+    color:"white",
+  },
+  dark2: {
+    backgroundColor: '#262424',
+    color:"white",
+    borderColor:'#262424'
+  },
 });
 
 export default AllDoctors;
