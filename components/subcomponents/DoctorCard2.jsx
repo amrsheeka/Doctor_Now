@@ -114,7 +114,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   return (
     <View>
       <FlipCard
-        style={styles.content}
+        style={[styles.content, night && styles.darkCard]}
         friction={20}
         perspective={1000}
         flipHorizontal={true}
@@ -128,13 +128,13 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
-              style={{
+              style={[{
                 color: "black",
                 fontSize: 15,
                 fontWeight: "bold",
                 marginVertical: 5,
                 width: "90%",
-              }}
+              },night && styles.darkText]}
             >
               {doctor.title1} {doctor.name}
             </Text>
@@ -147,7 +147,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
             />
           </View>
           <Text
-            style={{ color: "black", fontSize: 15 }}
+            style={[{ color: "black", fontSize: 15 },night && styles.darkText]}
             numberOfLines={1}
             ellipsizeMode="tail"
           >
@@ -190,12 +190,12 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
 
               <View>
                 <Text
-                  style={{
+                  style={[{
                     color: "black",
                     fontSize: 15,
                     marginTop: 10,
                     alignSelf: "center",
-                  }}
+                  },night && styles.darkText]}
                 >
                   {" "}
                   {"25"} {" Reviews "}
@@ -378,6 +378,22 @@ const styles = StyleSheet.create({
     height: 180,
     marginVertical: 10,
   },
+  buttonDark: {
+    backgroundColor: '#288771',
+  },
+  darklist: {
+    backgroundColor: '#262424',
+  },
+  dark2: {
+    backgroundColor: "#1d1c1c",
+  },
+  darkCard: {
+      backgroundColor: "#303030",
+      borderColor: "#262424",
+    },
+  darkText:{
+      color:"white"
+    }
 });
 export default memo(DoctorCard2);
 

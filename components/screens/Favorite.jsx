@@ -19,8 +19,8 @@ const Favorite = ({ navigation, reload }) => {
     fetchDoctor();
   }, []);
   return (
-    <View style={[styles.container,night && styles.buttonDark]}>
-      <View style={[styles.header, night && styles.buttonDark]}>
+    <View style={[styles.container,night && styles.dark2]}>
+      <View style={[styles.header, night && styles.dark2]}>
         <Text style={styles.heading}>My Favorite Doctors</Text>
       </View>
       {favourite.length !== 0 ?
@@ -66,13 +66,13 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
+    backgroundColor: '#288771',
   },
   darklist: {
-    backgroundColor: '#142E5E',
+    backgroundColor: '#262424',
   },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: "#1d1c1c",
   },
 });
 
