@@ -266,8 +266,8 @@ const Homefunc: React.FC<Props> = ({ barColor }) => {
         name="Chatbox"
         component={Chatbox}
         options={{
-          //headerShown: false,
-          //tabBarVisible: false,
+          headerShown: false,
+          tabBarVisible: false,
           tabBarButton: () => null,
         }}
       />

@@ -186,26 +186,35 @@ function Doc_card_appointment({
       onPress={() => navigation.navigate("Appointment2", { obj })}
     >
       <View style={styles.card}>
-        <View style={styles.cardContent}>
+        <Image
+          source={
+            doc_image
+              ? { uri: doc_image }
+              : require("../assets/Herbal_Medicine_Male_Avatar.png")
+          }
+          defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")}
+          style={styles.cardPhoto}
+        />
+        <View style={[styles.cardContent, night && styles.dark2]}>
           <View style={styles.cardContent1}>
             <Text
               numberOfLines={2}
               ellipsizeMode="tail"
-              style={styles.cardTitle}
+              style={[styles.cardTitle, night && styles.dark2]}
             >
               Doctor: {doc_name}
             </Text>
             <Text
               numberOfLines={2}
               ellipsizeMode="tail"
-              style={styles.cardTitle}
+              style={[styles.cardTitle, night && styles.dark2]}
             >
               Patient Name: {name_patient}
             </Text>
           </View>
 
           {type != "history" ? (
-            <View style={{ flexDirection: "row", gap: 60 }}>
+            <View style={[{ flexDirection: "row", gap: 60 }, night && styles.dark2]}>
               <TouchableOpacity
                 style={[styles.cardButton, night && styles.buttonDark]}
                 onPress={() => navigation.navigate("Update_patient", obj)}
@@ -750,14 +759,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
   },
-  buttonDark: {
-    backgroundColor: "#0D1E3D",
-  },
-  darklist: {
-    backgroundColor: "#142E5E",
-  },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: '#262424',
+    color:"white",
+    borderColor:'#262424'
   },
 });
 export default memo(Doc_card_appointment);

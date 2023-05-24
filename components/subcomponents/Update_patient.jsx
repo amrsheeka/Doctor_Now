@@ -110,7 +110,7 @@ const Update_patient = ({ navigation, route }) => {
               selectedValue={age1}
               onValueChange={(value, index) => setAge(value)}
               mode="dropdown"
-              style={[styles.picker ,night&&styles.darklist]}
+              style={[styles.picker ,night&&styles.dark2]}
             >
               <Picker.Item label="15+" value="15+" />
               <Picker.Item label="25+" value="25+" />
@@ -124,7 +124,7 @@ const Update_patient = ({ navigation, route }) => {
               selectedValue={gender1}
               onValueChange={(value, index) => setGender(value)}
               mode="dropdown"
-              style={[styles.picker ,night&&styles.darklist]}
+              style={[styles.picker ,night&&styles.dark2]}
             >
               <Picker.Item label="Male" value="Male" />
               <Picker.Item label="Female" value="Female" />
@@ -226,6 +226,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: "20%",
   },
+  footer:{
+paddingVertical:50
+  },
   picker: {
     height: 50,
     margin: 12,
@@ -249,7 +252,7 @@ const styles = StyleSheet.create({
   button: {
     fontSize: 18,
     paddingHorizontal: "40%",
-    borderWidth: 2,
+    
     borderRadius: 20,
     borderColor: "#ffffff",
     backgroundColor: "#288771",
@@ -261,15 +264,13 @@ const styles = StyleSheet.create({
     color:"white"
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
-  },
-  darklist: {
-    backgroundColor: '#142E5E',
-    borderWidth: 0,
-
+    backgroundColor: '#1d1c1c',
+    color:"white",
   },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: '#262424',
+    color:"white",
+    borderColor:'#262424'
   },
   textdark: {
   

@@ -477,10 +477,7 @@ const styles = StyleSheet.create({
     // shadowRadius: 4,
     // elevation: 5,
     padding: 7,
-
-    marginVertical: 7,
-    marginHorizontal: 7,
-  },
+  }
 });
 
 export default Details_user_to_appointment;

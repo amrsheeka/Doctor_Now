@@ -8,6 +8,7 @@ import { AppContext } from "../consts/AppContext";
 const DoctorCard = ({ navigation, doctor, user }) => {
   const image = doctor.image;
   let currentUser = CurrentUser.user;
+    const { night} = useContext(AppContext);
   const {setDoctors} = useContext(AppContext);
   async function fetchDoctors() {
     const doc = await getDoctors();
@@ -24,7 +25,7 @@ const DoctorCard = ({ navigation, doctor, user }) => {
     <TouchableOpacity
       onPress={() => navigation.navigate("Doctorbage", { doctor })}
     >
-      <View style={styles.card}>
+      <View style={[styles.card,night && styles.dark2]}>
         <View style={styles.photo}>
           <Image source={image ? { uri: image } : require("../assets/Herbal_Medicine_Male_Avatar.png")}
             style={styles.cardPhoto} />
@@ -32,9 +33,9 @@ const DoctorCard = ({ navigation, doctor, user }) => {
         <View style={styles.cardContent}>
           <View>
             <Text numberOfLines={1} ellipsizeMode='tail'
-              style={styles.cardTitle}>{doctor.name}</Text>
+              style={[styles.cardTitle,night && styles.dark2]}>{doctor.name}</Text>
             <Text numberOfLines={2} ellipsizeMode='tail'
-              style={styles.cardDoctor}>{doctor.title + "," + doctor.specialization1 + "," + doctor.specialization1}</Text>
+              style={[styles.cardDoctor,night && styles.dark2]}>{doctor.title + "," + doctor.specialization1 + "," + doctor.specialization1}</Text>
           </View>
           {
             currentUser.is_admin=="yes"?(<View style={styles.adminComponent}>
@@ -120,6 +121,11 @@ const styles = StyleSheet.create({
   },
   edit:{
     flex:1,
+  },
+  dark2: {
+    backgroundColor: '#262424',
+    color:"white",
+    borderColor:'#262424'
   },
 });
 export default DoctorCard;

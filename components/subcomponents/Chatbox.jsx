@@ -3,6 +3,7 @@ import React, {
   useState,
   useLayoutEffect,
   useEffect,
+  useContext,
 } from "react";
 import {
   View,
@@ -32,12 +33,13 @@ import { getFirestore } from "firebase/firestore";
 import CurrentUser from "../consts/CurrentUser";
 import app from "../../db/Config";
 import { MaterialIcons } from "@expo/vector-icons";
+import { AppContext } from "../consts/AppContext";
 import { Modal } from "react-native";
 import ImageViewer from "react-native-image-zoom-viewer";
 export default function Chatbox({ navigation, route }) {
   let filterd = route.params.item;
   //console.log("filterd", filterd.chat);
-
+  const { night} = useContext(AppContext);
   const [chat, setChat] = useState([]);
   const [message, setMessage] = useState("");
   const [isSender, setIsSender] = useState(true);
@@ -195,9 +197,10 @@ export default function Chatbox({ navigation, route }) {
     navigation.navigate("Chatbox_photo", { filterd });
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.heading}>Client Name</Text>
+    <View style={[styles.container,night && styles.buttonDark]}>
+
+      <View style={[styles.header,night && styles.buttonDark]}>
+        <Text style={[styles.heading,night && styles.buttonDark]}>Client Name</Text>
       </View>
       {/* 
        hh[0].chat 
@@ -233,7 +236,7 @@ export default function Chatbox({ navigation, route }) {
 
       <View style={styles.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={[styles.input,night && styles.dark2]}
           placeholder={"Type a message "}
           onChangeText={(text) => setMessage(text)}
         />
@@ -291,7 +294,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
+    paddingVertical:60,
     color: "#cbcbcb",
   },
   input: {
@@ -332,5 +335,14 @@ const styles = StyleSheet.create({
   imageeee: {
     width: 70,
     height: 70,
+  },
+  buttonDark: {
+    backgroundColor: '#1d1c1c',
+    color:"white",
+  },
+  dark2: {
+    backgroundColor: '#262424',
+    color:"white",
+    borderColor:'#262424'
   },
 });
