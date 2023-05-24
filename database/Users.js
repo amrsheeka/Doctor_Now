@@ -168,7 +168,9 @@ const insertAppointment = async (
   name_patient,
   age,
   gender,
+  phone_number,
   notes,
+  patient_image,
   doc_name,
   doc_image,
   specialization1
@@ -182,7 +184,9 @@ const insertAppointment = async (
       name_patient: name_patient,
       age: age,
       gender: gender,
+      phone_number: phone_number,
       notes: notes,
+      patient_image: patient_image,
       doc_name: doc_name,
       doc_image: doc_image,
       specialization1: specialization1,
@@ -203,7 +207,11 @@ const insertAppointment_toHistory = async (
   name_patient,
   age,
   gender,
+  phone_number,
   notes,
+  diagnosis,
+  therapeutic,
+  patient_image,
   doc_name,
   doc_image,
   specialization1
@@ -217,7 +225,11 @@ const insertAppointment_toHistory = async (
       name_patient: name_patient,
       age: age,
       gender: gender,
+      phone_number:phone_number,
       notes: notes,
+      diagnosis:diagnosis,
+      therapeutic:therapeutic,
+      patient_image:patient_image,
       doc_name: doc_name,
       doc_image: doc_image,
       specialization1: specialization1,
@@ -264,6 +276,20 @@ const get_History_Apps_for_Doctor = async (doctor_id, date) => {
     .post(`${Ip.ip}/API/doctors/Get_History_apps_doc.php`, {
       doctor_id: doctor_id,
       date: date,
+    })
+    .then(function (response) {
+      console.log(response.date);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+const get_History_Apps_for_Doctor_by_Number = async (doctor_id, phone_number) => {
+  return axios
+    .post(`${Ip.ip}/API/doctors/Get_History_apps_doc_by_number.php`, {
+      doctor_id: doctor_id,
+      phone_number: phone_number,
     })
     .then(function (response) {
       console.log(response.date);
@@ -467,6 +493,7 @@ export {
   getAppointment_for_Doctor,
   get_doc_by_email,
   get_History_Apps_for_Doctor,
+  get_History_Apps_for_Doctor_by_Number,
   deleteAppointment_fromHistory,
   insertAppointment_toHistory,
   getAllAppointment_from_history,

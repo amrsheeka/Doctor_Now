@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { ScrollView } from "react-native";
-import { RadioButton } from "react-native-paper";
+import { RadioButton, TextInput } from "react-native-paper";
 import {
   View,
   Text,
@@ -9,19 +9,15 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { TextInput } from "react-native-paper";
-import { SelectList } from "react-native-dropdown-select-list";
-import Icon4 from "react-native-vector-icons/FontAwesome5";
+import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
+
 import {
-  getAppointment_for_Doctor,
   get_History_Apps_for_Doctor,
-  get_doc_by_email,
-  getAppointment_by_doc_id,
+  get_History_Apps_for_Doctor_by_Number,
+  deleteAppointment_fromHistory,
 } from "../../database/Users";
-import CurrentUser from "../consts/CurrentUser";
 import { AppContext } from "../consts/AppContext";
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
-import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 const Appointments_History = ({ id }) => {
@@ -41,10 +37,10 @@ const Appointments_History = ({ id }) => {
   //
 
   const Get_Appointment_By_Date = (date) => {
-    if (date == ""){
-        setTextErr("Select the date");
-        return;
-    } 
+    if (date == "") {
+      setTextErr("Select the date");
+      return;
+    }
     setTextErr("");
     get_History_Apps_for_Doctor(id, date).then((res) => {
       console.log(res);
@@ -56,9 +52,55 @@ const Appointments_History = ({ id }) => {
     });
   };
 
+  const Get_Appointment_By_Number = (number) => {
+    if (!number) {
+      setTextErr("Enter phone number.");
+      return;
+    } else if (number.length != 11 || !number.startsWith("01")) {
+      setTextErr("Enter correct phone number.");
+      return;
+    }
+    setTextErr("");
+
+    get_History_Apps_for_Doctor_by_Number(id, number).then((res) => {
+      console.log(res);
+      if (res.status !== "failed") setAppointments_History(res);
+      else setAppointments_History([]);
+
+      // console.log(" date: ", date);
+      console.log(appointments_History);
+    });
+  };
+
+  // const Delete = async () => {
+  //   await deleteAppointment_fromHistory(users_id, id).then(() => {
+  //     console.log("its ok");
+  //     if (CurrentUser.user.is_doctor == "yes") {
+  //       get_History_Apps_for_Doctor(id, date_value).then((res) => {
+  //         console.log(res);
+  //         if (res.status !== "failed") setAppointments_History(res);
+  //         else setAppointments_History([]);
+
+  //         console.log(" date: ", date);
+  //         console.log(appointments_History);
+  //       });
+  //     }
+  //     // else if (CurrentUser.user.is_admin == "yes") {
+  //     //   getAllAppointment_from_history().then((res) => {
+  //     //     res.status != "failed" ? setAppointments(res) : setAppointments([]);
+  //     //   });
+  //     // }
+  //     // else {
+  //     //     get_History_Apps_for_User(users_id).then((res) => {
+  //     //       res.status != "failed" ? setAppointments(res) : setAppointments([]);
+  //     //     });
+  //     //   }
+  //   });
+  // };
+
   const click_date = () => {
     setDate_radio("checked");
-    setPhone_radio("u  nchecked");
+    setPhone_radio("unchecked");
     setLabel("Date");
   };
   const click_phone = () => {
@@ -100,7 +142,7 @@ const Appointments_History = ({ id }) => {
         <RadioButton
           status={date_radio}
           color={main_color}
-          value="Doctor"
+          value="Date"
           uncheckedColor="black"
           onPress={click_date}
         />
@@ -117,7 +159,7 @@ const Appointments_History = ({ id }) => {
         <RadioButton
           status={phone_radio}
           color={main_color}
-          value="Center"
+          value="phone"
           uncheckedColor="black"
           onPress={click_phone}
         />
@@ -177,7 +219,11 @@ const Appointments_History = ({ id }) => {
             marginHorizontal: 5,
           }}
           onPress={() => {
-            Get_Appointment_By_Date(Date_Value);
+            alert(phone_number + "----" + Date_Value);
+            // console.log(phone_number);
+            label == "Date"
+              ? Get_Appointment_By_Date(Date_Value)
+              : Get_Appointment_By_Number(phone_number);
           }}
         >
           <Icon6 name={"file-search"} size={40} color={main_color} />
@@ -192,7 +238,10 @@ const Appointments_History = ({ id }) => {
         />
       )}
 
-    <Text style ={{color : "red" , marginTop : -15 , marginHorizontal : 10}}> {TextErr} </Text>
+      <Text style={{ color: "red", marginTop: -15, marginHorizontal: 10 }}>
+        {" "}
+        {TextErr}{" "}
+      </Text>
 
       {appointments_History.length !== 0 ? (
         <View>
@@ -202,18 +251,22 @@ const Appointments_History = ({ id }) => {
                 <Doc_card_appointment
                   number={idx + 1}
                   key={idx}
+                  users_id={ele.users_id}
+                  doctor_id={ele.doctor_id}
                   date={ele.date}
                   time={ele.time}
                   name_patient={ele.name_patient}
-                  doc_name={ele.doc_name}
-                  gender={ele.gender}
-                  notes={ele.notes}
-                  date_now={ele.date_now}
-                  specialization1={ele.specialization1}
-                  image={ele.doc_image}
-                  doctor_id={ele.doctor_id}
-                  users_id={ele.users_id}
                   age={ele.age}
+                  gender={ele.gender}
+                  phone_number={ele.phone_number}
+                  notes={ele.notes}
+                  diagnosis={ele.diagnosis}
+                  therapeutic={ele.therapeutic}
+                  patient_image={ele.patient_image}
+                  doc_name={ele.doc_name}
+                  doc_image={ele.doc_image}
+                  specialization1={ele.specialization1}
+                  date_now={ele.date_now}
                   appointment_history={true}
                   //   schedule_type={schedule_type}
                 />
@@ -246,7 +299,6 @@ const Appointments_History = ({ id }) => {
               {" "}
               {" this day or this patient ... choose another day "}{" "}
             </Text>
-            
           </View>
 
           <Image

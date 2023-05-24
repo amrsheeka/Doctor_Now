@@ -17,21 +17,19 @@ import {
 import CurrentUser from "../consts/CurrentUser";
 import { AppContext } from "../consts/AppContext";
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
-const Appointments = ({id,date,fun1}) => {
-//   let email = CurrentUser.user.email;
-//   const [schedule_type, set_schedule_type] = useState("");
+const Appointments = ({ id, date, fun1 }) => {
+  //   let email = CurrentUser.user.email;
+  //   const [schedule_type, set_schedule_type] = useState("");
   const { appointments, setAppointments } = useContext(AppContext);
-//   const { type } = useContext(AppContext);
-const main_color = "#288771";
+  //   const { type } = useContext(AppContext);
+  const main_color = "#288771";
   useEffect(() => {
-    getAppointment_by_doc_id(id,date).then((res) => {
-        console.log(res);
-        if (res.status !== "failed")
-            setAppointments(res) ;
-        else 
-            setAppointments([]);
-        console.log(appointments);
-      });
+    getAppointment_by_doc_id(id, date).then((res) => {
+      console.log(res);
+      if (res.status !== "failed") setAppointments(res);
+      else setAppointments([]);
+      console.log(appointments);
+    });
 
     // if (type == "history") {
     //   get_doc_by_email(email).then((ans) => {
@@ -48,8 +46,8 @@ const main_color = "#288771";
     //   get_doc_by_email(email).then((ans) => {
     //     set_schedule_type(ans[0].schedule_type);
 
-        // if (ans.status !== "failed") {
-        // }
+    // if (ans.status !== "failed") {
+    // }
     //   });
     // }
     // console.log(schedule_type);
@@ -57,7 +55,7 @@ const main_color = "#288771";
 
   return (
     <View>
-    {/* <Text style = {{color : "black"}}> hello </Text> */}
+      {/* <Text style = {{color : "black"}}> hello </Text> */}
 
       {/* <View style={styles.header}>
                 <View style={{ paddingHorizontal: "25%" }}>
@@ -77,20 +75,22 @@ const main_color = "#288771";
                 <Doc_card_appointment
                   number={idx + 1}
                   key={idx}
+                  users_id={ele.users_id}
+                  doctor_id={ele.doctor_id}
                   date={ele.date}
                   time={ele.time}
                   name_patient={ele.name_patient}
-                  doc_name={ele.doc_name}
-                  gender={ele.gender}
-                  notes={ele.notes}
-                  date_now={ele.date_now}
-                  specialization1={ele.specialization1}
-                  image={ele.doc_image}
-                  doctor_id={ele.doctor_id}
-                  users_id={ele.users_id}
                   age={ele.age}
+                  gender={ele.gender}
+                  phone_number={ele.phone_number}
+                  notes={ele.notes}
+                  patient_image={ele.patient_image}
+                  doc_name={ele.doc_name}
+                  doc_image={ele.doc_image}
+                  specialization1={ele.specialization1}
+                  date_now={ele.date_now}
                   appointment_history={false}
-                //   schedule_type={schedule_type}
+                  //   schedule_type={schedule_type}
                 />
               );
             })}
@@ -98,78 +98,78 @@ const main_color = "#288771";
         </View>
       ) : (
         <View>
-        <View style={{ alignItems: "center", marginTop: 50 }}>
-          <Text
-            style={{
-              color: "#555555",
-              fontSize: 16,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" No work available at this time "}{" "}
-          </Text>
-        </View>
-        <View style={{ alignItems: "center", marginTop: 15 }}>
-          <Text
-            style={{
-              color: "#555555",
-              fontSize: 14,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" Please check back later as more appointments  "}{" "}
-          </Text>
-          <Text
-            style={{
-              color: "#555555",
-              fontSize: 14,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" will be booked soon. "}{" "}
-          </Text>
-        </View>
+          <View style={{ alignItems: "center", marginTop: 50 }}>
+            <Text
+              style={{
+                color: "#555555",
+                fontSize: 16,
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              {" No work available at this time "}{" "}
+            </Text>
+          </View>
+          <View style={{ alignItems: "center", marginTop: 15 }}>
+            <Text
+              style={{
+                color: "#555555",
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              {" Please check back later as more appointments  "}{" "}
+            </Text>
+            <Text
+              style={{
+                color: "#555555",
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              {" will be booked soon. "}{" "}
+            </Text>
+          </View>
 
-        <Image
-          source={require("../assets/splash.png")}
-          style={[
-            styles.image,
-            { alignSelf: "center", marginVertical: 50, height: 220 },
-          ]}
-        />
+          <Image
+            source={require("../assets/splash.png")}
+            style={[
+              styles.image,
+              { alignSelf: "center", marginVertical: 50, height: 220 },
+            ]}
+          />
 
-        <TouchableOpacity style={{ alignItems: "center" }} onPress = {fun1} >
-          <Text
-            style={{
-             borderRadius : 10,
-              backgroundColor: main_color,
-            //   paddingHorizontal: 20,
-              paddingVertical: 10,
-              color: "white",
-              margin: 20,
-              textAlign : "center",
-              width : "50%"
-            }}
-          >
-            {" "}
-            Go To Profile
-          </Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={{ alignItems: "center" }} onPress={fun1}>
+            <Text
+              style={{
+                borderRadius: 10,
+                backgroundColor: main_color,
+                //   paddingHorizontal: 20,
+                paddingVertical: 10,
+                color: "white",
+                margin: 20,
+                textAlign: "center",
+                width: "50%",
+              }}
+            >
+              {" "}
+              Go To Profile
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    image: {
-        width: "45%",
-        height: 180,
-        marginVertical: 10,
-      },
+  image: {
+    width: "45%",
+    height: 180,
+    marginVertical: 10,
+  },
   // header: {
   //   backgroundColor: "#288771",
   //   width: "100%",

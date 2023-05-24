@@ -35,7 +35,9 @@ CREATE TABLE `appointment` (
   `name_patient` varchar(100) NOT NULL,
   `age` varchar(10) NOT NULL,
   `gender` enum('male','female') NOT NULL,
+  `phone_number` varchar(11) NOT NULL,
   `notes` varchar(600) NOT NULL,
+  `patient_image` varchar(255) DEFAULT NULL,
   `doc_name` varchar(30) NOT NULL,
   `doc_image` varchar(255) DEFAULT NULL,
   `specialization1` varchar(100) NOT NULL,
@@ -46,8 +48,8 @@ CREATE TABLE `appointment` (
 -- Dumping data for table `appointment`
 --
 
-INSERT INTO `appointment` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `notes`, `doc_name`, `doc_image`, `specialization1`, `date_now`) VALUES
-(6347, 510, 'Wed May 03 2023', '9:30 PM', 'amrsheeka', '15+', 'male', '', 'Eman Tantawy', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENT870c42/Profile/150/doctor-eman-tantawy-dentistry_20220918194218582.jpg', 'Cosmetic Dentistry', '2023-05-03');
+INSERT INTO `appointment` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `phone_number`, `notes`, `patient_image`, `doc_name`, `doc_image`, `specialization1`, `date_now`) VALUES
+(6347, 510, 'Wed May 03 2023', '9:30 PM', 'amrsheeka', '15+', 'male','01092297298', '', '../assets/Herbal_Medicine_Male_Avatar.png', 'Eman Tantawy', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENT870c42/Profile/150/doctor-eman-tantawy-dentistry_20220918194218582.jpg', 'Cosmetic Dentistry', '2023-05-03');
 
 -- --------------------------------------------------------
 
@@ -55,6 +57,9 @@ INSERT INTO `appointment` (`users_id`, `doctor_id`, `date`, `time`, `name_patien
 -- Table structure for table `appointmenthistory`
 --
 
+-- $diagnosis = $obj[`diagnosis`];
+-- $therapeutic = $obj[`therapeutic`];
+-- $patient_image = $obj[`patient_image`];
 CREATE TABLE `appointmenthistory` (
   `users_id` int(11) NOT NULL,
   `doctor_id` int(11) NOT NULL,
@@ -63,7 +68,11 @@ CREATE TABLE `appointmenthistory` (
   `name_patient` varchar(100) NOT NULL,
   `age` varchar(10) NOT NULL,
   `gender` enum('male','female') NOT NULL,
+  `phone_number` varchar(11) NOT NULL,
   `notes` varchar(600) NOT NULL,
+  `diagnosis` varchar(600) NOT NULL,
+  `therapeutic` varchar(600) NOT NULL,
+  `patient_image` varchar(255) DEFAULT NULL,
   `doc_name` varchar(30) NOT NULL,
   `doc_image` varchar(255) DEFAULT NULL,
   `specialization1` varchar(100) NOT NULL,
@@ -74,9 +83,9 @@ CREATE TABLE `appointmenthistory` (
 -- Dumping data for table `appointmenthistory`
 --
 
-INSERT INTO `appointmenthistory` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `notes`, `doc_name`, `doc_image`, `specialization1`, `date_now`) VALUES
-(183, 514, 'Fri Apr 14 2023', '5:30 PM', '', '25+', 'male', '', 'Mohamed Said ElGamal', '', 'Adult Vascular Diseases', '2023-04-14'),
-(6347, 509, 'Wed May 03 2023', '9:30 PM', 'amrsheeka', '15+', 'male', '', 'Tamer Yehia HCC', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '2023-05-04');
+INSERT INTO `appointmenthistory` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `phone_number`, `notes`, `diagnosis`, `therapeutic`, `patient_image`, `doc_name`, `doc_image`, `specialization1`, `date_now`) VALUES
+(183, 514, 'Fri Apr 14 2023', '5:30 PM', 'mohamed Essam', '25+', 'male','01192297298', 'notes1','This is diagnosis','This is therapeutic','../assets/Herbal_Medicine_Male_Avatar.png', 'Mohamed Said ElGamal', '', 'Adult Vascular Diseases', '2023-04-14'),
+(6347, 509, 'Wed May 03 2023', '9:30 PM', 'amrsheeka', '15+', 'male', '01292297298', 'notes2','This is diagnosis2','This is therapeutic2','../assets/Herbal_Medicine_Male_Avatar.png', 'Tamer Yehia HCC', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '2023-05-04');
 
 -- --------------------------------------------------------
 

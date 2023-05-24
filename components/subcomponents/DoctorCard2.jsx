@@ -74,7 +74,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
         })
         .then(() => {
           reload();
-          fetchDoctor();
+          // fetchDoctor();
         });
     } else {
       setHeart("favorite");
@@ -84,7 +84,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
         })
         .then(() => {
           reload();
-          fetchDoctor();
+          // fetchDoctor();
         });
     }
   };
@@ -192,8 +192,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
               <TouchableOpacity
                 style={{
                   alignItems: "center",
-                  width: "100%",
-                  borderRadius: 10,
+                  // width: "100%",
                 }}
                 onPress={() => {
                   fetch();
@@ -203,7 +202,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                 <Text
                   style={{
                     backgroundColor: main_color,
-
+                    borderRadius: 10,
                     paddingHorizontal: 10,
                     paddingVertical: 10,
                     color: "white",
