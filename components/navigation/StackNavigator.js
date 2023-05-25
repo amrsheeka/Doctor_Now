@@ -42,6 +42,7 @@ import Chatbox_photo from "../subcomponents/Chatbox_photo";
 import Thk4 from "../screens/Thk4";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
+import Pay from "../subcomponents/Pay";
 const Tab = createBottomTabNavigator();
 type Props = {
   barColor: string;
@@ -182,6 +183,15 @@ const Homefunc: React.FC<Props> = ({ barColor }) => {
       <Tab.Screen
         name="Thk"
         component={Thk}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="Pay"
+        component={Pay}
         options={{
           headerShown: false,
           tabBarVisible: false,
