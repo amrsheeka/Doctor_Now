@@ -1,48 +1,69 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet, FlatList, Image, SafeAreaView, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  SafeAreaView,
+  ActivityIndicator,
+} from "react-native";
 import { getFavourite } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
 const Favorite = ({ navigation, reload }) => {
   const { favourite, setFavourite } = useContext(AppContext);
-  const { night} = useContext(AppContext);
+  const { night } = useContext(AppContext);
   const renderDoctor = ({ item }) => {
-    return (<DoctorCard2 reload={fetchDoctor} doctor={item} navigation={navigation} />
+    return (
+      <DoctorCard2 reload={fetchDoctor} doctor={item} navigation={navigation} />
     );
-  }
+  };
   async function fetchDoctor() {
     const filt = await getFavourite(CurrentUser.user.id);
-    setFavourite(filt);
+    console.log(filt);
+    if (filt.status == "success") setFavourite(filt);
+    else setFavourite([]);
   }
   useEffect(() => {
     fetchDoctor();
   }, []);
   return (
-    <View style={[styles.container,night && styles.buttonDark]}>
-      <View style={[styles.header, night && styles.buttonDark]}>
+    <View style={[styles.container,night && styles.dark2]}>
+      <View style={[styles.header, night && styles.dark2]}>
         <Text style={styles.heading}>My Favorite Doctors</Text>
       </View>
-      {favourite.length !== 0 ?
-        (<FlatList
+      {favourite.length !== 0 ? (
+        <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
           data={favourite}
           renderItem={renderDoctor}
           ListEmptyComponent={() => {
             return (
-              <View style={{flex:1,justifyContent:"center"}}>
-                
-                <Image style={{ height: "100%", width: "100%",alignItems:"center" }}  source={night? require("../assets/empty1.png") :require("../assets/empty.png")} />
+              <View style={{ flex: 1, justifyContent: "center" }}>
+                <Image
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    alignItems: "center",
+                  }}
+                  source={
+                    night
+                      ? require("../assets/empty1.png")
+                      : require("../assets/empty.png")
+                  }
+                />
               </View>
             );
           }}
           keyExtractor={(item, index) => item.id}
-        />)
-        : (
-          <View style={{ padding: "18%" }}>
-            <ActivityIndicator size={100} color="#00ff00" />
-          </View>
-        )}
+        />
+      ) : (
+        <View style={{ padding: "18%" }}>
+          <ActivityIndicator size={100} color="#00ff00" />
+        </View>
+      )}
     </View>
   );
 };
@@ -66,13 +87,13 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
+    backgroundColor: '#288771',
   },
   darklist: {
-    backgroundColor: '#142E5E',
+    backgroundColor: '#262424',
   },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: "#1d1c1c",
   },
 });
 

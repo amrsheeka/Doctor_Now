@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingTop: 60,
-    backgroundColor: "#fff",
+    backgroundColor: "#F5F5F5",
   },
   search: {
     backgroundColor: "#40b488",
@@ -363,13 +363,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
+    backgroundColor: '#288771',
   },
   darklist: {
-    backgroundColor: '#142E5E',
+    backgroundColor: '#262424',
+    color:"white"
   },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: "#1d1c1c",
   },
 });
 

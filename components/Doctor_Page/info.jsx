@@ -4,37 +4,44 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  FlatList,
-  Platform,
   Image,
   TextInput,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
-  SafeAreaView,
   Switch,
-  Alert,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { RadioButton } from "react-native-paper";
+
 import { StatusBar } from "expo-status-bar";
 import DateTimePicker from "@react-native-community/datetimepicker";
+
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
 import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
+
 import ProCard from "./ProCard";
 import Personal_Information from "./Personal_Information";
 import My_Account from "./My_Account";
+import About_The_Doctor from "./About_The_Doctor";
+import Doctor_Info from "./Doctor_Info";
+import Clinic_Info from "./Clinic_Info";
+import Clinic_Name_And_Number from "./Clinic_Name_And_Number";
+import Exmination_And_FollowUp from "./Exmination_And_FollowUp";
+import Assistant_Name_And_Number from "./Assistant_Name_And_Number";
+import Number_Views_bookings_And_Tab from "./Number_Views_bookings_And_Tab";
+import Schedule_Summary from "./Schedule_Summary";
+import More from "./More";
+import Appointments_History from "./Appointments_History";
 
 import {
   getAppointment_for_Doctor,
   get_History_Apps_for_Doctor,
   get_doc_by_email,
   logout,
+  getAppointment_by_doc_id,
 } from "../../database/Users";
 import Appointments from "./Appointments";
 import { useContext } from "react";
@@ -48,7 +55,9 @@ import {
 } from "../../database/Doctors";
 
 const Info = ({ navigation }) => {
-  const [doctor_booking, setDoctor_booking] = useState(new Array(10).fill(2));
+  const main_color = "#288771";
+
+  const [doctor_booking, setDoctor_booking] = useState({});
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
   const [show, setShow] = useState(false);
@@ -108,9 +117,9 @@ const Info = ({ navigation }) => {
   const [selected, setSelected] = useState("First In First Out");
   const [selected2, setSelected2] = useState("Accept all bookings");
   const [selected3, setSelected3] = useState("Pulmonologist");
-  const [profile_views, setProfileviews] = useState(10);
-  const [bookings, setBookings] = useState(0);
-  const [reviews, setReviews] = useState(25);
+  const [profile_views, setProfileviews] = useState("10");
+  const [bookings, setBookings] = useState("9");
+  const [reviews, setReviews] = useState("25");
   const [doc_radio, setDoc_radio] = useState("unchecked");
   const [center_radio, setCenter_radio] = useState("unchecked");
   const [practise_licence, setPractise_licence] = useState("");
@@ -130,16 +139,16 @@ const Info = ({ navigation }) => {
   const [new_password, setNew_password] = useState("");
   const [confirm_new_password, setConfirm_new_password] = useState("");
 
-  const [about_the_doctor, setAbout_theDoctor] = useState("hi");
+  const [about_the_doctor, setAbout_theDoctor] = useState("");
   const [height, setHeight] = useState(0);
 
   const [nameClinic, setNameClinic] = useState("Essam Clinic");
   const [numberClinic, setNumberClinic] = useState("01012453522");
   const [nameAssistant, setNameAssistant] = useState("doctor sheeka");
   const [numberAssistant, setNumberAssistant] = useState("01016232521");
-  const [exmain, setExmain] = useState(100);
-  const [follow_up, setFollow_up] = useState(55);
-  const [duration, setDuration] = useState(7);
+  const [exmain, setExmain] = useState("100");
+  const [follow_up, setFollow_up] = useState("55");
+  const [duration, setDuration] = useState("7");
   const [flag, setFlag] = useState(true);
   const [schedule_summary, setSchedule_summary] = useState(true);
   const [isEnabled1, setIsEnabled1] = useState(false);
@@ -149,9 +158,9 @@ const Info = ({ navigation }) => {
   const [isEnabled5, setIsEnabled5] = useState(false);
   const [isEnabled6, setIsEnabled6] = useState(false);
   const [isEnabled7, setIsEnabled7] = useState(false);
-  const [color1, setColor1] = useState("#288759");
+  const [color1, setColor1] = useState(main_color);
   const [color2, setColor2] = useState("black");
-  const [color1_sechedule, setColor1_sechedule] = useState("#288759");
+  const [color1_sechedule, setColor1_sechedule] = useState(main_color);
   const [color2_sechedule, setColor2_sechedule] = useState("black");
   const [icon1, setIcon1] = useState("star");
   const [icon2, setIcon2] = useState("star");
@@ -159,20 +168,8 @@ const Info = ({ navigation }) => {
   const [icon4, setIcon4] = useState("star");
   const [icon5, setIcon5] = useState("star");
 
-  const icon6 = "edit";
-  const icon7 = "info";
-  const icon8 = "graduation-cap";
-  const icon9 = "world";
-  const icon10 = "photograph";
-  const icon11 = "file-invoice-dollar";
-  const icon12 = "location-pin";
-  const icon13 = "drivers-license";
-  const icon14 = "arrow-left";
-  const icon15 = "content-save-check";
-  const icon16 = "user-lock";
-  const icon17 = "email";
-  const icon18 = "phone";
-  const icon19 = "user-nurse";
+  const [whichDay, setWhichDay] = useState(0);
+
   const icon20 = "user-md";
   const icon21 = "calendar";
   const icon22 = "bars";
@@ -180,28 +177,30 @@ const Info = ({ navigation }) => {
   const icon24 = "chevron-down";
   const icon25 = "calendar-month";
   const icon26 = "plane";
-  const main_color = "#288771";
+
   const empty = false;
+
   const { schedules, setSchedules } = useContext(AppContext);
-  const { appointments,setAppointments } = useContext(AppContext);
+  const { appointments, setAppointments } = useContext(AppContext);
   const { setType } = useContext(AppContext);
   const { curruser } = useContext(AppContext);
   const { doctor, setDoctor } = useContext(AppContext);
   const [image, setImage] = useState();
+
   async function getDoc() {
     let email = CurrentUser.user.email;
     return await get_doc_by_email(email);
   }
-  async function handleExaminType(type){
+  async function handleExaminType(type) {
     setSelected(type);
-    let doc = {...doctor};
-    if(type=="First In First Out"){
-      doc.schedule_type="fifo";
-    }else if(type=="On Appointments"){
-      doc.schedule_type="on appointment";
-    }else if(type=="Timer"){
-      doc.schedule_type="special";
-    } 
+    let doc = { ...doctor };
+    if (type == "First In First Out") {
+      doc.schedule_type = "fifo";
+    } else if (type == "On Appointments") {
+      doc.schedule_type = "on appointment";
+    } else if (type == "Timer") {
+      doc.schedule_type = "special";
+    }
     update_Doctor_info(doc);
   }
   async function getSchedule(id) {
@@ -228,7 +227,7 @@ const Info = ({ navigation }) => {
       setEnd4(res1[4].end);
       setEnd5(res1[5].end);
       setEnd6(res1[6].end);
-      setBookings(appointments);
+      // setBookings(appointments);
       // setStartTime(res1[0].start);
       // setStartTime1(res1[1].start);
       // setStartTime2(res1[2].start);
@@ -255,6 +254,17 @@ const Info = ({ navigation }) => {
     });
   }
 
+  async function get_number_of_booking(i, id, date) {
+    await getAppointment_by_doc_id(id, date).then((res) => {
+      // console.log(res);
+      let x;
+      if (res.status !== "failed") x = res.length;
+      else x = 0;
+      setDoctor_booking({ ...doctor_booking, [i]: x });
+      console.log(doctor_booking);
+    });
+  }
+
   async function updateSchedules(schedule) {
     await updateSchedule({
       ...schedule,
@@ -262,6 +272,7 @@ const Info = ({ navigation }) => {
       getSchedule(doctor.id);
     });
   }
+
   useEffect(() => {
     getDoc().then((res) => {
       setDoctor_email(res[0].email);
@@ -272,13 +283,13 @@ const Info = ({ navigation }) => {
       setFullpro_title(res[0].specialization1);
       setImage(res[0].image);
       setExmain(res[0].price);
-      if(res[0].schedule_type=="fifo"){
+      if (res[0].schedule_type == "fifo") {
         setSelected("First In First Out");
-      }else if(res[0].schedule_type=="on appointment"){
+      } else if (res[0].schedule_type == "on appointment") {
         setSelected("On Appointments");
-      }else if(res[0].schedule_type=="special"){
+      } else if (res[0].schedule_type == "special") {
         setSelected("Timer");
-      }      
+      }
       res[0].title1 == "Doctor"
         ? setDoc_radio("checked")
         : setCenter_radio("checked");
@@ -300,7 +311,7 @@ const Info = ({ navigation }) => {
       ? setDoc_radio("checked")
       : setCenter_radio("checked");
 
-    page === "Schedule" ? summary() : setPage("Profile");
+    page === "Schedule" ? summary() : profile();
     setOpen_password(false);
   };
   const save = () => {
@@ -348,94 +359,47 @@ const Info = ({ navigation }) => {
     setType("history");
   };
 
-  const HandleAppointments = () => {
-    get_doc_by_email(email).then((ans) => {
-      if (ans.status !== "failed") {
-        getAppointment_for_Doctor(ans[0].id).then((res) => {
-          if (res.status !== "failed") setAppointments(res);
-          else setAppointments([]);
-        });
-      }
-    });
-    setType("appointments");
+  const HandleAppointments = (i) => {
+    // get_doc_by_email(email).then((ans) => {
+    //   if (ans.status !== "failed") {
+    //     getAppointment_for_Doctor(ans[0].id).then((res) => {
+    //       if (res.status !== "failed") setAppointments(res);
+    //       else setAppointments([]);
+    //     });
+    //   }
+    // });
+    // setType("appointments");
+    let date = new Date(
+      new Date().getTime() + i * 24 * 60 * 60 * 1000
+    ).toDateString();
+    // console.log(date , doctor.id, CurrentUser.user.id);
+    <Appointments />;
   };
 
-  const ChangeDate = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
-    setShow(false);
-    let tempDate = new Date(currentDate);
-    let fDate =
-      tempDate.getDate() +
-      "/" +
-      (tempDate.getMonth() + 1) +
-      "/" +
-      tempDate.getFullYear();
-
-    setBirth(fDate);
-  };
   /////////////////////////////////////
-
-  // const clickMale = () => {
-  //   setMale("checked");
-  //   setFemale("unchecked");
-  // };
-
-  // const clickFemale = () => {
-  //   setMale("unchecked");
-  //   setFemale("checked");
-  // };
 
   const Doctor_info = () => {
     setFlag(true);
-    setColor1("#288759");
+    setColor1(main_color);
     setColor2("black");
   };
 
   const Clinic_info = () => {
     setFlag(false);
     setColor1("black");
-    setColor2("#288759");
+    setColor2(main_color);
   };
 
   const summary = () => {
     setSchedule_summary(true);
-    setColor1_sechedule("#288759");
+    setColor1_sechedule(main_color);
     setColor2_sechedule("black");
   };
 
   const management = () => {
     setSchedule_summary(false);
     setColor1_sechedule("black");
-    setColor2_sechedule("#288759");
-  };
-
-  const edit_name = () => {
-    setPage("Professional Information");
-  };
-
-  const account_settings = () => {
-    setPage("Account Settings");
-  };
-
-  const change_password = () => {
-    setOpen_password(!open_password);
-  };
-
-  const about_doctor = () => {
-    setPage("About the Doctor");
-  };
-
-  const clinic_name = () => {
-    setPage("Clinic Name and Number");
-  };
-
-  const exmination = () => {
-    setPage("Exmination and Follow-up");
-  };
-
-  const assistant = () => {
-    setPage("Assistant Name and Number");
+    setColor2_sechedule(main_color);
   };
 
   const profile = () => {
@@ -456,33 +420,6 @@ const Info = ({ navigation }) => {
     setColor_more("white");
     setPage("More");
   };
-
-  // const handleSubmit = (exmin) => {
-  //   let newText = "30 Mins";
-  //   if (
-  //     !(
-  //       exmin.toString().includes("M") ||
-  //       exmin.toString().includes("i") ||
-  //       exmin.toString().includes("n") ||
-  //       exmin.toString().includes("s") ||
-  //       exmin < 5
-  //     )
-  //   ){
-  //   newText = exmination_duration + " Mins";
-  //   // console.log(newText);
-  // }
-  // else console.log("dfsdf");
-
-  //   console.log(newText);
-
-  //   if (exmin === exmination_duration) return setExmination_duration(newText);
-  //   // else if (exmin === exmination_duration1) setExmination_duration1(newText);
-  //   // else if (exmin === exmination_duration2) setExmination_duration2(newText);
-  //   // else if (exmin === exmination_duration3) setExmination_duration3(newText);
-  //   // else if (exmin === exmination_duration4) setExmination_duration4(newText);
-  //   // else if (exmin === exmination_duration5) setExmination_duration5(newText);
-  //   // else if (exmin === exmination_duration6) setExmination_duration6(newText);
-  // };
 
   const exmin_duration = (exmin) => {
     if (exmin === exmination_duration) return setExmination_duration;
@@ -527,8 +464,6 @@ const Info = ({ navigation }) => {
       hour.toString() + ":" + minutes.toString() + " " + TimeType.toString();
     setShow_time(0);
     if (which === "sat_start") {
-      //setStartTime(currentTime);
-      //setStart(fTime);
       updateSchedules({
         day: schedules[0].day,
         doctor_id: schedules[0].doctor_id,
@@ -538,8 +473,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[0].avilable,
       });
     } else if (which === "sat_end") {
-      //setEndTime(currentTime);
-      //setEnd(fTime);
       updateSchedules({
         day: schedules[0].day,
         doctor_id: schedules[0].doctor_id,
@@ -549,8 +482,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[0].avilable,
       });
     } else if (which === "sun_start") {
-      //setStartTime1(currentTime);
-      //setStart1(fTime);
       updateSchedules({
         day: schedules[1].day,
         doctor_id: schedules[1].doctor_id,
@@ -560,8 +491,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[1].avilable,
       });
     } else if (which === "sun_end") {
-      //setEndTime1(currentTime);
-      //setEnd1(fTime);
       updateSchedules({
         day: schedules[1].day,
         doctor_id: schedules[1].doctor_id,
@@ -571,8 +500,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[1].avilable,
       });
     } else if (which === "mon_start") {
-      //setStartTime2(currentTime);
-      //setStart2(fTime);
       updateSchedules({
         day: schedules[2].day,
         doctor_id: schedules[2].doctor_id,
@@ -582,8 +509,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[2].avilable,
       });
     } else if (which === "mon_end") {
-      //setEndTime2(currentTime);
-      //setEnd2(fTime);
       updateSchedules({
         day: schedules[2].day,
         doctor_id: schedules[2].doctor_id,
@@ -593,8 +518,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[2].avilable,
       });
     } else if (which === "tues_start") {
-      //setStartTime3(currentTime);
-      //setStart3(fTime);
       updateSchedules({
         day: schedules[3].day,
         doctor_id: schedules[3].doctor_id,
@@ -604,8 +527,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[3].avilable,
       });
     } else if (which === "tues_end") {
-      //setEndTime3(currentTime);
-      //setEnd3(fTime);
       updateSchedules({
         day: schedules[3].day,
         doctor_id: schedules[3].doctor_id,
@@ -615,8 +536,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[3].avilable,
       });
     } else if (which === "wen_start") {
-      //setStartTime4(currentTime);
-      //setStart4(fTime);
       updateSchedules({
         day: schedules[4].day,
         doctor_id: schedules[4].doctor_id,
@@ -626,8 +545,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[4].avilable,
       });
     } else if (which === "wen_end") {
-      //setEndTime4(currentTime);
-      //setEnd4(fTime);
       updateSchedules({
         day: schedules[4].day,
         doctor_id: schedules[4].doctor_id,
@@ -637,8 +554,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[4].avilable,
       });
     } else if (which === "thurs_start") {
-      //setStartTime5(currentTime);
-      //setStart5(fTime);
       updateSchedules({
         day: schedules[5].day,
         doctor_id: schedules[5].doctor_id,
@@ -648,8 +563,6 @@ const Info = ({ navigation }) => {
         avilable: schedules[5].avilable,
       });
     } else if (which === "thurs_end") {
-      //setEndTime5(currentTime);
-      //setEnd5(fTime);
       updateSchedules({
         day: schedules[5].day,
         doctor_id: schedules[5].doctor_id,
@@ -687,6 +600,7 @@ const Info = ({ navigation }) => {
       console.log(start);
     });
   };
+
   const shift = (
     day,
     day_start,
@@ -809,125 +723,31 @@ const Info = ({ navigation }) => {
       </View>
     );
   };
-  const update_booking = (i, newValue) => {
-    let array = { ...doctor_booking };
-    array[i] = newValue;
-    setDoctor_booking(array);
-  };
-
-  const app_days = (i) => {
-    const MONTHS = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "June",
-      "July",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const DAYS = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const tomorrow = new Date(new Date().getTime() + i * 24 * 60 * 60 * 1000);
-    const day = DAYS[tomorrow.getDay()];
-    const date = tomorrow.getDate();
-    const month = MONTHS[tomorrow.getMonth()];
-
-    const x = date + "  " + month;
-
-    return [day, x];
-  };
-  const plane = (i) => {
-    let arr = { ...color_plane };
-    arr[i] == "#ccc" ? (arr[i] = "#288771") : (arr[i] = "#ccc");
-    setColor_plane(arr);
-  };
-  const appoint = (i) => {
-    return (
-      <View
-        style={[
-          styles.content,
-          {
-            flexDirection: "row",
-            padding: 15,
-            marginHorizontal: 7,
-            marginBottom: 7,
-          },
-        ]}
-      >
-        <View style={{ width: "40%", merginRight: 30 }}>
-          <Text style={{ color: main_color }}>
-            {i === 0 ? "Today" : i === 1 ? "Tomorrow" : app_days(i)[0]}
-          </Text>
-          <Text>{app_days(i)[1]}</Text>
-        </View>
-        <View style={{ width: "45%", alignSelf: "center" }}>
-          <Text>
-            {doctor_booking[i] === 0
-              ? "No Bookings"
-              : doctor_booking[i] + " Bookings"}
-          </Text>
-        </View>
-        <Icon5
-          onPress={() => plane(i)}
-          name={icon26}
-          size={30}
-          color={color_plane[i]}
-          style={{ alignSelf: "center", width: "10%", marginLeft: 15 }}
-        />
-      </View>
-    );
-  };
-
-  const appoints = () => {
-    return (
-      <View>
-        <View>{appoint(0)}</View>
-        <View>{appoint(1)}</View>
-        <View>{appoint(2)}</View>
-        <View>{appoint(3)}</View>
-        <View>{appoint(4)}</View>
-        <View>{appoint(5)}</View>
-        <View>{appoint(6)}</View>
-        <View>{appoint(7)}</View>
-        <View>{appoint(8)}</View>
-        <View>{appoint(9)}</View>
-      </View>
-    );
-  };
 
   // **************************************************************************************************************************
 
   const Header = () => {
     return (
-      <View style={[styles.header, { flexDirection: "row" }]}>
+      <View style={[styles.header, { flexDirection: "row"}]}>
         <Icon2
-          name={icon14}
+          name={"arrow-left"}
           size={30}
           color="white"
           onPress={back}
           style={{ width: "7%", marginHorizontal: 10 }}
         />
-        <Text style={[styles.label, { width: "78%" }]}> {page} </Text>
-
-        <Icon6
-          name={icon15}
-          size={30}
-          color="white"
-          onPress={save}
-          style={{ width: "20%" }}
-        />
+        <Text style={[styles.label, { width: "75%" }]}> {page} </Text>
+        {page == "Appointments" || page == "Appointments History" ? (
+          <></>
+        ) : (
+          <Icon6
+            name={"content-save-check"}
+            size={30}
+            color="white"
+            onPress={save}
+            style={{ width: "20%" }}
+          />
+        )}
       </View>
     );
   };
@@ -958,521 +778,9 @@ const Info = ({ navigation }) => {
 
   // **************************************************************************************************************************
 
-  const ProViewsAndBookings = () => {
-    return (
-      <View style={{ marginVertical: 5, flexDirection: "row" }}>
-        <View style={{ width: "50%" }}>
-          <View style={styles.content}>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                fontWeight: "bold",
-                alignSelf: "center",
-              }}
-            >
-              {profile_views}
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 12,
-                alignSelf: "center",
-              }}
-            >
-              {" "}
-              {" Profile Views "}{" "}
-            </Text>
-          </View>
-        </View>
-
-        {/* ////////////////////////////////////////////////// */}
-
-        <View style={{ width: "50%" }}>
-          <View style={styles.content}>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                fontWeight: "bold",
-                alignSelf: "center",
-              }}
-            >
-              {appointments.length}
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 12,
-                alignSelf: "center",
-              }}
-            >
-              {" "}
-              {" Bookings "}{" "}
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
-  };
-
   // **************************************************************************************************************************
 
-  const DoctorClinicTab = () => {
-    return (
-      <View
-        style={[
-          styles.content,
-          {
-            flexDirection: "row",
-            width: "100%",
-            margin: 3,
-            paddingVertical: 15,
-          },
-        ]}
-      >
-        <TouchableOpacity
-          style={{ width: "50%", alignItems: "center" }}
-          onPress={Doctor_info}
-        >
-          <Text
-            style={{
-              color: color1,
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" Doctor info "}{" "}
-          </Text>
-        </TouchableOpacity>
-
-        {/* /////////////////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity
-          style={{ width: "50%", alignItems: "center" }}
-          onPress={Clinic_info}
-        >
-          <Text
-            style={{
-              color: color2,
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" Clinic info "}{" "}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
   // **************************************************************************************************************************
-
-  const DocInfo = () => {
-    return (
-      <View>
-        <TouchableOpacity onPress={about_doctor}>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginTop: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={icon7}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              About the Doctor{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-
-          {about_the_doctor !== "" ? (
-            <View style={[styles.content, { paddingVertical: 15 }]}>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    paddingBottom: 10,
-                    paddingHorizontal: 20,
-                    width: "80%",
-                  }}
-                >
-                  {about_the_doctor}
-                </Text>
-              </View>
-            </View>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-
-        {/* ///////////////////////////////////////////// */}
-
-        <TouchableOpacity>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={icon8}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Education{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-        </TouchableOpacity>
-
-        {/* /////////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              },
-            ]}
-          >
-            <Icon3
-              name={icon9}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Spoken Languages{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
-  // **************************************************************************************************************************
-
-  const ClinicInfo = () => {
-    return (
-      <View>
-        <TouchableOpacity onPress={clinic_name}>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginTop: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={icon7}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Clinic Name and Number{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-
-          {nameClinic !== "" || numberClinic !== "" ? (
-            <View style={[styles.content, { paddingVertical: 15 }]}>
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 15,
-                  paddingBottom: 10,
-                  paddingHorizontal: 20,
-                }}
-              >
-                {nameClinic}
-              </Text>
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 15,
-                  paddingHorizontal: 20,
-                }}
-              >
-                {numberClinic}
-              </Text>
-            </View>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-
-        {/* //////////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              },
-            ]}
-          >
-            <Icon3
-              name={icon10}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Clinic Photos{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-        </TouchableOpacity>
-
-        {/* /////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity onPress={exmination}>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-              },
-            ]}
-          >
-            <Icon4
-              name={icon11}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Exmination and Follow-up{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-          {exmain !== "" || follow_up !== "" ? (
-            <View style={[styles.content, { paddingVertical: 15 }]}>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    paddingBottom: 10,
-                    paddingHorizontal: 20,
-                    width: "80%",
-                  }}
-                >
-                  {" "}
-                  Exmaination Fees{" "}
-                </Text>
-                <Text>{exmain} EGP</Text>
-              </View>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    paddingHorizontal: 20,
-                    paddingBottom: 10,
-                    width: "80%",
-                  }}
-                >
-                  {" "}
-                  Follow-up Fees{" "}
-                </Text>
-                <Text> {follow_up} EGP </Text>
-              </View>
-              <View style={{ flexDirection: "row", width: "100%" }}>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    paddingHorizontal: 20,
-                    width: "80%",
-                  }}
-                >
-                  {" "}
-                  Follow-up Duration{" "}
-                </Text>
-                <Text> {duration} Days </Text>
-              </View>
-            </View>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-
-        {/* ////////////////////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={icon12}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Clinic Address{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-        </TouchableOpacity>
-
-        {/* ///////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity onPress={assistant}>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginTop: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={icon7}
-              size={25}
-              color="#288759"
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Assistant Name and Number{" "}
-            </Text>
-            <Icon name={icon6} size={25} color="#288759" />
-          </View>
-          {nameAssistant !== "" || numberAssistant !== "" ? (
-            <View
-              style={[styles.content, { paddingVertical: 15, marginDown: 10 }]}
-            >
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 15,
-                  paddingBottom: 10,
-                  paddingHorizontal: 20,
-                }}
-              >
-                {nameAssistant}
-              </Text>
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 15,
-                  paddingHorizontal: 20,
-                }}
-              >
-                {numberAssistant}
-              </Text>
-            </View>
-          ) : (
-            <></>
-          )}
-        </TouchableOpacity>
-      </View>
-    );
-  };
 
   // **************************************************************************************************************************
   const click_doctor = () => {
@@ -1483,298 +791,16 @@ const Info = ({ navigation }) => {
     setDoc_radio("unchecked");
     setCenter_radio("checked");
   };
-  
 
   // **************************************************************************************************************************
 
-  
+  // **************************************************************************************************************************
 
   // **************************************************************************************************************************
 
-  const AboutTheDoctor = () => {
-    return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingVertical: 15,
-            marginVertical: 5,
-          }}
-        >
-          <Icon2
-            name={icon7}
-            size={25}
-            color="#288759"
-            style={{ width: "5%", marginLeft: 5 }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            About the Doctor{" "}
-          </Text>
-        </View>
-        <TextInput
-          style={[styles.inp, { height: height }]}
-          defaultValue={about_the_doctor}
-          multiline
-          onContentSizeChange={(event) =>
-            setHeight(event.nativeEvent.contentSize.height)
-          }
-          onChangeText={setAbout_theDoctor}
-          numberOfLines={10}
-          maxLength={250}
-        />
-        <Text style={{ alignSelf: "flex-end", marginHorizontal: 30 }}>
-          {about_the_doctor.length} / 250
-        </Text>
-      </View>
-    );
-  };
-
   // **************************************************************************************************************************
 
-  const ClinicNameAndNumber = () => {
-    return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingVertical: 15,
-            marginVertical: 5,
-          }}
-        >
-          <Icon2
-            name={icon7}
-            size={25}
-            color="#288759"
-            style={{ width: "5%", marginLeft: 5 }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            Basic Clinic Information{" "}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Clinic Name{" "}
-        </Text>
-        <TextInput
-          style={styles.inp}
-          defaultValue={nameClinic}
-          onChangeText={setNameClinic}
-        />
-
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Clinic Phone number{" "}
-        </Text>
-        <TextInput
-          style={styles.inp}
-          keyboardType="phone-pad"
-          defaultValue={CurrentUser.user.phone}
-          onChangeText={setNumberClinic}
-        />
-      </View>
-    );
-  };
-
   // **************************************************************************************************************************
-
-  const ExminationAndFollowUp = () => {
-    return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginVertical: 10,
-            marginHorizontal: 15,
-          }}
-        >
-          <Icon4
-            name={icon11}
-            size={25}
-            color={main_color}
-            style={{ width: "7%" }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            Exmination{" "}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Exmination Fees (EGP){" "}
-        </Text>
-        <TextInput
-          keyboardType="phone-pad"
-          style={styles.inp}
-          defaultValue={exmain + ""}
-          onChangeText={setExmain}
-        />
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginTop: 30,
-            marginBottom: 5,
-            marginHorizontal: 15,
-          }}
-        >
-          <Icon4
-            name={icon11}
-            size={25}
-            color={main_color}
-            style={{ width: "7%" }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            Follow-up{" "}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Follow-up Fees (EGP){" "}
-        </Text>
-        <TextInput
-          keyboardType="phone-pad"
-          style={styles.inp}
-          defaultValue={follow_up + ""}
-          onChangeText={setFollow_up}
-        />
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Duration (Days){" "}
-        </Text>
-        <TextInput
-          keyboardType="phone-pad"
-          style={styles.inp}
-          defaultValue={duration + ""}
-          onChangeText={setDuration}
-        />
-      </View>
-    );
-  };
-
-  // **************************************************************************************************************************
-
-  const AssistantNameAndNumber = () => {
-    return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingVertical: 15,
-            marginHorizontal: 10,
-            alignItems: "center",
-            marginVertical: 5,
-          }}
-        >
-          <Icon4
-            name={icon19}
-            size={25}
-            color="#288759"
-            style={{ width: "5%", marginLeft: 5 }}
-          />
-          <Text
-            style={{
-              color: "black",
-              paddingHorizontal: 5,
-              width: "85%",
-            }}
-          >
-            {" "}
-            Basic Assistant Information{" "}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Assistant Name{" "}
-        </Text>
-        <TextInput
-          style={styles.inp}
-          defaultValue={nameAssistant}
-          onChangeText={setNameAssistant}
-        />
-
-        <Text
-          style={{
-            fontSize: 16,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-        >
-          {" "}
-          Assistant number{" "}
-        </Text>
-        <TextInput
-          style={styles.inp}
-          keyboardType="phone-pad"
-          defaultValue={numberAssistant}
-          onChangeText={setNumberAssistant}
-        />
-      </View>
-    );
-  };
 
   // **************************************************************************************************************************
 
@@ -1826,70 +852,6 @@ const Info = ({ navigation }) => {
 
   // **************************************************************************************************************************
 
-  const ScheduleSummaryEmpty = () => {
-    return (
-      <View>
-        <View style={{ alignItems: "center", marginTop: 50 }}>
-          <Text
-            style={{
-              color: "#555555",
-              fontSize: 16,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" Get started! "}{" "}
-          </Text>
-        </View>
-        <View style={{ alignItems: "center", marginTop: 15 }}>
-          <Text
-            style={{
-              color: "#555555",
-              fontSize: 14,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" Add your working hours and confirm availability to  "}{" "}
-          </Text>
-          <Text
-            style={{
-              color: "#555555",
-              fontSize: 14,
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {" recieve new Doctor Now bookings "}{" "}
-          </Text>
-        </View>
-
-        <Image
-          source={require("../assets/splash.png")}
-          style={[
-            styles.image,
-            { alignSelf: "center", marginVertical: 50, height: 220 },
-          ]}
-        />
-
-        <TouchableOpacity style={{ alignItems: "center" }} onPress={management}>
-          <Text
-            style={{
-              backgroundColor: main_color,
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              color: "white",
-              margin: 20,
-            }}
-          >
-            {" "}
-            Add working hours
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
   // **************************************************************************************************************************
 
   const WorkingHourSettings = () => {
@@ -1932,7 +894,11 @@ const Info = ({ navigation }) => {
           Examination Type{" "}
         </Text>
         <SelectList
-          data={[{ value: "First In First Out" }, { value: "On Appointments"},{value:"Timer"}]}
+          data={[
+            { value: "First In First Out" },
+            { value: "On Appointments" },
+            { value: "Timer" },
+          ]}
           setSelected={handleExaminType}
           placeholder={selected}
           search={false}
@@ -2488,27 +1454,27 @@ const Info = ({ navigation }) => {
 
   // **************************************************************************************************************************
 
-  const More = () => {
-    return (
-      <View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.button, styles.button1]}
-            onPress={HandleHistory}
-          >
-            <Text style={styles.buttonText}>History</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.button1]}
-            onPress={HandleAppointments}
-          >
-            <Text style={styles.buttonText}>Appointments</Text>
-          </TouchableOpacity>
-        </View>
-        <Appointments />
-      </View>
-    );
-  };
+  // const More = () => {
+  //   return (
+  //     <View>
+  //       {/* <View style={styles.buttonContainer}>
+  //         <TouchableOpacity
+  //           style={[styles.button, styles.button1]}
+  //           onPress={HandleHistory}
+  //         >
+  //           <Text style={styles.buttonText}>History</Text>
+  //         </TouchableOpacity>
+  //         <TouchableOpacity
+  //           style={[styles.button, styles.button1]}
+  //           onPress={HandleAppointments}
+  //         >
+  //           <Text style={styles.buttonText}>Appointments</Text>
+  //         </TouchableOpacity>
+  //       </View> */}
+  //       <Appointments />
+  //     </View>
+  //   );
+  // };
 
   // **************************************************************************************************************************
   if (Object.keys(doctor).length !== 0) {
@@ -2534,15 +1500,39 @@ const Info = ({ navigation }) => {
                   specialization2={fullpro_title}
                   image={image}
                   reviews={reviews}
-                  fun1={edit_name}
+                  fun1={() => setPage("Professional Information")}
                   fun2={selectFile}
-                  fun3={account_settings}
+                  fun3={() => setPage("Account Settings")}
                 />
               }
-              {ProViewsAndBookings()}
-              {DoctorClinicTab()}
+              <Number_Views_bookings_And_Tab
+                profile_views={profile_views}
+                bookings={bookings}
+                fun1={Doctor_info}
+                fun2={Clinic_info}
+                color1={color1}
+                color2={color2}
+              />
 
-              {flag ? DocInfo() : ClinicInfo()}
+              {flag ? (
+                <Doctor_Info
+                  desc={about_the_doctor}
+                  fun1={() => setPage("About the Doctor")}
+                />
+              ) : (
+                <Clinic_Info
+                  nameClinic={nameClinic}
+                  numberClinic={numberClinic}
+                  exmain={exmain}
+                  follow_up={follow_up}
+                  duration={duration}
+                  nameAssistant={nameAssistant}
+                  numberAssistant={numberAssistant}
+                  fun1={() => setPage("Clinic Name and Number")}
+                  fun2={() => setPage("Exmination and Follow-up")}
+                  fun3={() => setPage("Assistant Name and Number")}
+                />
+              )}
             </View>
           ) : page === "Professional Information" ? (
             <Personal_Information
@@ -2576,13 +1566,35 @@ const Info = ({ navigation }) => {
               }
             />
           ) : page === "About the Doctor" ? (
-            AboutTheDoctor()
+            <About_The_Doctor
+              desc={about_the_doctor}
+              fun1={setAbout_theDoctor}
+              height={height}
+              fun2={(event) => setHeight(event.nativeEvent.contentSize.height)}
+            />
           ) : page === "Clinic Name and Number" ? (
-            ClinicNameAndNumber()
+            <Clinic_Name_And_Number
+              nameClinic={nameClinic}
+              fun1={setNameClinic}
+              numberClinic={numberClinic}
+              fun2={setNumberClinic}
+            />
           ) : page === "Exmination and Follow-up" ? (
-            ExminationAndFollowUp()
+            <Exmination_And_FollowUp
+              exmain={exmain}
+              fun1={setExmain}
+              follow_up={follow_up}
+              fun2={setFollow_up}
+              duration={duration}
+              fun3={setDuration}
+            />
           ) : page === "Assistant Name and Number" ? (
-            AssistantNameAndNumber()
+            <Assistant_Name_And_Number
+              nameAssistant={nameAssistant}
+              fun1={setNameAssistant}
+              numberAssistant={numberAssistant}
+              fun2={setNumberAssistant}
+            />
           ) : page === "Schedule" ? (
             <View>
               {ScheduleTab()}
@@ -2591,11 +1603,17 @@ const Info = ({ navigation }) => {
               ></View>
 
               {schedule_summary ? (
-                empty ? (
-                  ScheduleSummaryEmpty()
-                ) : (
-                  appoints()
-                )
+                <Schedule_Summary
+                  fun1={setWhichDay}
+                  fun2={() => setPage("Appointments")}
+                  doctor_booking={doctor_booking}
+                  id={doctor.id}
+                  fun3={get_number_of_booking}
+                  color_plane={color_plane}
+                  fun4={setColor_plane}
+                  empty={empty}
+                  fun5={() => management()}
+                />
               ) : (
                 <View>
                   {WorkingHourSettings()}
@@ -2604,7 +1622,17 @@ const Info = ({ navigation }) => {
               )}
             </View>
           ) : page === "More" ? (
-            More()
+            <More fun1={() => setPage("Appointments History")} />
+          ) : page === "Appointments" ? (
+            <Appointments
+              id={doctor.id}
+              date={new Date(
+                new Date().getTime() + whichDay * 24 * 60 * 60 * 1000
+              ).toDateString()}
+              fun1={() => profile()}
+            />
+          ) : page === "Appointments History" ? (
+            <Appointments_History id={doctor.id}/>
           ) : (
             <></>
           )}

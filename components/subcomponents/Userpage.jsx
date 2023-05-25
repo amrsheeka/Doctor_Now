@@ -249,16 +249,16 @@ const styles = StyleSheet.create({
     // height:"35%",
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
+    backgroundColor: '#1d1c1c',
   },
-  darklist: {
-    backgroundColor: '#142E5E',
-    borderWidth: 0,
+  // darklist: {
+  //   backgroundColor: '#142E5E',
+  //   borderWidth: 0,
 
-  },
-  dark2: {
-    backgroundColor: "#BDD3FF",
-  },
+  // },
+  // dark2: {
+  //   backgroundColor: "#BDD3FF",
+  // },
   textdark: {
     color:"white"
   },

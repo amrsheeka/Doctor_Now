@@ -21,11 +21,6 @@ const Personal_Information = ({
   fun5,
 }) => {
 
-
-
-
-
-
   const main_color = "#288771";
 
   return (
@@ -72,25 +67,6 @@ const Personal_Information = ({
         //placeholder={"last name"}
         onChangeText={fun1}
       />
-
-      {/* <Text
-        style={{
-          fontSize: 16,
-          // fontStyle: "italic",
-          // fontWeight: "bold",
-          marginHorizontal: 10,
-          paddingVertical: 10,
-        }}
-      >
-        {" "}
-        Birth Date{" "}
-      </Text>
-      <Text style={styles.inp} onPress={() => setShow(true)}>
-        {" "}
-        {birth}{" "}
-      </Text>
-      {show && <DateTimePicker value={date} onChange={ChangeDate} />}
-      */}
       <Text
         style={{
           color: "black",
@@ -144,54 +120,6 @@ const Personal_Information = ({
           Center
         </Text>
       </View>
-      {/*
-      <TouchableOpacity>
-        {practise_licence === "" ? (
-          <View
-            style={{
-              flexDirection: "row",
-              marginVertical: 40,
-              alignItems: "center",
-            }}
-          >
-            <Icon5
-              name={icon13}
-              size={25}
-              color={main_color}
-              style={{ width: "10%", marginLeft: 15 }}
-            />
-
-            <Text style={{ fontSize: 16 }}>
-              {" "}
-              Upload Practice License ID photo
-            </Text>
-          </View>
-        ) : (
-          <View
-            style={{
-              flexDirection: "row",
-              marginVertical: 40,
-              alignItems: "center",
-            }}
-          >
-            <Image
-              source={
-                doctor.image
-                  ? { uri: doctor.image }
-                  : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
-              }
-              style={[
-                styles.image,
-                { width: "20%", marginLeft: 15, height: 50 },
-              ]}
-            />
-            <Text style={{ fontSize: 16, paddingHorizontal: 20 }}>
-              {" "}
-              Practice License ID photo
-            </Text>
-          </View>
-        )}
-      </TouchableOpacity> */}
       <View
         style={{
           flexDirection: "row",
@@ -284,53 +212,7 @@ const Personal_Information = ({
         defaultValue={specialization2}
         onChangeText={fun5}
       />
-      {/* <TouchableOpacity>
-        {professional_licence !== "" ? (
-          <View
-            style={{
-              flexDirection: "row",
-              marginVertical: 40,
-              alignItems: "center",
-            }}
-          >
-            <Icon5
-              name={icon13}
-              size={25}
-              color={main_color}
-              style={{ width: "10%", marginLeft: 15 }}
-            />
 
-            <Text style={{ fontSize: 16 }}>
-              {" "}
-              Upload Professional Title License photo
-            </Text>
-          </View>
-        ) : (
-          <View
-            style={{
-              flexDirection: "row",
-              marginVertical: 40,
-              alignItems: "center",
-            }}
-          >
-            <Image
-              source={
-                doctor.image
-                  ? { uri: doctor.image }
-                  : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
-              }
-              style={[
-                styles.image,
-                { width: "20%", marginLeft: 15, height: 50 },
-              ]}
-            />
-            <Text style={{ fontSize: 16, paddingHorizontal: 20 }}>
-              {" "}
-              Professional Title License photo
-            </Text>
-          </View>
-        )}
-      </TouchableOpacity> */}
     </View>
   );
 };

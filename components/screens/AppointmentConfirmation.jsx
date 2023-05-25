@@ -250,7 +250,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                 {Days ?
 
                   <View
-                    style={[styles.row, night && styles.darklist]}
+                    style={[styles.row, ]}
                   >
 
                     <ScrollView horizontal={true}>
@@ -367,6 +367,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     flexDirection: "row",
     // marginVertical: 6,
+    gap:9,
     margin: 5,
     padding: 10,
   },
@@ -555,14 +556,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#efefef",
   },
   buttonDark: {
-    backgroundColor: "#0D1E3D",
+    backgroundColor: '#262424',
   },
   darklist: {
-    backgroundColor: "#142E5E",
-    borderWidth: 0,
+    backgroundColor: '#288771',
+    borderColor:'#1d1c1c'
+
   },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: "#1d1c1c",
   },
 });
 

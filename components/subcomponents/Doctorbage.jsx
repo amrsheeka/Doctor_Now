@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Button,
   Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -25,6 +26,8 @@ const Doctorbage = ({ navigation, route }) => {
   let image = item.image;
   const { curruser } = useContext(AppContext);
   const [text, setText] = useState("");
+  const [ratecount, setRatecount] = useState("");
+
   const [count, setCount] = useState(0);
   const { rev, setRev } = useContext(AppContext);
 
@@ -48,12 +51,12 @@ const Doctorbage = ({ navigation, route }) => {
       </Text>
     </View>
   );
-  const sasasf = () => {
-    console.log("Rating is: ", Rating.name);
+  const onrate = () => {
+    console.log(ratecount);
+    insertRate(curruser.id, item.id, ratecount).then((res) => {
+      console.log(res);
+    });
   };
-  function ratingCompleted(rating) {
-    console.log("Rating is: " + rating);
-  }
   return (
     <View style={styles.container}>
       <View style={styles.header1}>
@@ -113,11 +116,11 @@ const Doctorbage = ({ navigation, route }) => {
           count={5}
           reviews={["Terrible", "Bad", "OKay", "Good", "Amazing"]}
           onFinishRating={(res) => {
-            console.log(res);
+            setRatecount(res);
           }}
         />
-        <Text style={styles.ratetext}> rate this doctor</Text>
       </View>
+      <Button title=" Rate " onPress={onrate} />
       {/* ///////////////////////// */}
       <View style={styles.senbutt}>
         <Text> Add Reviewe to this doctor</Text>
