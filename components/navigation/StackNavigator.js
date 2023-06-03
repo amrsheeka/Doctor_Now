@@ -28,6 +28,7 @@ import Details_user_to_appointment from "../screens/Details_user_to_appointment"
 import Thk from "../screens/Thk";
 import Thk3 from "../screens/Thk3";
 import All_details_to_appointment from "../subcomponents/All_details_to_appointment";
+import Address from "../subcomponents/Address";
 import CurrentUser from "../consts/CurrentUser";
 import AdminHome from "../admin/AdminHome";
 import AddDoctor from "../admin/AddDoctor";
@@ -346,6 +347,16 @@ const Homefunc: React.FC<Props> = ({ barColor }) => {
       <Stack.Screen
         name="Payment"
         component={Payment}
+        options={{
+          headerShown: false,
+          tabBarVisible: false,
+          tabBarButton: () => null,
+          headerTitle: () => null,
+        }}
+      />
+      <Stack.Screen
+        name="Address"
+        component={Address}
         options={{
           headerShown: false,
           tabBarVisible: false,

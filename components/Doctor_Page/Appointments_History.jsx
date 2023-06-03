@@ -219,8 +219,6 @@ const Appointments_History = ({ id }) => {
             marginHorizontal: 5,
           }}
           onPress={() => {
-            alert(phone_number + "----" + Date_Value);
-            // console.log(phone_number);
             label == "Date"
               ? Get_Appointment_By_Date(Date_Value)
               : Get_Appointment_By_Number(phone_number);

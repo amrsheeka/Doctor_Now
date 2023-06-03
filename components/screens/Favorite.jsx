@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { getFavourite } from "../../database/Users";
+import { StatusBar } from "expo-status-bar";
 import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
@@ -22,18 +23,17 @@ const Favorite = ({ navigation, reload }) => {
   };
   async function fetchDoctor() {
     const filt = await getFavourite(CurrentUser.user.id);
-    console.log(filt);
-    if (filt.status == "success") setFavourite(filt);
-    else setFavourite([]);
+    setFavourite(filt);
   }
   useEffect(() => {
     fetchDoctor();
   }, []);
   return (
-    <View style={[styles.container,night && styles.dark2]}>
-      <View style={[styles.header, night && styles.dark2]}>
-        <Text style={styles.heading}>My Favorite Doctors</Text>
+    <View style={[styles.container, night && styles.buttonDark]}>
+      <View style={styles.my_header}>
+        <Text style={styles.my_label}> My Favourite </Text>
       </View>
+
       {favourite.length !== 0 ? (
         <FlatList
           contentContainerStyle={{ flexGrow: 1 }}
@@ -64,11 +64,25 @@ const Favorite = ({ navigation, reload }) => {
           <ActivityIndicator size={100} color="#00ff00" />
         </View>
       )}
+
+      <StatusBar style="light" backgroundColor="#288759" />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  my_header: {
+    backgroundColor: "#288771",
+    width: "100%",
+    height: "12%",
+    alignItems: "center",
+    paddingTop: "12%",
+    marginBottom: 10,
+  },
+  my_label: {
+    fontSize: 20,
+    color: "white",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -87,13 +101,13 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   buttonDark: {
-    backgroundColor: '#288771',
+    backgroundColor: "#0D1E3D",
   },
   darklist: {
-    backgroundColor: '#262424',
+    backgroundColor: "#142E5E",
   },
   dark2: {
-    backgroundColor: "#1d1c1c",
+    backgroundColor: "#BDD3FF",
   },
 });
 

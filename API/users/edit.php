@@ -7,12 +7,15 @@ $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
 $id = $obj['id'];
 $name = $obj['name'];
+$image = $obj['image'];
 $email = $obj['email'];
 $phone = $obj['phone'];
 $address = $obj['address'];
-$address_2 = $obj['address_2'];
+// $address_2 = $obj['address_2'];
 $gender = $obj['gender'];
 $age = $obj['age'];
+$password = $obj['password'];
+
 $is_doctor = $obj['is_doctor'];
 $is_admin = $obj['is_admin'];
 $phone_number_validation_regex = '/^01[0125][0-9]{8}$/';
@@ -24,9 +27,9 @@ if (!$phone_regex) {
 }elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     echo json_encode(array("status" => "invalid email"));
 }else{
-    $stmt = $con->prepare("UPDATE `users` SET `name`=?, `email`=?, `phone`=?, `address`=?,
-    `address_2`=?, `gender`=?, `age`=? WHERE id= $id");
-    $stmt->execute(array($name, $email, $phone, $address, $address_2, $gender, $age));
+    $stmt = $con->prepare("UPDATE `users` SET `email`=?, `phone`=?, `name`=?, `password` = ?, `address`=?,
+    `gender`=?, `age`=?, `image`= ? WHERE id= $id");
+    $stmt->execute(array($email, $phone, $name, $password, $address, $gender, $age , $image));
     $count = $stmt->rowCount();
     if ($count > 0) {
         echo json_encode(array("status" => "success"));

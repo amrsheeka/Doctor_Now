@@ -19,9 +19,14 @@ $patient_image = isset($obj['patient_image']) ? $$obj['patient_image'] : "";
 $doc_name = $obj['doc_name'];
 $doc_image = $obj['doc_image'];
 $specialization1 = $obj['specialization1'];
+$title1 = $obj['title1'];
+$title = $obj['title'];
+$price = $obj['price'];
+$wating_time = $obj['wating_time'];
+$address = $obj['address'];
 // validation
-$stmt = $con->prepare("INSERT INTO `appointment`(`users_id`, `doctor_id`,`date`,`time`,`name_patient`,`age`,`gender`, `phone_number`,`notes`,`patient_image`,doc_name,doc_image,specialization1,`date_now`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())");
-$stmt->execute(array($users_id, $doctor_id, $date, $time, $name_patient, $age, $gender, $phone_number, $notes,$patient_image, $doc_name, $doc_image, $specialization1));
+$stmt = $con->prepare("INSERT INTO `appointment`(`users_id`, `doctor_id`,`date`,`time`,`name_patient`,`age`,`gender`, `phone_number`,`notes`,`patient_image`,`price`,`wating_time`,`title1`,`title`,doc_name,doc_image,specialization1,`address`,`date_now`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())");
+$stmt->execute(array($users_id, $doctor_id, $date, $time, $name_patient, $age, $gender, $phone_number, $notes,$patient_image, $price, $wating_time, $title1 , $title ,$doc_name, $doc_image, $specialization1, $address));
 $count = $stmt->rowCount();
 if ($count > 0) {
     echo json_encode(array("status" => "success"));

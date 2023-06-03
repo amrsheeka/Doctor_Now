@@ -35,9 +35,8 @@ const Details_user_to_appointment = ({ navigation, route }) => {
   const [phone_number, setPhone_number] = useState(CurrentUser.user.phone);
   const [gender, setGender] = useState(CurrentUser.user.gender);
   const [notes, setNotes] = useState("");
-  const [height, setHeight] = useState(0);
-  const [male_radio, setMale_radio] = useState("checked");
-  const [female_radio, setFemale_radio] = useState("unchecked");
+  const [male_radio, setMale_radio] = useState(CurrentUser.user.gender == "male" ? "checked" : "unchecked");
+  const [female_radio, setFemale_radio] = useState(CurrentUser.user.gender == "female" ? "checked" : "unchecked");
   const [name_err, setName_err] = useState("");
   const [age_err, setAge_err] = useState("");
   const [phone_err, setPhone_err] = useState("");
@@ -93,10 +92,16 @@ const Details_user_to_appointment = ({ navigation, route }) => {
         phone_number,
         notes,
         patient_image,
+        doc.price,
+        "30", // doc.wating_time
+        doc.title1,
+        doc.title,
         doc.name,
         doc.image,
-        doc.specialization1
+        doc.specialization1,
+        doc.address,
       ).then((response) => {
+        setNotes("");
         console.log(response);
         if (response == "fail") {
           alert("fail");
@@ -476,7 +481,8 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.3,
     // shadowRadius: 4,
     // elevation: 5,
-    padding: 7,
+    padding: 5,
+    marginHorizontal : 5,
   }
 });
 
