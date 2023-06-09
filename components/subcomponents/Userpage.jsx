@@ -159,7 +159,6 @@ const Userpage = ({ navigation }) => {
           email: email,
           image: image,
           password: current_password ? new_password : user.password,
-
         };
       };
       await set().then(() => {
@@ -521,7 +520,7 @@ const Userpage = ({ navigation }) => {
             outlineStyle={{
               borderColor: main_color,
               borderRadius: 10,
-              color: "red",
+
             }}
             left={<TextInput.Icon icon={"lock"} />}
             right={
@@ -543,7 +542,6 @@ const Userpage = ({ navigation }) => {
             outlineStyle={{
               borderColor: main_color,
               borderRadius: 10,
-              color: "red",
             }}
             left={<TextInput.Icon icon={"lock"} />}
             right={
@@ -599,7 +597,7 @@ const styles = StyleSheet.create({
     height: "12%",
     alignItems: "center",
     paddingTop: "12%",
-    marginBottom: 30,
+    marginBottom: 10,
   },
   label: {
     fontSize: 20,
@@ -609,7 +607,7 @@ const styles = StyleSheet.create({
     width: "55%",
     height: 250,
     borderRadius: 40,
-    // marginVertical: 10,
+    marginTop: 30,
   },
 });
 

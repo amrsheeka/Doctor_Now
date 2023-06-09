@@ -195,7 +195,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                   // width: "100%",
                 }}
                 onPress={() => {
-                  fetch();
+                  // fetch();
                   navigation.navigate("AppointmentConfirmation", { doctor });
                 }}
               >
