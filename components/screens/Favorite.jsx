@@ -23,8 +23,7 @@ const Favorite = ({ navigation, reload }) => {
   async function fetchDoctor() {
     const filt = await getFavourite(CurrentUser.user.id);
     console.log(filt);
-    if (filt.status == "success") setFavourite(filt);
-    else setFavourite([]);
+     setFavourite(filt);
   }
   useEffect(() => {
     fetchDoctor();
