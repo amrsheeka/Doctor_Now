@@ -63,6 +63,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
 
   useEffect(() => {
     fetchFavouriteinfav();
+    fetchDoctor();
   }, []);
 
   const click_heart = async (user_id, doctor_id) => {
@@ -71,6 +72,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       deleteFavourite(user_id, doctor_id)
         .then(() => {
           fetchFavouriteinfav();
+          fetchDoctor();
         })
         .then(() => {
           reload();
@@ -81,6 +83,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       insertFavourite(user_id, doctor_id)
         .then(() => {
           fetchFavouriteinfav();
+          fetchDoctor()
         })
         .then(() => {
           reload();
