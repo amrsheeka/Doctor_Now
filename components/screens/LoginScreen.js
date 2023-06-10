@@ -8,7 +8,8 @@ import {
   Button,
   TouchableOpacity,
   ScrollView,
-  Image
+  Image,
+  Pressable
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { TextInput } from 'react-native-paper';
@@ -26,6 +27,8 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
   const [showPasswordIcon, setShowPasswordIcon] = useState(false);
+  const [porder, setPorder] = useState("white");
+  const [porder2, setPorder2] = useState("white");
   const main_color = "#288771";
 
   const navigateSignUp = () => {
@@ -69,35 +72,35 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.greeting}>Welcome to Doctor Now!</Text>
       </View>
       <View style={styles.inputContainer}>
-
+    <Pressable>
         <TextInput
           label= {"Email"}
           mode = 'outlined'
           keyboardType= {"email-address"}
-          style={{marginTop : 30 }}
+          style={{marginTop : 30,backgroundColor: "#eceff1", }}
           value={email}
           onChangeText={setEmail}
-          outlineStyle = {{borderColor : main_color, borderRadius : 10, color : "red"  }}
+          outlineStyle = {{borderColor : porder, borderRadius : 10, color : "red"  }}
           left = {<TextInput.Icon icon = 'email' />}
-          
-          activeOutlineColor = {main_color}  
-
-
-
+          onFocus={()=>{setPorder(main_color)}}
+          onBlur={()=>{setPorder("white")}}
+          activeOutlineColor = {main_color} 
         />
+        </Pressable>
         <Text style={{ color: "red" }}>{emailErr}</Text>
         <TextInput
           label= {"password"}
           mode = 'outlined'
-          style={{marginTop : 20}}
+          style={{marginTop : 20,backgroundColor: "#eceff1",}}
           value={password}
           onChangeText={setPassword}
-          outlineStyle = {{borderColor : main_color, borderRadius : 10}}
+          outlineStyle = {{borderColor : porder2, borderRadius : 10}}
           secureTextEntry={!showPasswordIcon}
           activeOutlineColor = {main_color} 
           left = {<TextInput.Icon icon = 'lock' />}
           right={<TextInput.Icon icon ={showPasswordIcon ? 'eye-off' : 'eye'} onPress={() => setShowPasswordIcon(!showPasswordIcon)} iconColor = "grey" />}
-          
+          onFocus={()=>{setPorder2(main_color)}}
+          onBlur={()=>{setPorder2("white")}}
         />
           <Text style={{ color: "red" }}>{passwordErr}</Text>
 
@@ -131,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "white",
+    backgroundColor: "white",
   },
   greeting: {
     fontSize: 28,
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "80%",
-
+    
   },
   input: {
     // backgroundColor: "#eceff1",
