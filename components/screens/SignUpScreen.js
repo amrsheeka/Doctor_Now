@@ -29,6 +29,7 @@ import {
   const [passwordErr, setPasswordErr] = useState("");
   const [confirmErr, setConfirmErr] = useState("");
   const [showPasswordIcon, setShowPasswordIcon] = useState(false);
+  const [showPasswordIcon2, setShowPasswordIcon2] = useState(false);
   
   const main_color = "#288771";
 
@@ -172,14 +173,14 @@ import {
            mode="outlined"
            value={confirm}
            onChangeText={setConfirm}
-           secureTextEntry={!showPasswordIcon}
+           secureTextEntry={!showPasswordIcon2}
            outlineStyle={{
              borderColor: main_color,
              borderRadius: 10,
              color: "red",
            }}
            left={<TextInput.Icon icon={'lock'}/>}
-           right={<TextInput.Icon icon ={showPasswordIcon ? 'eye-off' : 'eye'} onPress={() => setShowPasswordIcon(!showPasswordIcon)} iconColor = "grey" />}
+           right={<TextInput.Icon icon ={showPasswordIcon2 ? 'eye-off' : 'eye'} onPress={() => setShowPasswordIcon2(!showPasswordIcon2)} iconColor = "grey" />}
            activeOutlineColor={main_color}
          />
          <Text style={{ color: "red" }}>{confirmErr}</Text>

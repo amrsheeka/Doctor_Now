@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 import {
   deleteAppointment,
@@ -18,14 +19,15 @@ import {
   insertAppointment_toHistory,
   getAppointment_by_doc_id,
 } from "../../database/Users";
-import Icon from "react-native-vector-icons/AntDesign";
 import { AppContext } from "../consts/AppContext";
 import { getAppointment } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { useState } from "react";
 import FlipCard from "react-native-flip-card";
 
+import Icon from "react-native-vector-icons/AntDesign";
 import Icon2 from "react-native-vector-icons/Entypo";
+import Icon3 from "react-native-vector-icons/MaterialIcons";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 import Icon5 from "react-native-vector-icons/FontAwesome";
 import Icon6 from "react-native-vector-icons/MaterialCommunityIcons";
@@ -45,9 +47,14 @@ function Doc_card_appointment({
   diagnosis,
   therapeutic,
   patient_image,
+  price,
+  title1,
+  title,
+  wating_time,
   doc_name,
   doc_image,
   specialization1,
+  address,
   date_now,
   schedule_type,
   appointment_history,
@@ -87,7 +94,7 @@ function Doc_card_appointment({
   let id = CurrentUser.user.id;
   let is_doctor = CurrentUser.user.is_doctor;
   console.log(obj);
-  const Delete = async () => {
+  const Finish = async () => {
     await insertAppointment_toHistory(
       users_id,
       doctor_id,
@@ -104,6 +111,7 @@ function Doc_card_appointment({
       doc_name,
       doc_image,
       specialization1
+      
       // date_now
     ).then(async () => {
       await deleteAppointment(users_id, doctor_id).then((res) => {
@@ -127,29 +135,30 @@ function Doc_card_appointment({
       });
     });
   };
-  const Delete2 = async () => {
-    await deleteAppointment_fromHistory(users_id, doctor_id).then((res) => {
-      console.log("its ok");
-      if (CurrentUser.user.is_admin == "yes") {
-        getAllAppointment_from_history().then((res) => {
-          res.status != "failed" ? setAppointments(res) : setAppointments([]);
-        });
-      } else if (CurrentUser.user.is_doctor == "yes") {
-        get_History_Apps_for_Doctor(doctor_id, date_value).then((res) => {
-          console.log(res);
-          if (res.status !== "failed") setAppointments_History(res);
-          else setAppointments_History([]);
-    
-          console.log(" date: ", date);
-          console.log(appointments_History);
-        });
-        } else {
-          get_History_Apps_for_User(users_id).then((res) => {
-            res.status != "failed" ? setAppointments(res) : setAppointments([]);
-          });
-        }
-    });
-  };
+
+  // const Delete2 = async () => {
+  //   await deleteAppointment_fromHistory(users_id, doctor_id).then((res) => {
+  //     console.log("its ok");
+  //     if (CurrentUser.user.is_admin == "yes") {
+  //       getAllAppointment_from_history().then((res) => {
+  //         res.status != "failed" ? setAppointments(res) : setAppointments([]);
+  //       });
+  //     } else if (CurrentUser.user.is_doctor == "yes") {
+  //       get_History_Apps_for_Doctor(doctor_id, date_value).then((res) => {
+  //         console.log(res);
+  //         if (res.status !== "failed") setAppointments_History(res);
+  //         else setAppointments_History([]);
+
+  //         console.log(" date: ", date);
+  //         console.log(appointments_History);
+  //       });
+  //     } else {
+  //       get_History_Apps_for_User(users_id).then((res) => {
+  //         res.status != "failed" ? setAppointments(res) : setAppointments([]);
+  //       });
+  //     }
+  //   });
+  // };
 
   // const Finish = async () => {
   //   await insertAppointment_toHistory(
@@ -181,67 +190,154 @@ function Doc_card_appointment({
   //   );
   // };
 
-  return is_doctor == "no" ? (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("Appointment2", { obj })}
-    >
-      <View style={styles.card}>
-        <Image
-          source={
-            doc_image
-              ? { uri: doc_image }
-              : require("../assets/Herbal_Medicine_Male_Avatar.png")
-          }
-          defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")}
-          style={styles.cardPhoto}
-        />
-        <View style={[styles.cardContent, night && styles.dark2]}>
-          <View style={styles.cardContent1}>
-            <Text
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              style={[styles.cardTitle, night && styles.dark2]}
-            >
-              Doctor: {doc_name}
-            </Text>
-            <Text
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              style={[styles.cardTitle, night && styles.dark2]}
-            >
-              Patient Name: {name_patient}
-            </Text>
+  const cancel = async () => {
+    await deleteAppointment(users_id, doctor_id).then((res) => {
+      getAppointment(id).then((res) => {
+        res.status != "failed" ? setAppointments(res) : setAppointments([]);
+      });
+    });
+  };
+
+  const cancel_app = () => {
+    Alert.alert(
+      "Confirm Massage",
+      "Are you sure you want to cancel the appointment?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => cancel(),
+        },
+      ]
+    );
+  };
+  const Face_Card = () => {
+    return (
+      <View style={[styles.content, { minHeight: 0 }]}>
+        <View style={{ marginVertical: 5, flexDirection: "row" }}>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={{
+              color: "black",
+              fontSize: 15,
+              fontWeight: "bold",
+              marginVertical: 5,
+              width: "90%",
+            }}
+          >
+            {title1} {doc_name}
+          </Text>
+          <TouchableOpacity onPress = {() => navigation.navigate("MapScreen", address)}>
+            <Icon3 name={"location-pin"} size={30} color={main_color} />
+          </TouchableOpacity>
+        </View>
+        <Text
+          style={{ color: "black", fontSize: 15 }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {title} - {specialization1}
+        </Text>
+        <View
+          style={{ marginVertical: 5, flexDirection: "row", width: "100%" }}
+        >
+          <View style={{ width: "45%" }}>
+            <Image
+              source={
+                doc_image
+                  ? { uri: doc_image }
+                  : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
+              }
+              style={[styles.image, { height: 180, width: "100%" }]}
+            />
           </View>
 
-          {type != "history" ? (
-            <View style={[{ flexDirection: "row", gap: 60 }, night && styles.dark2]}>
-              <TouchableOpacity
-                style={[styles.cardButton, night && styles.buttonDark]}
-                onPress={() => navigation.navigate("Update_patient", obj)}
-              >
-                <Text style={styles.cardButtonText}>Update </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[styles.cardButton, night && styles.buttonDark]}
-                onPress={() => Delete()}
-              >
-                <Text style={styles.cardButtonText}>Decline </Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <TouchableOpacity
-              style={[styles.cardButton, night && styles.buttonDark]}
-              onPress={() => Delete2()}
+          <View style={{ width: "55%", justifyContent: "center" }}>
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                marginTop: 10,
+                marginHorizontal: 10,
+                // alignSelf: "center",
+              }}
+              numberOfLines={1}
+              ellipsizeMode="tail"
             >
-              <Text style={styles.cardButtonText}>Delete </Text>
-            </TouchableOpacity>
-          )}
+              Date: {date}
+            </Text>
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                marginTop: 10,
+                marginHorizontal: 10,
+                // alignSelf: "center",
+              }}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              Time: {time}
+            </Text>
 
-          {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                marginTop: 10,
+                marginHorizontal: 10,
+                // alignSelf: "center",
+              }}
+            >
+              Fees: {price} EGP
+            </Text>
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                marginTop: 10,
+                marginHorizontal: 10,
+                // alignSelf: "center",
+              }}
+            >
+              Wating Time : {wating_time} Mins
+            </Text>
+
+            <TouchableOpacity
+              style={{
+                alignItems: "center",
+                width: "100%",
+              }}
+              onPress={cancel_app}
+            >
+              <Text
+                style={{
+                  backgroundColor: "red",
+                  borderRadius: 10,
+                  textAlign: "center",
+                  // paddingHorizontal: 10,
+                  paddingVertical: 10,
+                  color: "white",
+                  marginTop: 20,
+                  marginBottom: 5,
+                  width: "80%",
+                }}
+              >
+                Cancel Appointment
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </TouchableOpacity>
+    );
+  };
+
+  return is_doctor == "no" ? (
+    <View>{Face_Card()}</View>
   ) : (
     <View>
       <FlipCard
@@ -265,7 +361,7 @@ function Doc_card_appointment({
                 width: "90%",
               }}
             >
-              Time: {time}
+              {!appointment_history ? `Time: ${time}` : `Date: ${date}`}
             </Text>
 
             {!appointment_history ? (
@@ -497,7 +593,7 @@ function Doc_card_appointment({
                   >
                     Report
                   </Text>
-                  <TouchableOpacity onPress={() => Delete()}>
+                  <TouchableOpacity onPress={() => Finish()}>
                     <Icon name={"carryout"} size={30} color={main_color} />
                   </TouchableOpacity>
                 </View>
@@ -635,35 +731,6 @@ function Doc_card_appointment({
 
     // </View>
   );
-
-  {
-    /* 
-  //     {
-  //       type === "history" ? (
-  //         <View style={{ flexDirection: "row", gap: 60 }}>
-  //           <TouchableOpacity
-  //             style={styles.cardButton}
-  //             onPress={() => Delete2()}
-  //           >
-  //             <Text style={styles.cardButtonText}>Delete </Text>
-  //           </TouchableOpacity>
-  //         </View>
-  //       ) : (
-  //         <View style={{ flexDirection: "row", gap: 60 }}>
-  //           <TouchableOpacity
-  //             style={styles.cardButton}
-  //             onPress={() => Finish()}
-  //           >
-  //             <Text style={styles.cardButtonText}> Finish </Text>
-  //           </TouchableOpacity>
-  //         </View>
-
-  //       )
-  //     }
-  //   </View>
-  // </View>
- */
-  }
 }
 
 const styles = StyleSheet.create({
@@ -760,9 +827,70 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   dark2: {
-    backgroundColor: '#262424',
-    color:"white",
-    borderColor:'#262424'
+    backgroundColor: "#262424",
+    color: "white",
+    borderColor: "#262424",
   },
 });
 export default memo(Doc_card_appointment);
+
+// <TouchableOpacity
+//       onPress={() => navigation.navigate("Appointment2", { obj })}
+//     >
+//       <View style={styles.card}>
+//         <Image
+//           source={
+//             doc_image
+//               ? { uri: doc_image }
+//               : require("../assets/Herbal_Medicine_Male_Avatar.png")
+//           }
+//           defaultSource={require("../assets/Herbal_Medicine_Male_Avatar.png")}
+//           style={styles.cardPhoto}
+//         />
+//         <View style={[styles.cardContent, night && styles.dark2]}>
+//           <View style={styles.cardContent1}>
+//             <Text
+//               numberOfLines={2}
+//               ellipsizeMode="tail"
+//               style={[styles.cardTitle, night && styles.dark2]}
+//             >
+//               Doctor: {doc_name}
+//             </Text>
+//             <Text
+//               numberOfLines={2}
+//               ellipsizeMode="tail"
+//               style={[styles.cardTitle, night && styles.dark2]}
+//             >
+//               Patient Name: {name_patient}
+//             </Text>
+//           </View>
+
+//           {type != "history" ? (
+//             <View style={[{ flexDirection: "row", gap: 60 }, night && styles.dark2]}>
+//               <TouchableOpacity
+//                 style={[styles.cardButton, night && styles.buttonDark]}
+//                 onPress={() => navigation.navigate("Update_patient", obj)}
+//               >
+//                 <Text style={styles.cardButtonText}>Update </Text>
+//               </TouchableOpacity>
+
+//               <TouchableOpacity
+//                 style={[styles.cardButton, night && styles.buttonDark]}
+//                 onPress={() => Delete()}
+//               >
+//                 <Text style={styles.cardButtonText}>Decline </Text>
+//               </TouchableOpacity>
+//             </View>
+//           ) : (
+//             <TouchableOpacity
+//               style={[styles.cardButton, night && styles.buttonDark]}
+//               onPress={() => Delete2()}
+//             >
+//               <Text style={styles.cardButtonText}>Delete </Text>
+//             </TouchableOpacity>
+//           )}
+
+//           {/* <Text style={styles.cardTitle}>create at  {date_now}</Text> */}
+//         </View>
+//       </View>
+//     </TouchableOpacity>

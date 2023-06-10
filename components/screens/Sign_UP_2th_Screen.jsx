@@ -23,7 +23,6 @@ import { ScrollView } from "react-native";
 const Sign_UP_2th_Screen = ({ navigation }) => {
   const [phone, setphone] = useState("01092297298");
   const [name, setname] = useState("mohamed essam");
-  //   const [address2, setaddress2] = useState("");
   const [address, setaddress] = useState("giza");
   const [age, setAge] = useState("20");
   const [nameErr, setnameErr] = useState("");

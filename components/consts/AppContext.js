@@ -15,6 +15,7 @@ export const AppProvider = ({ children }) => {
   const [schedules, setSchedules] = useState([]);
   const [flag, setFlag] = useState(false);
   const [rev, setRev] = useState([]);
+  const [Days, setDays] = useState([]);
 
   return (
     <AppContext.Provider
@@ -41,6 +42,9 @@ export const AppProvider = ({ children }) => {
         setRev,
         appointments_History,
         setAppointments_History,
+        Days,
+        setDays,
+
       }}
     >
       {children}

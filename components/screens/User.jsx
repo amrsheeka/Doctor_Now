@@ -37,7 +37,7 @@ const User = ({ navigation }) => {
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={ () => navigation.navigate("Address")}>
       <View style={[styles.xx,night && styles.dark2]}>
           <Ionicons name="md-location-outline" size={28} color="black" style={styles.xxxx} />
           <Text style={[styles.xxxxx,night && styles.dark2]}> Addres </Text>

@@ -171,9 +171,14 @@ const insertAppointment = async (
   phone_number,
   notes,
   patient_image,
+  price,
+  wating_time,
+  title1,
+  title,
   doc_name,
   doc_image,
-  specialization1
+  specialization1,
+  address,
 ) => {
   const res = await axios
     .post(`${Ip.ip}/API/doctors/InsertAppointment.php`, {
@@ -187,9 +192,14 @@ const insertAppointment = async (
       phone_number: phone_number,
       notes: notes,
       patient_image: patient_image,
+      price : price,
+      wating_time : wating_time,
+      title1 : title1,
+      title : title,
       doc_name: doc_name,
       doc_image: doc_image,
       specialization1: specialization1,
+      address : address,
     })
     .then(function (response) {
       console.log(response.data.status);

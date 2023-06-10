@@ -353,6 +353,7 @@ const Homefunc: React.FC<Props> = ({ barColor }) => {
           headerTitle: () => null,
         }}
       />
+
       <Tab.Screen
         name="User"
         component={User}
