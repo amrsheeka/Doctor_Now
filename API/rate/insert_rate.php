@@ -7,11 +7,11 @@ $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
 $users_id = $obj['users_id'];
 $doctor_id = $obj['doctor_id'];
-$rate_count = $obj['rate_count'];
+$text = $obj['rate'];
 
 // validation
-$stmt = $con->prepare("INSERT INTO `rate`(`users_id`, `doctor_id`,`rate_count`) VALUES (?,?,?)");
-$stmt->execute(array($users_id, $doctor_id ,$rate_count ));
+$stmt = $con->prepare("INSERT INTO `rate`(`users_id`, `doctor_id`,`rate`) VALUES (?,?,?)");
+$stmt->execute(array($users_id, $doctor_id ,$rate ));
 $count = $stmt->rowCount();
 if ($count > 0) {
     echo json_encode(array("status" => "success"));

@@ -6,10 +6,10 @@ header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With,Content-Type");
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
-$doctor_id  = $obj['doctor_id'];
-$date  = $obj['date'];
-$stmt = $con->prepare("SELECT * FROM `appointment` WHERE  `doctor_id` = ? AND `date` = ? ");
-$stmt->execute(array($doctor_id,$date));
+$doctor_id = $obj['doctor_id'];
+$phone_number = $obj['phone_number'];
+$stmt = $con->prepare("SELECT * FROM `appointmenthistory` WHERE  `doctor_id` = ? AND `phone_number` = ? ");
+$stmt->execute(array($doctor_id,$phone_number));
 $users_app = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
 if ($count > 0) {
