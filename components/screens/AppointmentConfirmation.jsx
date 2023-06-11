@@ -185,7 +185,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
           ]}
         >
           <Text style={{ color: "white", fontSize: 20 }}>{week}</Text>
-          <Text style={{ color: "white", fontSize: 25 }}>{month}</Text>
+          <Text style={{ color: "white", fontSize: 25 }}>{month} </Text>
         </View>
       </TouchableOpacity>
     );
