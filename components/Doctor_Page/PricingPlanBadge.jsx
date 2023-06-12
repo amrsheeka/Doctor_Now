@@ -12,11 +12,11 @@ const PricingPlanBadge = ({navigation}) => {
   const getPlanInfo = (plan) => {
     switch (plan) {
       case 'basic':
-        return 'Basic Plan: $10 per appointment';
+        return 'Basic Plan: $499 gives you 5 patients';
       case 'premium':
-        return 'Premium Plan: $8 per appointment';
+        return 'Premium Plan: $999 gives you 12 patients';
       case 'pro':
-        return 'Pro Plan: $6 per appointment';
+        return 'Pro Plan: $1,249 gives you 20 patients';
       default:
         return '';
     }
@@ -40,7 +40,7 @@ const PricingPlanBadge = ({navigation}) => {
         onPress={() => handlePlanSelect('basic')}
       >
         <Text style={styles.planText}>Basic Plan</Text>
-        <Text style={styles.planDetails}>$10 per appointment</Text>
+        <Text style={styles.planDetails}>{getPlanInfo("basic")}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[
@@ -50,7 +50,7 @@ const PricingPlanBadge = ({navigation}) => {
         onPress={() => handlePlanSelect('premium')}
       >
         <Text style={styles.planText}>Premium Plan</Text>
-        <Text style={styles.planDetails}>$8 per appointment</Text>
+        <Text style={styles.planDetails}>{getPlanInfo("premium")}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[
@@ -60,7 +60,7 @@ const PricingPlanBadge = ({navigation}) => {
         onPress={() => handlePlanSelect('pro')}
       >
         <Text style={styles.planText}>Pro Plan</Text>
-        <Text style={styles.planDetails}>$6 per appointment</Text>
+        <Text style={styles.planDetails}>{getPlanInfo("pro")}</Text>
       </TouchableOpacity>
       {selectedPlan && (
         <View style={styles.selectedPlanContainer}>
@@ -68,7 +68,7 @@ const PricingPlanBadge = ({navigation}) => {
             Selected Plan: {selectedPlan}
           </Text>
           <Text style={styles.selectedPlanInfo}>{getPlanInfo(selectedPlan)}</Text>
-          <TouchableOpacity style={styles.payButton} onPress={()=>{navigation.navigate("Payments")}}>
+          <TouchableOpacity style={styles.payButton} onPress={()=>{navigation.navigate("Payments",{selectedPlan})}}>
             <Text style={styles.payButtonText}>Go to Pay</Text>
           </TouchableOpacity>
         </View>
