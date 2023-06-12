@@ -44,13 +44,6 @@ const User = ({ navigation }) => {
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Payment")}>
-      <View style={[styles.xx,night && styles.dark2]}>
-          <MaterialIcons name="payment" size={28} color="black" style={styles.xxxx} />
-          <Text style={[styles.xxxxx,night && styles.dark2]}> Payment Method </Text>
-          <AntDesign name="right" size={20} color="black" style={styles.xxx} />
-        </View>
-      </TouchableOpacity>
       <TouchableOpacity>
       <View style={[styles.xx,night && styles.dark2]}>
           <AntDesign name="exclamationcircleo" size={28} color="black" style={styles.xxxx} />
