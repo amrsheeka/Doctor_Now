@@ -9,7 +9,7 @@ $obj = json_decode($json, true);
 
 $doctor_id = $obj['doctor_id'];
 
-$stmt = $con->prepare("SELECT * FROM  rate  WHERE doctor_id = ? ");
+$stmt = $con->prepare("SELECT * FROM  ratetable  WHERE doctor_id = ? ");
 $stmt->execute(array($doctor_id));
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
