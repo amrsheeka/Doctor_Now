@@ -492,6 +492,16 @@ const DoctorStackNavigator = () => {
         component={Chat_D}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Chatbox"
+        component={Chatbox}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Chatbox_photo"
+        component={Chatbox_photo}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
