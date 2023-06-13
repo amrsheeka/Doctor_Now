@@ -83,7 +83,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       insertFavourite(user_id, doctor_id)
         .then(() => {
           fetchFavouriteinfav();
-          fetchDoctor()
+          fetchDoctor();
         })
         .then(() => {
           reload();
@@ -368,10 +368,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
         clickable={false}
         // onFlipEnd={(isFlipEnd)=>{console.log('isFlipEnd', isFlipEnd)}}
       >
-        <View>
-          {Face_Card()}
-        </View>
-      {Back_Card()}
+        <View>{Face_Card()}</View>
+        {Back_Card()}
       </FlipCard>
     </View>
   );
@@ -399,21 +397,21 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   buttonDark: {
-    backgroundColor: '#288771',
+    backgroundColor: "#288771",
   },
   darklist: {
-    backgroundColor: '#262424',
+    backgroundColor: "#262424",
   },
   dark2: {
     backgroundColor: "#1d1c1c",
   },
   darkCard: {
-      backgroundColor: "#303030",
-      borderColor: "#262424",
-    },
-  darkText:{
-      color:"white"
-    }
+    backgroundColor: "#303030",
+    borderColor: "#262424",
+  },
+  darkText: {
+    color: "white",
+  },
 });
 export default memo(DoctorCard2);
 

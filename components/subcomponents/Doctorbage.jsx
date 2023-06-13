@@ -30,18 +30,36 @@ const Doctorbage = ({ navigation, route }) => {
 
   const [count, setCount] = useState(0);
   const { rev, setRev } = useContext(AppContext);
+  const [rate, setRate] = useState();
 
   async function get(id) {
     getReviews(id).then((res) => {
       setRev(res);
     });
   }
+  async function get_rate(id) {
+    getRate(id).then((res) => {
+      setRate(res);
+    });
 
+    console.log(rate);
+  }
   const InsertRev = async () => {
     insertReviews(curruser.id, item.id, text, curruser.name).then((res) => {
       get(item.id);
       console.log(res);
     });
+  };
+
+  const InsertRate = async () => {
+    insertRate(curruser.id, item.id, ratecount)
+      .then((res) => {
+        console.log(res);
+      })
+      .then(() => {
+        get_rate(item.id);
+      });
+    console.log(ratecount);
   };
 
   const Item = ({ title }) => (
@@ -51,12 +69,7 @@ const Doctorbage = ({ navigation, route }) => {
       </Text>
     </View>
   );
-  const onrate = () => {
-    console.log(ratecount);
-    insertRate(curruser.id, item.id, ratecount).then((res) => {
-      console.log(res);
-    });
-  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header1}>
@@ -120,7 +133,7 @@ const Doctorbage = ({ navigation, route }) => {
           }}
         />
       </View>
-      <Button title=" Rate " onPress={onrate} />
+      <Button title=" Rate " onPress={InsertRate} />
       {/* ///////////////////////// */}
       <View style={styles.senbutt}>
         <Text> Add Reviewe to this doctor</Text>

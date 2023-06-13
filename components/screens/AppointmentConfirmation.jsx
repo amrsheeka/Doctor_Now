@@ -192,28 +192,33 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   };
   ///////////////////////////////////////
 
-    const addMinutesToTime = (time, minutes) => {
+  const addMinutesToTime = (time, minutes) => {
     let arr = [item.start];
-    
-    
+
     const [hour, minute, period] = time.split(/:| /);
     const date = new Date();
-    date.setHours(parseInt(hour, 10) + (period === 'PM' ? 12 : 0));
+    date.setHours(parseInt(hour, 10) + (period === "PM" ? 12 : 0));
     date.setMinutes(parseInt(minute, 10) + minutes);
-  
+
     // Format the resulting time
-    const formattedTime = `${(date.getHours() % 12) || 12}:${date.getMinutes().toString().padStart(2, '0')} ${(date.getHours() >= 12) ? 'PM' : 'AM'}`;
-    
+    const formattedTime = `${date.getHours() % 12 || 12}:${date
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")} ${date.getHours() >= 12 ? "PM" : "AM"}`;
+
     return formattedTime;
-  }
-  
+  };
+
   const time = (avliable, time) => {
     return (
       <TouchableOpacity onPress={() => setModalVisible(false)}>
         <View
           style={[
             styles.content,
-            { backgroundColor: avliable ? main_color : "#aaa", marginHorizontal : 10 }
+            {
+              backgroundColor: avliable ? main_color : "#aaa",
+              marginHorizontal: 10,
+            },
           ]}
         >
           <Text style={{ textAlign: "center" }}>{time}</Text>
@@ -312,7 +317,10 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                   >
                     {item.title1} {item.name}
                   </Text>
-                  <TouchableOpacity style={{ marginVertical: 5 }}>
+                  <TouchableOpacity
+                    style={{ marginVertical: 5 }}
+                    onPress={chatwith}
+                  >
                     <Icon3 name={"messenger"} size={25} color={main_color} />
                   </TouchableOpacity>
                 </View>
@@ -588,7 +596,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                           style={{ height: 100, width: 150 }}
                         />
                       </View>
-                      <View style={{ flexDirection: "row", }}>
+                      <View style={{ flexDirection: "row" }}>
                         {time(true, "7:30 PM")}
                         {time(true, "8:00 PM")}
                         {time(true, "8:30 PM")}
@@ -652,7 +660,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
-    backgroundColor : "#000000aa"
+    backgroundColor: "#000000aa",
     // width : "90%",
     // marginTop: 22,
   },

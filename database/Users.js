@@ -178,7 +178,7 @@ const insertAppointment = async (
   doc_name,
   doc_image,
   specialization1,
-  address,
+  address
 ) => {
   const res = await axios
     .post(`${Ip.ip}/API/doctors/InsertAppointment.php`, {
@@ -192,14 +192,14 @@ const insertAppointment = async (
       phone_number: phone_number,
       notes: notes,
       patient_image: patient_image,
-      price : price,
-      wating_time : wating_time,
-      title1 : title1,
-      title : title,
+      price: price,
+      wating_time: wating_time,
+      title1: title1,
+      title: title,
       doc_name: doc_name,
       doc_image: doc_image,
       specialization1: specialization1,
-      address : address,
+      address: address,
     })
     .then(function (response) {
       console.log(response.data.status);
@@ -235,11 +235,11 @@ const insertAppointment_toHistory = async (
       name_patient: name_patient,
       age: age,
       gender: gender,
-      phone_number:phone_number,
+      phone_number: phone_number,
       notes: notes,
-      diagnosis:diagnosis,
-      therapeutic:therapeutic,
-      patient_image:patient_image,
+      diagnosis: diagnosis,
+      therapeutic: therapeutic,
+      patient_image: patient_image,
       doc_name: doc_name,
       doc_image: doc_image,
       specialization1: specialization1,
@@ -295,7 +295,10 @@ const get_History_Apps_for_Doctor = async (doctor_id, date) => {
       console.log(error);
     });
 };
-const get_History_Apps_for_Doctor_by_Number = async (doctor_id, phone_number) => {
+const get_History_Apps_for_Doctor_by_Number = async (
+  doctor_id,
+  phone_number
+) => {
   return axios
     .post(`${Ip.ip}/API/doctors/Get_History_apps_doc_by_number.php`, {
       doctor_id: doctor_id,
@@ -464,6 +467,7 @@ const getRate = async (doctor_id) => {
       doctor_id: doctor_id,
     })
     .then(function (response) {
+      console.log(response.data);
       return response.data;
     })
     .catch(function (error) {

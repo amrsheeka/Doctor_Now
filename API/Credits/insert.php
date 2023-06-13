@@ -5,13 +5,14 @@ header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With,Content-Type");
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
-$users_id = $obj['users_id'];
-$doctor_id = $obj['doctor_id'];
-$rate_count = $obj['rate_count'];
-
+$Card_Number = $obj['Card_Number'];
+$Holder_Name = $obj['Holder_Name'];
+$CVV = $obj['CVV'];
+$Card_Expiry = $obj['Card_Expiry'];
 // validation
-$stmt = $con->prepare("INSERT INTO `ratetable`(`users_id`, `doctor_id`,`rate_count`) VALUES (?,?,?)");
-$stmt->execute(array($users_id, $doctor_id ,$rate_count));
+$stmt = $con->prepare("INSERT INTO `credits`(`Card_Number`, `Holder_Name`,
+`CVV`,`Card_Expiry`) VALUES (?,?,?,?)");
+$stmt->execute(array($Card_Number, $Holder_Name,$CVV,$Card_Expiry));
 $count = $stmt->rowCount();
 if ($count > 0) {
     echo json_encode(array("status" => "success"));

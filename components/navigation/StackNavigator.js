@@ -9,6 +9,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Svg, { Path, SvgProps } from "react-native-svg";
 import { Fontisto } from "@expo/vector-icons";
 import LoginScreen from "../screens/LoginScreen";
+import Payments from "../Doctor_Page/Payments"
 import SignUpScreen from "../screens/SignUpScreen";
 import User from "../screens/User";
 import Home from "../screens/Home";
@@ -18,7 +19,6 @@ import Thk2 from "../screens/Thk2";
 import Appointment from "../screens/Appointment";
 import Appointment2 from "../screens/Appointment2";
 import Chatbox from "../subcomponents/Chatbox";
-import Payment from "../subcomponents/Payments";
 import Edit_user from "../subcomponents/Edit_user";
 import Doctorbage from "../subcomponents/Doctorbage";
 import AllDoctors from "../screens/AllDoctors";
@@ -43,6 +43,7 @@ import Thk4 from "../screens/Thk4";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import Pay from "../subcomponents/Pay";
+import PricingPlanBadge from "../Doctor_Page/PricingPlanBadge";
 const Tab = createBottomTabNavigator();
 type Props = {
   barColor: string;
@@ -343,16 +344,6 @@ const Homefunc: React.FC<Props> = ({ barColor }) => {
           headerTitle: () => null,
         }}
       />
-      <Stack.Screen
-        name="Payment"
-        component={Payment}
-        options={{
-          headerShown: false,
-          tabBarVisible: false,
-          tabBarButton: () => null,
-          headerTitle: () => null,
-        }}
-      />
 
       <Tab.Screen
         name="User"
@@ -494,6 +485,16 @@ const DoctorStackNavigator = () => {
       <Stack.Screen
         name="Profile"
         component={Info}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Payments"
+        component={Payments}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PricingPlanBadge"
+        component={PricingPlanBadge}
         options={{ headerShown: false }}
       />
       <Stack.Screen

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2023 at 12:32 AM
+-- Generation Time: Jun 11, 2023 at 06:12 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -53,9 +53,8 @@ CREATE TABLE `appointment` (
 -- Dumping data for table `appointment`
 --
 
-INSERT INTO `appointment` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `phone_number`, `notes`, `patient_image`, `price`, `wating_time`, `title1`, `title`, `doc_name`, `doc_image`, `specialization1`, `date_now`) VALUES
-(6347, 510, 'Sun May 28 2023', '9:30 PM', 'amr sheeka', '15', 'male', '01140940686', 'What', '', '', '', '', '', 'Eman Tantawy', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENT870c42/Profile/150/doctor-eman-tantawy-dentistry_20220918194218582.jpg', 'Cosmetic Dentistry', '2023-05-28'),
-(6364, 509, 'Wed May 31 2023', '9:30 PM', 'Mohamed Essam', '25', 'male', '01092297298', '', '', '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '2023-05-31');
+INSERT INTO `appointment` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `phone_number`, `notes`, `patient_image`, `price`, `wating_time`, `title1`, `title`, `doc_name`, `doc_image`, `specialization1`, `address`, `date_now`) VALUES
+(6364, 509, 'Wed May 31 2023', '9:30 PM', 'Mohamed Essam', '25', 'male', '01092297298', '', '', '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '', '2023-05-31');
 
 -- --------------------------------------------------------
 
@@ -91,15 +90,37 @@ CREATE TABLE `appointmenthistory` (
 -- Dumping data for table `appointmenthistory`
 --
 
-INSERT INTO `appointmenthistory` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `phone_number`, `notes`, `diagnosis`, `therapeutic`, `patient_image`, `title1`, `title`, `price`, `wating_time`, `doc_name`, `doc_image`, `specialization1`, `date_now`) VALUES
-(183, 514, 'Fri Apr 14 2023', '5:30 PM', 'mohamed Essam', '25+', 'male', '01192297298', 'notes1', 'This is diagnosis', 'This is therapeutic', '', '', '', '', '', 'Mohamed Said ElGamal', '', 'Adult Vascular Diseases', '2023-04-14'),
-(6347, 509, 'Tue May 23 2023', '', 'amr sheeka', '15', 'male', '01140940686', 'Dyfgfg', 'Guff', 'Hello', NULL, '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '2023-05-23'),
-(6347, 509, 'Wed May 03 2023', '9:30 PM', 'amrsheeka', '15+', 'male', '01292297298', 'notes2', 'This is diagnosis2', 'This is therapeutic2', NULL, '', '', '', '', 'Tamer Yehia HCC', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '2023-05-04'),
-(6347, 509, 'Wed May 24 2023', '', 'amr sheeka', '20', 'female', '01140940687', 'GG\nGG', 'Fuck ', 'You', NULL, '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '2023-05-24'),
-(6347, 510, 'Wed May 03 2023', '9:30 PM', 'amrsheeka', '15+', 'male', '01092297298', '', 'Hello', 'Gsbs', NULL, '', '', '', '', 'Eman Tantawy', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENT870c42/Profile/150/doctor-eman-tantawy-dentistry_20220918194218582.jpg', 'Cosmetic Dentistry', '2023-05-23'),
-(6364, 509, 'Tue May 23 2023', '', 'Mohamed Essam', '15+', 'male', '01292297298', '', 'Xvv \nGhb', 'Fggg\nHhh\nJh', '', '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '2023-05-23'),
-(6364, 509, 'Wed May 24 2023', '', 'Mohamed Essam', '50', 'male', '01092297290', 'What\nIs your \nproblem', 'Fgv', 'Fgvv', '', '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '2023-05-24');
+INSERT INTO `appointmenthistory` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `phone_number`, `notes`, `diagnosis`, `therapeutic`, `patient_image`, `title1`, `title`, `price`, `wating_time`, `doc_name`, `doc_image`, `specialization1`, `address`, `date_now`) VALUES
+(183, 514, 'Fri Apr 14 2023', '5:30 PM', 'mohamed Essam', '25+', 'male', '01192297298', 'notes1', 'This is diagnosis', 'This is therapeutic', '', '', '', '', '', 'Mohamed Said ElGamal', '', 'Adult Vascular Diseases', '', '2023-04-14'),
+(6347, 509, 'Tue May 23 2023', '', 'amr sheeka', '15', 'male', '01140940686', 'Dyfgfg', 'Guff', 'Hello', NULL, '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '', '2023-05-23'),
+(6347, 509, 'Wed May 03 2023', '9:30 PM', 'amrsheeka', '15+', 'male', '01292297298', 'notes2', 'This is diagnosis2', 'This is therapeutic2', NULL, '', '', '', '', 'Tamer Yehia HCC', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '', '2023-05-04'),
+(6347, 509, 'Wed May 24 2023', '', 'amr sheeka', '20', 'female', '01140940687', 'GG\nGG', 'Fuck ', 'You', NULL, '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '', '2023-05-24'),
+(6347, 510, 'Wed May 03 2023', '9:30 PM', 'amrsheeka', '15+', 'male', '01092297298', '', 'Hello', 'Gsbs', NULL, '', '', '', '', 'Eman Tantawy', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENT870c42/Profile/150/doctor-eman-tantawy-dentistry_20220918194218582.jpg', 'Cosmetic Dentistry', '', '2023-05-23'),
+(6364, 509, 'Tue May 23 2023', '', 'Mohamed Essam', '15+', 'male', '01292297298', '', 'Xvv \nGhb', 'Fggg\nHhh\nJh', '', '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '', '2023-05-23'),
+(6364, 509, 'Wed May 24 2023', '', 'Mohamed Essam', '50', 'male', '01092297290', 'What\nIs your \nproblem', 'Fgv', 'Fgvv', '', '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '', '2023-05-24');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `credits`
+--
+
+CREATE TABLE `credits` (
+  `id` int(20) NOT NULL,
+  `Card_Number` varchar(16) NOT NULL,
+  `Holder_Name` varchar(100) NOT NULL,
+  `CVV` int(3) NOT NULL,
+  `Card_Expiry` varchar(100) NOT NULL,
+  `money` int(20) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `credits`
+--
+
+INSERT INTO `credits` (`id`, `Card_Number`, `Holder_Name`, `CVV`, `Card_Expiry`, `money`) VALUES
+(1, '4640-1212-5146-0', 'Mr. Lee Becker', 951, '8/2024', 50),
+(3, '4562-7171-9659-5', 'Sue Hagenes', 32, '7/2024', 0);
 
 -- --------------------------------------------------------
 
@@ -675,8 +696,47 @@ CREATE TABLE `favorite` (
 
 INSERT INTO `favorite` (`users_id`, `doctor_id`) VALUES
 (201, 509),
-(202, 509),
-(6347, 509);
+(202, 509);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rate`
+--
+
+CREATE TABLE `rate` (
+  `users_id` int(11) NOT NULL,
+  `doctor_id` int(11) NOT NULL,
+  `rate` int(11) NOT NULL,
+  `id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `users_id` int(11) NOT NULL,
+  `doctor_id` int(11) NOT NULL,
+  `text` text NOT NULL,
+  `user_name` varchar(100) NOT NULL,
+  `id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`users_id`, `doctor_id`, `text`, `user_name`, `id`) VALUES
+(6364, 510, 'Amr', 'Sasa', 1),
+(6364, 510, 'Amr2', 'Sasa', 2),
+(6364, 509, 'Gshab', 'Sasa', 3),
+(6364, 509, 'Gshab22', 'Sasa', 4),
+(6364, 509, 'Gshab22', 'Sasa', 5),
+(6364, 509, 'Sasatygcf', 'Sasa', 6),
+(6364, 509, 'asdsfadgsdag', 'Sasa', 7);
 
 -- --------------------------------------------------------
 
@@ -4329,7 +4389,7 @@ CREATE TABLE `users` (
   `address` text DEFAULT NULL,
   `address_2` text DEFAULT NULL,
   `gender` enum('male','female') DEFAULT NULL,
-  `age`  varchar(2) DEFAULT NULL,
+  `age` varchar(2) DEFAULT NULL,
   `bio` text DEFAULT NULL,
   `image` varchar(50) DEFAULT NULL,
   `is_admin` enum('yes','no') NOT NULL DEFAULT 'no',
@@ -4858,7 +4918,7 @@ INSERT INTO `users` (`id`, `email`, `phone`, `name`, `password`, `address`, `add
 (4801, '1020@gmail.com', '123456', '4801', 'Ahmed220123', 'ahmed', NULL, NULL, NULL, 'amr@gmail.com', 'amr@gmail.com', 'no', 'yes', '0000-00-00'),
 (4802, '1021@gmail.com', '123456', '4802', 'Ahmed220123', 'ahmed', NULL, NULL, NULL, 'amr@gmail.com', 'amr@gmail.com', 'no', 'yes', '0000-00-00'),
 (4803, '1022@gmail.com', '123456', '4803', 'Ahmed220123', 'ahmed', NULL, NULL, NULL, 'amr@gmail.com', 'amr@gmail.com', 'no', 'yes', '0000-00-00'),
-(6347, 'ahmed@gmail.com', '01140940686', 'amrsheek', 'Ahmed220123', 'aaaaaaaaaa', '', 'male', '35', NULL, NULL, 'yes', 'no', '2023-04-23'),
+(6347, 'ahmed@gmail.com', '01140940686', 'amrsheek', 'Ahmed220123', 'aaaaaaaaaa', '', 'male', '35', NULL, NULL, 'no', 'no', '2023-04-23'),
 (6362, '', NULL, '', '', '', NULL, NULL, NULL, NULL, '', 'no', 'yes', '2023-05-04'),
 (6363, 'amr@gmail.com', NULL, 'amr', 'Ahmed220123', 'xsadfewf', NULL, NULL, NULL, NULL, '', 'no', 'yes', '2023-05-04');
 
@@ -4879,6 +4939,12 @@ ALTER TABLE `appointmenthistory`
   ADD PRIMARY KEY (`users_id`,`doctor_id`,`date`);
 
 --
+-- Indexes for table `credits`
+--
+ALTER TABLE `credits`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `doctors`
 --
 ALTER TABLE `doctors`
@@ -4890,6 +4956,18 @@ ALTER TABLE `doctors`
 ALTER TABLE `favorite`
   ADD PRIMARY KEY (`users_id`,`doctor_id`),
   ADD KEY `users_id` (`users_id`,`doctor_id`);
+
+--
+-- Indexes for table `rate`
+--
+ALTER TABLE `rate`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `schedule`
@@ -4908,10 +4986,28 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `credits`
+--
+ALTER TABLE `credits`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `doctors`
 --
 ALTER TABLE `doctors`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4096;
+
+--
+-- AUTO_INCREMENT for table `rate`
+--
+ALTER TABLE `rate`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `schedule`
