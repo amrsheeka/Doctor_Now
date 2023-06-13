@@ -85,9 +85,9 @@ const Chatbox_photo = ({ navigation, route }) => {
       storage,
       "images/4f87d8c8-8f9c-4b63-8ee2-c54fc14451cd.jpeg"
     );
-    const mountainImagesRef = ref(storage, selectedImage);
-    mountainsRef.name === mountainImagesRef.name; // true
-    mountainsRef.fullPath === mountainImagesRef.fullPath; // false
+    // const mountainImagesRef = ref(storage, selectedImage);
+    // mountainsRef.name === mountainImagesRef.name; // true
+    // mountainsRef.fullPath === mountainImagesRef.fullPath; // false
 
     const newchat = [
       {
