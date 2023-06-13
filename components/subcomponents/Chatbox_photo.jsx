@@ -25,6 +25,7 @@ import {
   where,
   onSnapshot,
 } from "firebase/firestore";
+import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { db } from "../../db/Config";
 import app from "../../db/Config";
 import { getFirestore } from "firebase/firestore";
@@ -79,6 +80,15 @@ const Chatbox_photo = ({ navigation, route }) => {
 
   const onSendPhoto = useCallback(() => {
     const date = new Date();
+    const storage = getStorage();
+    const mountainsRef = ref(
+      storage,
+      "images/4f87d8c8-8f9c-4b63-8ee2-c54fc14451cd.jpeg"
+    );
+    const mountainImagesRef = ref(storage, selectedImage);
+    mountainsRef.name === mountainImagesRef.name; // true
+    mountainsRef.fullPath === mountainImagesRef.fullPath; // false
+
     const newchat = [
       {
         createdAt: date.toLocaleString(),

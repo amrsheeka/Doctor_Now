@@ -467,7 +467,6 @@ const getRate = async (doctor_id) => {
       doctor_id: doctor_id,
     })
     .then(function (response) {
-      console.log(response.data);
       return response.data;
     })
     .catch(function (error) {

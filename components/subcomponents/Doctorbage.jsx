@@ -40,10 +40,11 @@ const Doctorbage = ({ navigation, route }) => {
   async function get_rate(id) {
     getRate(id).then((res) => {
       setRate(res);
+      console.log(res);
     });
-
     console.log(rate);
   }
+
   const InsertRev = async () => {
     insertReviews(curruser.id, item.id, text, curruser.name).then((res) => {
       get(item.id);

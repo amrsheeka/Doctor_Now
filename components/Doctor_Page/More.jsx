@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import Icon3 from "react-native-vector-icons/Fontisto";
 
-const More = ({ fun1 }) => {
+const More = ({ navigation, fun1 }) => {
   const main_color = "#288771";
   return (
     <View>
@@ -36,6 +36,33 @@ const More = ({ fun1 }) => {
           >
             {" "}
             Appointemnts History{" "}
+          </Text>
+          {/* <Icon name={"edit"} size={25} color={main_color} /> */}
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("Chat_D")}>
+        <View
+          style={[
+            styles.content,
+            {
+              flexDirection: "row",
+              paddingVertical: 15,
+              marginTop: 5,
+              alignItems: "center",
+            },
+          ]}
+        >
+          <Text
+            style={{
+              color: "black",
+              fontSize: 20,
+              paddingHorizontal: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Cat{" "}
           </Text>
           {/* <Icon name={"edit"} size={25} color={main_color} /> */}
         </View>
