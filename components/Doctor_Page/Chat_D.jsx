@@ -91,8 +91,8 @@ const Chat_D = ({ navigation }) => {
 
   //console.log(chat);
   let user_chats = chat.filter((e) => e.doctor.id == 509);
-  //console.log("ddddddd", user_chats);
-  //console.log("ffffffffffff", CurrentUser.user.id);
+  // console.log("ddddddd", user_chats);
+  // console.log("ffffffffffff", CurrentUser.user.id);
 
   const onklek = () => {
     navigation.navigate("Chatbox", { item });
@@ -105,13 +105,14 @@ const Chat_D = ({ navigation }) => {
   async function get_User(id) {
     get_user_by_Id(id).then((res) => {
       setUser(res);
-      console.log("mostafa    ", res);
+      //console.log("mostafa    ", res);
     });
   }
+
   const renderChat = ({ item }) => {
     //console.log("1111111", item.user_id);
     // let image = item.doctor.image;
-    get_User(item.user_id);
+    // get_User(item.user_id);
     let image = false;
     return (
       <TouchableOpacity
