@@ -1516,6 +1516,7 @@ const Info = ({ navigation }) => {
 
               {flag ? (
                 <Doctor_Info
+                  navigation={navigation}
                   desc={about_the_doctor}
                   fun1={() => setPage("About the Doctor")}
                 />
