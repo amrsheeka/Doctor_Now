@@ -2,10 +2,11 @@ import React, { memo, useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Fontisto";
+import { Rating, AirbnbRating } from "react-native-elements";
 
 // import { MaterialIcons } from "@expo/vector-icons";
 import { AppContext, AppProvider } from "../consts/AppContext";
-
+import { getRate } from "../../database/Users";
 import FlipCard from "react-native-flip-card";
 import {
   insertFavourite,
@@ -24,9 +25,36 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { timeList, setTimeList } = useContext(AppContext);
   const { rev, setRev } = useContext(AppContext);
   const [infav, setInfav] = useState(false);
+  const [rate, setRate] = useState([]);
+  const [av_rate, setAv_rate] = useState();
 
   const [heart, setHeart] = useState("favorite-border");
   const [clickReadMore, setClickReadMore] = useState(false);
+
+  async function get_rate(id) {
+    getRate(id).then((res) => {
+      setRate(res);
+      // console.log(res);
+    });
+    // console.log(rate);
+  }
+
+  const rate_lenth = rate.length;
+
+  async function countAv_rate() {
+    let ratecount = 0;
+    for (var i = 0; i < rate_lenth; i++) {
+      ratecount += rate[i].rate_count;
+    }
+    //console.log(ratecount);
+    let vvvv = Math.floor(ratecount / rate_lenth);
+    if (vvvv > 0) {
+      setAv_rate(vvvv);
+    } else {
+      setAv_rate(0);
+    }
+  }
+  // console.log(av_rate);
 
   async function fetchDoctor() {
     const filt = await getFavourite(CurrentUser.user.id);
@@ -64,6 +92,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   useEffect(() => {
     fetchFavouriteinfav();
     fetchDoctor();
+    get_rate(doctor.id);
+    countAv_rate();
   }, []);
 
   const click_heart = async (user_id, doctor_id) => {
@@ -115,7 +145,11 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
 
   const Face_Card = () => {
     return (
-      <TouchableOpacity onPress={()=>{handelRout()}}>
+      <TouchableOpacity
+        onPress={() => {
+          handelRout();
+        }}
+      >
         <View style={{ marginVertical: 5, flexDirection: "row" }}>
           <Text
             numberOfLines={1}
@@ -173,11 +207,12 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
               </Text>
             </TouchableOpacity>
             <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              <Icon name={icon1} size={35} color="gold" />
+              {/* <Icon name={icon1} size={35} color="gold" />
               <Icon name={icon2} size={35} color="gold" />
               <Icon name={icon3} size={35} color="gold" />
               <Icon name={icon4} size={35} color="gold" />
-              <Icon name={icon5} size={35} color="gold" />
+              <Icon name={icon5} size={35} color="gold" /> */}
+              <Rating imageSize={25} readonly startingValue={av_rate} />
             </View>
 
             <View>
@@ -190,7 +225,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                 }}
               >
                 {" "}
-                {"25"} {" Reviews "}
+                {rate_lenth ? rate_lenth : "0"} {" Reviews "}
               </Text>
               <TouchableOpacity
                 style={{
