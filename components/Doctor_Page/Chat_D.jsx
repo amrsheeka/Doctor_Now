@@ -29,7 +29,7 @@ import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
 const Chat_D = ({ navigation }) => {
   const [chat, setChat] = useState([]);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState([]);
 
   const { night } = useContext(AppContext);
 
@@ -105,15 +105,16 @@ const Chat_D = ({ navigation }) => {
   async function get_User(id) {
     get_user_by_Id(id).then((res) => {
       setUser(res);
-      //console.log("mostafa    ", res);
+      console.log("mostafa    ", res);
     });
   }
 
   const renderChat = ({ item }) => {
     //console.log("1111111", item.user_id);
     // let image = item.doctor.image;
-    // get_User(item.user_id);
+
     let image = false;
+    // get_User(item.user_id);
     return (
       <TouchableOpacity
         onPress={() => {
@@ -142,6 +143,7 @@ const Chat_D = ({ navigation }) => {
       </TouchableOpacity>
     );
   };
+
   return (
     <View style={[styles.container, night && styles.buttonDark]}>
       <View style={[styles.header, night && styles.buttonDark]}>

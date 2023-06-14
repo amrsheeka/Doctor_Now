@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2023 at 02:49 AM
+-- Generation Time: Jun 14, 2023 at 06:27 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -704,6 +704,40 @@ INSERT INTO `favorite` (`users_id`, `doctor_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ratetable`
+--
+
+CREATE TABLE `ratetable` (
+  `users_id` int(11) NOT NULL,
+  `doctor_id` int(11) NOT NULL,
+  `rate_count` int(11) NOT NULL,
+  `id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ratetable`
+--
+
+INSERT INTO `ratetable` (`users_id`, `doctor_id`, `rate_count`, `id`) VALUES
+(6364, 509, 4, 6),
+(6364, 509, 5, 7),
+(6364, 509, 5, 8),
+(6364, 510, 4, 9),
+(6364, 512, 5, 10),
+(6364, 518, 4, 11),
+(6364, 518, 4, 12),
+(6364, 518, 4, 13),
+(6364, 518, 4, 14),
+(6364, 518, 0, 15),
+(6364, 518, 0, 16),
+(6364, 510, 4, 17),
+(6364, 510, 4, 18),
+(6364, 510, 5, 19),
+(6364, 741, 3, 20);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `reviews`
 --
 
@@ -749,7 +783,7 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`id`, `doctor_id`, `start`, `end`, `day`, `avilable`, `number`) VALUES
-(1, 509, '10:00 PM', '03:04 PM', 'Saturday', 'yes', 10),
+(1, 509, '10:00 PM', '03:04 PM', 'Saturday', 'no', 5),
 (2, 510, '9:30 PM', '11:30 PM', 'Saturday', 'yes', 10),
 (3, 511, '2:00 PM', '11:55 PM', 'Saturday', 'yes', 10),
 (4, 512, '9:30 PM', '11:30 PM', 'Saturday', 'yes', 10),
@@ -1265,7 +1299,7 @@ INSERT INTO `schedule` (`id`, `doctor_id`, `start`, `end`, `day`, `avilable`, `n
 (514, 1022, 'amr@gmail.com', 'Ahmed220123', 'Saturday', 'yes', 10),
 (515, 4094, NULL, NULL, 'Saturday', 'yes', 10),
 (516, 4095, NULL, NULL, 'Saturday', 'yes', 10),
-(517, 509, '10:58 PM', '01:00 PM', 'Sunday', 'yes', 10),
+(517, 509, '10:58 PM', '01:00 PM', 'Sunday', 'yes', 5),
 (518, 510, '9:30 PM', '11:30 PM', 'Sunday', 'yes', 10),
 (519, 511, '2:00 PM', '11:55 PM', 'Sunday', 'yes', 10),
 (520, 512, '9:30 PM', '11:30 PM', 'Sunday', 'yes', 10),
@@ -1782,7 +1816,7 @@ INSERT INTO `schedule` (`id`, `doctor_id`, `start`, `end`, `day`, `avilable`, `n
 (1030, 1022, 'amr@gmail.com', 'Ahmed220123', 'Sunday', 'yes', 10),
 (1031, 4094, NULL, NULL, 'Sunday', 'yes', 10),
 (1032, 4095, NULL, NULL, 'Sunday', 'yes', 10),
-(1033, 509, '03:04 PM', '12:00 PM', 'Monday', 'yes', 10),
+(1033, 509, '03:04 PM', '12:00 PM', 'Monday', 'no', 10),
 (1034, 510, '9:30 PM', '11:30 PM', 'Monday', 'yes', 10),
 (1035, 511, '2:00 PM', '11:55 PM', 'Monday', 'yes', 10),
 (1036, 512, '9:30 PM', '11:30 PM', 'Monday', 'yes', 10),
@@ -3331,7 +3365,7 @@ INSERT INTO `schedule` (`id`, `doctor_id`, `start`, `end`, `day`, `avilable`, `n
 (2578, 1022, 'amr@gmail.com', 'Ahmed220123', 'Wednesday', 'yes', 10),
 (2579, 4094, NULL, NULL, 'Wednesday', 'yes', 10),
 (2580, 4095, NULL, NULL, 'Wednesday', 'yes', 10),
-(2581, 509, '11:00 AM', '11:00 PM', 'Thursday', 'yes', 10),
+(2581, 509, '11:00 AM', '11:00 PM', 'Thursday', 'yes', 5),
 (2582, 510, '9:30 PM', '11:30 PM', 'Thursday', 'yes', 10),
 (2583, 511, '2:00 PM', '11:55 PM', 'Thursday', 'yes', 10),
 (2584, 512, '9:30 PM', '11:30 PM', 'Thursday', 'yes', 10),
@@ -3848,7 +3882,7 @@ INSERT INTO `schedule` (`id`, `doctor_id`, `start`, `end`, `day`, `avilable`, `n
 (3094, 1022, 'amr@gmail.com', 'Ahmed220123', 'Thursday', 'yes', 10),
 (3095, 4094, NULL, NULL, 'Thursday', 'yes', 10),
 (3096, 4095, NULL, NULL, 'Thursday', 'yes', 10),
-(3097, 509, '9:30 PM', '11:00 PM', 'Friday', 'yes', 10),
+(3097, 509, '9:30 PM', '11:00 PM', 'Friday', 'yes', 5),
 (3098, 510, '9:30 PM', '11:30 PM', 'Friday', 'yes', 10),
 (3099, 511, '2:00 PM', '11:55 PM', 'Friday', 'yes', 10),
 (3100, 512, '9:30 PM', '11:30 PM', 'Friday', 'yes', 10),
@@ -4950,6 +4984,12 @@ ALTER TABLE `favorite`
   ADD KEY `users_id` (`users_id`,`doctor_id`);
 
 --
+-- Indexes for table `ratetable`
+--
+ALTER TABLE `ratetable`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `reviews`
 --
 ALTER TABLE `reviews`
@@ -4982,6 +5022,12 @@ ALTER TABLE `credits`
 --
 ALTER TABLE `doctors`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4097;
+
+--
+-- AUTO_INCREMENT for table `ratetable`
+--
+ALTER TABLE `ratetable`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `reviews`

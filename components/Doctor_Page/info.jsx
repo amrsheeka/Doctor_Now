@@ -9,11 +9,13 @@ import {
   TouchableOpacity,
   ScrollView,
   Switch,
+  Alert, Modal, Pressable
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import { StatusBar } from "expo-status-bar";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { AntDesign} from "@expo/vector-icons";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
@@ -61,7 +63,7 @@ const Info = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [birth, setBirth] = useState("select your birth day");
   const [show, setShow] = useState(false);
-
+  const [modalVisible, setModalVisible] = useState(false);
   const [startTime, setStartTime] = useState(new Date());
   const [startTime1, setStartTime1] = useState(new Date());
   const [startTime2, setStartTime2] = useState(new Date());
@@ -203,6 +205,29 @@ const Info = ({ navigation }) => {
     }
     update_Doctor_info(doc);
   }
+  const handleSave=(i)=>{
+    
+    updateSchedule({
+      day: schedules[i].day,
+      doctor_id: schedules[i].doctor_id,
+      start: schedules[i].start,
+      end: schedules[i].end,
+      id: schedules[i].id,
+      avilable: schedules[i].avilable,
+      number:
+      i==0?number_of_bookings
+      :i==1?number_of_bookings1
+      :i==2?number_of_bookings2
+      :i==3?number_of_bookings3
+      :i==4?number_of_bookings4
+      :i==5?number_of_bookings5
+      :number_of_bookings6
+    }).then((res)=>{
+      if(res.status=="success")
+        setModalVisible(true);
+    });
+    
+  }
   async function getSchedule(id) {
     const res = await getDocSchedule(id).then((res1) => {
       setSchedules(res1);
@@ -227,6 +252,13 @@ const Info = ({ navigation }) => {
       setEnd4(res1[4].end);
       setEnd5(res1[5].end);
       setEnd6(res1[6].end);
+      setNumber_of_bookings(res1[0].number);
+      setNumber_of_bookings1(res1[1].number);
+      setNumber_of_bookings2(res1[2].number);
+      setNumber_of_bookings3(res1[3].number);
+      setNumber_of_bookings4(res1[4].number);
+      setNumber_of_bookings5(res1[5].number);
+      setNumber_of_bookings6(res1[6].number);
       // setBookings(appointments);
       // setStartTime(res1[0].start);
       // setStartTime1(res1[1].start);
@@ -672,8 +704,8 @@ const Info = ({ navigation }) => {
             {e}{" "}
           </Text>
         </View>
-        {selected == "First In First Out" ? (
-          <View>
+        <View style={{flexDirection:"row"}}>
+          <View style={{flex:1}}>
             <Text
               style={{
                 fontSize: 14,
@@ -696,30 +728,31 @@ const Info = ({ navigation }) => {
               value={booking + ""}
             />
           </View>
-        ) : (
-          <View>
-            <Text
-              style={{
-                fontSize: 14,
-                color: "black",
-                paddingLeft: 12,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Exmination Duration (Minutes){" "}
-            </Text>
-            <TextInput
-              style={styles.inp}
-              keyboardType="phone-pad"
-              defaultValue={exmin + ""}
-              placeholder={"30 Mins"}
-              onChangeText={exmin_duration(exmin)}
-              // onSubmitEditing={handleSubmit(exmination_duration)}
-              value={exmin + ""}
-            />
-          </View>
-        )}
+          <TouchableOpacity
+          onPress={()=>{
+            if(day=="Saturday"){
+              handleSave(0);
+            }else if(day=="Sunday"){
+              handleSave(1);
+            }else if(day=="Monday"){
+              handleSave(2);
+            }else if(day=="Tuesday"){
+              handleSave(3);
+            }else if(day=="Wednesday"){
+              handleSave(4);
+            }else if(day=="Thursday"){
+              handleSave(5);
+            }else if(day=="Friday"){
+              handleSave(6);
+            }
+            
+            
+          }}
+          style={{flex:1,flexDirection:"row",alignItems:"flex-end"}}>
+            <Icon6 style={{marginLeft:10}} name="content-save-check-outline" size={45} color={main_color}/>
+            <Text style={{fontSize:20}}>Save</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -1480,9 +1513,32 @@ const Info = ({ navigation }) => {
   if (Object.keys(doctor).length !== 0) {
     return (
       <View style={{ flex: 1 }}>
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <AntDesign name="checkcircle" size={120} style={styles.icon2} />
+            {/* <Image source={""}/> */}
+            <Text style={styles.modalText}>Saved successfully</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>OK</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
         {page === "Profile" ||
-        (page === "Schedule" && schedule_summary) ||
-        page === "More" ? (
+          (page === "Schedule" && schedule_summary) ||
+          page === "More" ? (
           <View style={[styles.header, { alignItems: "center" }]}>
             <Text style={styles.label}> {page} </Text>
           </View>
@@ -1642,8 +1698,8 @@ const Info = ({ navigation }) => {
           )}
         </ScrollView>
         {page === "Profile" ||
-        (page === "Schedule" && schedule_summary) ||
-        page === "More" ? (
+          (page === "Schedule" && schedule_summary) ||
+          page === "More" ? (
           NevigateTab()
         ) : (
           <></>
@@ -1733,6 +1789,48 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     padding: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+
+  buttonOpen: {
+    backgroundColor: "#288771",
+  },
+  buttonClose: {
+    backgroundColor: "#288771",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  icon2: {
+    color: "#288771",
+    padding: 20,
+
   },
 });
 
