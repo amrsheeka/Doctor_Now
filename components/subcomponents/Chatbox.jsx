@@ -123,13 +123,21 @@ export default function Chatbox({ navigation, route }) {
         SenderId: CurrentUser.user.id,
       },
     ];
+    
     getChatById(filterd.id).then((user) => {
       const user1 = user;
       //console.log("kokooooooooooo", user1[0]);
+      if (CurrentUser.user.is_doctor == "yes")
       editUser({
         ...user1[0],
         chat: [...hh[0].chat, ...newchat],
       });
+      else
+        editUser({
+          ...user1[0],
+          chat: [...hh[0].chat, ...newchat],
+          User: CurrentUser.user
+        });
     });
   });
 

@@ -29,7 +29,6 @@ import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
 const Chat_D = ({ navigation }) => {
   const [chat, setChat] = useState([]);
-  const [user, setUser] = useState([]);
 
   const { night } = useContext(AppContext);
 
@@ -90,7 +89,7 @@ const Chat_D = ({ navigation }) => {
   }, []);
 
   //console.log(chat);
-  let user_chats = chat.filter((e) => e.doctor.id == 509);
+  let user_chats = chat.filter((e) => e.doctor.id == CurrentUser.user.email.split('@')[0]);
   // console.log("ddddddd", user_chats);
   // console.log("ffffffffffff", CurrentUser.user.id);
 
@@ -102,18 +101,18 @@ const Chat_D = ({ navigation }) => {
     //console.log("at editCity", user);
     await setDoc(doc(db, "chats", user.id), user);
   }
-  async function get_User(id) {
-    get_user_by_Id(id).then((res) => {
-      setUser(res);
-      console.log("mostafa    ", res);
-    });
-  }
+  // async function get_User(id) {
+  //   get_user_by_Id(id).then((res) => {
+  //     setUser(res);
+  //     console.log("mostafa    ", res);
+  //   });
+  // }
 
   const renderChat = ({ item }) => {
     //console.log("1111111", item.user_id);
     // let image = item.doctor.image;
 
-    let image = false;
+   
     // get_User(item.user_id);
     return (
       <TouchableOpacity
@@ -128,15 +127,14 @@ const Chat_D = ({ navigation }) => {
       >
         <View style={styles.card}>
           <Image
-            source={
-              image
-                ? { uri: image }
+            source={item.User.image!=null
+              ? { uri: item.User.image }
                 : require("../assets/Herbal_Medicine_Male_Avatar.png")
             }
             style={styles.cardPhoto}
           />
           <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>{item.doctor.name}</Text>
+            <Text style={styles.cardTitle}>{item.User.name}</Text>
             <Text style={styles.cardMessage}>How are you feeling today?</Text>
           </View>
         </View>
