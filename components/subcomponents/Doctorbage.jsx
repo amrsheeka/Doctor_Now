@@ -20,6 +20,7 @@ import {
 } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 import { Rating, AirbnbRating } from "react-native-elements";
+import CurrentUser from "../consts/CurrentUser";
 
 const Doctorbage = ({ navigation, route }) => {
   let item = route.params.doctor;
@@ -40,9 +41,9 @@ const Doctorbage = ({ navigation, route }) => {
   async function get_rate(id) {
     getRate(id).then((res) => {
       setRate(res);
-      console.log(res);
+      //console.log(res);
     });
-    console.log(rate);
+    //console.log(rate);
   }
 
   const InsertRev = async () => {
@@ -53,14 +54,22 @@ const Doctorbage = ({ navigation, route }) => {
   };
 
   const InsertRate = async () => {
-    insertRate(curruser.id, item.id, ratecount)
-      .then((res) => {
-        console.log(res);
-      })
-      .then(() => {
-        get_rate(item.id);
-      });
-    console.log(ratecount);
+    get_rate(item.id).then(() => {
+      let dd = rate.filter((e) => e.users_id == curruser.id);
+      if (dd.length > 0) {
+        console.log("3mal abl kda");
+      } else {
+        insertRate(curruser.id, item.id, ratecount)
+          .then((res) => {
+            console.log(res);
+          })
+          .then(() => {
+            get_rate(item.id);
+          });
+      }
+    });
+
+    // console.log(ratecount);
   };
 
   const Item = ({ title }) => (
