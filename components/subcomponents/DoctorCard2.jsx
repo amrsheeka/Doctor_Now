@@ -115,7 +115,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
 
   const Face_Card = () => {
     return (
-      <View>
+      <TouchableOpacity onPress={()=>{handelRout()}}>
         <View style={{ marginVertical: 5, flexDirection: "row" }}>
           <Text
             numberOfLines={1}
@@ -219,7 +219,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
             </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
