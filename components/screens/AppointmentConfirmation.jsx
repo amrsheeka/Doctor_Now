@@ -51,6 +51,10 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const { night } = useContext(AppContext);
   const { curruser } = useContext(AppContext);
   const { Days, setDays } = useContext(AppContext);
+  const [startTime, setStartTime] = useState([]);
+  const [endTime, setEndTime] = useState([]);
+  const [choice, setChoice] = useState();
+
   const [type, setType] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const today = new Date(); // current date
@@ -97,7 +101,6 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    // console.log(item.schedule_type);
     getDocDays();
     setType(item.schedule_type);
     var timeList1 = getTimeList(item.start, item.end);
@@ -107,7 +110,6 @@ const AppointmentConfirmation = ({ navigation, route }) => {
           timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
         });
         setLength(10 - res.length);
-        // console.log(res.length)
       }
     });
     setTimeList(timeList1);
@@ -115,14 +117,20 @@ const AppointmentConfirmation = ({ navigation, route }) => {
 
   const getDocDays = async () => {
     await getDocSchedule(item.id).then((res) => {
-      // console.log(res);
       if (res.status != "failed") {
         res = res.filter((ele) => ele.avilable !== "no");
-        // console.log(res);
+
         const days = res.map((item) => item.day.slice(0, 3));
+        const start = res.map((item) => item.start.slice(0, 5));
+        const end = res.map((item) => item.end.slice(0, 5));
         setDays(days);
-        console.log(Days);
-      } else setDays([]);
+        setStartTime(start);
+        setEndTime(end);
+      } else {
+        setDays([]);
+        setStartTime([]);
+        setEndTime([]);
+      }
     });
   };
 
@@ -164,6 +172,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       <TouchableOpacity
         key={key}
         onPress={() => {
+          setChoice(week + "");
           setModalVisible(true);
         }}
       >
@@ -193,7 +202,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   ///////////////////////////////////////
 
   const addMinutesToTime = (time, minutes) => {
-    let arr = [item.start];
+    // let arr = [item.start];
 
     const [hour, minute, period] = time.split(/:| /);
     const date = new Date();
@@ -205,19 +214,49 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       .getMinutes()
       .toString()
       .padStart(2, "0")} ${date.getHours() >= 12 ? "PM" : "AM"}`;
-
     return formattedTime;
   };
 
-  const time = (avliable, time) => {
+  const times = (day) => {
+    const index = Days.indexOf(day);
+    let start = startTime[index] + "";
+    let end = endTime[index] + "";
+
+    const watingTime = 30;
+    let arr = [];
+
+    const [startHour, startMinute] = start.split(":").map(Number);
+    const startMinutes = startHour * 60 + startMinute;
+
+    // Convert end time to minutes
+    const [endHour, endMinute] = end.split(":").map(Number);
+    const endMinutes = endHour * 60 + endMinute;
+
+    // Calculate the difference in minutes
+    const minutesDiff = endMinutes - startMinutes;
+    const number = minutesDiff / watingTime;
+    let time = addMinutesToTime(start, 0);
+    for (let i = 0; i < number; i++) {
+      arr[i] = time;
+      time = addMinutesToTime(time, watingTime);
+    }
+
+    return arr;
+  };
+
+  const time = (avliable, time, key) => {
     return (
-      <TouchableOpacity onPress={() => setModalVisible(false)}>
+      <TouchableOpacity key={key} onPress={() => setModalVisible(false)}>
         <View
           style={[
             styles.content,
             {
-              backgroundColor: avliable ? main_color : "#aaa",
               marginHorizontal: 10,
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              flexWrap: "wrap",
+              alignItems: "center",
+              backgroundColor: avliable ? main_color : "#aaa",
             },
           ]}
         >
@@ -263,14 +302,13 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       currentDate.getMonth() + 1 + select_Month_Index,
       0
     ).getDate();
-    // console.log(Days);
+
     if (select_Month_Index == 0) {
       for (let i = 0; i <= lastDayOfMonth - currentDate.getDate(); i++) {
         days[i] = currentDate.getDate() + i;
         days_of_week[i] = Array[(currentDate.getDay() + i + 1) % 7];
         if (Days) avaliable_days[i] = Days.includes(days_of_week[i]);
       }
-      // console.log(avaliable_days);
     } else {
       const firstDayOfMonth = new Date(
         currentDate.getFullYear(),
@@ -283,8 +321,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         if (Days) avaliable_days[i] = Days.includes(days_of_week[i]);
       }
     }
-    // console.log(days_of_week)
-    // console.log(avaliable_days);
+
     return [days, days_of_week, avaliable_days];
   };
   return (
@@ -589,17 +626,26 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                   }}
                 >
                   <View style={styles.centeredView}>
-                    <View style={[styles.content]}>
-                      <View style={{ width: "90%", marginVertical: 10 }}>
+                    <View style={[styles.content, { width: "100%" }]}>
+                      <View style={{ marginVertical: 10, alignSelf: "center" }}>
                         <Image
                           source={require("../assets/doctor.png")}
-                          style={{ height: 100, width: 150 }}
+                          style={{ height: 150, width: 200 }}
                         />
                       </View>
-                      <View style={{ flexDirection: "row" }}>
-                        {time(true, "7:30 PM")}
-                        {time(true, "8:00 PM")}
-                        {time(true, "8:30 PM")}
+                      <View style={{ width: "100%" }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            flexWrap: "wrap",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          {times(choice).map((e, idx) => {
+                            return time(true, e, idx);
+                          })}
+                        </View>
                       </View>
                     </View>
                   </View>
