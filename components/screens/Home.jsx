@@ -13,7 +13,7 @@ import {
   Animated, PanResponder, Dimensions, StatusBar
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
-import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome5,Ionicons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import { AppContext } from "../consts/AppContext";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
@@ -83,6 +83,9 @@ const Home = ({ navigation }) => {
   );
   const header = () => (
     <View>
+      <View>
+        <Text style={styles.subTitle}>Categories:</Text>
+      </View>
       <View style={styles.filterCards}>
         <TouchableOpacity
           style={styles.filterCard1}
@@ -185,7 +188,6 @@ const Home = ({ navigation }) => {
       </View>
       {doctors.length != 0 ? (
         <Animated.View
-
           style={[
             [styles.list, night && styles.darklist],
             {
@@ -203,8 +205,8 @@ const Home = ({ navigation }) => {
           ]}
           {...panResponder?.panHandlers}
         >
-          <View>
-            <Text style={styles.subTitle}>Categories:</Text>
+          <View style={{alignSelf:"center"}}>
+            <Ionicons name="reorder-three-outline" size={30} color={"#288771"}/>
           </View>
           <FlatList
             removeClippedSubviews={true}
@@ -261,7 +263,7 @@ const styles = StyleSheet.create({
   list: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingTop: 30,
+    paddingVertical:30,
     backgroundColor: "#F5F5F5",
   },
   search: {
