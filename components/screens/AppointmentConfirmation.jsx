@@ -7,14 +7,11 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
-  Button,
-  FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
 import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome";
-import { SelectList } from "react-native-dropdown-select-list";
 import {
   collection,
   addDoc,
@@ -29,14 +26,9 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { db } from "../../db/Config";
 import CurrentUser from "../consts/CurrentUser";
-import { Entypo } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { getFirestore } from "firebase/firestore";
-import { app } from "../../db/Config";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import getTimeList from "../../database/getTimeList";
+
 import { getAppointment_by_doc_id, insertReviews } from "../../database/Users";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
@@ -45,98 +37,58 @@ import { getDocSchedule } from "../../database/Doctors";
 const AppointmentConfirmation = ({ navigation, route }) => {
   let item = route.params.doctor;
   const { timeList, setTimeList } = useContext(AppContext);
-  const [Time, setTime] = useState("");
   const [date, setDate] = useState(new Date().toDateString());
-  const [showPicker, setShowPicker] = useState(false);
-  const { night } = useContext(AppContext);
-  const { curruser } = useContext(AppContext);
   const { Days, setDays } = useContext(AppContext);
   const [startTime, setStartTime] = useState([]);
   const [endTime, setEndTime] = useState([]);
+  const [numberOfPatients, setNumberOfPatients] = useState([]);
   const [choice, setChoice] = useState();
-
-  const [type, setType] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const today = new Date(); // current date
-  const currentDayOfWeek = today.getDay(); // Sunday is 0, Monday is 1, etc.
-  const daysUntilFriday = currentDayOfWeek <= 5 ? 5 - currentDayOfWeek : 6;
-  let image = item.image;
-  const { length, setLength } = useContext(AppContext);
-  const onDateChange = (event, newDate) => {
-    setShowPicker(false);
-    var flag = 0;
-    const options = { weekday: "long" };
-    const dayOfWeek = newDate
-      .toLocaleDateString("en-US", options)
-      .split(",")[0];
-    for (let i = 0; i < Days.length; i++) {
-      if (Days[i].day == dayOfWeek && Days[i].avilable == "yes") {
-        flag = 1;
-        break;
-      }
-    }
-
-    if (flag == 0) {
-      alert("You Try to Choose Unavailable Day please Choose anther day !");
-      return;
-    }
-    setDate(newDate.toDateString());
-    var timeList1 = getTimeList(item.start, item.end);
-    getAppointment_by_doc_id(item.id, newDate.toDateString()).then((res) => {
-      res.status != "failed"
-        ? res.map((e) => {
-            timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
-          })
-        : setTimeList(timeList1);
-      if (timeList1.length == 0) {
-        alert(
-          "Sorry all appointments in this day are complete please choose anther day !"
-        );
-        setTimeList([]);
-        return;
-      } else {
-        setTimeList(timeList1);
-      }
-    });
-  };
+  const [length, setLength] = useState();
 
   useEffect(() => {
     getDocDays();
-    setType(item.schedule_type);
-    var timeList1 = getTimeList(item.start, item.end);
-    getAppointment_by_doc_id(item.id, date).then((res) => {
-      if (res.status != "failed") {
-        res.map((e) => {
-          timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
-        });
-        setLength(10 - res.length);
-      }
-    });
-    setTimeList(timeList1);
   }, []);
 
   const getDocDays = async () => {
+    let days, start, end, number;
     await getDocSchedule(item.id).then((res) => {
       if (res.status != "failed") {
         res = res.filter((ele) => ele.avilable !== "no");
 
-        const days = res.map((item) => item.day.slice(0, 3));
-        const start = res.map((item) => item.start.slice(0, 5));
-        const end = res.map((item) => item.end.slice(0, 5));
-        setDays(days);
-        setStartTime(start);
-        setEndTime(end);
-      } else {
-        setDays([]);
-        setStartTime([]);
-        setEndTime([]);
+        days = res.map((item) => item.day.slice(0, 3));
+        start = res.map((item) => item.start);
+        end = res.map((item) => item.end);
+        number = res.map((item) => item.number);
       }
     });
+    setDays(days);
+    setStartTime(start);
+    setEndTime(end);
+    setNumberOfPatients(number);
+  };
+  const getDocTimes = async () => {
+    try {
+      await getAppointment_by_doc_id(item.id, date).then((res) => {
+        if (res.status != "failed") {
+          if (item.schedule_type == "on appointment") {
+            const times = res.map((item) => item.time);
+            setTimeList(times);
+            setModalVisible(true);
+          } else {
+            const lengthValue =
+              parseInt(numberOfPatients[Days.indexOf(date.slice(0, 3))]) -
+              parseInt(res.length);
+            setLength(lengthValue);
+            console.log(lengthValue);
+          }
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const openPicker = () => {
-    setShowPicker(true);
-  };
   function addChat(Chat) {
     addDoc(collection(db, "chats"), Chat);
   }
@@ -170,10 +122,24 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const day = (avliable, week, month, key) => {
     return (
       <TouchableOpacity
+        disabled={!avliable}
         key={key}
         onPress={() => {
+          setDate(new Date(2023, select_Month_Index + 5, month).toDateString());
           setChoice(week + "");
-          setModalVisible(true);
+          getDocTimes();
+          if (item.schedule_type != "on appointment") {
+            if (length != 0) {
+              const time = startTime[Days.indexOf(week)];
+              navigation.navigate("Details_user_to_appointment", {
+                item,
+                time,
+                date,
+              });
+            } else {
+              alert("This is day is full ... choose another day");
+            }
+          }
         }}
       >
         <View
@@ -202,8 +168,6 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   ///////////////////////////////////////
 
   const addMinutesToTime = (time, minutes) => {
-    // let arr = [item.start];
-
     const [hour, minute, period] = time.split(/:| /);
     const date = new Date();
     date.setHours(parseInt(hour, 10) + (period === "PM" ? 12 : 0));
@@ -221,32 +185,45 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     const index = Days.indexOf(day);
     let start = startTime[index] + "";
     let end = endTime[index] + "";
+    let numberPatients = parseInt(numberOfPatients[index], 10);
 
-    const watingTime = 30;
     let arr = [];
 
-    const [startHour, startMinute] = start.split(":").map(Number);
-    const startMinutes = startHour * 60 + startMinute;
+    const [startHour, startMinute, period] = start.split(/:| /);
+    const parsedStartHour = parseInt(startHour, 10);
+    const parsedStartMinute = parseInt(startMinute, 10);
+    const startMinutes = parsedStartHour * 60 + parsedStartMinute;
 
-    // Convert end time to minutes
-    const [endHour, endMinute] = end.split(":").map(Number);
-    const endMinutes = endHour * 60 + endMinute;
+    const [endHour, endMinute, period2] = end.split(/:| /);
+    const parsedEndHour = parseInt(endHour, 10);
+    const parsedEndMinute = parseInt(endMinute, 10);
+    const endMinutes = parsedEndHour * 60 + parsedEndMinute;
 
-    // Calculate the difference in minutes
-    const minutesDiff = endMinutes - startMinutes;
-    const number = minutesDiff / watingTime;
-    let time = addMinutesToTime(start, 0);
-    for (let i = 0; i < number; i++) {
+    const minutesDiff = Math.abs(endMinutes - startMinutes);
+    const watingTime = minutesDiff / numberPatients;
+
+    let time = start;
+    for (let i = 0; i < numberPatients; i++) {
       arr[i] = time;
       time = addMinutesToTime(time, watingTime);
     }
-
     return arr;
   };
 
   const time = (avliable, time, key) => {
     return (
-      <TouchableOpacity key={key} onPress={() => setModalVisible(false)}>
+      <TouchableOpacity
+        key={key}
+        disabled={!avliable}
+        onPress={() => {
+          setModalVisible(false);
+          navigation.navigate("Details_user_to_appointment", {
+            item,
+            time,
+            date,
+          });
+        }}
+      >
         <View
           style={[
             styles.content,
@@ -257,6 +234,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
               flexWrap: "wrap",
               alignItems: "center",
               backgroundColor: avliable ? main_color : "#aaa",
+              borderColor: avliable ? main_color : "#aaa",
             },
           ]}
         >
@@ -615,42 +593,48 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                 const Avaliable = getDays()[2][idx];
                 return day(Avaliable, dayOfWeek, dayOfMonth, idx);
               })}
-
-              <View style={styles.centeredView}>
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={modalVisible}
-                  onRequestClose={() => {
-                    setModalVisible(false);
-                  }}
-                >
-                  <View style={styles.centeredView}>
-                    <View style={[styles.content, { width: "100%" }]}>
-                      <View style={{ marginVertical: 10, alignSelf: "center" }}>
-                        <Image
-                          source={require("../assets/doctor.png")}
-                          style={{ height: 150, width: 200 }}
-                        />
-                      </View>
-                      <View style={{ width: "100%" }}>
+              {item.schedule_type == "on appointment" ? (
+                <View style={styles.centeredView}>
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                      setModalVisible(false);
+                    }}
+                  >
+                    <View style={styles.centeredView}>
+                      <View style={[styles.content, { width: "100%" }]}>
                         <View
-                          style={{
-                            flexDirection: "row",
-                            flexWrap: "wrap",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
+                          style={{ marginVertical: 10, alignSelf: "center" }}
                         >
-                          {times(choice).map((e, idx) => {
-                            return time(true, e, idx);
-                          })}
+                          <Image
+                            source={require("../assets/doctor.png")}
+                            style={{ height: 150, width: 200 }}
+                          />
+                        </View>
+                        <View style={{ width: "100%" }}>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              flexWrap: "wrap",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            {times(choice).map((e, idx) => {
+                              const avli = timeList.includes(e);
+                              return time(!avli, e, idx);
+                            })}
+                          </View>
                         </View>
                       </View>
                     </View>
-                  </View>
-                </Modal>
-              </View>
+                  </Modal>
+                </View>
+              ) : (
+                <></>
+              )}
             </ScrollView>
           </View>
         </View>
@@ -710,41 +694,6 @@ const styles = StyleSheet.create({
     // width : "90%",
     // marginTop: 22,
   },
-  // modalView: {
-  //   // margin: 20,
-  //   backgroundColor: "white",
-  //   borderRadius: 20,
-  //   padding: 35,
-  //   alignItems: "center",
-  //   shadowColor: "#000",
-  //   shadowOffset: {
-  //     width: 0,
-  //     height: 2,
-  //   },
-  //   shadowOpacity: 0.25,
-  //   shadowRadius: 4,
-  //   elevation: 5,
-  // },
-  // button: {
-  //   borderRadius: 20,
-  //   padding: 10,
-  //   elevation: 2,
-  // },
-  // buttonOpen: {
-  //   backgroundColor: "#F194FF",
-  // },
-  // buttonClose: {
-  //   backgroundColor: "#2196F3",
-  // },
-  // textStyle: {
-  //   color: "white",
-  //   fontWeight: "bold",
-  //   textAlign: "center",
-  // },
-  // modalText: {
-  //   marginBottom: 15,
-  //   textAlign: "center",
-  // },
 });
 
 export default AppointmentConfirmation;

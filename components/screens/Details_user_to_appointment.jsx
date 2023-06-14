@@ -85,7 +85,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
         CurrentUser.user.id,
         doc.id,
         route.params.date,
-        route.params.Time,
+        route.params.time,
         full_name,
         age,
         gender,

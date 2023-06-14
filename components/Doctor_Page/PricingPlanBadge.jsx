@@ -63,7 +63,7 @@ const PricingPlanBadge = ({navigation}) => {
         <Text style={styles.planDetails}>{getPlanInfo("pro")}</Text>
       </TouchableOpacity>
       {selectedPlan && (
-        <View style={styles.selectedPlanContainer}>
+        <View style={styles.selectedPlanContainer}> 
           <Text style={styles.selectedPlanText}>
             Selected Plan: {selectedPlan}
           </Text>
