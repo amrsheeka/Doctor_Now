@@ -30,7 +30,7 @@ const Doctorbage = ({ navigation, route }) => {
 
   const [count, setCount] = useState(0);
   const { rev, setRev } = useContext(AppContext);
-  const { rate, setRate } = useState([]);
+  const [rate, setRate] = useState();
 
   async function get(id) {
     getReviews(id).then((res) => {
@@ -40,10 +40,11 @@ const Doctorbage = ({ navigation, route }) => {
   async function get_rate(id) {
     getRate(id).then((res) => {
       setRate(res);
+      console.log(res);
     });
-
     console.log(rate);
   }
+
   const InsertRev = async () => {
     insertReviews(curruser.id, item.id, text, curruser.name).then((res) => {
       get(item.id);
@@ -52,11 +53,14 @@ const Doctorbage = ({ navigation, route }) => {
   };
 
   const InsertRate = async () => {
-    insertRate(curruser.id, item.id, ratecount).then((res) => {
-      console.log(res);
-    });
+    insertRate(curruser.id, item.id, ratecount)
+      .then((res) => {
+        console.log(res);
+      })
+      .then(() => {
+        get_rate(item.id);
+      });
     console.log(ratecount);
-    get_rate(item.id);
   };
 
   const Item = ({ title }) => (

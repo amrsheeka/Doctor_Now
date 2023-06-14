@@ -487,6 +487,18 @@ const insertRate = async (users_id, doctor_id, rate_count) => {
       console.log(error);
     });
 };
+const get_user_by_Id = async (id) => {
+  return axios
+    .post(`${Ip.ip}/API/users/get_user_by_Id.php`, {
+      id: id,
+    })
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 export {
   sighnup,
   login,
@@ -515,4 +527,5 @@ export {
   insertReviews,
   getRate,
   insertRate,
+  get_user_by_Id,
 };

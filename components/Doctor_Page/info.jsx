@@ -728,7 +728,7 @@ const Info = ({ navigation }) => {
 
   const Header = () => {
     return (
-      <View style={[styles.header, { flexDirection: "row"}]}>
+      <View style={[styles.header, { flexDirection: "row" }]}>
         <Icon2
           name={"arrow-left"}
           size={30}
@@ -1623,7 +1623,10 @@ const Info = ({ navigation }) => {
               )}
             </View>
           ) : page === "More" ? (
-            <More fun1={() => setPage("Appointments History")} />
+            <More
+              fun1={() => setPage("Appointments History")}
+              navigation={navigation}
+            />
           ) : page === "Appointments" ? (
             <Appointments
               id={doctor.id}
@@ -1633,7 +1636,7 @@ const Info = ({ navigation }) => {
               fun1={() => profile()}
             />
           ) : page === "Appointments History" ? (
-            <Appointments_History id={doctor.id}/>
+            <Appointments_History id={doctor.id} />
           ) : (
             <></>
           )}
