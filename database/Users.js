@@ -467,7 +467,6 @@ const getRate = async (doctor_id) => {
       doctor_id: doctor_id,
     })
     .then(function (response) {
-      console.log(response.data);
       return response.data;
     })
     .catch(function (error) {
@@ -483,6 +482,18 @@ const insertRate = async (users_id, doctor_id, rate_count) => {
     })
     .then(function (response) {
       console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+const get_user_by_Id = async (id) => {
+  return axios
+    .post(`${Ip.ip}/API/users/get_user_by_Id.php`, {
+      id: id,
+    })
+    .then(function (response) {
+      return response.data;
     })
     .catch(function (error) {
       console.log(error);
@@ -516,4 +527,5 @@ export {
   insertReviews,
   getRate,
   insertRate,
+  get_user_by_Id,
 };
