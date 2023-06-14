@@ -82,59 +82,64 @@ const Home = ({ navigation }) => {
     </View>
   );
   const header = () => (
-    <View style={styles.filterCards}>
-      <TouchableOpacity
-        style={styles.filterCard1}
-        onPress={() => {
-          navigation.navigate("AllDoctors", { filteritem: "Stomach" });
-        }}
-      >
-        <View style={styles.filterCardElements}>
-          <View style={styles.cardsIcons}>
-            <MaterialCommunityIcons
-              name="stomach"
-              size={70}
-              color="white"
-            />
+    <View>
+      <View style={styles.filterCards}>
+        <TouchableOpacity
+          style={styles.filterCard1}
+          onPress={() => {
+            navigation.navigate("AllDoctors", { filteritem: "Stomach" });
+          }}
+        >
+          <View style={styles.filterCardElements}>
+            <View style={styles.cardsIcons}>
+              <MaterialCommunityIcons
+                name="stomach"
+                size={70}
+                color="white"
+              />
+            </View>
+            <View style={styles.filterCard1TextVeiw}>
+              <Text style={styles.filterCard1Text}>Stomach</Text>
+            </View>
           </View>
-          <View style={styles.filterCard1TextVeiw}>
-            <Text style={styles.filterCard1Text}>Stomach</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.filterCard2}
+          onPress={() => {
+            navigation.navigate("AllDoctors", { filteritem: "Dentist" });
+          }}
+        >
+          <View style={styles.filterCardElements}>
+            <View style={styles.cardsIcons}>
+              <FontAwesome5 name="tooth" size={60} color="white" />
+            </View>
+            <View style={styles.filterCard2TextVeiw}>
+              <Text style={styles.filterCard2Text}>Dentist</Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.filterCard2}
-        onPress={() => {
-          navigation.navigate("AllDoctors", { filteritem: "Dentist" });
-        }}
-      >
-        <View style={styles.filterCardElements}>
-          <View style={styles.cardsIcons}>
-            <FontAwesome5 name="tooth" size={60} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.filterCard3}
+          onPress={() => {
+            navigation.navigate("AllDoctors", { filteritem: "Surgery" });
+          }}
+        >
+          <View style={styles.filterCardElements}>
+            <View style={styles.cardsIcons}>
+              <Image
+                source={require("../assets/surgery.png")}
+                style={{ height: 65, width: 65 }}
+              />
+            </View>
+            <View style={styles.filterCard3TextVeiw}>
+              <Text style={styles.filterCard3Text}>Surgery</Text>
+            </View>
           </View>
-          <View style={styles.filterCard2TextVeiw}>
-            <Text style={styles.filterCard2Text}>Dentist</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.filterCard3}
-        onPress={() => {
-          navigation.navigate("AllDoctors", { filteritem: "Surgery" });
-        }}
-      >
-        <View style={styles.filterCardElements}>
-          <View style={styles.cardsIcons}>
-            <Image
-              source={require("../assets/surgery.png")}
-              style={{ height: 65, width: 65 }}
-            />
-          </View>
-          <View style={styles.filterCard3TextVeiw}>
-            <Text style={styles.filterCard3Text}>Surgery</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <Text style={styles.subTitle}>Best Doctors:</Text>
+      </View>
     </View>
   );
 
@@ -143,7 +148,7 @@ const Home = ({ navigation }) => {
 
     <View style={[styles.container, night && styles.buttonDark]}>
       <View style={[styles.header, night && styles.buttonDark]}>
-        <View style={{flexDirection:"row",gap:60}}>
+        <View style={{ flexDirection: "row", gap: 60 }}>
           <View style={styles.Title}>
             <Text style={styles.heading}>
               All doctors treat,but a good doctor lets nature heal.
@@ -198,6 +203,9 @@ const Home = ({ navigation }) => {
           ]}
           {...panResponder?.panHandlers}
         >
+          <View>
+            <Text style={styles.subTitle}>Categories:</Text>
+          </View>
           <FlatList
             removeClippedSubviews={true}
             data={
@@ -229,6 +237,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#288771",
   },
+  subTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: 25,
+    marginBottom: 10
+  },
   header: {
     backgroundColor: "#288771",
     paddingVertical: 20,
@@ -247,7 +261,7 @@ const styles = StyleSheet.create({
   list: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingTop: 60,
+    paddingTop: 30,
     backgroundColor: "#F5F5F5",
   },
   search: {
@@ -367,7 +381,7 @@ const styles = StyleSheet.create({
   },
   darklist: {
     backgroundColor: '#262424',
-    color:"white"
+    color: "white"
   },
   dark2: {
     backgroundColor: "#1d1c1c",
