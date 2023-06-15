@@ -25,7 +25,7 @@ import {
   where,
   onSnapshot,
 } from "firebase/firestore";
-import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, list, listAll, getDownloadURL } from "firebase/storage";
 import { db } from "../../db/Config";
 import app from "../../db/Config";
 import { getFirestore } from "firebase/firestore";
@@ -33,6 +33,8 @@ import { StatusBar } from "expo-status-bar";
 import * as ImagePicker from "expo-image-picker";
 import CurrentUser from "../consts/CurrentUser";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import firebase from "firebase/app";
+import { async } from "@firebase/util";
 const Chatbox_photo = ({ navigation, route }) => {
   let fil = route.params.filterd;
 
@@ -77,40 +79,106 @@ const Chatbox_photo = ({ navigation, route }) => {
       return { id: doc.id, ...doc.data() };
     });
   }
-
-  const onSendPhoto = useCallback(() => {
-    const date = new Date();
+  const listFiles = async (name) => {
     const storage = getStorage();
-    const mountainsRef = ref(
-      storage,
-      "images/4f87d8c8-8f9c-4b63-8ee2-c54fc14451cd.jpeg"
-    );
-    // const mountainImagesRef = ref(storage, selectedImage);
-    // mountainsRef.name === mountainImagesRef.name; // true
-    // mountainsRef.fullPath === mountainImagesRef.fullPath; // false
 
-    const newchat = [
-      {
-        createdAt: date.toLocaleString(),
-        image: selectedImage,
-        SenderId: CurrentUser.user.id,
-      },
-    ];
-    getChatById(fil.id).then((user) => {
-      const user1 = user;
-      //console.log("kokooooooooooo", user1[0]);
-      editUser({
-        ...user1[0],
-        chat: [...hh[0].chat, ...newchat],
-      });
+    // Create a reference under which you want to list
+    const listRef = ref(storage, "images");
+
+    // Find all the prefixes and items.
+    const listResp = await listAll(listRef);
+    console.log(listResp);
+    return listResp.items;
+  };
+  // const [URL_img, setURL] = useState("");
+  let url ="";
+  const uploadToFirebase = async (uri, name, onProgress) => {
+
+    const fetchResponse = await fetch(uri);
+    const theBlob = await fetchResponse.blob();
+
+    const imageRef = ref(getStorage(), `images/${name}`);
+    let downloadUrl;
+    const uploadTask = uploadBytesResumable(imageRef, theBlob);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          onProgress && onProgress(progress);
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error);
+          reject(error);
+        },
+        async () => {
+          downloadUrl = await getDownloadURL(uploadTask.snapshot.ref).then((res) => {
+            url =res;
+          });
+
+          resolve({
+            downloadUrl,
+            metadata: uploadTask.snapshot.metadata,
+          });
+
+        }
+
+      );
+
+
+
     });
-    alert("Your Photo has been sended");
-    navigation.goBack();
+  };
+  const onSendPhoto = useCallback(async () => {
+    const date = new Date();
+    if (selectedImage != null) {
+
+      const fileName = img.split("/").pop();
+      const { uri } = selectedImage;
+
+      await uploadToFirebase(uri, fileName, (v) =>
+        console.log(v)
+      ).then(() => {
+
+        const newchat = [
+          {
+            createdAt: date.toLocaleString(),
+            image: url,
+            SenderId: CurrentUser.user.id,
+          },
+        ];
+        getChatById(fil.id).then((user) => {
+          const user1 = user;
+          editUser({
+            ...user1[0],
+            chat: [...hh[0].chat, ...newchat],
+          });
+        });
+        alert("Your Photo has been sended");
+        navigation.goBack();
+
+
+
+
+      })
+
+
+
+
+    } else {
+      alert("Choose image pls")
+      return;
+    }
+
   });
   const PlaceholderImage = require("../assets/Diet.png");
 
   const [selectedImage, setSelectedImage] = useState(null);
-  console.log(selectedImage);
+  const [img, setImg] = useState(null);
+
 
   function ImageViewer({ placeholderImageSource, selectedImage }) {
     const imageSource =
@@ -122,11 +190,14 @@ const Chatbox_photo = ({ navigation, route }) => {
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       quality: 1,
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      // console.log(result.assets[0].uri)
+      setSelectedImage(result.assets[0]);
+      setImg(result.assets[0].uri);
     } else {
       alert("You did not select any image.");
     }
@@ -137,7 +208,7 @@ const Chatbox_photo = ({ navigation, route }) => {
       <View style={styles.imageContainer}>
         <ImageViewer
           placeholderImageSource={PlaceholderImage}
-          selectedImage={selectedImage}
+          selectedImage={img}
         />
       </View>
 
