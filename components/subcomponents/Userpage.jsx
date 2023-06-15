@@ -30,11 +30,13 @@ import { editUser, getCurrentUser, login } from "../../database/Users";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import { StatusBar } from "expo-status-bar";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
 const Userpage = ({ navigation }) => {
   const { curruser, setCurrUser } = useContext(AppContext);
   const { night } = useContext(AppContext);
   const user = curruser;
-
+  let url = "";
   const [image, setImage] = useState(user.image);
   const [name, setname] = useState(user.name);
   const [email, setEmail] = useState(user.email);
@@ -65,115 +67,179 @@ const Userpage = ({ navigation }) => {
     user.gender == "female" ? "checked" : "unchecked"
   );
   const [gender, setGender] = useState(user.gender);
-
+  const [img, setImg] = useState(null);
   const main_color = "#288771";
+  const uploadToFirebase = async (uri, name, onProgress) => {
+    
+    const fetchResponse = await fetch(uri);
+    const theBlob = await fetchResponse.blob();
 
-  const handleSave = async () => {
-    if (!name) {
-      setnameErr("Enter your name.");
-    } else if (name.length < 10) {
-      setnameErr("Enter your full name, at least 10 letters");
-    } else {
-      setnameErr("");
-    }
+    const imageRef = ref(getStorage(), `images/${name}`);
+    let downloadUrl;
+    const uploadTask = uploadBytesResumable(imageRef, theBlob);
 
-    if (!age) {
-      setAgeErr("Enter your age.");
-    } else if (age < 15) {
-      setAgeErr("you should older than 15 years old");
-    } else if (age > 70) {
-      setAgeErr("you should younger than 70 years old");
-    } else {
-      setAgeErr("");
-    }
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          onProgress && onProgress(progress);
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error);
+          reject(error);
+        },
+        async () => {
+          downloadUrl = await getDownloadURL(uploadTask.snapshot.ref).then((res) => {
+          url = res;
+          });
 
-    if (!address) {
-      setAddressErr("Enter your correct address.");
-    } else {
-      setAddressErr("");
-    }
+          resolve({
+            downloadUrl,
+            metadata: uploadTask.snapshot.metadata,
+          });
 
-    if (!phone) {
-      setPhoneErr("Enter your phone number.");
-    } else if (phone.length != 11 || !phone.startsWith("01")) {
-      setPhoneErr("Enter correct phone number.");
-    } else {
-      setPhoneErr("");
-    }
+        }
 
-    if (!email) {
-      setEmailErr("Enter your email address.");
-    } else if (!ValidateEmail(email)) {
-      setEmailErr(
-        "The email address should have the format: (user@example.com)."
       );
-    } else {
-      setEmailErr("");
-    }
-    if (current_password) {
-      if (current_password != user.password) {
-        setPasswordErr("Password is not correct");
-      } else {
-        setPasswordErr("");
-        if (!new_password) {
-          setN_PasswordErr("Enter your password.");
-        } else if (new_password.length < 8) {
-          setN_PasswordErr("password should be at least 8 letters.");
-        } else if (!ValidatePassword(new_password)) {
-          setN_PasswordErr(
-            "password should have at least one letter and one number"
+
+
+
+    });
+  };
+  const handleSave = async () => {
+
+    
+    if (image != null) {
+      console.log("ok");
+      const fileName = img.split("/").pop();
+      
+      const { uri } = image;
+      
+      await uploadToFirebase(uri, fileName, (v) =>
+        console.log(v)
+      ).then(async() => {
+
+        if (!name) {
+          setnameErr("Enter your name.");
+        } else if (name.length < 10) {
+          setnameErr("Enter your full name, at least 10 letters");
+        } else {
+          setnameErr("");
+        }
+
+        if (!age) {
+          setAgeErr("Enter your age.");
+        } else if (age < 15) {
+          setAgeErr("you should older than 15 years old");
+        } else if (age > 70) {
+          setAgeErr("you should younger than 70 years old");
+        } else {
+          setAgeErr("");
+        }
+
+        if (!address) {
+          setAddressErr("Enter your correct address.");
+        } else {
+          setAddressErr("");
+        }
+
+        if (!phone) {
+          setPhoneErr("Enter your phone number.");
+        } else if (phone.length != 11 || !phone.startsWith("01")) {
+          setPhoneErr("Enter correct phone number.");
+        } else {
+          setPhoneErr("");
+        }
+
+        if (!email) {
+          setEmailErr("Enter your email address.");
+        } else if (!ValidateEmail(email)) {
+          setEmailErr(
+            "The email address should have the format: (user@example.com)."
           );
         } else {
-          setN_PasswordErr("");
+          setEmailErr("");
+        }
+        if (current_password) {
+          if (current_password != user.password) {
+            setPasswordErr("Password is not correct");
+          } else {
+            setPasswordErr("");
+            if (!new_password) {
+              setN_PasswordErr("Enter your password.");
+            } else if (new_password.length < 8) {
+              setN_PasswordErr("password should be at least 8 letters.");
+            } else if (!ValidatePassword(new_password)) {
+              setN_PasswordErr(
+                "password should have at least one letter and one number"
+              );
+            } else {
+              setN_PasswordErr("");
+            }
+
+            if (confirm_new_password != new_password) {
+              setC_PasswordErr("Password and Confirm password doesn't match");
+            } else {
+              setC_PasswordErr("");
+            }
+          }
+        }
+        if (
+          name.length >= 10 &&
+          age >= 15 &&
+          age <= 70 &&
+          address &&
+          phone.length == 11 &&
+          phone.startsWith("01") &&
+          ValidateEmail(email) &&
+          (!current_password ||
+            (current_password == user.password &&
+              ValidatePassword(new_password) &&
+              confirm_new_password === new_password))
+        ) {
+          let updateUser = {};
+          const set = async () => {
+            updateUser = {
+              ...user,
+              name: name,
+              phone: phone,
+              address: address,
+              age: age,
+              gender: gender,
+              email: email,
+              image: url,
+              password: current_password ? new_password : user.password,
+            };
+          };
+          await set().then(() => {
+            editUser(updateUser).then(() => {
+              getCurrentUser().then((res) => {
+                setCurrUser(res);
+                navigation.navigate("Thk3");
+                setCurrent_password("");
+                setNew_password("");
+                setConfirm_new_password("");
+                console.log(user);
+              });
+            });
+          });
         }
 
-        if (confirm_new_password != new_password) {
-          setC_PasswordErr("Password and Confirm password doesn't match");
-        } else {
-          setC_PasswordErr("");
-        }
-      }
+
+
+
+      })
+    } else {
+      alert("Choose image pls");
+      return;
     }
-    if (
-      name.length >= 10 &&
-      age >= 15 &&
-      age <= 70 &&
-      address &&
-      phone.length == 11 &&
-      phone.startsWith("01") &&
-      ValidateEmail(email) &&
-      (!current_password ||
-        (current_password == user.password &&
-          ValidatePassword(new_password) &&
-          confirm_new_password === new_password))
-    ) {
-      let updateUser = {};
-      const set = async () => {
-        updateUser = {
-          ...user,
-          name: name,
-          phone: phone,
-          address: address,
-          age: age,
-          gender: gender,
-          email: email,
-          image: image,
-          password: current_password ? new_password : user.password,
-        };
-      };
-      await set().then(() => {
-        editUser(updateUser).then(() => {
-          getCurrentUser().then((res) => {
-            setCurrUser(res);
-            navigation.navigate("Thk3");
-            setCurrent_password("");
-            setNew_password("");
-            setConfirm_new_password("");
-            console.log(user);
-          });
-        });
-      });
-    }
+
+
+
+
   };
 
   function ValidateEmail(x) {
@@ -217,57 +283,16 @@ const Userpage = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
     });
 
-    // console.log(result);
-    console.log(result.uri);
+
 
     if (!result.canceled) {
-      setImage(result.uri);
+      setImage(result.assets[0]);
+      setImg(result.assets[0].uri);
+    } else {
+      alert("You did not select any image.");
     }
   };
 
-  // const handleUploadImage = async () => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append('image', {
-  //       uri: image,
-  //       name: 'image.jpg',
-  //       type: 'image/jpeg',
-  //     });
-  //     const response = await fetch('http://your-backend-url/upload-image.php', {
-  //       method: 'POST',
-  //       body: formData,
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-  //     const responseJson = await response.json();
-  //     console.log(responseJson);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const options = {
-  //   title: "Select Image",
-  //   type: "library",
-  //   options: {
-  //     selectionLimit: 1,
-  //     mediaType: "photo",
-  //     includeBase64: false,
-  //   },
-  // };
-  // const open_gallery = async () => {
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //   });
-
-  //   console.log(result);
-  //   console.log(result.uri);
-
-  //   if (!result.canceled) {
-  //     setImage(result.uri);
-  //   }
-  // };
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.header}>
@@ -279,9 +304,7 @@ const Userpage = ({ navigation }) => {
           onPress={selectFile}
         >
           <Image
-            source={
-              image
-                ? { uri: image }
+            source={img!=null?{ uri: img }
                 : require("../assets/Herbal_Medicine_Male_Avatar.png")
             }
             style={styles.image}
