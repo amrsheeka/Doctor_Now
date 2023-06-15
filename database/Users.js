@@ -312,10 +312,25 @@ const get_History_Apps_for_Doctor_by_Number = async (
       console.log(error);
     });
 };
-const get_History_Apps_for_User = async (users_id) => {
+const get_History_Apps_for_User_by_date = async (users_id, date) => {
   return axios
-    .post(`${Ip.ip}/API/doctors/Get_History_apps_user.php`, {
+    .post(`${Ip.ip}/API/doctors/Get_History_apps_user_by_date.php`, {
       users_id: users_id,
+      date: date,
+    })
+    .then(function (response) {
+      console.log(response.date);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+const get_History_Apps_for_User_by_doctorName = async (users_id, doc_name) => {
+  return axios
+    .post(`${Ip.ip}/API/doctors/Get_History_apps_user_by_doctorName.php`, {
+      users_id: users_id,
+      doc_name: doc_name,
     })
     .then(function (response) {
       console.log(response.date);
@@ -522,10 +537,11 @@ export {
   deleteAppointment_fromHistory,
   insertAppointment_toHistory,
   getAllAppointment_from_history,
-  get_History_Apps_for_User,
   getReviews,
   insertReviews,
   getRate,
   insertRate,
   get_user_by_Id,
+  get_History_Apps_for_User_by_date,
+  get_History_Apps_for_User_by_doctorName,
 };

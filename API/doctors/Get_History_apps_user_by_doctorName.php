@@ -7,10 +7,11 @@ header("Access-Control-Allow-Headers: X-Requested-With,Content-Type");
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
 $users_id = $obj['users_id'];
+$doc_name  = $obj['doc_name'];
 
-$stmt = $con->prepare("SELECT * FROM `appointmenthistory` WHERE  `users_id` = ? ");
+$stmt = $con->prepare("SELECT * FROM `appointmenthistory` WHERE  `users_id` = ? AND `doc_name` LIKE CONCAT('%', ?, '%') ");
 
-$stmt->execute(array($users_id));
+$stmt->execute(array($users_id,$doc_name));
 
 $users_app = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();

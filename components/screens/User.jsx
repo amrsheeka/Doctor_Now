@@ -23,25 +23,26 @@ const User = ({ navigation }) => {
           <Text style={[styles.z2,night&&styles.textdark]}> {curruser.name} </Text>
         </View>
       </View>
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <View style={[styles.xx,night && styles.dark2]}>
           <MaterialCommunityIcons name="history" size={28} color="black" style={styles.xxxx} />
           <Text style={[styles.xxxxx,night && styles.dark2]}> History </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity onPress={() => navigation.navigate("Userpage")}>
       <View style={[styles.xx,night && styles.dark2]}>
           <Ionicons name="md-person-outline" size={28} color="black" style={styles.xxxx} />
           <Text style={[styles.xxxxx,night && styles.dark2]}> Personal Details</Text>
-          <AntDesign name="right" size={20} color="black" style={styles.xxx} />
+          {/* <AntDesign name="right" size={20} color="black" style={styles.xxx} /> */}
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={ () => navigation.navigate("Address")}>
+      <TouchableOpacity onPress={ () => navigation.navigate("Appointments History")}>
       <View style={[styles.xx,night && styles.dark2]}>
-          <Ionicons name="md-location-outline" size={28} color="black" style={styles.xxxx} />
-          <Text style={[styles.xxxxx,night && styles.dark2]}> Addres </Text>
-          <AntDesign name="right" size={20} color="black" style={styles.xxx} />
+          {/* <Ionicons name="md-location-outline" size={28} color="black" style={styles.xxxx} /> */}
+          <MaterialCommunityIcons name="history" size={28} color="black" style={styles.xxxx} />
+          <Text style={[styles.xxxxx,night && styles.dark2]}> Appointments History </Text>
+          {/* <AntDesign name="right" size={20} color="black" style={styles.xxx} /> */}
         </View>
       </TouchableOpacity>
       <TouchableOpacity>

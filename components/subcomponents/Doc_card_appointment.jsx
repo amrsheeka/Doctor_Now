@@ -111,7 +111,7 @@ function Doc_card_appointment({
       doc_name,
       doc_image,
       specialization1
-      
+
       // date_now
     ).then(async () => {
       await deleteAppointment(users_id, doctor_id).then((res) => {
@@ -231,7 +231,9 @@ function Doc_card_appointment({
           >
             {title1} {doc_name}
           </Text>
-          <TouchableOpacity onPress = {() => navigation.navigate("MapScreen", address)}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("MapScreen", address)}
+          >
             <Icon3 name={"location-pin"} size={30} color={main_color} />
           </TouchableOpacity>
         </View>
@@ -336,8 +338,222 @@ function Doc_card_appointment({
     );
   };
 
+  const History_Card = () => {
+    return (
+      <View>
+        <FlipCard
+          style={styles.content}
+          friction={20}
+          perspective={1000}
+          flipHorizontal={true}
+          flipVertical={false}
+          flip={clickNotes}
+          clickable={false}
+          // onFlipEnd={(isFlipEnd)=>{console.log('isFlipEnd', isFlipEnd)}}
+        >
+          <View>
+            <View style={{ marginVertical: 5, flexDirection: "row" }}>
+              <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  marginVertical: 5,
+                  width: "90%",
+                }}
+              >
+                {title1} {doc_name}
+              </Text>
+              {/* <TouchableOpacity
+                onPress={() => navigation.navigate("MapScreen", address)}
+              >
+                <Icon3 name={"location-pin"} size={30} color={main_color} />
+              </TouchableOpacity> */}
+            </View>
+            <Text
+              style={{ color: "black", fontSize: 15 }}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {title} - {specialization1}
+            </Text>
+            <View
+              style={{ marginVertical: 5, flexDirection: "row", width: "100%" }}
+            >
+              <View style={{ width: "45%" }}>
+                <Image
+                  source={
+                    doc_image
+                      ? { uri: doc_image }
+                      : require("../assets/outdoor-portrait-male-doctor-wearing-white-lab-coat-smiling-to-camera-35801901.png")
+                  }
+                  style={[styles.image, { height: 180, width: "100%" }]}
+                />
+              </View>
+
+              <View style={{ width: "55%", justifyContent: "center" }}>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    marginTop: 10,
+                    marginHorizontal: 10,
+                    // alignSelf: "center",
+                  }}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  Date: {date}
+                </Text>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    marginTop: 10,
+                    marginHorizontal: 10,
+                    // alignSelf: "center",
+                  }}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  Time: {time}
+                </Text>
+
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    marginTop: 10,
+                    marginHorizontal: 10,
+                    // alignSelf: "center",
+                  }}
+                >
+                  Fees: {price} EGP
+                </Text>
+                <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+                marginTop: 10,
+                marginHorizontal: 10,
+                // alignSelf: "center",
+              }}
+            >
+              Wating Time : {wating_time} Mins
+            </Text>
+
+                <TouchableOpacity
+                  style={{
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                  onPress={() => {
+                    setFinish(true);
+                    setClickNotes(true);
+                  }}
+                >
+                  <Text
+                    style={{
+                      backgroundColor: main_color,
+                      borderRadius: 10,
+                      textAlign: "center",
+                      // paddingHorizontal: 10,
+                      paddingVertical: 10,
+                      color: "white",
+                      marginTop: 20,
+                      marginBottom: 5,
+                      width: "80%",
+                    }}
+                  >
+                    Report
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <TouchableOpacity onPress={() => setClickNotes(false)}>
+                <View style={{ backgroundColor: main_color, minHeight: 200 }}>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 15,
+                      fontWeight: "bold",
+                      marginBottom: 5,
+                      marginTop: 10,
+                      // textAlign : "center",
+                      // marginHorizontal : 10,
+                      alignSelf: "center",
+                      // width: "45%",
+                    }}
+                  >
+                    Report
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 15,
+                      fontWeight: "bold",
+                      marginBottom: 5,
+                      marginTop: 10,
+                      marginHorizontal: 5,
+                      // marginHorizontal : 10,
+                      // alignSelf: "center",
+                      // width: "45%",
+                    }}
+                  >
+                    {"Diagnosis:"}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 15,
+                      marginHorizontal: 20,
+                      textAlign: "justify",
+                    }}
+                  >
+                    {diagnosis}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 15,
+                      fontWeight: "bold",
+                      marginHorizontal: 5,
+                      marginBottom: 5,
+                      marginTop: 10,
+                      // marginHorizontal : 10,
+                      // alignSelf: "center",
+                      // width: "45%",
+                    }}
+                  >
+                    {"Therapeutic description:"}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 15,
+                      marginHorizontal: 20,
+                      textAlign: "justify",
+                    }}
+                  >
+                    {therapeutic}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+        </FlipCard>
+      </View>
+    );
+  };
+
   return is_doctor == "no" ? (
-    <View>{Face_Card()}</View>
+    !appointment_history ? (
+      <View>{Face_Card()}</View>
+    ) : (
+      <View>{History_Card()}</View>
+    )
   ) : (
     <View>
       <FlipCard
