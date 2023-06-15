@@ -172,7 +172,7 @@ export default function Chatbox({ navigation, route }) {
           {/* <Modal visible={true} transparent={true}>
             <ImageViewer imageUrls={item.image} />
           </Modal> */}
-          <Image source={{ uri: decodeURI(item.image) }} style={styles.imageeee} />
+          <Image source={{ uri: item.image }} style={styles.imageeee} />
 
           <Text style={styles.date}>{item.createdAt.toLocaleString()}</Text>
         </View>
