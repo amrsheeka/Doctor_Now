@@ -16,7 +16,7 @@ const User = ({ navigation }) => {
         <View style={[styles.x,night && styles.darklist]}>
          <TouchableOpacity>
           <Image
-            source={require("../assets/Herbal_Medicine_Male_Avatar.png")}
+            source={curruser.image!=""?{uri:curruser.image}:require("../assets/Herbal_Medicine_Male_Avatar.png")}
             style={styles.z}
           />
           </TouchableOpacity>
