@@ -185,7 +185,7 @@ const AppointmentHistory = () => {
         }}
       >
         {label == "Date" ? (
-          <TextInput
+          <f
             label={"Date"}
             mode="outlined"
             style={{ marginHorizontal: 10, width: "80%" }}
