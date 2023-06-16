@@ -44,6 +44,7 @@ import {
   get_doc_by_email,
   logout,
   getAppointment_by_doc_id,
+  getReviews,
 } from "../../database/Users";
 import Appointments from "./Appointments";
 import { useContext } from "react";
@@ -143,7 +144,7 @@ const Info = ({ navigation }) => {
 
   const [about_the_doctor, setAbout_theDoctor] = useState("");
   const [height, setHeight] = useState(0);
-
+  const { rev, setRev } = useContext(AppContext);
   const [nameClinic, setNameClinic] = useState("Essam Clinic");
   const [numberClinic, setNumberClinic] = useState("01012453522");
   const [nameAssistant, setNameAssistant] = useState("doctor sheeka");
@@ -200,7 +201,7 @@ const Info = ({ navigation }) => {
       doc.schedule_type = "fifo";
     } else if (type == "On Appointments") {
       doc.schedule_type = "on appointment";
-    } else if (type == "Timer") {
+    } else if (type == "Special") {
       doc.schedule_type = "special";
     }
     update_Doctor_info(doc);
@@ -227,6 +228,11 @@ const Info = ({ navigation }) => {
         setModalVisible(true);
     });
     
+  }
+  async function getRev(id) {
+    getReviews(id).then((res) => {
+      setRev(res);
+    });
   }
   async function getSchedule(id) {
     const res = await getDocSchedule(id).then((res1) => {
@@ -259,7 +265,8 @@ const Info = ({ navigation }) => {
       setNumber_of_bookings4(res1[4].number);
       setNumber_of_bookings5(res1[5].number);
       setNumber_of_bookings6(res1[6].number);
-      // setBookings(appointments);
+      setBookings(appointments.length);
+      setReviews(rev.length);
       // setStartTime(res1[0].start);
       // setStartTime1(res1[1].start);
       // setStartTime2(res1[2].start);
@@ -315,12 +322,13 @@ const Info = ({ navigation }) => {
       setFullpro_title(res[0].specialization1);
       setImage(res[0].image);
       setExmain(res[0].price);
+      getRev(res[0].id);
       if (res[0].schedule_type == "fifo") {
         setSelected("First In First Out");
       } else if (res[0].schedule_type == "on appointment") {
         setSelected("On Appointments");
       } else if (res[0].schedule_type == "special") {
-        setSelected("Timer");
+        setSelected("Special");
       }
       res[0].title1 == "Doctor"
         ? setDoc_radio("checked")
@@ -930,7 +938,7 @@ const Info = ({ navigation }) => {
           data={[
             { value: "First In First Out" },
             { value: "On Appointments" },
-            { value: "Timer" },
+            { value: "Special" },
           ]}
           setSelected={handleExaminType}
           placeholder={selected}

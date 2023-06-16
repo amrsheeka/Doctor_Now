@@ -53,6 +53,12 @@ const More = ({ navigation, fun1 }) => {
             },
           ]}
         >
+          <Icon3
+            name={"hipchat"}
+            size={30}
+            color={main_color}
+            style={{ width: "10%", marginLeft: 10 }}
+          />
           <Text
             style={{
               color: "black",
@@ -62,7 +68,7 @@ const More = ({ navigation, fun1 }) => {
             }}
           >
             {" "}
-            Cat{" "}
+            Chats{" "}
           </Text>
           {/* <Icon name={"edit"} size={25} color={main_color} /> */}
         </View>
