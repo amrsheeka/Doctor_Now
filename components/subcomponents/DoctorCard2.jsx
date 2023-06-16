@@ -54,7 +54,6 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       setAv_rate(0);
     }
   }
-  // console.log(av_rate);
 
   async function fetchDoctor() {
     const filt = await getFavourite(CurrentUser.user.id);
@@ -91,9 +90,9 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
 
   useEffect(() => {
     fetchFavouriteinfav();
-    fetchDoctor();
-    get_rate(doctor.id);
-    countAv_rate();
+    //fetchDoctor();
+    //get_rate(doctor.id);
+    //countAv_rate();
   }, []);
 
   const click_heart = async (user_id, doctor_id) => {
@@ -101,24 +100,16 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       setHeart("favorite-border");
       deleteFavourite(user_id, doctor_id)
         .then(() => {
-          fetchFavouriteinfav();
+          //fetchFavouriteinfav();
           fetchDoctor();
         })
-        .then(() => {
-          reload();
-          // fetchDoctor();
-        });
     } else {
       setHeart("favorite");
       insertFavourite(user_id, doctor_id)
         .then(() => {
-          fetchFavouriteinfav();
+          //fetchFavouriteinfav();
           fetchDoctor();
         })
-        .then(() => {
-          reload();
-          // fetchDoctor();
-        });
     }
   };
 

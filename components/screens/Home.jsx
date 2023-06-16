@@ -19,6 +19,7 @@ import { AppContext } from "../consts/AppContext";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
 import { getDoctors } from "../../database/Doctors";
 import CurrentUser from "../consts/CurrentUser";
+import { getFavourite } from "../../database/Users";
 const Home = ({ navigation }) => {
   const { night, setNight } = useContext(AppContext);
   const [search, setSearch] = useState("");
@@ -27,16 +28,20 @@ const Home = ({ navigation }) => {
   const [scrollY, setScrollY] = useState(new Animated.Value(0));
   const height = Dimensions.get('window').height;
   const [fav, setFav] = useState([]);
+  const { favourite, setFavourite } = useContext(AppContext);
   const handleToggleDarkMode = () => {
     setNight(!night);
     // Here you can add logic to switch your app theme to dark mode
   };
   async function fetchDoctor() {
+    const filt = await getFavourite(CurrentUser.user.id);
+    setFavourite(filt);
+  }
+  async function fetchDoctor() {
     const doctor = await getDoctors();
     setDoctors(doctor);
   }
   useEffect(() => {
-
     fetchDoctor();
   }, []);
   useEffect(() => {
