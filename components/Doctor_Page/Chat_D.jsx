@@ -111,35 +111,36 @@ const Chat_D = ({ navigation }) => {
   const renderChat = ({ item }) => {
     //console.log("1111111", item.user_id);
     // let image = item.doctor.image;
-
-   
     // get_User(item.user_id);
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          editUser({
-            ...item,
-            id: item.id,
-          }).then(() => {
-            navigation.navigate("Chatbox", { item });
-          });
-        }}
-      >
-        <View style={styles.card}>
-          <Image
-            source={item.User.image!=null
-              ? { uri: item.User.image }
-                : require("../assets/Herbal_Medicine_Male_Avatar.png")
-            }
-            style={styles.cardPhoto}
-          />
-          <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>{item.User.name}</Text>
-            <Text style={styles.cardMessage}>How are you feeling today?</Text>
+    if(item.User){
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            editUser({
+              ...item,
+              id: item.id,
+            }).then(() => {
+              navigation.navigate("Chatbox", { item });
+            });
+          }}
+        >
+          <View style={styles.card}>
+            <Image
+              source={item.User.image!=null
+                ? { uri: item.User.image }
+                  : require("../assets/Herbal_Medicine_Male_Avatar.png")
+              }
+              style={styles.cardPhoto}
+            />
+            <View style={styles.cardContent}>
+              <Text style={styles.cardTitle}>{item.User.name}</Text>
+              <Text style={styles.cardMessage}>How are you feeling today?</Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
-    );
+        </TouchableOpacity>
+      );
+    }
+    return(<></>);
   };
 
   return (
@@ -151,6 +152,21 @@ const Chat_D = ({ navigation }) => {
         data={user_chats}
         renderItem={renderChat}
         keyExtractor={(item) => item.id.toString()}
+        ListEmptyComponent={() => {
+          return (
+            <View style={{ flex: 1, justifyContent: "center" ,}}>
+              <Image
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  alignItems: "center",
+                }}
+                source={require("../assets/empty.png")}
+              />
+              <Text></Text>
+            </View>
+          );
+        }}
       />
     </View>
   );

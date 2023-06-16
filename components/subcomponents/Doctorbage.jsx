@@ -45,7 +45,9 @@ const Doctorbage = ({ navigation, route }) => {
     });
     //console.log(rate);
   }
-
+  useEffect(() => {
+    get_rate(item.id);
+  }, []);
   const InsertRev = async () => {
     insertReviews(curruser.id, item.id, text, curruser.name).then((res) => {
       get(item.id);
@@ -55,7 +57,10 @@ const Doctorbage = ({ navigation, route }) => {
 
   const InsertRate = async () => {
     get_rate(item.id).then(() => {
-      let dd = rate.filter((e) => e.users_id == curruser.id);
+      let dd=[];
+      dd = rate;
+      console.log("dd:",dd);
+      dd = dd.filter((e) => e.users_id == curruser.id);
       if (dd.length > 0) {
         console.log("3mal abl kda");
       } else {

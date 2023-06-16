@@ -574,98 +574,108 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             )}
           </View>
           <View style={[styles.content]}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Icon4
-                name={"calendar"}
-                size={25}
-                color={main_color}
-                style={{ marginLeft: 5 }}
-                // onPress={schedule}
-              />
-              <Text
-                style={{ marginHorizontal: 10, width: "38%", fontSize: 16 }}
-              >
-                Schedule
-              </Text>
-              <View style={styles.picker}>
-                <Picker
-                  selectedValue={select_Month}
-                  onValueChange={(value, index) => {
-                    SetSelect_Month(value);
-                    SetSelect_Month_Index(index);
-                  }}
-                  // mode="dropdown"
-                  style={{
-                    marginVertical: -10,
-                    marginHorizontal: -10,
-                    alignItems: "center",
-                  }}
-                  dropdownStyle={{
-                    backgroundColor: "red",
-                    paddingHorizontal: 10,
-                    paddingVertical: 5,
-                    borderWidth: 1,
-                    borderColor: "gray",
-                    borderRadius: 5,
-                    marginTop: -1,
-                  }}
-                >
-                  {getMonths().map((e, i) => (
-                    <Picker.Item
-                      label={e}
-                      value={e}
-                      key={i}
-                      style={{ width: 20 }}
+            {
+              item.payment_map != 0 ? (
+                <View>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Icon4
+                      name={"calendar"}
+                      size={25}
+                      color={main_color}
+                      style={{ marginLeft: 5 }}
+                    // onPress={schedule}
                     />
-                  ))}
-                </Picker>
-              </View>
-            </View>
-            <ScrollView horizontal={true}>
-              {getDays()[0].map((dayOfMonth, idx) => {
-                const dayOfWeek = getDays()[1][idx];
-                const Avaliable = getDays()[2][idx];
-                return day(Avaliable, dayOfWeek, dayOfMonth, idx);
-              })}
-              {item.schedule_type == "on appointment" ? (
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={modalVisible}
-                  onRequestClose={() => {
-                    setModalVisible(false);
-                  }}
-                >
-                  <View style={styles.centeredView}>
-                    <View style={[styles.content, { width: "100%" }]}>
-                      <View style={{ marginVertical: 10, alignSelf: "center" }}>
-                        <Image
-                          source={require("../assets/doctor.png")}
-                          style={{ height: 150, width: 200 }}
-                        />
-                      </View>
-                      <View style={{ width: "100%" }}>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            flexWrap: "wrap",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          {times(choice).map((e, idx) => {
-                            const avli = timeList.includes(e);
-                            return time(!avli, e, idx);
-                          })}
-                        </View>
-                      </View>
+                    <Text
+                      style={{ marginHorizontal: 10, width: "38%", fontSize: 16 }}
+                    >
+                      Schedule
+                    </Text>
+                    <View style={styles.picker}>
+                      <Picker
+                        selectedValue={select_Month}
+                        onValueChange={(value, index) => {
+                          SetSelect_Month(value);
+                          SetSelect_Month_Index(index);
+                        }}
+                        // mode="dropdown"
+                        style={{
+                          marginVertical: -10,
+                          marginHorizontal: -10,
+                          alignItems: "center",
+                        }}
+                        dropdownStyle={{
+                          backgroundColor: "red",
+                          paddingHorizontal: 10,
+                          paddingVertical: 5,
+                          borderWidth: 1,
+                          borderColor: "gray",
+                          borderRadius: 5,
+                          marginTop: -1,
+                        }}
+                      >
+                        {getMonths().map((e, i) => (
+                          <Picker.Item
+                            label={e}
+                            value={e}
+                            key={i}
+                            style={{ width: 20 }}
+                          />
+                        ))}
+                      </Picker>
                     </View>
                   </View>
-                </Modal>
-              ) : (
-                <></>
-              )}
-            </ScrollView>
+                  <ScrollView horizontal={true}>
+                    {getDays()[0].map((dayOfMonth, idx) => {
+                      const dayOfWeek = getDays()[1][idx];
+                      const Avaliable = getDays()[2][idx];
+                      return day(Avaliable, dayOfWeek, dayOfMonth, idx);
+                    })}
+                    {item.schedule_type == "on appointment" ? (
+                      <View style={styles.centeredView}>
+                        <Modal
+                          animationType="slide"
+                          transparent={true}
+                          visible={modalVisible}
+                          onRequestClose={() => {
+                            setModalVisible(false);
+                          }}
+                        >
+                          <View style={styles.centeredView}>
+                            <View style={[styles.content, { width: "100%" }]}>
+                              <View
+                                style={{ marginVertical: 10, alignSelf: "center" }}
+                              >
+                                <Image
+                                  source={require("../assets/doctor.png")}
+                                  style={{ height: 150, width: 200 }}
+                                />
+                              </View>
+                              <View style={{ width: "100%" }}>
+                                <View
+                                  style={{
+                                    flexDirection: "row",
+                                    flexWrap: "wrap",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  {times(choice).map((e, idx) => {
+                                    const avli = timeList.includes(e);
+                                    return time(!avli, e, idx);
+                                  })}
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+                        </Modal>
+                      </View>
+                    ) : (
+                      <></>
+                    )}
+                  </ScrollView>
+                </View>
+              ) :<></>
+            }
           </View>
           <View style={styles.content}>
             <View

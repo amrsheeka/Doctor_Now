@@ -131,12 +131,16 @@ export default function Chatbox({ navigation, route }) {
       editUser({
         ...user1[0],
         chat: [...hh[0].chat, ...newchat],
+      }).then(()=>{
+        setMessage("");
       });
       else
         editUser({
           ...user1[0],
           chat: [...hh[0].chat, ...newchat],
           User: CurrentUser.user
+        }).then(()=>{
+          setMessage("");
         });
     });
   });
@@ -246,6 +250,7 @@ export default function Chatbox({ navigation, route }) {
         <TextInput
           style={[styles.input,night && styles.dark2]}
           placeholder={"Type a message "}
+          value={message}
           onChangeText={(text) => setMessage(text)}
         />
         <TouchableOpacity onPress={photopage}>
