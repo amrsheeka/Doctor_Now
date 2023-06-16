@@ -592,16 +592,17 @@ function Doc_card_appointment({
                 style={{ alignSelf: "flex-end" }}
               />
             ) : (
-              <Icon2
-                onPress={() => {
-                  setFinish(true);
-                  setClickNotes(true);
-                }}
-                name={"trash"}
-                size={25}
-                color={main_color}
-                style={{ alignSelf: "flex-end" }}
-              />
+              <></>
+              // <Icon2
+              //   onPress={() => {
+              //     setFinish(true);
+              //     setClickNotes(true);
+              //   }}
+              //   name={"trash"}
+              //   size={25}
+              //   color={main_color}
+              //   style={{ alignSelf: "flex-end" }}
+              // />
             )}
           </View>
           <View style={{ flexDirection: "row", width: "100%" }}>
