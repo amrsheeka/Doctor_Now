@@ -69,12 +69,12 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   };
   const getDocTimes = async () => {
     try {
+      setModalVisible(true);
       await getAppointment_by_doc_id(item.id, date).then((res) => {
         if (res.status != "failed") {
           if (item.schedule_type == "on appointment") {
             const times = res.map((item) => item.time);
             setTimeList(times);
-            setModalVisible(true);
           } else {
             const lengthValue =
               parseInt(numberOfPatients[Days.indexOf(date.slice(0, 3))]) -
@@ -302,6 +302,35 @@ const AppointmentConfirmation = ({ navigation, route }) => {
 
     return [days, days_of_week, avaliable_days];
   };
+
+  const comment = (user_name, rate, text, date) => {
+    return (
+      <View>
+        <View style={styles.line}></View>
+        <View style={{ flexDirection: "row", marginVertical: 5 }}>
+          <Icon name={icon1} size={25} color="gold" />
+          <Icon name={icon2} size={25} color="gold" />
+          <Icon name={icon3} size={25} color="gold" />
+          <Icon name={icon4} size={25} color="gold" />
+          <Icon name={icon5} size={25} color="gold" style={{ width: "40%" }} />
+          <Text> Sun Jun 18 2023 </Text>
+        </View>
+
+        <Text
+          style={{
+            marginVertical: 5,
+            alignSelf: "center",
+            // justifyContent: "center",
+          }}
+        >
+           دكتور محترم جدا وعياده شيك جدا وانصح الناس تروحله وكمان سعره حلو جدا
+        </Text>
+
+        <Text> Mohamed Essam </Text>
+      </View>
+    );
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.header}>
@@ -637,6 +666,38 @@ const AppointmentConfirmation = ({ navigation, route }) => {
               )}
             </ScrollView>
           </View>
+          <View style={styles.content}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: 10,
+                marginHorizontal: 5,
+              }}
+            >
+              <Icon4 name={"commenting"} size={30} color={main_color} />
+              <Text style={{ fontSize: 16, width: "60%", marginHorizontal: 5 }}>
+                {" "}
+                Patients's Reviews{" "}
+              </Text>
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: main_color,
+                  }}
+                >
+                  {" "}
+                  Add comment{" "}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {/* <View style={styles.line}></View> */}
+            {comment("", "", "", "")}
+            {comment("", "", "", "")}
+            {comment("", "", "", "")}
+            {comment("", "", "", "")}
+          </View>
         </View>
       </ScrollView>
       <StatusBar style="light" backgroundColor="#288759" />
@@ -693,6 +754,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000aa",
     // width : "90%",
     // marginTop: 22,
+  },
+  line: {
+    height: 1,
+    backgroundColor: "#ccc",
+    width: "95%",
+    alignSelf: "center",
+    marginVertical: 10,
   },
 });
 
