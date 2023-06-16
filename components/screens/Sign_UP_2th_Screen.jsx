@@ -13,7 +13,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import Icon2 from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon3 from "react-native-vector-icons/MaterialIcons";
 
-import { TextInput } from "react-native-paper";
+import { TextInput,RadioButton } from "react-native-paper";
 import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
@@ -25,6 +25,7 @@ const Sign_UP_2th_Screen = ({ navigation }) => {
   const [name, setname] = useState("mohamed essam");
   const [address, setaddress] = useState("giza");
   const [age, setAge] = useState("20");
+  const [gender, setGender] = useState("male");
   const [nameErr, setnameErr] = useState("");
   const [ageErr, setAgeErr] = useState("");
   const [addressErr, setAddressErr] = useState("");
@@ -66,9 +67,8 @@ const Sign_UP_2th_Screen = ({ navigation }) => {
     }
 
     if (
-      name.length >= 10 &&
       age >= 15 &&
-      age <= 70 &&
+      age <= 120 &&
       address &&
       phone.length == 11 &&
       phone.startsWith("01") 
@@ -78,6 +78,7 @@ const Sign_UP_2th_Screen = ({ navigation }) => {
         phone,
         address,
         age,
+        gender
       });
     }
   };
@@ -174,6 +175,59 @@ const Sign_UP_2th_Screen = ({ navigation }) => {
           activeOutlineColor={main_color}
         />
         <Text style={{ color: "red" }}>{phoneErr}</Text>
+        <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              //   marginLeft: 10,
+              marginBottom: 15,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                color: "black",
+                // fontWeight: "bold",
+                marginRight: 15,
+              }}
+            >
+              {" "}
+              Gender:{" "}
+            </Text>
+            <RadioButton
+              status={gender=="male"?"checked":"unchecked"}
+              color={main_color}
+              value={"male"}
+              uncheckedColor="black"
+              onPress={()=>setGender("male")}
+            />
+            <Text
+              style={{
+                color: "black",
+                paddingBottom: 3,
+                width: "35%",
+                // paddingHorizontal: 5,
+              }}
+            >
+              Male
+            </Text>
+            <RadioButton
+              status={gender=="female"?"checked":"unchecked"}
+              color={main_color}
+              value={"female"}
+              uncheckedColor="black"
+              onPress={()=>setGender("female")}
+            />
+            <Text
+              style={{
+                color: "black",
+                paddingBottom: 3,
+                // paddingHorizontal: 5,
+              }}
+            >
+              Female
+            </Text>
+          </View>
 
         <TouchableOpacity
           style={{

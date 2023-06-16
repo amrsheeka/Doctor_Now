@@ -9,7 +9,7 @@ const sighnup = async (
   address,
   // address2,
   age,
-  // gender,
+  gender,
   confirm
 ) => {
   return fetch(`${Ip.ip}/API/Auth/signup.php`, {
@@ -25,18 +25,14 @@ const sighnup = async (
       password: password,
       phone: phone,
       address: address,
-      // address_2: 'f',
+      address_2: "",
       confirm: confirm,
       age: age,
-      // gender: 'male',
+      gender: gender,
     }),
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      if (responseJson.status == "sucees") {
-        console.log("err");
-        login(email, password);
-      }
       return responseJson.status;
     })
 
