@@ -12,10 +12,11 @@ import {
   Alert, Modal, Pressable
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { getStorage, ref, uploadBytesResumable, list, listAll, getDownloadURL } from "firebase/storage";
 
 import { StatusBar } from "expo-status-bar";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { AntDesign} from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
@@ -45,6 +46,8 @@ import {
   logout,
   getAppointment_by_doc_id,
   getReviews,
+  getCurrentUser,
+  editUser,
 } from "../../database/Users";
 import Appointments from "./Appointments";
 import { useContext } from "react";
@@ -206,8 +209,8 @@ const Info = ({ navigation }) => {
     }
     update_Doctor_info(doc);
   }
-  const handleSave=(i)=>{
-    
+  const handleSave = (i) => {
+
     updateSchedule({
       day: schedules[i].day,
       doctor_id: schedules[i].doctor_id,
@@ -216,18 +219,18 @@ const Info = ({ navigation }) => {
       id: schedules[i].id,
       avilable: schedules[i].avilable,
       number:
-      i==0?number_of_bookings
-      :i==1?number_of_bookings1
-      :i==2?number_of_bookings2
-      :i==3?number_of_bookings3
-      :i==4?number_of_bookings4
-      :i==5?number_of_bookings5
-      :number_of_bookings6
-    }).then((res)=>{
-      if(res.status=="success")
+        i == 0 ? number_of_bookings
+          : i == 1 ? number_of_bookings1
+            : i == 2 ? number_of_bookings2
+              : i == 3 ? number_of_bookings3
+                : i == 4 ? number_of_bookings4
+                  : i == 5 ? number_of_bookings5
+                    : number_of_bookings6
+    }).then((res) => {
+      if (res.status == "success")
         setModalVisible(true);
     });
-    
+
   }
   async function getRev(id) {
     getReviews(id).then((res) => {
@@ -712,8 +715,8 @@ const Info = ({ navigation }) => {
             {e}{" "}
           </Text>
         </View>
-        <View style={{flexDirection:"row"}}>
-          <View style={{flex:1}}>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
             <Text
               style={{
                 fontSize: 14,
@@ -737,28 +740,28 @@ const Info = ({ navigation }) => {
             />
           </View>
           <TouchableOpacity
-          onPress={()=>{
-            if(day=="Saturday"){
-              handleSave(0);
-            }else if(day=="Sunday"){
-              handleSave(1);
-            }else if(day=="Monday"){
-              handleSave(2);
-            }else if(day=="Tuesday"){
-              handleSave(3);
-            }else if(day=="Wednesday"){
-              handleSave(4);
-            }else if(day=="Thursday"){
-              handleSave(5);
-            }else if(day=="Friday"){
-              handleSave(6);
-            }
-            
-            
-          }}
-          style={{flex:1,flexDirection:"row",alignItems:"flex-end"}}>
-            <Icon6 style={{marginLeft:10}} name="content-save-check-outline" size={45} color={main_color}/>
-            <Text style={{fontSize:20}}>Save</Text>
+            onPress={() => {
+              if (day == "Saturday") {
+                handleSave(0);
+              } else if (day == "Sunday") {
+                handleSave(1);
+              } else if (day == "Monday") {
+                handleSave(2);
+              } else if (day == "Tuesday") {
+                handleSave(3);
+              } else if (day == "Wednesday") {
+                handleSave(4);
+              } else if (day == "Thursday") {
+                handleSave(5);
+              } else if (day == "Friday") {
+                handleSave(6);
+              }
+
+
+            }}
+            style={{ flex: 1, flexDirection: "row", alignItems: "flex-end" }}>
+            <Icon6 style={{ marginLeft: 10 }} name="content-save-check-outline" size={45} color={main_color} />
+            <Text style={{ fontSize: 20 }}>Save</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -794,27 +797,102 @@ const Info = ({ navigation }) => {
   };
 
   // **************************************************************************************************************************
+  let url = "";
+  const uploadToFirebase = async (uri, name, onProgress) => {
+
+    const fetchResponse = await fetch(uri);
+    console.log("ok");
+    const theBlob = await fetchResponse.blob();
+
+    const imageRef = ref(getStorage(), `images/${name}`);
+    let downloadUrl;
+    const uploadTask = uploadBytesResumable(imageRef, theBlob);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          onProgress && onProgress(progress);
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error);
+          reject(error);
+        },
+        async () => {
+          downloadUrl = await getDownloadURL(uploadTask.snapshot.ref).then((res) => {
+            url = res;
+          });
+
+          resolve({
+            downloadUrl,
+            metadata: uploadTask.snapshot.metadata,
+          });
+
+        }
+
+      );
+
+
+
+    });
+  };
+
 
   const selectFile = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
-      setImage(result.uri);
+      const fileName = result.assets[0].uri.split("/").pop();
+      const { uri } = result.assets[0];
+      console.log(image);
+      setImage(result.assets[0].uri);
+      // console.log(result.assets[0].uri);
+
+      await uploadToFirebase(uri, fileName, (v) =>
+        console.log(v)
+      ).then(async () => {
+
+        await update_Doctor_info({
+          ...doctor,
+          image: url,
+        }).then(() => {
+          getDoc().then((res) => {
+            setDoctor(res[0]);
+            console.log(res[0]);
+          });
+        });
+        const user = curruser;
+        console.log(user);
+        let updateUser = {};
+        const set = async () => {
+          updateUser = {
+            ...user,
+            image: url,
+          };
+        };
+        await set().then(() => {
+          editUser(updateUser).then((res)=>{
+            console.log(res);
+          })
+        });
+
+
+
+
+      })
+      alert("Your Photo has been sended");
+    } else {
+      alert("You did not select any image.");
+      return;
     }
 
-    update_Doctor_info({
-      ...doctor,
-      image: image,
-    }).then(() => {
-      getDoc().then((res) => {
-        setDoctor(res[0]);
-        console.log(res[0]);
-      });
-    });
+
+
   };
 
   // **************************************************************************************************************************
@@ -1522,28 +1600,28 @@ const Info = ({ navigation }) => {
     return (
       <View style={{ flex: 1 }}>
         <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <AntDesign name="checkcircle" size={120} style={styles.icon2} />
-            {/* <Image source={""}/> */}
-            <Text style={styles.modalText}>Saved successfully</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>OK</Text>
-            </Pressable>
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <AntDesign name="checkcircle" size={120} style={styles.icon2} />
+              {/* <Image source={""}/> */}
+              <Text style={styles.modalText}>Saved successfully</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>OK</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
         {page === "Profile" ||
           (page === "Schedule" && schedule_summary) ||
           page === "More" ? (
