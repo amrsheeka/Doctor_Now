@@ -8,27 +8,31 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  RefreshControl
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DoctorCard from "../subcomponents/DoctorCard";
 import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
-import { getCurrentUser } from "../../database/Users";
+import { getCurrentUser, getFavourite } from "../../database/Users";
 import * as Location from 'expo-location';
 import { AppContext } from "../consts/AppContext";
 import { Button } from "react-native";
+import { getDoctors } from "../../database/Doctors";
+import DoctorCard2 from "../subcomponents/DoctorCard2";
 const AllDoctors = ({ navigation, route }) => {
   const filterd = route.params.filteritem;
   const all = route.params.all;
-  const {doctors} = useContext(AppContext);
+  const {doctors,setDoctors} = useContext(AppContext);
   const [selectedValue, setSelectedValue] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const { favourite, setFavourite } = useContext(AppContext);
   const { night} = useContext(AppContext);
   const [reload, setReload] = useState(false); // add reload state
-
+  const {refreshing, setRefreshing} = useContext(AppContext);
   async function getlocation() {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -41,7 +45,12 @@ const AllDoctors = ({ navigation, route }) => {
       setLongitude(location.coords.longitude);
     }
   }
-
+async function fetchDoctor() {
+    const doctor = await getDoctors();
+    setDoctors(doctor);
+    const filt = await getFavourite(currentUser.id);
+    setFavourite(filt);
+  }
   async function fetchLocation() {
     await getlocation().then(
       () => {
@@ -81,7 +90,7 @@ const AllDoctors = ({ navigation, route }) => {
   }, []); // add reload state to the dependency array
 
   const renderDoctor = ({ item }) => (
-    <DoctorCard doctor={item} user={currentUser} navigation={navigation} />
+    <DoctorCard2 reload={() => { }} doctor={item} navigation={navigation}/>
   );
 
   let ff = doctors;
@@ -180,15 +189,19 @@ const AllDoctors = ({ navigation, route }) => {
 
 
         <FlatList
-          data={ff}
-          renderItem={renderDoctor}
-          keyExtractor={(item) => item.id}
-          numColumns={2}
-          initialNumToRender={7}
-          maxToRenderPerBatch={7}
-          windowSize={7}
-          columnWrapperStyle={styles.row}
-        />
+            removeClippedSubviews={true}
+            data={
+              ff
+            }
+            renderItem={renderDoctor}
+            initialNumToRender={7}
+            maxToRenderPerBatch={7}
+            windowSize={10}
+            keyExtractor={(item, index) => item.id}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={fetchDoctor} />
+            }
+          />
       </View>
     );
   } else if (filterd === "Stomach") {

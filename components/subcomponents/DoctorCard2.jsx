@@ -27,7 +27,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const [infav, setInfav] = useState(false);
   const [rate, setRate] = useState([]);
   const [av_rate, setAv_rate] = useState();
-
+  const {refreshing, setRefreshing} = useContext(AppContext);
   const [heart, setHeart] = useState("favorite-border");
   const [clickReadMore, setClickReadMore] = useState(false);
 

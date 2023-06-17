@@ -10,7 +10,8 @@ import {
   ScrollView,
   ActivityIndicator,
   SafeAreaView,
-  Animated, PanResponder, Dimensions, StatusBar
+  Animated, PanResponder, Dimensions, StatusBar,
+  RefreshControl
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons, FontAwesome5,Ionicons } from "@expo/vector-icons";
@@ -29,17 +30,17 @@ const Home = ({ navigation }) => {
   const height = Dimensions.get('window').height;
   const [fav, setFav] = useState([]);
   const { favourite, setFavourite } = useContext(AppContext);
+  const {refreshing, setRefreshing} = useContext(AppContext);
   const handleToggleDarkMode = () => {
     setNight(!night);
     // Here you can add logic to switch your app theme to dark mode
   };
-  async function fetchDoctor() {
-    const filt = await getFavourite(CurrentUser.user.id);
-    setFavourite(filt);
-  }
+  
   async function fetchDoctor() {
     const doctor = await getDoctors();
     setDoctors(doctor);
+    const filt = await getFavourite(CurrentUser.user.id);
+    setFavourite(filt);
   }
   useEffect(() => {
     fetchDoctor();
@@ -213,6 +214,7 @@ const Home = ({ navigation }) => {
           <View style={{alignSelf:"center"}}>
             <Ionicons name="reorder-three-outline" size={30} color={"#288771"}/>
           </View>
+          {refreshing ? <ActivityIndicator size={50} color={"black"}/> : null}
           <FlatList
             removeClippedSubviews={true}
             data={
@@ -226,7 +228,9 @@ const Home = ({ navigation }) => {
             maxToRenderPerBatch={7}
             windowSize={10}
             keyExtractor={(item, index) => item.id}
-
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={fetchDoctor} />
+            }
           />
         </Animated.View>
       ) : (
