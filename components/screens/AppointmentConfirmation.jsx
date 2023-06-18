@@ -54,19 +54,32 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     let days, start, end, number;
     await getDocSchedule(item.id).then((res) => {
       if (res.status != "failed") {
-        res = res.filter((ele) => ele.avilable !== "no");
-
-        days = res.map((item) => item.day.slice(0, 3));
-        start = res.map((item) => item.start);
-        end = res.map((item) => item.end);
-        number = res.map((item) => item.number);
+        let res1 = [];
+        res1 = res;
+        res1 = res1.filter((ele) => ele.avilable !== "no");
+        
+        days = res1.map((item) => {
+          
+          let day1 ="";
+          day1 = item.day
+          
+          return day1.slice(0, 3);
+        
+        });
+        
+        start = res1.map((item) => item.start);
+        end = res1.map((item) => item.end);
+        number = res1.map((item) => item.number);
 
       }
+      
     });
     setDays(days);
     setStartTime(start);
     setEndTime(end);
     setNumberOfPatients(number);
+    
+    
   };
   useEffect(() => {
     getDocDays();
@@ -107,7 +120,6 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       console.log(err);
     }
   };
-
   function addChat(Chat) {
     addDoc(collection(db, "chats"), Chat);
   }
@@ -378,7 +390,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       </View>
       <ScrollView
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={()=>getDays()} />
+        <RefreshControl refreshing={refreshing} onRefresh={()=>getDocDays()} />
       }
       >
         <View style={{ marginBottom: 60 }}>
