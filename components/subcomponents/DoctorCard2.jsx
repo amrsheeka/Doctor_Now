@@ -235,7 +235,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                   }}
                   onPress={async () => {
                     // // fetch();
-                    navigation.navigate("AppointmentConfirmation", { doctor });
+                    
                     setF(false);
                     let days, start, end, number;
                     await getDocSchedule(doctor.id).then((res) => {
@@ -254,7 +254,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                     setEndTime(end);
                     setNumberOfPatients(number);
                     setF(true);
-
+                    navigation.navigate("AppointmentConfirmation", { doctor });
                   }}
                 >
                   <Text
