@@ -13,7 +13,7 @@ import {
   Animated, PanResponder, Dimensions, StatusBar
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
-import { MaterialCommunityIcons, FontAwesome5,Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import { AppContext } from "../consts/AppContext";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
@@ -41,9 +41,17 @@ const Home = ({ navigation }) => {
     const doctor = await getDoctors();
     setDoctors(doctor);
   }
+  const { flag } = useContext(AppContext);
   useEffect(() => {
     fetchDoctor();
+    // const focusHandler = navigation.addListener('focus', () => {
+    //   fetchDoctor().then(() => {
+    //     alert('Refreshed');
+    //     console.log(flag);
+    //   })
+   
   }, []);
+
   useEffect(() => {
     const panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => {
@@ -210,10 +218,10 @@ const Home = ({ navigation }) => {
           ]}
           {...panResponder?.panHandlers}
         >
-          <View style={{alignSelf:"center"}}>
-            <Ionicons name="reorder-three-outline" size={30} color={"#288771"}/>
+          <View style={{ alignSelf: "center" }}>
+            <Ionicons name="reorder-three-outline" size={30} color={"#288771"} />
           </View>
-          <FlatList
+          {flag ? <FlatList
             removeClippedSubviews={true}
             data={
               doctors.filter((doctor) =>
@@ -228,6 +236,26 @@ const Home = ({ navigation }) => {
             keyExtractor={(item, index) => item.id}
 
           />
+
+
+            :
+
+            <FlatList
+              removeClippedSubviews={true}
+              data={
+                doctors.filter((doctor) =>
+                  doctor.name.toLowerCase().includes(search.toLowerCase()))
+              }
+              ListHeaderComponent={header}
+              ListFooterComponent={footer}
+              renderItem={renderDoctor}
+              initialNumToRender={7}
+              maxToRenderPerBatch={7}
+              windowSize={10}
+              keyExtractor={(item, index) => item.id}
+            />
+
+          }
         </Animated.View>
       ) : (
         <View style={{ padding: "18%" }}>
@@ -268,7 +296,7 @@ const styles = StyleSheet.create({
   list: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingVertical:30,
+    paddingVertical: 30,
     backgroundColor: "#F5F5F5",
   },
   search: {

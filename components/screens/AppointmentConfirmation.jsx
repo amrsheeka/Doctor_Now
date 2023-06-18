@@ -34,15 +34,16 @@ import { getAppointment_by_doc_id, insertReviews } from "../../database/Users";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import { getDocSchedule } from "../../database/Doctors";
-
+// import { ActivityIndicator } from "react-native";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 const AppointmentConfirmation = ({ navigation, route }) => {
   let item = route.params.doctor;
   const { timeList, setTimeList } = useContext(AppContext);
   const [date, setDate] = useState(new Date().toDateString());
   const { Days, setDays } = useContext(AppContext);
-  const [startTime, setStartTime] = useState([]);
-  const [endTime, setEndTime] = useState([]);
-  const [numberOfPatients, setNumberOfPatients] = useState([]);
+  const { startTime, setStartTime } = useContext(AppContext);
+  const { endTime, setEndTime } = useContext(AppContext);
+  const { numberOfPatients, setNumberOfPatients } = useContext(AppContext);
   const [choice, setChoice] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleComment, setModalVisibleComment] = useState(false);
@@ -58,6 +59,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         start = res.map((item) => item.start);
         end = res.map((item) => item.end);
         number = res.map((item) => item.number);
+
       }
     });
     setDays(days);
@@ -65,9 +67,22 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     setEndTime(end);
     setNumberOfPatients(number);
   };
-
   useEffect(() => {
     getDocDays();
+    // const focusHandler = navigation.addListener('state',() => {
+
+    //   // getDocTimes().then(()=>{
+    //   //   console.log("ahmed");
+    //   // })
+    //   getDocDays();.then((res) => {
+    //     console.log(res);
+    //     console.log("ahmed");
+
+    //   })
+
+    // });
+    // return focusHandler;
+
   }, []);
 
   const getDocTimes = async () => {
@@ -83,7 +98,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
               parseInt(numberOfPatients[Days.indexOf(date.slice(0, 3))]) -
               parseInt(res.length);
             setLength(lengthValue);
-            console.log(lengthValue);
+            // console.log(lengthValue);
           }
         }
       });
@@ -132,19 +147,20 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         onPress={() => {
           setDate(new Date(2023, select_Month_Index + 5, month).toDateString());
           setChoice(week + "");
-          getDocTimes();
-          if (item.schedule_type != "on appointment") {
-            if (length != 0) {
-              const time = startTime[Days.indexOf(week)];
-              navigation.navigate("Details_user_to_appointment", {
-                item,
-                time,
-                date,
-              });
-            } else {
-              alert("This is day is full ... choose another day");
+          getDocTimes().then(() => {
+            if (item.schedule_type != "on appointment") {
+              if (length != 0) {
+                const time = startTime[Days.indexOf(week)];
+                navigation.navigate("Details_user_to_appointment", {
+                  item,
+                  time,
+                  date,
+                });
+              } else {
+                alert("This is day is full ... choose another day");
+              }
             }
-          }
+          });
         }}
       >
         <View
@@ -335,11 +351,29 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       </View>
     );
   };
-
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.header}>
-        <Text style={styles.label}> Doctor Profile </Text>
+      <View style={styles.header1}>
+        <View>
+          <View style={styles.Go_Back1}>
+            <TouchableOpacity onPress={() => {
+
+              navigation.navigate("Home")
+            }}>
+              <View style={styles.Go_Back}>
+                <Ionicons name="arrow-back" size={30} color="black" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+          <Text style={styles.label}> Doctor Profile </Text>
+        </View>
+
       </View>
       <ScrollView>
         <View style={{ marginBottom: 60 }}>
@@ -674,7 +708,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     )}
                   </ScrollView>
                 </View>
-              ) :<></>
+              ) : <></>
             }
           </View>
           <View style={styles.content}>
@@ -873,6 +907,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: "12%",
     marginBottom: 10,
+  },
+  header1: {
+    backgroundColor: "#288771",
+    width: "100%",
+    // alignItems: "center",
+    // justifyContent: "center",
+    paddingVertical: 30,
+    marginBottom: 20,
   },
   label: {
     fontSize: 20,
