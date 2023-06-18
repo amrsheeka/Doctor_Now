@@ -18,7 +18,7 @@ import { getinFavourite } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { getFavourite } from "../../database/Users";
 import getTimeList from "../../database/getTimeList";
-import { getDocSchedule } from "../../database/Doctors";
+import { editDoctor, getDocSchedule, updateDoctor } from "../../database/Doctors";
 const DoctorCard2 = ({ navigation, doctor, reload }) => {
   let image = doctor.image;
   const { night } = useContext(AppContext);
@@ -31,6 +31,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const {refreshing, setRefreshing} = useContext(AppContext);
   const [heart, setHeart] = useState("favorite-border");
   const [clickReadMore, setClickReadMore] = useState(false);
+  const [active, setActive] = useState(doctor.active==0?true:false);
   const { setDays } = useContext(AppContext);
   const { setStartTime } = useContext(AppContext);
   const { setEndTime } = useContext(AppContext);
@@ -39,6 +40,14 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { setCommentIsExist} = useContext(AppContext);
   const { setRateNumber} = useContext(AppContext);
   const { setCommentText} = useContext(AppContext);
+  const handleActive=()=>{
+    let doc = doctor;
+    console.log(doctor)
+    doc['active']=doc.active==0?1:0;
+    updateDoctor(doc).then(()=>{
+      setActive(doc.active);
+    });
+  }
   async function get_rate(id) {
     getRate(id).then((res) => {
       setRate(res);
@@ -279,8 +288,32 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                 {doctor.views} {" Reviews "}
               </Text>
               {
-
-                 <TouchableOpacity
+                CurrentUser.user.is_admin=="yes"?(
+                  <TouchableOpacity
+                  style={{
+                    alignItems: "center",
+                    // width: "100%",
+                  }}
+                  onPress={()=>{handleActive()}}
+                >
+                  <Text
+                    style={{
+                      backgroundColor: active?main_color:"red",
+                      borderRadius: 10,
+                      paddingHorizontal: 10,
+                      paddingVertical: 10,
+                      color: "white",
+                      margin: 20,
+                    }}
+                  >
+                    {active?"Mark as inactive":"Mark as active"}
+                    
+                  </Text>
+                </TouchableOpacity>
+                ):
+                (
+                  active?(
+                    <TouchableOpacity
                   style={{
                     alignItems: "center",
                     // width: "100%",
@@ -335,7 +368,11 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                     {" "}
                     Make Appointment
                   </Text>
-                </TouchableOpacity>            
+                </TouchableOpacity>
+                  ):(
+                    <Text style={{ color: "red" }}>This doctor is inactive</Text>
+                  )
+                )
               }
             </View>
           </View>

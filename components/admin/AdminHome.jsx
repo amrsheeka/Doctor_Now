@@ -1,9 +1,42 @@
-import {StyleSheet,Text,View,TouchableOpacity,Image} from "react-native";
+import {StyleSheet,Text,View,TouchableOpacity,Image, ImageBackground} from "react-native";
   import { MaterialCommunityIcons, FontAwesome5,Entypo } from "@expo/vector-icons";
   import { logout } from "../../database/Users";
   export default function AdminHome({ navigation }) {
+    const mainColor="#288771";
+    const INPUT_RANGE_START = 0;
+    const INPUT_RANGE_END = 1;
+    const OUTPUT_RANGE_START = -281;
+    const OUTPUT_RANGE_END = 0;
+    const ANIMATION_TO_VALUE = 1;
+    const ANIMATION_DURATION = 25000;
     return (
       <View style={styles.filterCards}>
+        <ImageBackground source={require("../assets/stat.jpg")}  style={{height:"100%",width:"100%" ,
+          position:"absolute",borderRadius:20}}/>
+        <View style={styles.row11}>
+          
+          <View style={styles.filterCard22}>
+          <View style={styles.filterCardElements}>
+                
+              </View>
+          </View>
+          <View style={styles.filterCard11}>
+          <View style={styles.cardsIcons}>
+                <Text style={styles.number}>100</Text>
+                </View>
+                <View style={styles.filterCard1TextVeiw}>
+                  <Text style={styles.filterCard11Text}>Doctors</Text>
+                </View>
+          </View>
+          <View style={styles.filterCard11}>
+          <View style={styles.cardsIcons}>
+                <Text style={styles.number}>25</Text>
+                </View>
+                <View style={styles.filterCard1TextVeiw}>
+                  <Text style={styles.filterCard11Text}>appointments</Text>
+                </View>
+          </View>
+        </View>
           <View style={styles.row1}>
             <TouchableOpacity
               style={styles.filterCard1}
@@ -16,7 +49,7 @@ import {StyleSheet,Text,View,TouchableOpacity,Image} from "react-native";
                   <MaterialCommunityIcons
                     name="plus"
                     size={70}
-                    color="white"
+                    color={mainColor}
                   />
                 </View>
                 <View style={styles.filterCard1TextVeiw}>
@@ -32,7 +65,7 @@ import {StyleSheet,Text,View,TouchableOpacity,Image} from "react-native";
             >
               <View style={styles.filterCardElements}>
                 <View style={styles.cardsIcons}>
-                  <FontAwesome5 name="edit" size={60} color="white" />
+                  <FontAwesome5 name="edit" size={60} color={mainColor} />
                 </View>
                 <View style={styles.filterCard2TextVeiw}>
                   <Text style={styles.filterCard2Text}>Edit Doctors</Text>
@@ -50,7 +83,7 @@ import {StyleSheet,Text,View,TouchableOpacity,Image} from "react-native";
             >
               <View style={styles.filterCardElements}>
                 <View style={styles.cardsIcons}>
-                <MaterialCommunityIcons name="bookshelf" size={60} color="white" />
+                <MaterialCommunityIcons name="bookshelf" size={60} color={mainColor} />
                 </View>
                 <View style={styles.filterCard3TextVeiw}>
                   <Text style={styles.filterCard3Text}>AppointmentList</Text>
@@ -65,7 +98,7 @@ import {StyleSheet,Text,View,TouchableOpacity,Image} from "react-native";
             >
               <View style={styles.filterCardElements}>
                 <View style={styles.cardsIcons}>
-                <Entypo name="log-out" size={60} color="white" />
+                <Entypo name="log-out" size={60} color={mainColor} />
                 </View>
                 <View style={styles.filterCard3TextVeiw}>
                   <Text style={styles.filterCard3Text}>Log Out</Text>
@@ -80,14 +113,30 @@ import {StyleSheet,Text,View,TouchableOpacity,Image} from "react-native";
   const styles = StyleSheet.create({
     filterCards: {
       flex:1,
-    gap:10,
+      gap:20,
     },
     filterCard1: {
       flex:1,
-      backgroundColor: "#0047ab",
+      backgroundColor: 'rgba(255, 255, 255, 0.5)',
       alignItems: "center",
       justifyContent: "center",
-      elevation: 3,
+      borderRadius:20,
+    },
+    filterCard11: {
+      flex:1,
+      //backgroundColor: 'transparent',
+      alignItems: "center",
+      justifyContent: "center",
+      borderBottomRightRadius:20,
+      borderTopRightRadius:20,
+    },
+    filterCard22: {
+      flex:1,
+      //backgroundColor: "transparent",
+      alignItems: "center",
+      justifyContent: "center",
+      borderBottomLeftRadius:20,
+      borderTopLeftRadius:20,
     },
     filterCardElements: {
       alignItems: "center",
@@ -97,52 +146,68 @@ import {StyleSheet,Text,View,TouchableOpacity,Image} from "react-native";
       alignItems: "center",
     },
     filterCard1TextVeiw: {
-      marginTop: 10,
+      marginTop: 20,
       alignItems: "center",
     },
     filterCard1Text: {
+      fontSize: 20,     
+    },
+    filterCard11Text: {
       fontSize: 20,
-      color: "white",
+      color:"white",
     },
     filterCard2: {
       flex:1,
-      backgroundColor: "#0066c0",
+      backgroundColor: 'rgba(255, 255, 255, 0.5)',
       alignItems: "center",
       justifyContent: "center",
-      elevation: 3,
+      //elevation: 3,
+      borderRadius:20,
+      borderColor:"#288771",
     },
     filterCard2TextVeiw: {
-      marginTop: 10,
+      marginTop: 20,
       alignItems: "center",
     },
     filterCard2Text: {
       fontSize: 20,
-      color: "white",
     },
     filterCard3: {
       flex:1,
-      backgroundColor: "#039be5",
+      backgroundColor: 'rgba(255, 255, 255, 0.5)',
       alignItems: "center",
       justifyContent: "center",
-      elevation: 3,
+      borderRadius:20,
     },
     filterCard3TextVeiw: {
-      marginTop: 10,
+      marginTop: 20,
       alignItems: "center",
     },
     filterCard3Text: {
       fontSize: 20,
-      color: "white",
     },
     row1:{
       flex:1,
       flexDirection:"row",
-      gap:10,
+      gap:20,
+    },
+    row11:{
+      flex:1,
+      flexDirection:"row",
+      
+      borderRadius:20,
+      //backgroundColor: "transparent",
     },
     row2:{
       flex:1,
       flexDirection:"row",
-      gap:10,
+      gap:20,
     },
+    number:{
+      color:"white",
+      fontSize:50,
+      fontWeight:"bold",
+    },
+    
   });
   
