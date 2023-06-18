@@ -56,8 +56,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleComment, setModalVisibleComment] = useState(false);
   const [length, setLength] = useState();
-  const [comments, setComments] = useState([]);
-  const [commentIsExist, setCommentIsExist] = useState(false);
+  const { comments, setComments } = useContext(AppContext);
+  const { commentIsExist, setCommentIsExist } = useContext(AppContext);
 
   const { refreshing, setRefreshing } = useContext(AppContext);
   const getDocDays = async () => {
@@ -87,7 +87,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   };
   const getComments = async () => {
     await getReviews(item.id).then((res) => {
-      if (res.status != "failed") {
+      if (res.status != "fail") {
         // console.log(res);
         setComments(res);
         const old = res.filter((ele) => ele.users_id == CurrentUser.user.id);
@@ -140,8 +140,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     navigation.navigate("Chat");
   };
 
-  const [rateNumber, setRateNumber] = useState(0);
-  const [commentText, setCommentText] = useState("");
+  const { rateNumber, setRateNumber } = useContext(AppContext);
+  const { commentText, setCommentText } = useContext(AppContext);
 
   const [appear, setAppear] = useState(false);
   const [appear2, setAppear2] = useState(false);
@@ -455,8 +455,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.header1}>
-        <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
+      <View style={styles.header}>
+        {/* <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Home");
@@ -466,14 +466,14 @@ const AppointmentConfirmation = ({ navigation, route }) => {
               <Ionicons name="arrow-back" size={35} color="black" />
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View
-          style={{
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            marginVertical: -15,
-          }}
+          // style={{
+          //   width: "100%",
+          //   alignItems: "center",
+          //   justifyContent: "center",
+          //   marginVertical: -15,
+          // }}
         >
           <Text style={styles.label}> Doctor Profile </Text>
         </View>
@@ -529,8 +529,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       item.rate < 0.4
                         ? "star-border"
                         : item.rate < 0.9
-                        ? "star-half"
-                        : "star"
+                          ? "star-half"
+                          : "star"
                     }
                     size={25}
                     color="gold"
@@ -540,8 +540,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       item.rate < 1.4
                         ? "star-border"
                         : item.rate < 1.9
-                        ? "star-half"
-                        : "star"
+                          ? "star-half"
+                          : "star"
                     }
                     size={25}
                     color="gold"
@@ -551,8 +551,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       item.rate < 2.4
                         ? "star-border"
                         : item.rate < 2.9
-                        ? "star-half"
-                        : "star"
+                          ? "star-half"
+                          : "star"
                     }
                     size={25}
                     color="gold"
@@ -562,8 +562,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       item.rate < 3.4
                         ? "star-border"
                         : item.rate < 3.9
-                        ? "star-half"
-                        : "star"
+                          ? "star-half"
+                          : "star"
                     }
                     size={25}
                     color="gold"
@@ -573,8 +573,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       item.rate < 4.4
                         ? "star-border"
                         : item.rate < 4.9
-                        ? "star-half"
-                        : "star"
+                          ? "star-half"
+                          : "star"
                     }
                     size={25}
                     color="gold"
@@ -782,7 +782,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     size={25}
                     color={main_color}
                     style={{ marginLeft: 5 }}
-                    // onPress={schedule}
+                  // onPress={schedule}
                   />
                   <Text
                     style={{
@@ -827,264 +827,271 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     </Picker>
                   </View>
                 </View>
-               { 
+                {
                   f ?
-                
-                <ScrollView horizontal={true}>
-                  {getDays()[0].map((dayOfMonth, idx) => {
-                    const dayOfWeek = getDays()[1][idx];
-                    const Avaliable = getDays()[2][idx];
-                    return day(Avaliable, dayOfWeek, dayOfMonth, idx);
-                  })}
-                  {item.schedule_type == "on appointment" ? (
-                    <Modal
-                      animationType="slide"
-                      transparent={true}
-                      visible={modalVisible}
-                      onRequestClose={() => {
-                        setModalVisible(false);
-                      }}
-                    >
-                      <View style={styles.centeredView}>
-                        <View style={[styles.content, { width: "100%" }]}>
-                          <View
-                            style={{
-                              marginVertical: 10,
-                              alignSelf: "center",
-                            }}
-                          >
-                            <Image
-                              source={require("../assets/doctor.png")}
-                              style={{ height: 150, width: 200 }}
-                            />
-                          </View>
-                          <View style={{ width: "100%" }}>
-                            <View
-                              style={{
-                                flexDirection: "row",
-                                flexWrap: "wrap",
-                                justifyContent: "center",
-                                alignItems: "center",
-                              }}
-                            >
-                              {times(choice).map((e, idx) => {
-                                const avli = timeList.includes(e);
-                                return time(!avli, e, idx);
-                              })}
+
+                    <ScrollView horizontal={true}>
+                      {getDays()[0].map((dayOfMonth, idx) => {
+                        const dayOfWeek = getDays()[1][idx];
+                        const Avaliable = getDays()[2][idx];
+                        return day(Avaliable, dayOfWeek, dayOfMonth, idx);
+                      })}
+                      {item.schedule_type == "on appointment" ? (
+                        <Modal
+                          animationType="slide"
+                          transparent={true}
+                          visible={modalVisible}
+                          onRequestClose={() => {
+                            setModalVisible(false);
+                          }}
+                        >
+                          <View style={styles.centeredView}>
+                            <View style={[styles.content, { width: "100%" }]}>
+                              <View
+                                style={{
+                                  marginVertical: 10,
+                                  alignSelf: "center",
+                                }}
+                              >
+                                <Image
+                                  source={require("../assets/doctor.png")}
+                                  style={{ height: 150, width: 200 }}
+                                />
+                              </View>
+                              <View style={{ width: "100%" }}>
+                                <View
+                                  style={{
+                                    flexDirection: "row",
+                                    flexWrap: "wrap",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  {times(choice).map((e, idx) => {
+                                    const avli = timeList.includes(e);
+                                    return time(!avli, e, idx);
+                                  })}
+                                </View>
+                              </View>
                             </View>
                           </View>
-                        </View>
-                      </View>
-                    </Modal>
-                  ) : (
-                    <></>
-                  )}
-                </ScrollView>
-                :
-                
+                        </Modal>
+                      ) : (
+                        <></>
+                      )}
+                    </ScrollView>
+                    :
 
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                  }}>
+                  <></>
+              
 
-                  <ActivityIndicator color={"#288771"} size="large" />
-
-                </View>
-                
                 }
               </View>
             ) : (
               <></>
             )}
           </View>
-          <View style={styles.content}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginVertical: 10,
-                marginHorizontal: 5,
-              }}
-            >
-              <Icon4 name={"commenting"} size={30} color={main_color} />
-              <Text style={{ fontSize: 16, width: "60%", marginHorizontal: 5 }}>
-                {" "}
-                Patients's Reviews{" "}
-              </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setModalVisibleComment(true);
+
+          {f ?
+            <View style={styles.content}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginVertical: 10,
+                  marginHorizontal: 5,
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 14,
-                    color: main_color,
+                <Icon4 name={"commenting"} size={30} color={main_color} />
+                <Text style={{ fontSize: 16, width: "60%", marginHorizontal: 5 }}>
+                  {" "}
+                  Patients's Reviews{" "}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisibleComment(true);
                   }}
                 >
-                  {" "}
-                  Add comment{" "}
-                </Text>
-              </TouchableOpacity>
-            </View>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: main_color,
+                    }}
+                  >
+                    {" "}
+                    Add comment{" "}
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisibleComment}
-              onRequestClose={() => {
-                setModalVisibleComment(false);
-              }}
-            >
-              <View style={styles.centeredView}>
-                <View
-                  style={[
-                    styles.content,
-                    {
-                      width: "100%",
-                      // height: "100%",
-                      paddingVertical: 20,
-                    },
-                  ]}
-                >
-                  <ScrollView>
-                    <View style={{ marginVertical: 10, alignSelf: "center" }}>
-                      <Image
-                        source={require("../assets/splash.png")}
-                        style={{ height: 170, width: 170 }}
-                      />
-                    </View>
-                    <View style={{ width: "100%" }}>
-                      <Text
-                        style={{
-                          alignSelf: "center",
-                          fontSize: 20,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {" "}
-                        Please rate Your Experience
-                      </Text>
-                      <Text style={{ alignSelf: "center", fontSize: 14 }}>
-                        {" "}
-                        Your feedback is valueable to us{" "}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignSelf: "center",
-                          marginVertical: 10,
-                        }}
-                      >
-                        <Icon
-                          name={rateNumber > 0 ? "star" : "star-border"}
-                          size={50}
-                          color="gold"
-                          onPress={() => setRateNumber(1)}
-                        />
-                        <Icon
-                          name={rateNumber > 1 ? "star" : "star-border"}
-                          size={50}
-                          color="gold"
-                          onPress={() => setRateNumber(2)}
-                        />
-                        <Icon
-                          name={rateNumber > 2 ? "star" : "star-border"}
-                          size={50}
-                          color="gold"
-                          onPress={() => setRateNumber(3)}
-                        />
-                        <Icon
-                          name={rateNumber > 3 ? "star" : "star-border"}
-                          size={50}
-                          color="gold"
-                          onPress={() => setRateNumber(4)}
-                        />
-                        <Icon
-                          name={rateNumber > 4 ? "star" : "star-border"}
-                          size={50}
-                          color="gold"
-                          onPress={() => setRateNumber(5)}
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisibleComment}
+                onRequestClose={() => {
+                  setModalVisibleComment(false);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View
+                    style={[
+                      styles.content,
+                      {
+                        width: "100%",
+                        // height: "100%",
+                        paddingVertical: 20,
+                      },
+                    ]}
+                  >
+                    <ScrollView>
+                      <View style={{ marginVertical: 10, alignSelf: "center" }}>
+                        <Image
+                          source={require("../assets/splash.png")}
+                          style={{ height: 170, width: 170 }}
                         />
                       </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          flexWrap: "wrap",
-                          justifyContent: "center",
-                          marginVertical: 10,
-                          // alignSelf: "center",
-                        }}
-                      >
-                        <Text style={{ fontSize: 16, alignSelf: "center" }}>
-                          {" "}
-                          Tell us what could be improved or{" "}
-                        </Text>
-                        <Text style={{ fontSize: 16, alignSelf: "center" }}>
-                          {" "}
-                          what you liked about us{" "}
-                        </Text>
-                        <TextInput
-                          label={"Leave Comment"}
-                          mode="outlined"
-                          // placeholder="Leave Comment"
-                          style={{
-                            marginHorizontal: 10,
-                            marginVertical: 5,
-                            width: "90%",
-                            minHeight: 100,
-                          }}
-                          value={commentText}
-                          onChangeText={setCommentText}
-                          multiline
-                          placeholderTextColor="gray"
-                          outlineStyle={{
-                            borderColor: main_color,
-                            borderRadius: 10,
-                          }}
-                          activeOutlineColor={main_color}
-                        />
-                      </View>
-                      <TouchableOpacity
-                        disabled={!rateNumber}
-                        style={{
-                          backgroundColor: rateNumber ? main_color : "grey",
-                          width: "80%",
-                          alignSelf: "center",
-                          padding: 10,
-                          borderRadius: 10,
-                          marginVertical: 5,
-                        }}
-                        onPress={() => sumbitComment()}
-                      >
+                      <View style={{ width: "100%" }}>
                         <Text
                           style={{
-                            fontSize: 18,
-                            color: "white",
                             alignSelf: "center",
+                            fontSize: 20,
+                            fontWeight: "bold",
                           }}
                         >
                           {" "}
-                          Sumbit{" "}
+                          Please rate Your Experience
                         </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </ScrollView>
+                        <Text style={{ alignSelf: "center", fontSize: 14 }}>
+                          {" "}
+                          Your feedback is valueable to us{" "}
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignSelf: "center",
+                            marginVertical: 10,
+                          }}
+                        >
+                          <Icon
+                            name={rateNumber > 0 ? "star" : "star-border"}
+                            size={50}
+                            color="gold"
+                            onPress={() => setRateNumber(1)}
+                          />
+                          <Icon
+                            name={rateNumber > 1 ? "star" : "star-border"}
+                            size={50}
+                            color="gold"
+                            onPress={() => setRateNumber(2)}
+                          />
+                          <Icon
+                            name={rateNumber > 2 ? "star" : "star-border"}
+                            size={50}
+                            color="gold"
+                            onPress={() => setRateNumber(3)}
+                          />
+                          <Icon
+                            name={rateNumber > 3 ? "star" : "star-border"}
+                            size={50}
+                            color="gold"
+                            onPress={() => setRateNumber(4)}
+                          />
+                          <Icon
+                            name={rateNumber > 4 ? "star" : "star-border"}
+                            size={50}
+                            color="gold"
+                            onPress={() => setRateNumber(5)}
+                          />
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            flexWrap: "wrap",
+                            justifyContent: "center",
+                            marginVertical: 10,
+                            // alignSelf: "center",
+                          }}
+                        >
+                          <Text style={{ fontSize: 16, alignSelf: "center" }}>
+                            {" "}
+                            Tell us what could be improved or{" "}
+                          </Text>
+                          <Text style={{ fontSize: 16, alignSelf: "center" }}>
+                            {" "}
+                            what you liked about us{" "}
+                          </Text>
+                          <TextInput
+                            label={"Leave Comment"}
+                            mode="outlined"
+                            // placeholder="Leave Comment"
+                            style={{
+                              marginHorizontal: 10,
+                              marginVertical: 5,
+                              width: "90%",
+                              minHeight: 100,
+                            }}
+                            value={commentText}
+                            onChangeText={setCommentText}
+                            multiline
+                            placeholderTextColor="gray"
+                            outlineStyle={{
+                              borderColor: main_color,
+                              borderRadius: 10,
+                            }}
+                            activeOutlineColor={main_color}
+                          />
+                        </View>
+                        <TouchableOpacity
+                          disabled={!rateNumber}
+                          style={{
+                            backgroundColor: rateNumber ? main_color : "grey",
+                            width: "80%",
+                            alignSelf: "center",
+                            padding: 10,
+                            borderRadius: 10,
+                            marginVertical: 5,
+                          }}
+                          onPress={() => sumbitComment()}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              color: "white",
+                              alignSelf: "center",
+                            }}
+                          >
+                            {" "}
+                            Sumbit{" "}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </ScrollView>
+                  </View>
                 </View>
-              </View>
-            </Modal>
-            {comments.map((ele, index) => {
-              return comment(
-                ele.user_name,
-                ele.rate,
-                ele.text,
-                ele.date,
-                index
-              );
-            })}
-          </View>
+              </Modal>
+              {comments.map((ele, index) => {
+                return comment(
+                  ele.user_name,
+                  ele.rate,
+                  ele.text,
+                  ele.date,
+                  index
+                );
+              })}
+            </View>
+            :
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+              }}>
+
+              <ActivityIndicator color={"#288771"} size={40} />
+
+            </View>
+
+
+          }
         </View>
       </ScrollView>
       <StatusBar style="light" backgroundColor="#288759" />

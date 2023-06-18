@@ -35,6 +35,10 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { setStartTime } = useContext(AppContext);
   const { setEndTime } = useContext(AppContext);
   const { setNumberOfPatients } = useContext(AppContext);
+  const { setComments} = useContext(AppContext);
+  const { setCommentIsExist} = useContext(AppContext);
+  const { setRateNumber} = useContext(AppContext);
+  const { setCommentText} = useContext(AppContext);
   async function get_rate(id) {
     getRate(id).then((res) => {
       setRate(res);
@@ -301,6 +305,19 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                     setStartTime(start);
                     setEndTime(end);
                     setNumberOfPatients(number);
+                    await getReviews(doctor.id).then((res) => {
+                      // console.log(res);
+                      if (res.status != "fail") {
+                        // console.log(res);
+                        setComments(res);
+                        const old = res.filter((ele) => ele.users_id == CurrentUser.user.id);
+                        if (old.length != 0) {
+                          setCommentIsExist(true);
+                          setCommentText(old[0].text);
+                          setRateNumber(old[0].rate);
+                        }
+                      }
+                    });
                     setF(true);
                     
                   }}

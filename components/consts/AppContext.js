@@ -21,9 +21,17 @@ export const AppProvider = ({ children }) => {
   const [flag, setFlag] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [f, setF] = useState(true);
+  const [comments, setComments] = useState([]);
+  const [commentIsExist, setCommentIsExist] = useState(false);
+  const [rateNumber, setRateNumber] = useState(0);
+  const [commentText, setCommentText] = useState("");
   return (
     <AppContext.Provider
       value={{
+        commentIsExist, setCommentIsExist,
+        commentText, setCommentText,
+        rateNumber, setRateNumber,
+        comments, setComments,
         f, setF,
         flag, setFlag,
         startTime, setStartTime,
