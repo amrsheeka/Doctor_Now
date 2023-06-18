@@ -40,13 +40,17 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { setCommentIsExist} = useContext(AppContext);
   const { setRateNumber} = useContext(AppContext);
   const { setCommentText} = useContext(AppContext);
+  console.log(doctor.active);
   const handleActive=()=>{
     let doc = doctor;
     console.log(doctor)
     doc['active']=doc.active==0?1:0;
     updateDoctor(doc).then(()=>{
-      setActive(doc.active);
+      setActive(!active);
     });
+  }
+  const initActive=()=>{
+    setActive(doctor.active==0?true:false);
   }
   async function get_rate(id) {
     getRate(id).then((res) => {
@@ -107,6 +111,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
 
   useEffect(() => {
     fetchFavouriteinfav();
+    initActive();
     //fetchDoctor();
     //get_rate(doctor.id);
     //countAv_rate();
