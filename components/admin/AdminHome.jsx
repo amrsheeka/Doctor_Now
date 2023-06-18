@@ -23,7 +23,7 @@ export default function AdminHome({ navigation }) {
 
       <View style={styles.filterCard11}>
           <View style={styles.cardsIcons}>
-            <Text style={styles.number}>{doctors.length}</Text>
+            <Text style={styles.number}>{"15"}</Text>
           </View>
           <View style={styles.filterCard1TextVeiw}>
             <Text style={styles.filterCard11Text}>Payments</Text>
