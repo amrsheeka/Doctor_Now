@@ -510,6 +510,30 @@ const get_user_by_Id = async (id) => {
       console.log(error);
     });
 };
+const getUserHistory = async (id) => {
+  return axios
+    .post(`${Ip.ip}/API/doctors/getHistory_User.php`, {
+      users_id: id,
+    })
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+const getDoctorHistory = async (id) => {
+  return axios
+    .post(`${Ip.ip}/API/doctors/getHistory_Doctor.php`, {
+      id: id,
+    })
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 export {
   sighnup,
   login,
@@ -540,4 +564,6 @@ export {
   get_user_by_Id,
   get_History_Apps_for_User_by_date,
   get_History_Apps_for_User_by_doctorName,
+  getUserHistory,
+  getDoctorHistory,
 };

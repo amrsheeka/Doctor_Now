@@ -9,6 +9,8 @@ import {
   ActivityIndicator,
   Image,
   TouchableOpacity,
+  FlatList,
+  RefreshControl
 } from "react-native";
 import CurrentUser from "../consts/CurrentUser";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -18,6 +20,7 @@ import {
   get_History_Apps_for_User_by_date,
   get_History_Apps_for_User_by_doctorName,
   deleteAppointment_fromHistory,
+  getUserHistory,
 } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 import Doc_card_appointment from "../subcomponents/Doc_card_appointment";
@@ -32,10 +35,10 @@ const AppointmentHistory = () => {
   const [selected_Date, setSelected_Date] = useState(new Date());
   const [Date_Value, setDate_Value] = useState("");
   const [TextErr, setTextErr] = useState("");
+  const {refreshing, setRefreshing} = useContext(AppContext);
   const main_color = "#288771";
 
-  const { appointments_History, setAppointments_History } =
-    useContext(AppContext);
+  const { appointments_History, setAppointments_History } =useContext(AppContext);
 
   const id = CurrentUser.user.id;
 
@@ -54,7 +57,12 @@ const AppointmentHistory = () => {
       console.log(appointments_History);
     });
   };
-
+  const getAllHistory=async()=>{
+    getUserHistory(id).then((res)=>{
+      setAppointments_History(res);
+      console.log(res);
+    })
+  }
   const Get_Appointment_By_doctorName = (doc_name) => {
     if (!doc_name) {
       setTextErr("Enter Doctor Name.");
@@ -117,7 +125,37 @@ const AppointmentHistory = () => {
     setSelected_Date(currentDate);
     setDate_Value(tempDate);
   };
-
+  useEffect(() => {
+    getAllHistory();
+  }, []);
+  const renderHistory=({item})=>{
+    let idx=0;
+    console.log(item);
+    return(
+    <Doc_card_appointment
+                  number={idx + 1}
+                  key={idx}
+                  users_id={item.users_id}
+                  doctor_id={item.doctor_id}
+                  date={item.date}
+                  time={item.time}
+                  name_patient={item.name_patient}
+                  age={item.age}
+                  gender={item.gender}
+                  phone_number={item.phone_number}
+                  notes={item.notes}
+                  diagnosis={item.diagnosis}
+                  therapeutic={item.therapeutic}
+                  patient_image={item.patient_image}
+                  doc_name={item.doc_name}
+                  doc_image={item.doc_image}
+                  specialization1={item.specialization1}
+                  date_now={item.date_now}
+                  appointment_history={true}
+                  //   schedule_type={schedule_type}
+                />
+  );
+}
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.header}>
@@ -185,7 +223,7 @@ const AppointmentHistory = () => {
         }}
       >
         {label == "Date" ? (
-          <f
+          <TextInput
             label={"Date"}
             mode="outlined"
             style={{ marginHorizontal: 10, width: "80%" }}
@@ -246,36 +284,20 @@ const AppointmentHistory = () => {
         {TextErr}{" "}
       </Text>
 
-      {appointments_History.length !== 0 ? (
+      {true ? (
         <View style = {{marginBottom : 320}}>
-          <ScrollView>
-            {appointments_History.map((ele, idx) => {
-              return (
-                <Doc_card_appointment
-                  number={idx + 1}
-                  key={idx}
-                  users_id={ele.users_id}
-                  doctor_id={ele.doctor_id}
-                  date={ele.date}
-                  time={ele.time}
-                  name_patient={ele.name_patient}
-                  age={ele.age}
-                  gender={ele.gender}
-                  phone_number={ele.phone_number}
-                  notes={ele.notes}
-                  diagnosis={ele.diagnosis}
-                  therapeutic={ele.therapeutic}
-                  patient_image={ele.patient_image}
-                  doc_name={ele.doc_name}
-                  doc_image={ele.doc_image}
-                  specialization1={ele.specialization1}
-                  date_now={ele.date_now}
-                  appointment_history={true}
-                  //   schedule_type={schedule_type}
-                />
-              );
-            })}
-          </ScrollView>
+           <FlatList
+            removeClippedSubviews={true}
+            data={appointments_History}
+            renderItem={renderHistory}
+            initialNumToRender={7}
+            maxToRenderPerBatch={7}
+            windowSize={10}
+            keyExtractor={(item, index) => item.id}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={()=>getAllHistory(CurrentUser.user.id)} />
+            }
+          />
         </View>
       ) : (
       <View>
