@@ -272,7 +272,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                 }}
               >
                 {" "}
-                {rate_lenth ? rate_lenth : "0"} {" Reviews "}
+                {doctor.views} {" Reviews "}
               </Text>
               {
 

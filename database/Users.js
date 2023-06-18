@@ -502,6 +502,19 @@ const deleteReviews = async (users_id, doctor_id, user_name , text , rate, date)
       console.log(error);
     });
 };
+const UpdateDoctorRate = async (review) => {
+  const res = await axios
+    .post(`${Ip.ip}/API/reviews/update_doctor.php`, {
+      ...review
+    })
+    .then(function (response) {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 
 const getRate = async (doctor_id) => {
   return axios
@@ -598,4 +611,6 @@ export {
   get_History_Apps_for_User_by_doctorName,
   getUserHistory,
   getDoctorHistory,
+  deleteReviews,
+  UpdateDoctorRate,
 };
