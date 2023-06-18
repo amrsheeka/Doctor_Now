@@ -20,9 +20,11 @@ export const AppProvider = ({ children }) => {
   const [numberOfPatients, setNumberOfPatients] = useState([]);
   const [flag, setFlag] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [f, setF] = useState(true);
   return (
     <AppContext.Provider
       value={{
+        f, setF,
         flag, setFlag,
         startTime, setStartTime,
         endTime, setEndTime,

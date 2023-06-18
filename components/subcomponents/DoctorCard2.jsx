@@ -139,7 +139,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const [icon3, setIcon3] = useState("star");
   const [icon4, setIcon4] = useState("star");
   const [icon5, setIcon5] = useState("star");
-  const [f, setF] = useState(true);
+  const {f, setF} = useContext(AppContext);
   const main_color = "#288771";
 
   const Face_Card = () => {
@@ -228,14 +228,14 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
               </Text>
               {
 
-                f ? <TouchableOpacity
+                 <TouchableOpacity
                   style={{
                     alignItems: "center",
                     // width: "100%",
                   }}
                   onPress={async () => {
                     // // fetch();
-                    
+                    navigation.navigate("AppointmentConfirmation", { doctor });
                     setF(false);
                     let days, start, end, number;
                     await getDocSchedule(doctor.id).then((res) => {
@@ -254,7 +254,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                     setEndTime(end);
                     setNumberOfPatients(number);
                     setF(true);
-                    navigation.navigate("AppointmentConfirmation", { doctor });
+                    
                   }}
                 >
                   <Text
@@ -270,8 +270,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                     {" "}
                     Make Appointment
                   </Text>
-                </TouchableOpacity> :
-                  <ActivityIndicator color={"#288771"} size="small" />
+                </TouchableOpacity>            
               }
             </View>
           </View>

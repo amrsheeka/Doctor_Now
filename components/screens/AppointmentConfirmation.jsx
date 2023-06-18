@@ -37,6 +37,7 @@ import { AppContext } from "../consts/AppContext";
 import { getDocSchedule } from "../../database/Doctors";
 // import { ActivityIndicator } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { ActivityIndicator } from "react-native";
 const AppointmentConfirmation = ({ navigation, route }) => {
   let item = route.params.doctor;
   const { timeList, setTimeList } = useContext(AppContext);
@@ -49,7 +50,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleComment, setModalVisibleComment] = useState(false);
   const [length, setLength] = useState();
-  const {refreshing, setRefreshing} = useContext(AppContext);
+  const { refreshing, setRefreshing } = useContext(AppContext);
   const getDocDays = async () => {
     let days, start, end, number;
     await getDocSchedule(item.id).then((res) => {
@@ -57,29 +58,29 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         let res1 = [];
         res1 = res;
         res1 = res1.filter((ele) => ele.avilable !== "no");
-        
+
         days = res1.map((item) => {
-          
-          let day1 ="";
+
+          let day1 = "";
           day1 = item.day
-          
+
           return day1.slice(0, 3);
-        
+
         });
-        
+
         start = res1.map((item) => item.start);
         end = res1.map((item) => item.end);
         number = res1.map((item) => item.number);
 
       }
-      
+
     });
     setDays(days);
     setStartTime(start);
     setEndTime(end);
     setNumberOfPatients(number);
-    
-    
+
+
   };
   useEffect(() => {
     getDocDays();
@@ -336,7 +337,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
 
     return [days, days_of_week, avaliable_days];
   };
-
+  const { f } = useContext(AppContext);
   const comment = (user_name, rate, text, date) => {
     return (
       <View>
@@ -367,31 +368,30 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.header1}>
-        <View>
-          <View style={styles.Go_Back1}>
+          <View style={{paddingHorizontal:20,marginTop:10}}>
             <TouchableOpacity onPress={() => {
 
               navigation.navigate("Home")
             }}>
               <View style={styles.Go_Back}>
-                <Ionicons name="arrow-back" size={30} color="black" />
+                <Ionicons name="arrow-back" size={35} color="black" />
               </View>
             </TouchableOpacity>
           </View>
-        </View>
         <View style={{
           width: "100%",
           alignItems: "center",
           justifyContent: "center",
+          marginVertical:-15
         }}>
           <Text style={styles.label}> Doctor Profile </Text>
         </View>
 
       </View>
       <ScrollView
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={()=>getDocDays()} />
-      }
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={() => getDocDays()} />
+        }
       >
         <View style={{ marginBottom: 60 }}>
           <View style={styles.content}>
@@ -628,6 +628,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             {
               item.payment_map != 0 ? (
                 <View>
+
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Icon4
                       name={"calendar"}
@@ -675,7 +676,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       </Picker>
                     </View>
                   </View>
-                  <ScrollView horizontal={true}>
+                  {f ? <ScrollView horizontal={true}>
                     {getDays()[0].map((dayOfMonth, idx) => {
                       const dayOfWeek = getDays()[1][idx];
                       const Avaliable = getDays()[2][idx];
@@ -723,7 +724,19 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     ) : (
                       <></>
                     )}
-                  </ScrollView>
+                  </ScrollView> :
+
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                      }}>
+
+                      <ActivityIndicator color={"#288771"} size="large" />
+
+                    </View>
+
+                  }
                 </View>
               ) : <></>
             }
