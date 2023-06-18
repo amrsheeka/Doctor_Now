@@ -368,7 +368,7 @@ const Userpage = ({ navigation }) => {
           <TextInput
             label={"Age"}
             mode="outlined"
-            value={age}
+            value={postalCode .toString(age)}
             keyboardType="number-pad"
             onChangeText={setAge}
             outlineStyle={{
