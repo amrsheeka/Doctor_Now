@@ -242,26 +242,7 @@ const Home = ({ navigation }) => {
               <RefreshControl refreshing={refreshing} onRefresh={fetchDoctor} />
             }
           />
-
-
-            :
-
-            <FlatList
-              removeClippedSubviews={true}
-              data={
-                doctors.filter((doctor) =>
-                  doctor.name.toLowerCase().includes(search.toLowerCase()))
-              }
-              ListHeaderComponent={header}
-              ListFooterComponent={footer}
-              renderItem={renderDoctor}
-              initialNumToRender={7}
-              maxToRenderPerBatch={7}
-              windowSize={10}
-              keyExtractor={(item, index) => item.id}
-            />
-
-          }
+          
         </Animated.View>
       ) : (
         <View style={{ padding: "18%" }}>
