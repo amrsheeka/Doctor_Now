@@ -545,7 +545,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#288771",
   },
   button2: {
-    backgroundColor: "white",
+    
   },
   buttonIcon: {
     fontSize: 16,
