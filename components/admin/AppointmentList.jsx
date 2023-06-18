@@ -21,7 +21,6 @@ const AppointmentList = ({ navigation }) => {
   const [flag, setFlag] = useState(true);
   useEffect(() => {
     getAllAppointment().then((res) => {
-      console.log(res);
       res.length >= 1 ? setAppointments(res) : setFlag(false);
     });
   }, []);

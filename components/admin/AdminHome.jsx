@@ -1,14 +1,18 @@
 import {StyleSheet,Text,View,TouchableOpacity,Image, ImageBackground} from "react-native";
   import { MaterialCommunityIcons, FontAwesome5,Entypo } from "@expo/vector-icons";
-  import { logout } from "../../database/Users";
+  import { getAllAppointment, logout } from "../../database/Users";
+import { AppContext } from "../consts/AppContext";
+import { useContext } from "react";
+import { useEffect } from "react";
   export default function AdminHome({ navigation }) {
     const mainColor="#288771";
-    const INPUT_RANGE_START = 0;
-    const INPUT_RANGE_END = 1;
-    const OUTPUT_RANGE_START = -281;
-    const OUTPUT_RANGE_END = 0;
-    const ANIMATION_TO_VALUE = 1;
-    const ANIMATION_DURATION = 25000;
+    const { doctors, setDoctors } = useContext(AppContext);
+    const { appointments, setAppointments } = useContext(AppContext);
+    useEffect(() => {
+      getAllAppointment().then((res) => {
+        res.length >= 1 ? setAppointments(res) : setFlag(false);
+      });
+    }, []);
     return (
       <View style={styles.filterCards}>
         <ImageBackground source={require("../assets/stat.jpg")}  style={{height:"100%",width:"100%" ,
@@ -22,7 +26,7 @@ import {StyleSheet,Text,View,TouchableOpacity,Image, ImageBackground} from "reac
           </View>
           <View style={styles.filterCard11}>
           <View style={styles.cardsIcons}>
-                <Text style={styles.number}>100</Text>
+                <Text style={styles.number}>{doctors.length}</Text>
                 </View>
                 <View style={styles.filterCard1TextVeiw}>
                   <Text style={styles.filterCard11Text}>Doctors</Text>
@@ -30,7 +34,7 @@ import {StyleSheet,Text,View,TouchableOpacity,Image, ImageBackground} from "reac
           </View>
           <View style={styles.filterCard11}>
           <View style={styles.cardsIcons}>
-                <Text style={styles.number}>25</Text>
+                <Text style={styles.number}>{appointments.length}</Text>
                 </View>
                 <View style={styles.filterCard1TextVeiw}>
                   <Text style={styles.filterCard11Text}>appointments</Text>
@@ -68,7 +72,8 @@ import {StyleSheet,Text,View,TouchableOpacity,Image, ImageBackground} from "reac
                   <FontAwesome5 name="edit" size={60} color={mainColor} />
                 </View>
                 <View style={styles.filterCard2TextVeiw}>
-                  <Text style={styles.filterCard2Text}>Edit Doctors</Text>
+                  
+                  <Text style={styles.filterCard2Text}>Doctor's Activation</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -166,7 +171,7 @@ import {StyleSheet,Text,View,TouchableOpacity,Image, ImageBackground} from "reac
       borderColor:"#288771",
     },
     filterCard2TextVeiw: {
-      marginTop: 20,
+      marginTop: 30,
       alignItems: "center",
     },
     filterCard2Text: {
