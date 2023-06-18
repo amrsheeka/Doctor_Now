@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   number: {
-    color: 'rgba(0, 0, 0, 0.6)',
+    color: "#288771",
     fontSize: 50,
     fontWeight: "bold",
   },
