@@ -9,13 +9,15 @@ import {
   TouchableOpacity,
   ScrollView,
   Switch,
-  Alert, Modal, Pressable
+  Alert,
+  Modal,
+  Pressable,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import { StatusBar } from "expo-status-bar";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { AntDesign} from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Entypo";
@@ -206,8 +208,7 @@ const Info = ({ navigation }) => {
     }
     update_Doctor_info(doc);
   }
-  const handleSave=(i)=>{
-    
+  const handleSave = (i) => {
     updateSchedule({
       day: schedules[i].day,
       doctor_id: schedules[i].doctor_id,
@@ -216,19 +217,23 @@ const Info = ({ navigation }) => {
       id: schedules[i].id,
       avilable: schedules[i].avilable,
       number:
-      i==0?number_of_bookings
-      :i==1?number_of_bookings1
-      :i==2?number_of_bookings2
-      :i==3?number_of_bookings3
-      :i==4?number_of_bookings4
-      :i==5?number_of_bookings5
-      :number_of_bookings6
-    }).then((res)=>{
-      if(res.status=="success")
-        setModalVisible(true);
+        i == 0
+          ? number_of_bookings
+          : i == 1
+          ? number_of_bookings1
+          : i == 2
+          ? number_of_bookings2
+          : i == 3
+          ? number_of_bookings3
+          : i == 4
+          ? number_of_bookings4
+          : i == 5
+          ? number_of_bookings5
+          : number_of_bookings6,
+    }).then((res) => {
+      if (res.status == "success") setModalVisible(true);
     });
-    
-  }
+  };
   async function getRev(id) {
     getReviews(id).then((res) => {
       setRev(res);
@@ -354,6 +359,7 @@ const Info = ({ navigation }) => {
     page === "Schedule" ? summary() : profile();
     setOpen_password(false);
   };
+
   const save = () => {
     if (fName.length < 10) {
       alert("you must insert the full name");
@@ -386,35 +392,6 @@ const Info = ({ navigation }) => {
   };
 
   let email = CurrentUser.user.email;
-  const HandleHistory = () => {
-    get_doc_by_email(email).then((ans) => {
-      if (ans.status !== "failed") {
-        get_History_Apps_for_Doctor(ans[0].id).then((res) => {
-          console.log(res);
-          if (res.status !== "failed") setAppointments(res);
-          else setAppointments([]);
-        });
-      }
-    });
-    setType("history");
-  };
-
-  const HandleAppointments = (i) => {
-    // get_doc_by_email(email).then((ans) => {
-    //   if (ans.status !== "failed") {
-    //     getAppointment_for_Doctor(ans[0].id).then((res) => {
-    //       if (res.status !== "failed") setAppointments(res);
-    //       else setAppointments([]);
-    //     });
-    //   }
-    // });
-    // setType("appointments");
-    let date = new Date(
-      new Date().getTime() + i * 24 * 60 * 60 * 1000
-    ).toDateString();
-    // console.log(date , doctor.id, CurrentUser.user.id);
-    <Appointments />;
-  };
 
   /////////////////////////////////////
 
@@ -461,15 +438,15 @@ const Info = ({ navigation }) => {
     setPage("More");
   };
 
-  const exmin_duration = (exmin) => {
-    if (exmin === exmination_duration) return setExmination_duration;
-    else if (exmin === exmination_duration1) return setExmination_duration1;
-    else if (exmin === exmination_duration2) return setExmination_duration2;
-    else if (exmin === exmination_duration3) return setExmination_duration3;
-    else if (exmin === exmination_duration4) return setExmination_duration4;
-    else if (exmin === exmination_duration5) return setExmination_duration5;
-    else if (exmin === exmination_duration6) return setExmination_duration6;
-  };
+  // const exmin_duration = (exmin) => {
+  //   if (exmin === exmination_duration) return setExmination_duration;
+  //   else if (exmin === exmination_duration1) return setExmination_duration1;
+  //   else if (exmin === exmination_duration2) return setExmination_duration2;
+  //   else if (exmin === exmination_duration3) return setExmination_duration3;
+  //   else if (exmin === exmination_duration4) return setExmination_duration4;
+  //   else if (exmin === exmination_duration5) return setExmination_duration5;
+  //   else if (exmin === exmination_duration6) return setExmination_duration6;
+  // };
   const bookings_number = (book) => {
     if (book === number_of_bookings) return setNumber_of_bookings;
     else if (book === number_of_bookings1) return setNumber_of_bookings1;
@@ -480,164 +457,166 @@ const Info = ({ navigation }) => {
     else if (book === number_of_bookings6) return setNumber_of_bookings6;
   };
   const ChangeTime = async (event, selectedTime) => {
-    const currentTime = selectedTime;
 
-    let tempTime = new Date(currentTime);
+      const currentTime = selectedTime;
 
-    let hour = tempTime.getHours();
-    let minutes = tempTime.getMinutes();
-    let TimeType;
+      let tempTime = new Date(currentTime);
 
-    hour < 12 ? (TimeType = "AM") : (TimeType = "PM");
+      let hour = tempTime.getHours();
+      let minutes = tempTime.getMinutes();
+      let TimeType;
 
-    if (hour > 12) {
-      hour = hour - 12;
-    }
-    if (hour == 0) hour = 12;
-    if (hour < 10) {
-      hour = "0" + hour.toString();
-    }
-    if (minutes < 10) {
-      minutes = "0" + minutes.toString();
-    }
-    let fTime =
-      hour.toString() + ":" + minutes.toString() + " " + TimeType.toString();
-    setShow_time(0);
-    if (which === "sat_start") {
-      updateSchedules({
-        day: schedules[0].day,
-        doctor_id: schedules[0].doctor_id,
-        start: fTime,
-        end: schedules[0].end,
-        id: schedules[0].id,
-        avilable: schedules[0].avilable,
-      });
-    } else if (which === "sat_end") {
-      updateSchedules({
-        day: schedules[0].day,
-        doctor_id: schedules[0].doctor_id,
-        start: schedules[0].start,
-        end: fTime,
-        id: schedules[0].id,
-        avilable: schedules[0].avilable,
-      });
-    } else if (which === "sun_start") {
-      updateSchedules({
-        day: schedules[1].day,
-        doctor_id: schedules[1].doctor_id,
-        start: fTime,
-        end: schedules[1].end,
-        id: schedules[1].id,
-        avilable: schedules[1].avilable,
-      });
-    } else if (which === "sun_end") {
-      updateSchedules({
-        day: schedules[1].day,
-        doctor_id: schedules[1].doctor_id,
-        start: schedules[1].start,
-        end: fTime,
-        id: schedules[1].id,
-        avilable: schedules[1].avilable,
-      });
-    } else if (which === "mon_start") {
-      updateSchedules({
-        day: schedules[2].day,
-        doctor_id: schedules[2].doctor_id,
-        start: fTime,
-        end: schedules[2].end,
-        id: schedules[2].id,
-        avilable: schedules[2].avilable,
-      });
-    } else if (which === "mon_end") {
-      updateSchedules({
-        day: schedules[2].day,
-        doctor_id: schedules[2].doctor_id,
-        start: schedules[2].start,
-        end: fTime,
-        id: schedules[2].id,
-        avilable: schedules[2].avilable,
-      });
-    } else if (which === "tues_start") {
-      updateSchedules({
-        day: schedules[3].day,
-        doctor_id: schedules[3].doctor_id,
-        start: fTime,
-        end: schedules[3].end,
-        id: schedules[3].id,
-        avilable: schedules[3].avilable,
-      });
-    } else if (which === "tues_end") {
-      updateSchedules({
-        day: schedules[3].day,
-        doctor_id: schedules[3].doctor_id,
-        start: schedules[3].start,
-        end: fTime,
-        id: schedules[3].id,
-        avilable: schedules[3].avilable,
-      });
-    } else if (which === "wen_start") {
-      updateSchedules({
-        day: schedules[4].day,
-        doctor_id: schedules[4].doctor_id,
-        start: fTime,
-        end: schedules[4].enad,
-        id: schedules[4].id,
-        avilable: schedules[4].avilable,
-      });
-    } else if (which === "wen_end") {
-      updateSchedules({
-        day: schedules[4].day,
-        doctor_id: schedules[4].doctor_id,
-        start: schedules[4].start,
-        end: fTime,
-        id: schedules[4].id,
-        avilable: schedules[4].avilable,
-      });
-    } else if (which === "thurs_start") {
-      updateSchedules({
-        day: schedules[5].day,
-        doctor_id: schedules[5].doctor_id,
-        start: fTime,
-        end: schedules[5].end,
-        id: schedules[5].id,
-        avilable: schedules[5].avilable,
-      });
-    } else if (which === "thurs_end") {
-      updateSchedules({
-        day: schedules[5].day,
-        doctor_id: schedules[5].doctor_id,
-        start: schedules[5].start,
-        end: fTime,
-        id: schedules[5].id,
-        avilable: schedules[5].avilable,
-      });
-    } else if (which === "fri_start") {
-      //setStartTime6(currentTime);
-      //setStart6(fTime);
-      updateSchedules({
-        day: schedules[6].day,
-        doctor_id: schedules[6].doctor_id,
-        start: fTime,
-        end: schedules[6].end,
-        id: schedules[6].id,
-        avilable: schedules[6].avilable,
-      });
-    } else if (which === "fri_end") {
-      //setEndTime6(currentTime);
-      //setEnd6(fTime);
-      updateSchedules({
-        day: schedules[6].day,
-        doctor_id: schedules[6].doctor_id,
-        start: schedules[6].start,
-        end: fTime,
-        id: schedules[6].id,
-        avilable: schedules[6].avilable,
-      });
-    }
+      hour < 12 ? (TimeType = "AM") : (TimeType = "PM");
+
+      if (hour > 12) {
+        hour = hour - 12;
+      }
+      if (hour == 0) hour = 12;
+      if (hour < 10) {
+        hour = "0" + hour.toString();
+      }
+      if (minutes < 10) {
+        minutes = "0" + minutes.toString();
+      }
+      let fTime =
+        hour.toString() + ":" + minutes.toString() + " " + TimeType.toString();
+      setShow_time(0);
+      if (which === "sat_start") {
+        updateSchedules({
+          day: schedules[0].day,
+          doctor_id: schedules[0].doctor_id,
+          start: fTime,
+          end: schedules[0].end,
+          id: schedules[0].id,
+          avilable: schedules[0].avilable,
+        });
+      } else if (which === "sat_end") {
+        updateSchedules({
+          day: schedules[0].day,
+          doctor_id: schedules[0].doctor_id,
+          start: schedules[0].start,
+          end: fTime,
+          id: schedules[0].id,
+          avilable: schedules[0].avilable,
+        });
+      } else if (which === "sun_start") {
+        updateSchedules({
+          day: schedules[1].day,
+          doctor_id: schedules[1].doctor_id,
+          start: fTime,
+          end: schedules[1].end,
+          id: schedules[1].id,
+          avilable: schedules[1].avilable,
+        });
+      } else if (which === "sun_end") {
+        updateSchedules({
+          day: schedules[1].day,
+          doctor_id: schedules[1].doctor_id,
+          start: schedules[1].start,
+          end: fTime,
+          id: schedules[1].id,
+          avilable: schedules[1].avilable,
+        });
+      } else if (which === "mon_start") {
+        updateSchedules({
+          day: schedules[2].day,
+          doctor_id: schedules[2].doctor_id,
+          start: fTime,
+          end: schedules[2].end,
+          id: schedules[2].id,
+          avilable: schedules[2].avilable,
+        });
+      } else if (which === "mon_end") {
+        updateSchedules({
+          day: schedules[2].day,
+          doctor_id: schedules[2].doctor_id,
+          start: schedules[2].start,
+          end: fTime,
+          id: schedules[2].id,
+          avilable: schedules[2].avilable,
+        });
+      } else if (which === "tues_start") {
+        updateSchedules({
+          day: schedules[3].day,
+          doctor_id: schedules[3].doctor_id,
+          start: fTime,
+          end: schedules[3].end,
+          id: schedules[3].id,
+          avilable: schedules[3].avilable,
+        });
+      } else if (which === "tues_end") {
+        updateSchedules({
+          day: schedules[3].day,
+          doctor_id: schedules[3].doctor_id,
+          start: schedules[3].start,
+          end: fTime,
+          id: schedules[3].id,
+          avilable: schedules[3].avilable,
+        });
+      } else if (which === "wen_start") {
+        updateSchedules({
+          day: schedules[4].day,
+          doctor_id: schedules[4].doctor_id,
+          start: fTime,
+          end: schedules[4].enad,
+          id: schedules[4].id,
+          avilable: schedules[4].avilable,
+        });
+      } else if (which === "wen_end") {
+        updateSchedules({
+          day: schedules[4].day,
+          doctor_id: schedules[4].doctor_id,
+          start: schedules[4].start,
+          end: fTime,
+          id: schedules[4].id,
+          avilable: schedules[4].avilable,
+        });
+      } else if (which === "thurs_start") {
+        updateSchedules({
+          day: schedules[5].day,
+          doctor_id: schedules[5].doctor_id,
+          start: fTime,
+          end: schedules[5].end,
+          id: schedules[5].id,
+          avilable: schedules[5].avilable,
+        });
+      } else if (which === "thurs_end") {
+        updateSchedules({
+          day: schedules[5].day,
+          doctor_id: schedules[5].doctor_id,
+          start: schedules[5].start,
+          end: fTime,
+          id: schedules[5].id,
+          avilable: schedules[5].avilable,
+        });
+      } else if (which === "fri_start") {
+        //setStartTime6(currentTime);
+        //setStart6(fTime);
+        updateSchedules({
+          day: schedules[6].day,
+          doctor_id: schedules[6].doctor_id,
+          start: fTime,
+          end: schedules[6].end,
+          id: schedules[6].id,
+          avilable: schedules[6].avilable,
+        });
+      } else if (which === "fri_end") {
+        //setEndTime6(currentTime);
+        //setEnd6(fTime);
+        updateSchedules({
+          day: schedules[6].day,
+          doctor_id: schedules[6].doctor_id,
+          start: schedules[6].start,
+          end: fTime,
+          id: schedules[6].id,
+          avilable: schedules[6].avilable,
+        });
+      }
+    
   };
   const ChangeTime1 = async (event, selectedTime) => {
     ChangeTime(event, selectedTime).then(() => {
-      console.log(start);
+      // console.log("dasssssssssssss" + start);
     });
   };
 
@@ -712,8 +691,8 @@ const Info = ({ navigation }) => {
             {e}{" "}
           </Text>
         </View>
-        <View style={{flexDirection:"row"}}>
-          <View style={{flex:1}}>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
             <Text
               style={{
                 fontSize: 14,
@@ -728,7 +707,7 @@ const Info = ({ navigation }) => {
             </Text>
             <TextInput
               style={[styles.inp, { width: "95%" }]}
-              defaultValue={booking + ""}
+              // defaultValue={booking + ""}
               keyboardType="phone-pad"
               //placeholder={"last name"}
               onChangeText={bookings_number(booking)}
@@ -737,28 +716,32 @@ const Info = ({ navigation }) => {
             />
           </View>
           <TouchableOpacity
-          onPress={()=>{
-            if(day=="Saturday"){
-              handleSave(0);
-            }else if(day=="Sunday"){
-              handleSave(1);
-            }else if(day=="Monday"){
-              handleSave(2);
-            }else if(day=="Tuesday"){
-              handleSave(3);
-            }else if(day=="Wednesday"){
-              handleSave(4);
-            }else if(day=="Thursday"){
-              handleSave(5);
-            }else if(day=="Friday"){
-              handleSave(6);
-            }
-            
-            
-          }}
-          style={{flex:1,flexDirection:"row",alignItems:"flex-end"}}>
-            <Icon6 style={{marginLeft:10}} name="content-save-check-outline" size={45} color={main_color}/>
-            <Text style={{fontSize:20}}>Save</Text>
+            onPress={() => {
+              if (day == "Saturday") {
+                handleSave(0);
+              } else if (day == "Sunday") {
+                handleSave(1);
+              } else if (day == "Monday") {
+                handleSave(2);
+              } else if (day == "Tuesday") {
+                handleSave(3);
+              } else if (day == "Wednesday") {
+                handleSave(4);
+              } else if (day == "Thursday") {
+                handleSave(5);
+              } else if (day == "Friday") {
+                handleSave(6);
+              }
+            }}
+            style={{ flex: 1, flexDirection: "row", alignItems: "flex-end" }}
+          >
+            <Icon6
+              style={{ marginLeft: 10 }}
+              name="content-save-check-outline"
+              size={45}
+              color={main_color}
+            />
+            <Text style={{ fontSize: 20 }}>Save</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -1494,59 +1477,36 @@ const Info = ({ navigation }) => {
   };
 
   // **************************************************************************************************************************
-
-  // const More = () => {
-  //   return (
-  //     <View>
-  //       {/* <View style={styles.buttonContainer}>
-  //         <TouchableOpacity
-  //           style={[styles.button, styles.button1]}
-  //           onPress={HandleHistory}
-  //         >
-  //           <Text style={styles.buttonText}>History</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity
-  //           style={[styles.button, styles.button1]}
-  //           onPress={HandleAppointments}
-  //         >
-  //           <Text style={styles.buttonText}>Appointments</Text>
-  //         </TouchableOpacity>
-  //       </View> */}
-  //       <Appointments />
-  //     </View>
-  //   );
-  // };
-
   // **************************************************************************************************************************
   if (Object.keys(doctor).length !== 0) {
     return (
       <View style={{ flex: 1 }}>
         <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <AntDesign name="checkcircle" size={120} style={styles.icon2} />
-            {/* <Image source={""}/> */}
-            <Text style={styles.modalText}>Saved successfully</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>OK</Text>
-            </Pressable>
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <AntDesign name="checkcircle" size={120} style={styles.icon2} />
+              {/* <Image source={""}/> */}
+              <Text style={styles.modalText}>Saved successfully</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>OK</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
         {page === "Profile" ||
-          (page === "Schedule" && schedule_summary) ||
-          page === "More" ? (
+        (page === "Schedule" && schedule_summary) ||
+        page === "More" ? (
           <View style={[styles.header, { alignItems: "center" }]}>
             <Text style={styles.label}> {page} </Text>
           </View>
@@ -1706,8 +1666,8 @@ const Info = ({ navigation }) => {
           )}
         </ScrollView>
         {page === "Profile" ||
-          (page === "Schedule" && schedule_summary) ||
-          page === "More" ? (
+        (page === "Schedule" && schedule_summary) ||
+        page === "More" ? (
           NevigateTab()
         ) : (
           <></>
@@ -1802,7 +1762,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -1813,11 +1773,11 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
 
   buttonOpen: {
@@ -1829,16 +1789,15 @@ const styles = StyleSheet.create({
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   icon2: {
     color: "#288771",
     padding: 20,
-
   },
 });
 

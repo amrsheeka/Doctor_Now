@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons} from "@expo/vector-icons";
-
-const PricingPlanBadge = ({navigation}) => {
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import Icon2 from "react-native-vector-icons/Entypo";
+const PricingPlanBadge = ({ navigation }) => {
   const [selectedPlan, setSelectedPlan] = useState(null);
 
   const handlePlanSelect = (plan) => {
@@ -11,135 +11,178 @@ const PricingPlanBadge = ({navigation}) => {
 
   const getPlanInfo = (plan) => {
     switch (plan) {
-      case 'basic':
-        return 'Basic Plan: $499 gives you 5 patients';
-      case 'premium':
-        return 'Premium Plan: $999 gives you 12 patients';
-      case 'pro':
-        return 'Pro Plan: $1,249 gives you 20 patients';
+      case "basic":
+        return "499 EGP gives you 5 patients";
+      case "premium":
+        return "999 EGP gives you 12 patients";
+      case "pro":
+        return "1,249 EGP gives you 20 patients";
       default:
-        return '';
+        return "";
     }
   };
-
   return (
-    <View style={styles.container}>
-      <View  style={styles.Go_Back1}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <View style={styles.Go_Back}>
-              <Ionicons name="arrow-back" size={24} color="black" />
-            </View>
-          </TouchableOpacity>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <View style={[styles.header, { flexDirection: "row" }]}>
+        <Icon2
+          name={"arrow-left"}
+          size={30}
+          color="white"
+          onPress={() => navigation.goBack()}
+          style={{ width: "7%", marginHorizontal: 10 }}
+        />
+        <Text style={styles.label}> Subscription Packages </Text>
+      </View>
+
+      <ScrollView>
+        <View style={{ marginVertical: 10, alignSelf: "center" }}>
+          <Image
+            source={require("../assets/payment.png")}
+            style={{ height: 250, width: 250 }}
+          />
         </View>
-      <Text style={styles.heading}>Choose a Pricing Plan</Text>
-      <TouchableOpacity
-        style={[
-          styles.planButton,
-          selectedPlan === 'basic' && styles.selectedPlan,
-        ]}
-        onPress={() => handlePlanSelect('basic')}
-      >
-        <Text style={styles.planText}>Basic Plan</Text>
-        <Text style={styles.planDetails}>{getPlanInfo("basic")}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.planButton,
-          selectedPlan === 'premium' && styles.selectedPlan,
-        ]}
-        onPress={() => handlePlanSelect('premium')}
-      >
-        <Text style={styles.planText}>Premium Plan</Text>
-        <Text style={styles.planDetails}>{getPlanInfo("premium")}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.planButton,
-          selectedPlan === 'pro' && styles.selectedPlan,
-        ]}
-        onPress={() => handlePlanSelect('pro')}
-      >
-        <Text style={styles.planText}>Pro Plan</Text>
-        <Text style={styles.planDetails}>{getPlanInfo("pro")}</Text>
-      </TouchableOpacity>
-      {selectedPlan && (
-        <View style={styles.selectedPlanContainer}> 
-          <Text style={styles.selectedPlanText}>
-            Selected Plan: {selectedPlan}
-          </Text>
-          <Text style={styles.selectedPlanInfo}>{getPlanInfo(selectedPlan)}</Text>
-          <TouchableOpacity style={styles.payButton} onPress={()=>{navigation.navigate("Payments",{selectedPlan})}}>
-            <Text style={styles.payButtonText}>Go to Pay</Text>
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.heading}>Choose a Payment Plan</Text>
+        <TouchableOpacity
+          style={[
+            styles.planButton,
+            selectedPlan === "basic" && styles.selectedPlan,
+          ]}
+          onPress={() => handlePlanSelect("basic")}
+        >
+          <Text style={styles.planText}>Basic Plan</Text>
+          <Text style={styles.planDetails}>{getPlanInfo("basic")}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.planButton,
+            selectedPlan === "premium" && styles.selectedPlan,
+          ]}
+          onPress={() => handlePlanSelect("premium")}
+        >
+          <Text style={styles.planText}>Premium Plan</Text>
+          <Text style={styles.planDetails}>{getPlanInfo("premium")}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.planButton,
+            selectedPlan === "pro" && styles.selectedPlan,
+          ]}
+          onPress={() => handlePlanSelect("pro")}
+        >
+          <Text style={styles.planText}>Pro Plan</Text>
+          <Text style={styles.planDetails}>{getPlanInfo("pro")}</Text>
+        </TouchableOpacity>
         
-      )}
+          <View style={styles.selectedPlanContainer}>
+            <TouchableOpacity
+              style={[styles.payButton , {  backgroundColor: selectedPlan? "#288771" : 'grey',}]}
+              disabled = {!selectedPlan}
+              onPress={() => {
+                navigation.navigate("Payments", { selectedPlan });
+              }}
+            >
+              <Text style={styles.payButtonText}>Subscribe</Text>
+            </TouchableOpacity>
+          </View>
+        
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "#288771",
+    width: "100%",
+    height: "12%",
+    // alignItems: "center",
+    paddingTop: "12%",
+    marginBottom: 10,
+  },
+  label: {
+    fontSize: 20,
+    color: "white",
+  },
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 16,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
   },
   heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontWeight: "bold",
     marginBottom: 24,
-    color: '#333',
+    alignSelf: "center",
+    color: "#333",
+  },
+  content: {
+    backgroundColor: "#FFF",
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "#f7eceb",
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    padding: 7,
+
+    // marginBottom: 3,
+    marginHorizontal: 3,
   },
   planButton: {
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: "#e0e0e0",
     borderRadius: 8,
     padding: 16,
-    marginBottom: 16,
-    width: '100%',
-    backgroundColor: '#fff',
+    marginVertical: 8,
+    // width: "100%",
+    backgroundColor: "#fff",
     elevation: 2,
+    marginHorizontal: 7,
   },
   selectedPlan: {
-    backgroundColor: '#4caf50',
+    backgroundColor: "#4caf50",
     borderWidth: 0,
     elevation: 4,
   },
   planText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
-    color: '#333',
+    alignSelf: "center",
+    color: "#333",
   },
   planDetails: {
     fontSize: 16,
-    color: '#777',
+    alignSelf: "center",
+    color: "#777",
   },
   selectedPlanContainer: {
-    marginTop: 24,
-    alignItems: 'center',
+    marginVertical: 24,
+    alignItems: "center",
   },
   selectedPlanText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 18,
-    color: '#333',
+    color: "#333",
   },
   selectedPlanInfo: {
     fontSize: 16,
-    color: '#777',
+    color: "#777",
   },
   payButton: {
-    backgroundColor: "#288771",
-    borderRadius: 8,
+    borderRadius: 15,
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    width: '90%',
+    // paddingHorizontal: 24,
   },
   payButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
+    alignSelf: 'center',
+    fontWeight: "bold",
   },
 });
 

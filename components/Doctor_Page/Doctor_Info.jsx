@@ -16,38 +16,6 @@ const Doctor_Info = ({navigation,desc ,fun1}) => {
     const main_color = "#288771";
     return (
       <View>
-        <TouchableOpacity onPress={()=>{navigation.navigate("PricingPlanBadge")}}>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginTop: 5,
-              },
-            ]}
-          >
-            <Icon2
-              name={"info"}
-              size={25}
-              color={main_color}
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Buy a new package{" "}
-            </Text>
-            <Icon name={"edit"} size={25} color={main_color} />
-          </View>
-
-        </TouchableOpacity>
         <TouchableOpacity onPress={fun1}>
           <View
             style={[

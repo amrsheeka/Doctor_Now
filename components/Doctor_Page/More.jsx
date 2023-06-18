@@ -1,13 +1,19 @@
 import React from "react";
 
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import Icon3 from "react-native-vector-icons/Fontisto";
 
 const More = ({ navigation, fun1 }) => {
   const main_color = "#288771";
   return (
-    <View>
+    <View style = {{backgroundColor : 'white'}}>
+      <View style={{ marginVertical: 10, alignSelf: "center" }}>
+        <Image
+          source={require("../assets/doctor.png")}
+          style={{ height: 250, width: 250 }}
+        />
+      </View>
       <TouchableOpacity onPress={fun1}>
         <View
           style={[
@@ -41,6 +47,41 @@ const More = ({ navigation, fun1 }) => {
         </View>
       </TouchableOpacity>
 
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("PricingPlanBadge");
+        }}
+      >
+        <View
+          style={[
+            styles.content,
+            {
+              alignItems: "center",
+              flexDirection: "row",
+              paddingVertical: 15,
+              marginTop: 5,
+            },
+          ]}
+        >
+          <Icon3
+            name={"wallet"}
+            size={30}
+            color={main_color}
+            style={{ width: "10%", marginLeft: 10 }}
+          />
+          <Text
+            style={{
+              color: "black",
+              fontSize: 20,
+              paddingHorizontal: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Subscription Packages{" "}
+          </Text>
+        </View>
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("Chat_D")}>
         <View
           style={[
@@ -91,7 +132,7 @@ const styles = StyleSheet.create({
     padding: 7,
     height: 75,
 
-    // marginBottom: 3,
+    marginBottom: 3,
     marginHorizontal: 5,
   },
 });

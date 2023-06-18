@@ -98,18 +98,16 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const click_heart = async (user_id, doctor_id) => {
     if (heart == "favorite") {
       setHeart("favorite-border");
-      deleteFavourite(user_id, doctor_id)
-        .then(() => {
-          //fetchFavouriteinfav();
-          fetchDoctor();
-        })
+      deleteFavourite(user_id, doctor_id).then(() => {
+        //fetchFavouriteinfav();
+        fetchDoctor();
+      });
     } else {
       setHeart("favorite");
-      insertFavourite(user_id, doctor_id)
-        .then(() => {
-          //fetchFavouriteinfav();
-          fetchDoctor();
-        })
+      insertFavourite(user_id, doctor_id).then(() => {
+        //fetchFavouriteinfav();
+        fetchDoctor();
+      });
     }
   };
 
@@ -198,12 +196,62 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
               </Text>
             </TouchableOpacity>
             <View style={{ flexDirection: "row", alignSelf: "center" }}>
-              {/* <Icon name={icon1} size={35} color="gold" />
-              <Icon name={icon2} size={35} color="gold" />
-              <Icon name={icon3} size={35} color="gold" />
-              <Icon name={icon4} size={35} color="gold" />
-              <Icon name={icon5} size={35} color="gold" /> */}
-              <Rating imageSize={25} readonly startingValue={av_rate} />
+              <Icon
+                name={
+                  doctor.rate < 0.4
+                    ? "star-border"
+                    : doctor.rate < 0.9
+                    ? "star-half"
+                    : "star"
+                }
+                size={35}
+                color="gold"
+              />
+              <Icon
+                name={
+                  doctor.rate < 1.4
+                    ? "star-border"
+                    : doctor.rate < 1.9
+                    ? "star-half"
+                    : "star"
+                }
+                size={35}
+                color="gold"
+              />
+              <Icon
+                name={
+                  doctor.rate < 2.4
+                    ? "star-border"
+                    : doctor.rate < 2.9
+                    ? "star-half"
+                    : "star"
+                }
+                size={35}
+                color="gold"
+              />
+              <Icon
+                name={
+                  doctor.rate < 3.4
+                    ? "star-border"
+                    : doctor.rate < 3.9
+                    ? "star-half"
+                    : "star"
+                }
+                size={35}
+                color="gold"
+              />
+              <Icon
+                name={
+                  doctor.rate < 4.4
+                    ? "star-border"
+                    : doctor.rate < 4.9
+                    ? "star-half"
+                    : "star"
+                }
+                size={35}
+                color="gold"
+              />
+              {/* <Rating imageSize={25} readonly startingValue={av_rate} /> */}
             </View>
 
             <View>

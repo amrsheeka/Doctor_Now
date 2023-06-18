@@ -30,7 +30,12 @@ import CurrentUser from "../consts/CurrentUser";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 
-import { getAppointment_by_doc_id, insertReviews } from "../../database/Users";
+import {
+  getAppointment_by_doc_id,
+  insertReviews,
+  getReviews,
+  UpdateReviews,
+} from "../../database/Users";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import { getDocSchedule } from "../../database/Doctors";
@@ -47,6 +52,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleComment, setModalVisibleComment] = useState(false);
   const [length, setLength] = useState();
+  const [comments, setComments] = useState([]);
+  const [commentIsExist, setCommentIsExist] = useState(false);
 
   const getDocDays = async () => {
     let days, start, end, number;
@@ -66,8 +73,23 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     setNumberOfPatients(number);
   };
 
+  const getComments = async () => {
+    await getReviews(item.id).then((res) => {
+      if (res.status != "failed") {
+        // console.log(res);
+        setComments(res);
+        const old = res.filter((ele) => ele.users_id == CurrentUser.user.id);
+        if (old.length != 0) {
+          setCommentIsExist(true);
+          setCommentText(old[0].text);
+          setRateNumber(old[0].rate);
+        }
+      }
+    });
+  };
   useEffect(() => {
     getDocDays();
+    getComments();
   }, []);
 
   const getDocTimes = async () => {
@@ -107,11 +129,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     navigation.navigate("Chat");
   };
 
-  const [icon1, setIcon1] = useState("star");
-  const [icon2, setIcon2] = useState("star");
-  const [icon3, setIcon3] = useState("star");
-  const [icon4, setIcon4] = useState("star");
-  const [icon5, setIcon5] = useState("star");
+
   const [rateNumber, setRateNumber] = useState(0);
   const [commentText, setCommentText] = useState("");
 
@@ -120,9 +138,9 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const [arrow, setArrow] = useState("angle-down");
   const [arrow2, setArrow2] = useState("angle-down");
 
-  const main_color = "#288771";
   const [select_Month, SetSelect_Month] = useState("June 2023");
   const [select_Month_Index, SetSelect_Month_Index] = useState(0);
+  const main_color = "#288771";
 
   const day = (avliable, week, month, key) => {
     return (
@@ -308,32 +326,103 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     return [days, days_of_week, avaliable_days];
   };
 
-  const comment = (user_name, rate, text, date) => {
+  const comment = (user_name, rate, text, date, key) => {
     return (
-      <View>
+      <View key={key}>
         <View style={styles.line}></View>
         <View style={{ flexDirection: "row", marginVertical: 5 }}>
-          <Icon name={icon1} size={25} color="gold" />
-          <Icon name={icon2} size={25} color="gold" />
-          <Icon name={icon3} size={25} color="gold" />
-          <Icon name={icon4} size={25} color="gold" />
-          <Icon name={icon5} size={25} color="gold" style={{ width: "40%" }} />
-          <Text> Sun Jun 18 2023 </Text>
+          <Icon
+            name={rate > 0 ? "star" : "star-border"}
+            size={25}
+            color="gold"
+          />
+          <Icon
+            name={rate > 1 ? "star" : "star-border"}
+            size={25}
+            color="gold"
+          />
+          <Icon
+            name={rate > 2 ? "star" : "star-border"}
+            size={25}
+            color="gold"
+          />
+          <Icon
+            name={rate > 3 ? "star" : "star-border"}
+            size={25}
+            color="gold"
+          />
+          <Icon
+            name={rate > 4 ? "star" : "star-border"}
+            size={25}
+            color="gold"
+            style={{ width: "38%" }}
+          />
+          <Text> {date} </Text>
         </View>
 
         <Text
           style={{
             marginVertical: 5,
-            alignSelf: "center",
+            lineHeight: 20,
+            // alignSelf: "center",
             // justifyContent: "center",
           }}
         >
-          دكتور محترم جدا وعياده شيك جدا وانصح الناس تروحله وكمان سعره حلو جدا
+          {text}
         </Text>
 
-        <Text> Mohamed Essam </Text>
+        <Text style={{ alignSelf: "flex-end" }}> {user_name} </Text>
       </View>
     );
+  };
+
+  const sumbitComment = async () => {
+    setModalVisibleComment(false);
+    let sum, avg;
+    if (commentIsExist) {
+      await UpdateReviews({
+        users_id: CurrentUser.user.id,
+        doctor_id: item.id,
+        user_name: CurrentUser.user.name,
+        text: commentText,
+        rate: rateNumber,
+        date: new Date().toDateString(),
+      }).then(async () => {
+        await getReviews(item.id).then((res) => {
+          if (res.status != "failed") {
+            setComments(res);
+            sum = res.reduce(
+              (accumulator, currentValue) => accumulator + currentValue.rate,
+              0
+            );
+            avg = sum / res.length;
+            console.log(sum, "Average", avg);
+          }
+        });
+      });
+    } else {
+      await insertReviews(
+        CurrentUser.user.id,
+        item.id,
+        CurrentUser.user.name,
+        commentText,
+        rateNumber,
+        new Date().toDateString()
+      ).then(async () => {
+        await getReviews(item.id).then((res) => {
+          if (res.status != "failed") {
+            setComments(res);
+            sum = res.reduce(
+              (accumulator, currentValue) => accumulator + currentValue.rate,
+              0
+            );
+            avg = sum / res.length;
+            console.log(sum, "Average", avg);
+          }
+        });
+      });
+    }
+ 
   };
 
   return (
@@ -374,11 +463,17 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                   </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: "row" }}>
-                  <Icon name={icon1} size={25} color="gold" />
-                  <Icon name={icon2} size={25} color="gold" />
-                  <Icon name={icon3} size={25} color="gold" />
-                  <Icon name={icon4} size={25} color="gold" />
-                  <Icon name={icon5} size={25} color="gold" />
+                {/* <Icon
+                          name={rateNumber > 0 ? "star" : "star-border"}
+                          size={50}
+                          color="gold"
+                          onPress={() => setRateNumber(1)}
+                        /> */}
+                  <Icon name={item.rate < 0.4  ? "star-border" : item.rate < 0.9 ? "star-half" : "star"  } size={25} color="gold" />
+                  <Icon name={item.rate < 1.4  ? "star-border" : item.rate < 1.9 ? "star-half" : "star"  } size={25} color="gold" />
+                  <Icon name={item.rate < 2.4  ? "star-border" : item.rate < 2.9 ? "star-half" : "star"  } size={25} color="gold" />
+                  <Icon name={item.rate < 3.4  ? "star-border" : item.rate < 3.9 ? "star-half" : "star"  } size={25} color="gold" />
+                  <Icon name={item.rate < 4.4  ? "star-border" : item.rate < 4.9 ? "star-half" : "star"  } size={25} color="gold" />
                 </View>
                 <Text style={{ fontSize: 12 }}>
                   {" "}
@@ -574,108 +669,106 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             )}
           </View>
           <View style={[styles.content]}>
-            {
-              item.payment_map != 0 ? (
-                <View>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Icon4
-                      name={"calendar"}
-                      size={25}
-                      color={main_color}
-                      style={{ marginLeft: 5 }}
+            {item.payment_map != 0 ? (
+              <View>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon4
+                    name={"calendar"}
+                    size={25}
+                    color={main_color}
+                    style={{ marginLeft: 5 }}
                     // onPress={schedule}
-                    />
-                    <Text
-                      style={{ marginHorizontal: 10, width: "38%", fontSize: 16 }}
+                  />
+                  <Text
+                    style={{ marginHorizontal: 10, width: "38%", fontSize: 16 }}
+                  >
+                    Schedule
+                  </Text>
+                  <View style={styles.picker}>
+                    <Picker
+                      selectedValue={select_Month}
+                      onValueChange={(value, index) => {
+                        SetSelect_Month(value);
+                        SetSelect_Month_Index(index);
+                      }}
+                      // mode="dropdown"
+                      style={{
+                        marginVertical: -10,
+                        marginHorizontal: -10,
+                        alignItems: "center",
+                      }}
+                      dropdownStyle={{
+                        backgroundColor: "red",
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                        borderWidth: 1,
+                        borderColor: "gray",
+                        borderRadius: 5,
+                        marginTop: -1,
+                      }}
                     >
-                      Schedule
-                    </Text>
-                    <View style={styles.picker}>
-                      <Picker
-                        selectedValue={select_Month}
-                        onValueChange={(value, index) => {
-                          SetSelect_Month(value);
-                          SetSelect_Month_Index(index);
-                        }}
-                        // mode="dropdown"
-                        style={{
-                          marginVertical: -10,
-                          marginHorizontal: -10,
-                          alignItems: "center",
-                        }}
-                        dropdownStyle={{
-                          backgroundColor: "red",
-                          paddingHorizontal: 10,
-                          paddingVertical: 5,
-                          borderWidth: 1,
-                          borderColor: "gray",
-                          borderRadius: 5,
-                          marginTop: -1,
-                        }}
-                      >
-                        {getMonths().map((e, i) => (
-                          <Picker.Item
-                            label={e}
-                            value={e}
-                            key={i}
-                            style={{ width: 20 }}
-                          />
-                        ))}
-                      </Picker>
-                    </View>
+                      {getMonths().map((e, i) => (
+                        <Picker.Item
+                          label={e}
+                          value={e}
+                          key={i}
+                          style={{ width: 20 }}
+                        />
+                      ))}
+                    </Picker>
                   </View>
-                  <ScrollView horizontal={true}>
-                    {getDays()[0].map((dayOfMonth, idx) => {
-                      const dayOfWeek = getDays()[1][idx];
-                      const Avaliable = getDays()[2][idx];
-                      return day(Avaliable, dayOfWeek, dayOfMonth, idx);
-                    })}
-                    {item.schedule_type == "on appointment" ? (
+                </View>
+                <ScrollView horizontal={true}>
+                  {getDays()[0].map((dayOfMonth, idx) => {
+                    const dayOfWeek = getDays()[1][idx];
+                    const Avaliable = getDays()[2][idx];
+                    return day(Avaliable, dayOfWeek, dayOfMonth, idx);
+                  })}
+                  {item.schedule_type == "on appointment" ? (
+                    <Modal
+                      animationType="slide"
+                      transparent={true}
+                      visible={modalVisible}
+                      onRequestClose={() => {
+                        setModalVisible(false);
+                      }}
+                    >
                       <View style={styles.centeredView}>
-                        <Modal
-                          animationType="slide"
-                          transparent={true}
-                          visible={modalVisible}
-                          onRequestClose={() => {
-                            setModalVisible(false);
-                          }}
-                        >
-                          <View style={styles.centeredView}>
-                            <View style={[styles.content, { width: "100%" }]}>
-                              <View
-                                style={{ marginVertical: 10, alignSelf: "center" }}
-                              >
-                                <Image
-                                  source={require("../assets/doctor.png")}
-                                  style={{ height: 150, width: 200 }}
-                                />
-                              </View>
-                              <View style={{ width: "100%" }}>
-                                <View
-                                  style={{
-                                    flexDirection: "row",
-                                    flexWrap: "wrap",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  {times(choice).map((e, idx) => {
-                                    const avli = timeList.includes(e);
-                                    return time(!avli, e, idx);
-                                  })}
-                                </View>
-                              </View>
+                        <View style={[styles.content, { width: "100%" }]}>
+                          <View
+                            style={{ marginVertical: 10, alignSelf: "center" }}
+                          >
+                            <Image
+                              source={require("../assets/doctor.png")}
+                              style={{ height: 150, width: 200 }}
+                            />
+                          </View>
+                          <View style={{ width: "100%" }}>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                flexWrap: "wrap",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              {times(choice).map((e, idx) => {
+                                const avli = timeList.includes(e);
+                                return time(!avli, e, idx);
+                              })}
                             </View>
                           </View>
-                        </Modal>
+                        </View>
                       </View>
-                    ) : (
-                      <></>
-                    )}
-                  </ScrollView>
-                </View>
-              ) :<></>
-            }
+                    </Modal>
+                  ) : (
+                    <></>
+                  )}
+                </ScrollView>
+              </View>
+            ) : (
+              <></>
+            )}
           </View>
           <View style={styles.content}>
             <View
@@ -826,14 +919,16 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                         />
                       </View>
                       <TouchableOpacity
+                        disabled={!rateNumber}
                         style={{
-                          backgroundColor: main_color,
+                          backgroundColor: rateNumber ? main_color : "grey",
                           width: "80%",
                           alignSelf: "center",
-                          padding: 7,
+                          padding: 10,
                           borderRadius: 10,
                           marginVertical: 5,
                         }}
+                        onPress={() => sumbitComment()}
                       >
                         <Text
                           style={{
@@ -851,12 +946,15 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                 </View>
               </View>
             </Modal>
-
-            {/* <View style={styles.line}></View> */}
-            {comment("", "", "", "")}
-            {comment("", "", "", "")}
-            {comment("", "", "", "")}
-            {comment("", "", "", "")}
+            {comments.map((ele, index) => {
+              return comment(
+                ele.user_name,
+                ele.rate,
+                ele.text,
+                ele.date,
+                index
+              );
+            })}
           </View>
         </View>
       </ScrollView>

@@ -443,7 +443,19 @@ const Update_Appointment = async (
       console.log(error);
     });
 };
-
+const UpdateReviews = async (review) => {
+  const res = await axios
+    .post(`${Ip.ip}/API/reviews/update_rev.php`, {
+      ...review
+    })
+    .then(function (response) {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 const getReviews = async (doctor_id) => {
   return axios
     .post(`${Ip.ip}/API/reviews/get_rev.php`, {
@@ -456,13 +468,32 @@ const getReviews = async (doctor_id) => {
       console.log(error);
     });
 };
-const insertReviews = async (users_id, doctor_id, text, user_name) => {
+const insertReviews = async (users_id, doctor_id, user_name , text , rate, date) => {
   const res = await axios
     .post(`${Ip.ip}/API/reviews/insert_rev.php`, {
       users_id: users_id,
       doctor_id: doctor_id,
-      text: text,
       user_name: user_name,
+      text: text,
+      rate:rate,
+      date,date,
+    })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+const deleteReviews = async (users_id, doctor_id, user_name , text , rate, date) => {
+  const res = await axios
+    .post(`${Ip.ip}/API/reviews/insert_rev.php`, {
+      users_id: users_id,
+      doctor_id: doctor_id,
+      user_name: user_name,
+      text: text,
+      rate:rate,
+      date,date,
     })
     .then(function (response) {
       console.log(response.data);
@@ -535,6 +566,7 @@ export {
   getAllAppointment_from_history,
   getReviews,
   insertReviews,
+  UpdateReviews,
   getRate,
   insertRate,
   get_user_by_Id,
