@@ -3,70 +3,88 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
+  // TextInput,
   Button,
   TouchableOpacity,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import Icon from "react-native-vector-icons/FontAwesome";
+import Icon2 from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon3 from "react-native-vector-icons/MaterialIcons";
+import { sighnup } from "../../database/Users";
+import { TextInput } from "react-native-paper";
 import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
-import { sighnup } from "../../database/Users";
-// import { TouchableOpacity } from "react-native-web";
+import { Ionicons } from "@expo/vector-icons";
+import { ScrollView } from "react-native";
+
+
 const SignUpScreen = ({ navigation, route }) => {
   const [email, setEmail] = useState("");
-  const [gender, setGender] = useState("male");
-  const [emailErr, setEmailErr] = useState("");
+  // const [gender, setGender] = useState("male");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+
+  const [emailErr, setEmailErr] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
+  const [confirmErr, setConfirmErr] = useState("");
+  const [showPasswordIcon, setShowPasswordIcon] = useState(false);
+  const [showPasswordIcon2, setShowPasswordIcon2] = useState(false);
+
+  const main_color = "#288771";
+
   const handleSignUp = async () => {
 
-    if (
-      !email ||
-      !ValidateEmail(email) ||
-      !password ||
-      password.length <= 8 ||
-      !ValidatePassword(password)
-    ) {
-      if (!email) {
-        setEmailErr("Enter your email address.");
-      } else if (!ValidateEmail(email)) {
-        setEmailErr(
-          "The email address should have the format: (user@example.com)."
-        );
-      } else {
-        setEmailErr("");
-      }
-      if (!password) {
-        setPasswordErr("Enter your password.");
-      } else if (password.length <= 8) {
-        setPasswordErr("password should be greater than 7 letters.");
-      } else if (!ValidatePassword(password)) {
-        setPasswordErr(
-          "password should have at least one letter and one number"
-        );
-      } else {
-        setPasswordErr("");
-      }
+    if (!email) {
+      setEmailErr("Enter your email address.");
+    } else if (!ValidateEmail(email)) {
+      setEmailErr(
+        "The email address should have the format: (user@example.com)."
+      );
     } else {
+      setEmailErr("");
+    }
+
+    if (!password) {
+      setPasswordErr("Enter your password.");
+    } else if (password.length < 8) {
+      setPasswordErr("password should be at least 8 letters.");
+    } else if (!ValidatePassword(password)) {
+      setPasswordErr(
+        "password should have at least one letter and one number"
+      );
+    } else {
+      setPasswordErr("");
+    }
+
+    if (confirm != password) {
+      setConfirmErr("Password and Confirm password does not match")
+    } else {
+      setConfirmErr("");
+    }
+
+
+
+    if (ValidateEmail(email) && ValidatePassword(password) && confirm === password) {
+
       sighnup(route.params.name,
         email, password,
         route.params.phone,
         route.params.address,
-        route.params.address2,
+        // route.params.address2,
         route.params.age,
-        gender,
+        route.params.gender,
         confirm
       )
         .then((res) => {
-          console.log("res:",res);
-          if(res=="success"){
+          console.log("res:", res);
+          if (res == "success") {
             alert("Register Successfully go to login ->");
             navigation.navigate("LoginScreen");
-          }else{
-            console.log(res);
+          } else {
             alert(res);
           }
-            
+
         })
         .catch((err) => {
           console.error(err);
@@ -95,152 +113,114 @@ const SignUpScreen = ({ navigation, route }) => {
     } else {
       return false;
     }
-  }
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.icon}>
-        <Image source={require("../assets/splash.png")} />
-      </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={[styles.icon, { marginTop: 100 }]}>
+          <Image
+            style={{ height: 150, width: 150 }}
+            source={require("../assets/splash.png")}
+          />
+        </View>
+        <View style={styles.icon}>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+            Register your account!
+          </Text>
+        </View>
 
-      <View>
-        <Text style={styles.greeting}>Register your account!</Text>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-          Gender
-        </Text>
-        <Picker
-          selectedValue={gender}
-          onValueChange={(value, index) => setGender(value)}
-          mode="dropdown"
-          style={styles.picker}
-        >
-          <Picker.Item label="male" value="male" />
-          <Picker.Item label="female" value="female" />
-        </Picker>
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-          Email
-        </Text>
+
         <TextInput
-          placeholder="Enter Your Email"
-          keyboardType="email-address"
-          style={styles.input}
+          label={"Email"}
+          mode="outlined"
+          style={{ marginTop: 30 }}
           value={email}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={setEmail}
+          outlineStyle={{
+            borderColor: main_color,
+            borderRadius: 10,
+            color: "red",
+          }}
+          left={
+            <TextInput.Icon icon={'email'} />
+          }
+          activeOutlineColor={main_color}
         />
         <Text style={{ color: "red" }}>{emailErr}</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-          Password
-        </Text>
+
+
         <TextInput
-          placeholder="Enter Your Password"
-          keyboardType="visible-password"
-          style={styles.input}
-          secureTextEntry
+          label={"Password"}
+          mode="outlined"
           value={password}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={setPassword}
+          secureTextEntry={!showPasswordIcon}
+          outlineStyle={{
+            borderColor: main_color,
+            borderRadius: 10,
+            color: "red",
+          }}
+          left={<TextInput.Icon icon={'lock'} />}
+          right={<TextInput.Icon icon={showPasswordIcon ? 'eye-off' : 'eye'} onPress={() => setShowPasswordIcon(!showPasswordIcon)} iconColor="grey" />}
+          activeOutlineColor={main_color}
         />
         <Text style={{ color: "red" }}>{passwordErr}</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
-          Confirm Password
-        </Text>
+
         <TextInput
-          placeholder="Confirm Password"
-          style={styles.input}
-          secureTextEntry
+          label={"Confirm password"}
+          mode="outlined"
           value={confirm}
-          onChangeText={(text) => setConfirm(text)}
+          onChangeText={setConfirm}
+          secureTextEntry={!showPasswordIcon2}
+          outlineStyle={{
+            borderColor: main_color,
+            borderRadius: 10,
+            color: "red",
+          }}
+          left={<TextInput.Icon icon={'lock'} />}
+          right={<TextInput.Icon icon={showPasswordIcon2 ? 'eye-off' : 'eye'} onPress={() => setShowPasswordIcon2(!showPasswordIcon2)} iconColor="grey" />}
+          activeOutlineColor={main_color}
         />
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
-          <Text style={styles.buttonText}>Register</Text>
+        <Text style={{ color: "red" }}>{confirmErr}</Text>
+
+
+        <TouchableOpacity
+          style={{
+            alignSelf: "center",
+            backgroundColor: main_color,
+            width: "70%",
+            borderRadius: 20,
+            height: 45,
+            marginTop: 40,
+            marginBottom: 5,
+          }}
+          onPress={() => handleSignUp()}
+        >
+          <Text style={{ alignSelf: "center", color: "white", marginTop: 10 }}>
+            Register
+          </Text>
         </TouchableOpacity>
-        <View style={styles.textContainer}>
+        <View style={{ alignSelf: "center", flexDirection: "row" }}>
           <Text>Already have account?</Text>
           <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
-            <Text style={styles.text}>Login</Text>
+            <Text style={{ color: "#288771" }}> Login</Text>
           </TouchableOpacity>
         </View>
+        <StatusBar style="auto" backgroundColor="#fafafa" />
       </View>
-    </View>
+    </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fafafa",
-  },
-  greeting: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 10,
-  },
-  inputContainer: {
-    width: "80%",
-    marginTop: 20,
-  },
-  input: {
-    backgroundColor: "#eceff1",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 10,
-  },
-  buttonContainer: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    width: "80%",
-    height: "23%",
-    borderRadius: 20,
-    alignItems: "center",
-    backgroundColor: "#288771",
-  },
-  buttonOutline: {
-    backgroundColor: "white",
-    marginTop: 5,
-    borderColor: "#288771",
-    borderWidth: 2,
-  },
-  buttonText: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-    color: "white",
-  },
-  buttonOutlineText: {
-    color: "#288771",
-    fontSize: 16,
-    fontWeight: "700",
-  },
-  textContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  text: {
-    fontSize: 15,
-    color: "#288771",
+    // backgroundColor: "#fafafa",
+    padding: 25,
   },
   icon: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 20,
-  },
-  picker: {
-    height: 50,
-    borderRadius: 10,
-    marginBottom: 10,
-    backgroundColor: "#efefef",
   },
 });
 

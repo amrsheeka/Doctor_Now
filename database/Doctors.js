@@ -18,9 +18,9 @@ const deleteDoctor = async (id) => {
       console.log(error);
     });
 };
-const getDoc = async (doctor_id) => {
-  return axios.post(`${Ip.ip}/API/doctors/getdoc.php`, {
-    id: doctor_id
+const getDoc = async (id) => {
+  return axios.post(`${Ip.ip}/API/doctors/get_doc_by_id.php`, {
+    id: id
   })
     .then(function (response) {
       return response.data;
@@ -42,6 +42,20 @@ const editDoctor = async (id,lat,long) => {
       console.log(error);
     });
 };
+
+const updateDoctor = async (doctor) => {
+  const res = await axios.post(`${Ip.ip}/API/doctors/update_doctors.php`, {
+   ...doctor
+  })
+    .then(function (response) {
+      console.log(response.data);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
 const addDoctor = async (doctor) => {
 
   return await axios.post(`${Ip.ip}/API/doctors/insert.php`, {...doctor})
@@ -53,4 +67,38 @@ const addDoctor = async (doctor) => {
       console.log(error);
     });
 }
-export { getDoctors, deleteDoctor,getDoc,editDoctor,addDoctor };
+const getDocSchedule = async (doctor_id) => {
+  return axios.post(`${Ip.ip}/API/doctors/schedule.php`, {
+    doctor_id: doctor_id
+  })
+    .then(function (response) {
+      //console.log(response.data);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+const updateSchedule = async (schedule) => {
+  return axios.post(`${Ip.ip}/API/doctors/update_schedule.php`, {
+    ...schedule
+  })
+    .then(function (response) {
+      console.log(response.data,"\n",schedule);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+export { 
+  getDoctors,
+  deleteDoctor,
+  getDoc,
+  editDoctor,
+  addDoctor,
+  getDocSchedule,
+  updateDoctor,
+  updateSchedule,
+
+};

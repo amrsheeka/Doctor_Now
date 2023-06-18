@@ -189,16 +189,18 @@ const styles = StyleSheet.create({
     color: "#555",
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
+    backgroundColor: '#1d1c1c',
   },
-  darklist: {
-    backgroundColor: '#142E5E',
-    borderWidth: 0,
-
-  },
-  dark2: {
-    backgroundColor: "#BDD3FF",
-  },
+  // darklist: {
+  //   backgroundColor: '#262424',
+  //   color:"white",
+  //   borderColor:'#262424'
+  // },
+  // dark2: {
+  //   backgroundColor: '#262424',
+  //   color:"white",
+  //   borderColor:'#262424'
+  // },
 });
 
 export default Chat;

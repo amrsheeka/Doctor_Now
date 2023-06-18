@@ -156,12 +156,12 @@ const Edit_user = ({ navigation, route }) => {
       </ScrollView>
       <View style={styles.footer}>
         <TouchableOpacity
-          style={[styles.button ,night&&styles.darklist]}
+          style={[styles.button ]}
 
 
           onPress={() => { handleSave(); }}
         >
-          <Text style={[styles.buttonText,night&&styles.textdark]}>Confirm</Text>
+          <Text style={[styles.buttonText]}>Confirm</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -171,7 +171,7 @@ const Edit_user = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 10,
     backgroundColor: "#ffffff",
   },
   header: {
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "flex-start",
-    paddingVertical: 30,
+    paddingVertical: 20,
     // marginBottom: 20,
 
 
@@ -200,7 +200,9 @@ const styles = StyleSheet.create({
     // marginTop:15,
     width: "35%",
 
-
+  },
+  footer:{
+paddingVertical:50
   },
   input: {
     height: 50,
@@ -209,14 +211,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 10,
     paddingRight: 10,
-    marginBottom: 10,
+    marginBottom: 5,
     backgroundColor: "#efefef",
   },
   text: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
-    padding: 5,
+    paddingHorizontal: 5,
   },
   ageBox: {
     flexDirection: "row",
@@ -253,7 +255,7 @@ const styles = StyleSheet.create({
   button: {
     fontSize: 18,
     paddingHorizontal: "40%",
-    borderWidth: 2,
+    
     borderRadius: 20,
     borderColor: "#ffffff",
     backgroundColor: "#288771",
@@ -264,15 +266,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
-  },
+    backgroundColor: '#1d1c1c',
+    },
   darklist: {
-    backgroundColor: '#142E5E',
-    borderWidth: 0,
+    backgroundColor: '#262424',
+    color:"white",
+    borderColor:'#262424'
 
   },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: '#262424',
+    color:"white",
+    borderColor:'#262424'
   },
   textdark: {
     fontSize: 18,

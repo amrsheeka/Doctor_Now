@@ -6,7 +6,7 @@ header('Access-Control-Allow-Methods: GET, POST');
 header("Access-Control-Allow-Headers: X-Requested-With,Content-Type");
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
-$doctor_id  = $obj['doctor_id'];
+$doctor_id = $obj['doctor_id'];
 $date  = $obj['date'];
 $stmt = $con->prepare("SELECT * FROM `appointment` WHERE  `doctor_id` = ? AND `date` = ? ");
 $stmt->execute(array($doctor_id,$date));

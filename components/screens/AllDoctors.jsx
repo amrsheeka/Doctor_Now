@@ -8,26 +8,31 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
+  RefreshControl
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DoctorCard from "../subcomponents/DoctorCard";
 import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
-import { getCurrentUser } from "../../database/Users";
+import { getCurrentUser, getFavourite } from "../../database/Users";
 import * as Location from 'expo-location';
 import { AppContext } from "../consts/AppContext";
 import { Button } from "react-native";
+import { getDoctors } from "../../database/Doctors";
+import DoctorCard2 from "../subcomponents/DoctorCard2";
 const AllDoctors = ({ navigation, route }) => {
   const filterd = route.params.filteritem;
   const all = route.params.all;
-  const {doctors} = useContext(AppContext);
+  const {doctors,setDoctors} = useContext(AppContext);
   const [selectedValue, setSelectedValue] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const { favourite, setFavourite } = useContext(AppContext);
+  const { night} = useContext(AppContext);
   const [reload, setReload] = useState(false); // add reload state
-
+  const {refreshing, setRefreshing} = useContext(AppContext);
   async function getlocation() {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -40,7 +45,12 @@ const AllDoctors = ({ navigation, route }) => {
       setLongitude(location.coords.longitude);
     }
   }
-
+async function fetchDoctor() {
+    const doctor = await getDoctors();
+    setDoctors(doctor);
+    const filt = await getFavourite(currentUser.id);
+    setFavourite(filt);
+  }
   async function fetchLocation() {
     await getlocation().then(
       () => {
@@ -80,7 +90,7 @@ const AllDoctors = ({ navigation, route }) => {
   }, []); // add reload state to the dependency array
 
   const renderDoctor = ({ item }) => (
-    <DoctorCard doctor={item} user={currentUser} navigation={navigation} />
+    <DoctorCard2 reload={() => { }} doctor={item} navigation={navigation}/>
   );
 
   let ff = doctors;
@@ -97,8 +107,8 @@ const AllDoctors = ({ navigation, route }) => {
 
   if (all === "all") {
     return (
-      <View style={styles.container}>
-         <View style={styles.header}>
+      <View style={[styles.container,night && styles.buttonDark]}>
+      <View style={styles.header}>
         <View  style={styles.Go_Back1}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.Go_Back}>
@@ -107,7 +117,7 @@ const AllDoctors = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
         <View >
-        <Text style={styles.heading}>All Doctors</Text>
+        <Text style={[styles.heading,night && styles.buttonDark]}>All Doctors</Text>
         </View>
       </View>
         <View style={{ flexDirection: "row" }}>
@@ -121,10 +131,10 @@ const AllDoctors = ({ navigation, route }) => {
           <View style ={{flexDirection:"row",flex:3}}>
 
           </View>
-          <View style={styles.searchContainer}>
+          <View style={[styles.searchContainer,night && styles.dark2]}>
             <Ionicons name="search" size={24} color="gray" style={styles.searchIcon} />
             <TextInput
-              style={styles.searchInput}
+              style={[styles.searchInput,night && styles.dark2]}
               placeholder="Search doctors by name"
               value={searchQuery}
               onChangeText={(text) => setSearchQuery(text)}
@@ -153,7 +163,7 @@ const AllDoctors = ({ navigation, route }) => {
 
             <Picker
               selectedValue={selectedValue}
-              style={{ height: 50, width: 250 }}
+              style={[{ height: 50, width: 250 },night && styles.buttonDark]}
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedValue(itemValue)
               }
@@ -179,30 +189,34 @@ const AllDoctors = ({ navigation, route }) => {
 
 
         <FlatList
-          data={ff}
-          renderItem={renderDoctor}
-          keyExtractor={(item) => item.id}
-          numColumns={2}
-          initialNumToRender={7}
-          maxToRenderPerBatch={7}
-          windowSize={7}
-          columnWrapperStyle={styles.row}
-        />
+            removeClippedSubviews={true}
+            data={
+              ff
+            }
+            renderItem={renderDoctor}
+            initialNumToRender={7}
+            maxToRenderPerBatch={7}
+            windowSize={10}
+            keyExtractor={(item, index) => item.id}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={fetchDoctor} />
+            }
+          />
       </View>
     );
   } else if (filterd === "Stomach") {
     let dataa = doctors.filter((e) => e.title === "Internist");
     return (
-      <View style={styles.container}>
+      <View style={[styles.container,night && styles.buttonDark]}>
         <View style={styles.header}>
-          <Text style={styles.heading}>All Stomach Doctors</Text>
+        <Text style={[styles.heading,night && styles.buttonDark]}>All Stomach Doctors</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        {/* <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={styles.xx}>
             <Ionicons name="arrow-back" size={24} color="black" />
             <Text>back</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <FlatList
           data={dataa}
@@ -219,16 +233,16 @@ const AllDoctors = ({ navigation, route }) => {
   } else if (filterd === "Dentist") {
     let dataa =doctors.filter((e) => e.title === "Dentist");
     return (
-      <View style={styles.container}>
+      <View style={[styles.container,night && styles.buttonDark]}>
         <View style={styles.header}>
-          <Text style={styles.heading}>All Dentist Doctors</Text>
+        <Text style={[styles.heading,night && styles.buttonDark]}>All Dentist Doctors</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        {/* <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={styles.xx}>
             <Ionicons name="arrow-back" size={24} color="black" />
             <Text>back</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <FlatList
           data={dataa}
@@ -245,16 +259,16 @@ const AllDoctors = ({ navigation, route }) => {
   } else if (filterd === "Surgery") {
     let dataa = doctors.filter((e) => e.title === "General Surgeon");
     return (
-      <View style={styles.container}>
+      <View style={[styles.container,night && styles.buttonDark]}>
         <View style={styles.header}>
-          <Text style={styles.heading}>All Surgery Doctors</Text>
+        <Text style={[styles.heading,night && styles.buttonDark]}>All Surgery Doctors</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        {/* <TouchableOpacity onPress={() => navigation.goBack()}>
           <View style={styles.xx}>
             <Ionicons name="arrow-back" size={24} color="black" />
             <Text>back</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <FlatList
           data={dataa}
@@ -376,6 +390,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 10,
    },
+   buttonDark: {
+    backgroundColor: '#1d1c1c',
+    color:"white",
+  },
+  dark2: {
+    backgroundColor: '#262424',
+    color:"white",
+    borderColor:'#262424'
+  },
 });
 
 export default AllDoctors;

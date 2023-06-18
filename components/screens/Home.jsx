@@ -10,15 +10,17 @@ import {
   ScrollView,
   ActivityIndicator,
   SafeAreaView,
-  Animated, PanResponder, Dimensions, StatusBar
+  Animated, PanResponder, Dimensions, StatusBar,
+  RefreshControl
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
-import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import { AppContext } from "../consts/AppContext";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
 import { getDoctors } from "../../database/Doctors";
 import CurrentUser from "../consts/CurrentUser";
+import { getFavourite } from "../../database/Users";
 const Home = ({ navigation }) => {
   const { night, setNight } = useContext(AppContext);
   const [search, setSearch] = useState("");
@@ -27,18 +29,33 @@ const Home = ({ navigation }) => {
   const [scrollY, setScrollY] = useState(new Animated.Value(0));
   const height = Dimensions.get('window').height;
   const [fav, setFav] = useState([]);
+  const { favourite, setFavourite } = useContext(AppContext);
+  const {refreshing, setRefreshing} = useContext(AppContext);
   const handleToggleDarkMode = () => {
     setNight(!night);
     // Here you can add logic to switch your app theme to dark mode
   };
+  
+  async function fetchDoctor() {
+    const doctor = await getDoctors();
+    setDoctors(doctor);
+    const filt = await getFavourite(CurrentUser.user.id);
+    setFavourite(filt);
+  }
   async function fetchDoctor() {
     const doctor = await getDoctors();
     setDoctors(doctor);
   }
   useEffect(() => {
-
     fetchDoctor();
+    // const focusHandler = navigation.addListener('focus', () => {
+    //   fetchDoctor().then(() => {
+    //     alert('Refreshed');
+    //     console.log(flag);
+    //   })
+   
   }, []);
+
   useEffect(() => {
     const panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => {
@@ -82,59 +99,67 @@ const Home = ({ navigation }) => {
     </View>
   );
   const header = () => (
-    <View style={styles.filterCards}>
-      <TouchableOpacity
-        style={styles.filterCard1}
-        onPress={() => {
-          navigation.navigate("AllDoctors", { filteritem: "Stomach" });
-        }}
-      >
-        <View style={styles.filterCardElements}>
-          <View style={styles.cardsIcons}>
-            <MaterialCommunityIcons
-              name="stomach"
-              size={70}
-              color="white"
-            />
+    <View>
+      <View>
+        <Text style={styles.subTitle}>Categories:</Text>
+      </View>
+      <View style={styles.filterCards}>
+        <TouchableOpacity
+          style={styles.filterCard1}
+          onPress={() => {
+            navigation.navigate("AllDoctors", { filteritem: "Stomach" });
+          }}
+        >
+          <View style={styles.filterCardElements}>
+            <View style={styles.cardsIcons}>
+              <MaterialCommunityIcons
+                name="stomach"
+                size={70}
+                color="white"
+              />
+            </View>
+            <View style={styles.filterCard1TextVeiw}>
+              <Text style={styles.filterCard1Text}>Stomach</Text>
+            </View>
           </View>
-          <View style={styles.filterCard1TextVeiw}>
-            <Text style={styles.filterCard1Text}>Stomach</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.filterCard2}
+          onPress={() => {
+            navigation.navigate("AllDoctors", { filteritem: "Dentist" });
+          }}
+        >
+          <View style={styles.filterCardElements}>
+            <View style={styles.cardsIcons}>
+              <FontAwesome5 name="tooth" size={60} color="white" />
+            </View>
+            <View style={styles.filterCard2TextVeiw}>
+              <Text style={styles.filterCard2Text}>Dentist</Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.filterCard2}
-        onPress={() => {
-          navigation.navigate("AllDoctors", { filteritem: "Dentist" });
-        }}
-      >
-        <View style={styles.filterCardElements}>
-          <View style={styles.cardsIcons}>
-            <FontAwesome5 name="tooth" size={60} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.filterCard3}
+          onPress={() => {
+            navigation.navigate("AllDoctors", { filteritem: "Surgery" });
+          }}
+        >
+          <View style={styles.filterCardElements}>
+            <View style={styles.cardsIcons}>
+              <Image
+                source={require("../assets/surgery.png")}
+                style={{ height: 65, width: 65 }}
+              />
+            </View>
+            <View style={styles.filterCard3TextVeiw}>
+              <Text style={styles.filterCard3Text}>Surgery</Text>
+            </View>
           </View>
-          <View style={styles.filterCard2TextVeiw}>
-            <Text style={styles.filterCard2Text}>Dentist</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.filterCard3}
-        onPress={() => {
-          navigation.navigate("AllDoctors", { filteritem: "Surgery" });
-        }}
-      >
-        <View style={styles.filterCardElements}>
-          <View style={styles.cardsIcons}>
-            <Image
-              source={require("../assets/surgery.png")}
-              style={{ height: 65, width: 65 }}
-            />
-          </View>
-          <View style={styles.filterCard3TextVeiw}>
-            <Text style={styles.filterCard3Text}>Surgery</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <Text style={styles.subTitle}>Best Doctors:</Text>
+      </View>
     </View>
   );
 
@@ -143,7 +168,7 @@ const Home = ({ navigation }) => {
 
     <View style={[styles.container, night && styles.buttonDark]}>
       <View style={[styles.header, night && styles.buttonDark]}>
-        <View style={{flexDirection:"row",gap:60}}>
+        <View style={{ flexDirection: "row", gap: 60 }}>
           <View style={styles.Title}>
             <Text style={styles.heading}>
               All doctors treat,but a good doctor lets nature heal.
@@ -180,7 +205,6 @@ const Home = ({ navigation }) => {
       </View>
       {doctors.length != 0 ? (
         <Animated.View
-
           style={[
             [styles.list, night && styles.darklist],
             {
@@ -198,6 +222,9 @@ const Home = ({ navigation }) => {
           ]}
           {...panResponder?.panHandlers}
         >
+          <View style={{ alignSelf: "center" }}>
+            <Ionicons name="reorder-three-outline" size={30} color={"#288771"} />
+          </View>
           <FlatList
             removeClippedSubviews={true}
             data={
@@ -211,8 +238,11 @@ const Home = ({ navigation }) => {
             maxToRenderPerBatch={7}
             windowSize={10}
             keyExtractor={(item, index) => item.id}
-
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={fetchDoctor} />
+            }
           />
+          
         </Animated.View>
       ) : (
         <View style={{ padding: "18%" }}>
@@ -228,6 +258,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#288771",
+  },
+  subTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: 25,
+    marginBottom: 10
   },
   header: {
     backgroundColor: "#288771",
@@ -247,8 +283,8 @@ const styles = StyleSheet.create({
   list: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingTop: 60,
-    backgroundColor: "#fff",
+    paddingVertical: 30,
+    backgroundColor: "#F5F5F5",
   },
   search: {
     backgroundColor: "#40b488",
@@ -363,13 +399,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
+    backgroundColor: '#288771',
   },
   darklist: {
-    backgroundColor: '#142E5E',
+    backgroundColor: '#262424',
+    color: "white"
   },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: "#1d1c1c",
   },
 });
 

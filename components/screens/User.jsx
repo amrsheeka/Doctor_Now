@@ -1,76 +1,81 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView,RefreshControl } from "react-native";
 import { AntDesign, Feather, MaterialIcons, SimpleLineIcons, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { logout } from "../../database/Users";
+import { getCurrentUser, logout } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 const User = ({ navigation }) => {
-  const { curruser} = useContext(AppContext);
+  const { curruser,setCurrUser} = useContext(AppContext);
   const { night} = useContext(AppContext);
+  const {refreshing, setRefreshing} = useContext(AppContext);
+  async function fetchUser() {
+    const user = await getCurrentUser();
+    setCurrUser(user);
+  }
   const handlelgout = () => {
     logout().then(() => navigation.navigate("StackNavigator"));
   }
   return (
-    <ScrollView style={[styles.container,night && styles.buttonDark]}>
+    <View style={{flex:1,marginBottom:"12%"}}>
+    <ScrollView
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={()=>fetchUser()} />
+    }
+    style={[styles.container,night && styles.buttonDark]}>
       <View>
         <View style={[styles.x,night && styles.darklist]}>
          <TouchableOpacity>
           <Image
-            source={require("../assets/Herbal_Medicine_Male_Avatar.png")}
+            source={curruser.image!=""?{uri:curruser.image}:require("../assets/Herbal_Medicine_Male_Avatar.png")}
             style={styles.z}
           />
           </TouchableOpacity>
           <Text style={[styles.z2,night&&styles.textdark]}> {curruser.name} </Text>
         </View>
       </View>
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <View style={[styles.xx,night && styles.dark2]}>
           <MaterialCommunityIcons name="history" size={28} color="black" style={styles.xxxx} />
-          <Text style={styles.xxxxx}> History </Text>
+          <Text style={[styles.xxxxx,night && styles.dark2]}> History </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity onPress={() => navigation.navigate("Userpage")}>
       <View style={[styles.xx,night && styles.dark2]}>
           <Ionicons name="md-person-outline" size={28} color="black" style={styles.xxxx} />
-          <Text style={styles.xxxxx}> Personal Details</Text>
-          <AntDesign name="right" size={20} color="black" style={styles.xxx} />
+          <Text style={[styles.xxxxx,night && styles.dark2]}> Personal Details</Text>
+          {/* <AntDesign name="right" size={20} color="black" style={styles.xxx} /> */}
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={ () => navigation.navigate("Appointments History")}>
       <View style={[styles.xx,night && styles.dark2]}>
-          <Ionicons name="md-location-outline" size={28} color="black" style={styles.xxxx} />
-          <Text style={styles.xxxxx}> Addres </Text>
-          <AntDesign name="right" size={20} color="black" style={styles.xxx} />
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Payment")}>
-      <View style={[styles.xx,night && styles.dark2]}>
-          <MaterialIcons name="payment" size={28} color="black" style={styles.xxxx} />
-          <Text style={styles.xxxxx}> Payment Method </Text>
-          <AntDesign name="right" size={20} color="black" style={styles.xxx} />
+          {/* <Ionicons name="md-location-outline" size={28} color="black" style={styles.xxxx} /> */}
+          <MaterialCommunityIcons name="history" size={28} color="black" style={styles.xxxx} />
+          <Text style={[styles.xxxxx,night && styles.dark2]}> Appointments History </Text>
+          {/* <AntDesign name="right" size={20} color="black" style={styles.xxx} /> */}
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
       <View style={[styles.xx,night && styles.dark2]}>
           <AntDesign name="exclamationcircleo" size={28} color="black" style={styles.xxxx} />
-          <Text style={styles.xxxxx}> About </Text>
+          <Text style={[styles.xxxxx,night && styles.dark2]}> About </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
       <View style={[styles.xx,night && styles.dark2]}>
           <Feather name="help-circle" size={28} color="black" style={styles.xxxx} />
-          <Text style={styles.xxxxx}> Help </Text>
+          <Text style={[styles.xxxxx,night && styles.dark2]}> Help </Text>
           <AntDesign name="right" size={20} color="black" style={styles.xxx} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handlelgout()}>
       <View style={[styles.xx,night && styles.dark2]}>
           <SimpleLineIcons name="logout" size={28} color="black" style={styles.xxxx} />
-          <Text style={styles.xxxxx}> Logout </Text>
+          <Text style={[styles.xxxxx,night && styles.dark2]}> Logout </Text>
         </View>
       </TouchableOpacity>
     </ScrollView>
+    </View>
   );
 };
 
@@ -146,15 +151,16 @@ const styles = StyleSheet.create({
 
   },
   buttonDark: {
-    backgroundColor: '#0D1E3D',
-  },
-  darklist: {
-    backgroundColor: '#142E5E',
-    borderWidth: 0,
+    backgroundColor: '#1d1c1c',
+    },
+  // darklist: {
+  //   backgroundColor: '#262424',
+  //   borderWidth: 0,
 
-  },
+  // },
   dark2: {
-    backgroundColor: "#BDD3FF",
+    backgroundColor: '#262424',
+    color:"white"
   },
   textdark: {
    
