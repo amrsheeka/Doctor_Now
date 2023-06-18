@@ -78,7 +78,7 @@ export default function AdminHome({ navigation }) {
             </View>
             <View style={styles.filterCard2TextVeiw}>
 
-              <Text style={styles.filterCard2Text}>Doctor's Activation</Text>
+              <Text style={styles.filterCard2Text}>Doctors</Text>
             </View>
           </View>
         </TouchableOpacity>
