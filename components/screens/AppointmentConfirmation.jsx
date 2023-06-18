@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
+  RefreshControl
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -48,7 +49,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleComment, setModalVisibleComment] = useState(false);
   const [length, setLength] = useState();
-
+  const {refreshing, setRefreshing} = useContext(AppContext);
   const getDocDays = async () => {
     let days, start, end, number;
     await getDocSchedule(item.id).then((res) => {
@@ -375,7 +376,11 @@ const AppointmentConfirmation = ({ navigation, route }) => {
         </View>
 
       </View>
-      <ScrollView>
+      <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={()=>getDays()} />
+      }
+      >
         <View style={{ marginBottom: 60 }}>
           <View style={styles.content}>
             <View style={[{ flexDirection: "row", marginVertical: 5 }]}>

@@ -7,6 +7,7 @@ import {
   Image,
   SafeAreaView,
   ActivityIndicator,
+  RefreshControl
 } from "react-native";
 import { getFavourite } from "../../database/Users";
 import { StatusBar } from "expo-status-bar";
@@ -16,6 +17,7 @@ import DoctorCard2 from "../subcomponents/DoctorCard2";
 const Favorite = ({ navigation, reload }) => {
   const { favourite, setFavourite } = useContext(AppContext);
   const { night } = useContext(AppContext);
+  const {refreshing, setRefreshing} = useContext(AppContext);
   const renderDoctor = ({ item }) => {
     return (
       <DoctorCard2 reload={fetchDoctor} doctor={item} navigation={navigation} />
@@ -58,6 +60,9 @@ const Favorite = ({ navigation, reload }) => {
             );
           }}
           keyExtractor={(item, index) => item.id}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchDoctor} />
+          }
         />
       ) : (
         <View style={{ padding: "18%" }}>
