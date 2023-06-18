@@ -11,7 +11,7 @@ $id = $obj['id'];
 $views = $obj['views'];
 $rate = $obj['rate'];
 
-var_dump($obj); 
+// var_dump($obj); 
 $stmt = $con->prepare("UPDATE `doctors` SET `views` = ?,  `rate` = ? WHERE id = ? ");
 $stmt->execute(array($views, $rate, $id));
 $count = $stmt->rowCount();
