@@ -827,6 +827,9 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     </Picker>
                   </View>
                 </View>
+               { 
+                  f ?
+                
                 <ScrollView horizontal={true}>
                   {getDays()[0].map((dayOfMonth, idx) => {
                     const dayOfWeek = getDays()[1][idx];
@@ -877,6 +880,20 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     <></>
                   )}
                 </ScrollView>
+                :
+                
+
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                  }}>
+
+                  <ActivityIndicator color={"#288771"} size="large" />
+
+                </View>
+                
+                }
               </View>
             ) : (
               <></>
