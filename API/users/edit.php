@@ -18,11 +18,12 @@ $password = $obj['password'];
 
 $is_doctor = $obj['is_doctor'];
 $is_admin = $obj['is_admin'];
-$phone_number_validation_regex = '/^01[0125][0-9]{8}$/';
-$phone_regex = preg_match($phone_number_validation_regex, $phone);
-if (!$phone_regex) {
-    echo json_encode(array("status" => "invalid phone number"));
-}elseif (empty($address)) {
+// $phone_number_validation_regex = '/^01[0125][0-9]{8}$/';
+// $phone_regex = preg_match($phone_number_validation_regex, $phone);
+// if (!$phone_regex) {
+//     echo json_encode(array("status" => "invalid phone number"));
+// }else
+if (empty($address)) {
     echo json_encode(array("status" => "please enter your address"));
 }elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     echo json_encode(array("status" => "invalid email"));

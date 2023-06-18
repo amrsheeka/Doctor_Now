@@ -10,10 +10,11 @@ import {
   ScrollView,
   ActivityIndicator,
   SafeAreaView,
-  Animated, PanResponder, Dimensions, StatusBar
+  Animated, PanResponder, Dimensions, StatusBar,
+  RefreshControl
 } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
-import { MaterialCommunityIcons, FontAwesome5,Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
 import { AppContext } from "../consts/AppContext";
 import DoctorCard2 from "../subcomponents/DoctorCard2";
@@ -29,11 +30,15 @@ const Home = ({ navigation }) => {
   const height = Dimensions.get('window').height;
   const [fav, setFav] = useState([]);
   const { favourite, setFavourite } = useContext(AppContext);
+  const {refreshing, setRefreshing} = useContext(AppContext);
   const handleToggleDarkMode = () => {
     setNight(!night);
     // Here you can add logic to switch your app theme to dark mode
   };
+  
   async function fetchDoctor() {
+    const doctor = await getDoctors();
+    setDoctors(doctor);
     const filt = await getFavourite(CurrentUser.user.id);
     setFavourite(filt);
   }
@@ -43,7 +48,14 @@ const Home = ({ navigation }) => {
   }
   useEffect(() => {
     fetchDoctor();
+    // const focusHandler = navigation.addListener('focus', () => {
+    //   fetchDoctor().then(() => {
+    //     alert('Refreshed');
+    //     console.log(flag);
+    //   })
+   
   }, []);
+
   useEffect(() => {
     const panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => {
@@ -210,8 +222,8 @@ const Home = ({ navigation }) => {
           ]}
           {...panResponder?.panHandlers}
         >
-          <View style={{alignSelf:"center"}}>
-            <Ionicons name="reorder-three-outline" size={30} color={"#288771"}/>
+          <View style={{ alignSelf: "center" }}>
+            <Ionicons name="reorder-three-outline" size={30} color={"#288771"} />
           </View>
           <FlatList
             removeClippedSubviews={true}
@@ -226,8 +238,11 @@ const Home = ({ navigation }) => {
             maxToRenderPerBatch={7}
             windowSize={10}
             keyExtractor={(item, index) => item.id}
-
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={fetchDoctor} />
+            }
           />
+          
         </Animated.View>
       ) : (
         <View style={{ padding: "18%" }}>
@@ -268,7 +283,7 @@ const styles = StyleSheet.create({
   list: {
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingVertical:30,
+    paddingVertical: 30,
     backgroundColor: "#F5F5F5",
   },
   search: {

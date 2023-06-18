@@ -27,11 +27,12 @@ import {
 } from "firebase/firestore";
 import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 const Chat_D = ({ navigation }) => {
   const [chat, setChat] = useState([]);
 
   const { night } = useContext(AppContext);
-
+  const [find, setFind] = useState(true);
   async function getChat() {
     const citiesCol = collection(db, "chats");
     const citySnapshot = await getDocs(citiesCol);
@@ -44,6 +45,8 @@ const Chat_D = ({ navigation }) => {
   const getChats = async () => {
     const c = await getChat();
     await setChat(c);
+    if (chat.length == 0)
+      setFind(false);
     // console.log("chat ", c);
   };
 
@@ -112,7 +115,7 @@ const Chat_D = ({ navigation }) => {
     //console.log("1111111", item.user_id);
     // let image = item.doctor.image;
     // get_User(item.user_id);
-    if(item.User){
+    if (item.User) {
       return (
         <TouchableOpacity
           onPress={() => {
@@ -126,9 +129,9 @@ const Chat_D = ({ navigation }) => {
         >
           <View style={styles.card}>
             <Image
-              source={item.User.image!=null
+              source={item.User.image != null
                 ? { uri: item.User.image }
-                  : require("../assets/Herbal_Medicine_Male_Avatar.png")
+                : require("../assets/Herbal_Medicine_Male_Avatar.png")
               }
               style={styles.cardPhoto}
             />
@@ -140,34 +143,51 @@ const Chat_D = ({ navigation }) => {
         </TouchableOpacity>
       );
     }
-    return(<></>);
+    return (<></>);
   };
 
   return (
     <View style={[styles.container, night && styles.buttonDark]}>
-      <View style={[styles.header, night && styles.buttonDark]}>
-        <Text style={styles.heading}>Chats</Text>
+
+
+      <View style={[styles.header1, night && styles.buttonDark]}>
+        <View>
+          <View style={styles.Go_Back1}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <View style={styles.Go_Back}>
+                <Ionicons name="arrow-back" size={30} color="black" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={[styles.header, night && styles.buttonDark]}>
+          <Text style={styles.heading}>Chats</Text>
+        </View>
       </View>
-      <FlatList
-        data={user_chats}
-        renderItem={renderChat}
-        keyExtractor={(item) => item.id.toString()}
-        ListEmptyComponent={() => {
-          return (
-            <View style={{ flex: 1, justifyContent: "center" ,}}>
-              <Image
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  alignItems: "center",
-                }}
-                source={require("../assets/empty.png")}
-              />
-              <Text></Text>
-            </View>
-          );
-        }}
-      />
+      {
+
+        find ? <FlatList
+          data={user_chats}
+          renderItem={renderChat}
+          keyExtractor={(item) => item.id.toString()}
+          ListEmptyComponent={() => {
+            return (
+              <View style={{ flex: 1, justifyContent: "center", }}>
+                <Image
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    alignItems: "center",
+                  }}
+                  source={require("../assets/empty.png")}
+                />
+                <Text></Text>
+              </View>
+            );
+          }}
+        /> :
+          <></>
+      }
     </View>
   );
 };
@@ -182,6 +202,14 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
+    // paddingVertical: 30,
+    // marginBottom: 20,
+  },
+  header1: {
+    backgroundColor: "#288771",
+    width: "100%",
+    // alignItems: "center",
+    // justifyContent: "center",
     paddingVertical: 30,
     marginBottom: 20,
   },
@@ -224,6 +252,28 @@ const styles = StyleSheet.create({
   },
   buttonDark: {
     backgroundColor: "#1d1c1c",
+  },
+  Go_Back: {
+    // marginTop:15,
+    // // width:"10%",
+    // justifyContent: "flex-start",
+    // justifyContent: "flex-start",
+    // width: "20%",
+    // left:1
+    paddingHorizontal:10
+  },
+  Go_Back1: {
+    // marginTop:15,
+    // width: "10%",
+    // borderRadius: 3,
+    // borderColor: 'black',
+    // borderWidth: 3,
+    // alignItems: 'flex-end',
+    // justifyContent: 'flex-start',
+    
+    // justifyContent: "flex-start",
+    // justifyContent: "flex-start",
+
   },
   // darklist: {
   //   backgroundColor: '#262424',

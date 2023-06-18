@@ -14,6 +14,7 @@ import {
   Pressable,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { getStorage, ref, uploadBytesResumable, list, listAll, getDownloadURL } from "firebase/storage";
 
 import { StatusBar } from "expo-status-bar";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -47,6 +48,8 @@ import {
   logout,
   getAppointment_by_doc_id,
   getReviews,
+  getCurrentUser,
+  editUser,
 } from "../../database/Users";
 import Appointments from "./Appointments";
 import { useContext } from "react";
@@ -777,27 +780,102 @@ const Info = ({ navigation }) => {
   };
 
   // **************************************************************************************************************************
+  let url = "";
+  const uploadToFirebase = async (uri, name, onProgress) => {
+
+    const fetchResponse = await fetch(uri);
+    console.log("ok");
+    const theBlob = await fetchResponse.blob();
+
+    const imageRef = ref(getStorage(), `images/${name}`);
+    let downloadUrl;
+    const uploadTask = uploadBytesResumable(imageRef, theBlob);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          onProgress && onProgress(progress);
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error);
+          reject(error);
+        },
+        async () => {
+          downloadUrl = await getDownloadURL(uploadTask.snapshot.ref).then((res) => {
+            url = res;
+          });
+
+          resolve({
+            downloadUrl,
+            metadata: uploadTask.snapshot.metadata,
+          });
+
+        }
+
+      );
+
+
+
+    });
+  };
+
 
   const selectFile = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
-      setImage(result.uri);
+      const fileName = result.assets[0].uri.split("/").pop();
+      const { uri } = result.assets[0];
+      console.log(image);
+      setImage(result.assets[0].uri);
+      // console.log(result.assets[0].uri);
+
+      await uploadToFirebase(uri, fileName, (v) =>
+        console.log(v)
+      ).then(async () => {
+
+        await update_Doctor_info({
+          ...doctor,
+          image: url,
+        }).then(() => {
+          getDoc().then((res) => {
+            setDoctor(res[0]);
+            console.log(res[0]);
+          });
+        });
+        const user = curruser;
+        console.log(user);
+        let updateUser = {};
+        const set = async () => {
+          updateUser = {
+            ...user,
+            image: url,
+          };
+        };
+        await set().then(() => {
+          editUser(updateUser).then((res)=>{
+            console.log(res);
+          })
+        });
+
+
+
+
+      })
+      alert("Your Photo has been sended");
+    } else {
+      alert("You did not select any image.");
+      return;
     }
 
-    update_Doctor_info({
-      ...doctor,
-      image: image,
-    }).then(() => {
-      getDoc().then((res) => {
-        setDoctor(res[0]);
-        console.log(res[0]);
-      });
-    });
+
+
   };
 
   // **************************************************************************************************************************

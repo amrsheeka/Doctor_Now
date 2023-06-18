@@ -13,13 +13,22 @@ export const AppProvider = ({ children }) => {
   const [doctor, setDoctor] = useState({});
   const [type, setType] = useState("appointments");
   const [schedules, setSchedules] = useState([]);
-  const [flag, setFlag] = useState(false);
   const [rev, setRev] = useState([]);
   const [Days, setDays] = useState([]);
-
+  const [startTime, setStartTime] = useState([]);
+  const [endTime, setEndTime] = useState([]);
+  const [numberOfPatients, setNumberOfPatients] = useState([]);
+  const [flag, setFlag] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [f, setF] = useState(true);
   return (
     <AppContext.Provider
       value={{
+        f, setF,
+        flag, setFlag,
+        startTime, setStartTime,
+        endTime, setEndTime,
+        numberOfPatients, setNumberOfPatients,
         favourite,
         setFavourite,
         doctors,
@@ -44,7 +53,8 @@ export const AppProvider = ({ children }) => {
         setAppointments_History,
         Days,
         setDays,
-
+        refreshing,
+        setRefreshing
       }}
     >
       {children}

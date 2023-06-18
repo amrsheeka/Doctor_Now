@@ -16,14 +16,14 @@ const DoctorCard = ({ navigation, doctor, user }) => {
   }
   const handelDelete =async ()=>{
     deleteDoctor(doctor.id).then(()=>{
-      console.log(doctor.name);
+      // console.log(doctor.name);
       fetchDoctors();
     }
     );
   }
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Doctorbage", { doctor })}
+      // onPress={() => navigation.navigate("Doctorbage", { doctor })}
     >
       <View style={[styles.card,night && styles.dark2]}>
         <View style={styles.photo}>

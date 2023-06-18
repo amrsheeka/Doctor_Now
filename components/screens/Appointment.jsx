@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Image,
   TouchableOpacity,
+  RefreshControl
 } from "react-native";
 // import { Ionicons,MaterialCommunityIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
@@ -25,6 +26,7 @@ const Appointment = ({ navigation }) => {
   const { type, setType } = useContext(AppContext);
   const { night } = useContext(AppContext);
   const [active, setActive] = useState(false);
+  const {refreshing, setRefreshing} = useContext(AppContext);
 
   const HandleHistory = () => {
     setActive(true);
@@ -36,14 +38,11 @@ const Appointment = ({ navigation }) => {
     });
     setActive(false);
   };
-  const HandleAppointments = () => {
-    setActive(true);
-    setType("appointments");
+  const HandleAppointments = (id) => {
     getAppointment(id).then((res) => {
       if (res.status !== "failed")
         res.length >= 1 ? setAppointments(res) : setAppointments([]);
     });
-    setActive(false);
   };
 
   useEffect(() => {
@@ -66,7 +65,11 @@ const Appointment = ({ navigation }) => {
           </View>
         ) : (
           <View style={{ flex: 2, marginBottom : 60 }}>
-            <ScrollView>
+            <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={()=>HandleAppointments(CurrentUser.user.id)} />
+            }
+            >
               {appointments.map((ele, idx) => {
                 return (
                   <Doc_card_appointment

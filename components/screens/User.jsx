@@ -1,17 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView,RefreshControl } from "react-native";
 import { AntDesign, Feather, MaterialIcons, SimpleLineIcons, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { logout } from "../../database/Users";
+import { getCurrentUser, logout } from "../../database/Users";
 import { AppContext } from "../consts/AppContext";
 const User = ({ navigation }) => {
-  const { curruser} = useContext(AppContext);
+  const { curruser,setCurrUser} = useContext(AppContext);
   const { night} = useContext(AppContext);
+  const {refreshing, setRefreshing} = useContext(AppContext);
+  async function fetchUser() {
+    const user = await getCurrentUser();
+    setCurrUser(user);
+  }
   const handlelgout = () => {
     logout().then(() => navigation.navigate("StackNavigator"));
   }
   return (
     <View style={{flex:1,marginBottom:"12%"}}>
-    <ScrollView style={[styles.container,night && styles.buttonDark]}>
+    <ScrollView
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={()=>fetchUser()} />
+    }
+    style={[styles.container,night && styles.buttonDark]}>
       <View>
         <View style={[styles.x,night && styles.darklist]}>
          <TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Fontisto";
 import { Rating, AirbnbRating } from "react-native-elements";
@@ -18,6 +18,7 @@ import { getinFavourite } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { getFavourite } from "../../database/Users";
 import getTimeList from "../../database/getTimeList";
+import { getDocSchedule } from "../../database/Doctors";
 const DoctorCard2 = ({ navigation, doctor, reload }) => {
   let image = doctor.image;
   const { night } = useContext(AppContext);
@@ -27,10 +28,13 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const [infav, setInfav] = useState(false);
   const [rate, setRate] = useState([]);
   const [av_rate, setAv_rate] = useState();
-
+  const {refreshing, setRefreshing} = useContext(AppContext);
   const [heart, setHeart] = useState("favorite-border");
   const [clickReadMore, setClickReadMore] = useState(false);
-
+  const { setDays } = useContext(AppContext);
+  const { setStartTime } = useContext(AppContext);
+  const { setEndTime } = useContext(AppContext);
+  const { setNumberOfPatients } = useContext(AppContext);
   async function get_rate(id) {
     getRate(id).then((res) => {
       setRate(res);
@@ -80,8 +84,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       (res) => {
         res.status != "failed"
           ? res.map((e) => {
-              timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
-            })
+            timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
+          })
           : setTimeList(timeList1);
         setTimeList(timeList1);
       }
@@ -93,6 +97,10 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
     //fetchDoctor();
     //get_rate(doctor.id);
     //countAv_rate();
+    // const focusHandler = navigation.addListener('focus', () => {
+    //   alert('Refreshed');
+    // });
+    // return focusHandler;
   }, []);
 
   const click_heart = async (user_id, doctor_id) => {
@@ -129,15 +137,15 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const [icon3, setIcon3] = useState("star");
   const [icon4, setIcon4] = useState("star");
   const [icon5, setIcon5] = useState("star");
-
+  const {f, setF} = useContext(AppContext);
   const main_color = "#288771";
 
   const Face_Card = () => {
     return (
       <TouchableOpacity
-        onPress={() => {
-          handelRout();
-        }}
+      // onPress={() => {
+      //   handelRout();
+      // }}
       >
         <View style={{ marginVertical: 5, flexDirection: "row" }}>
           <Text
@@ -266,30 +274,52 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                 {" "}
                 {rate_lenth ? rate_lenth : "0"} {" Reviews "}
               </Text>
-              <TouchableOpacity
-                style={{
-                  alignItems: "center",
-                  // width: "100%",
-                }}
-                onPress={() => {
-                  // fetch();
-                  navigation.navigate("AppointmentConfirmation", { doctor });
-                }}
-              >
-                <Text
+              {
+
+                 <TouchableOpacity
                   style={{
-                    backgroundColor: main_color,
-                    borderRadius: 10,
-                    paddingHorizontal: 10,
-                    paddingVertical: 10,
-                    color: "white",
-                    margin: 20,
+                    alignItems: "center",
+                    // width: "100%",
+                  }}
+                  onPress={async () => {
+                    // // fetch();
+                    navigation.navigate("AppointmentConfirmation", { doctor });
+                    setF(false);
+                    let days, start, end, number;
+                    await getDocSchedule(doctor.id).then((res) => {
+                      if (res.status != "failed") {
+                        res = res.filter((ele) => ele.avilable !== "no");
+
+                        days = res.map((item) => item.day.slice(0, 3));
+                        start = res.map((item) => item.start);
+                        end = res.map((item) => item.end);
+                        number = res.map((item) => item.number);
+
+                      }
+                    });
+                    setDays(days);
+                    setStartTime(start);
+                    setEndTime(end);
+                    setNumberOfPatients(number);
+                    setF(true);
+                    
                   }}
                 >
-                  {" "}
-                  Make Appointment
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      backgroundColor: main_color,
+                      borderRadius: 10,
+                      paddingHorizontal: 10,
+                      paddingVertical: 10,
+                      color: "white",
+                      margin: 20,
+                    }}
+                  >
+                    {" "}
+                    Make Appointment
+                  </Text>
+                </TouchableOpacity>            
+              }
             </View>
           </View>
         </View>
@@ -440,7 +470,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
         flipVertical={false}
         flip={clickReadMore}
         clickable={false}
-        // onFlipEnd={(isFlipEnd)=>{console.log('isFlipEnd', isFlipEnd)}}
+      // onFlipEnd={(isFlipEnd)=>{console.log('isFlipEnd', isFlipEnd)}}
       >
         <View>{Face_Card()}</View>
         {Back_Card()}

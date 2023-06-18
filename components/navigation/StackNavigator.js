@@ -45,7 +45,6 @@ import Chatbox_photo from "../subcomponents/Chatbox_photo";
 import Thk4 from "../screens/Thk4";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
-import Pay from "../subcomponents/Pay";
 import PricingPlanBadge from "../Doctor_Page/PricingPlanBadge";
 import Chat_D from "../Doctor_Page/Chat_D";
 const Tab = createBottomTabNavigator();
@@ -162,15 +161,6 @@ const Homefunc: React.FC<Props> = ({ barColor }) => {
       <Tab.Screen
         name="Thk"
         component={Thk}
-        options={{
-          headerShown: false,
-          tabBarVisible: false,
-          tabBarButton: () => null,
-        }}
-      />
-      <Tab.Screen
-        name="Pay"
-        component={Pay}
         options={{
           headerShown: false,
           tabBarVisible: false,
@@ -555,7 +545,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#288771",
   },
   button2: {
-    backgroundColor: "white",
+    
   },
   buttonIcon: {
     fontSize: 16,
