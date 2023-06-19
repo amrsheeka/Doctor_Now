@@ -1,14 +1,42 @@
 // import React from "react";
-import { View, Text, StyleSheet, FlatList, Image, Button, TouchableOpacity, TextInput, Alert, Modal, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  Button,
+  TouchableOpacity,
+  Alert,
+  Modal,
+  Pressable,
+  ScrollView,
+} from "react-native";
 import CurrentUser from "../consts/CurrentUser";
-import { AntDesign, Feather, Entypo, FontAwesome, FontAwesome5, MaterialIcons, SimpleLineIcons, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { TextInput } from "react-native-paper";
+import {
+  AntDesign,
+  Feather,
+  Entypo,
+  FontAwesome,
+  FontAwesome5,
+  MaterialIcons,
+  SimpleLineIcons,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import React, { useState, useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import { pay } from "../../database/Payment";
+import Icon2 from "react-native-vector-icons/Entypo";
 const Payment = ({ navigation, route }) => {
   const plan = route.params.selectedPlan;
-  const [ammount, setAmmount] = useState(plan == "basic" ? '499' : plan == "premium" ? '999' : '1249');
-  const [appoints, setAppoints] = useState(plan == "basic" ? '5' : plan == "premium" ? '12' : '20');
+  const [ammount, setAmmount] = useState(
+    plan == "basic" ? "499" : plan == "premium" ? "999" : "1249"
+  );
+  const [appoints, setAppoints] = useState(
+    plan == "basic" ? "5" : plan == "premium" ? "12" : "20"
+  );
   const [card_number, setCard_Number] = useState("");
   const [card_numbererr, setCard_NumberERR] = useState("");
   const [cvv, setCVV] = useState("");
@@ -18,195 +46,209 @@ const Payment = ({ navigation, route }) => {
   const { night } = useContext(AppContext);
   const [modalVisible, setModalVisible] = useState(false);
   const { doctor, setDoctor } = useContext(AppContext);
-  const handlePayment=async()=>{
-    if(!card_number||!cvv||!expiry||card_number<16||cvv.length<3||expiry.length<5){
-      if(!card_number){
+  const main_color = "#288771";
+  const handlePayment = async () => {
+    if (
+      !card_number ||
+      !cvv ||
+      !expiry ||
+      card_number < 16 ||
+      cvv.length < 3 ||
+      expiry.length < 5
+    ) {
+      if (!card_number) {
         setCard_NumberERR("Enter your card number.");
-      }else if(card_number<16){
+      } else if (card_number < 16) {
         setCard_NumberERR("Card number should have 16 digits.");
-      }else{
+      } else {
         setCard_NumberERR("");
       }
-      if(!cvv){
+      if (!cvv) {
         setCVVERR("Enter the card's cvv.");
-      }else if(cvv.length<3){
+      } else if (cvv.length < 3) {
         setCVVERR("CVV shuld contain 4 digits");
-      }else{
+      } else {
         setCVVERR("");
       }
-      if(!expiry){
-        setExpiryERR("Enter the expiry date")
-      }else if(expiry.length<5){
+      if (!expiry) {
+        setExpiryERR("Enter the expiry date");
+      } else if (expiry.length < 5) {
         setExpiryERR("Enter a valid expiry date");
-      }else{
+      } else {
         setExpiryERR("");
       }
-    }else{
+    } else {
       setCard_NumberERR("");
       setExpiryERR("");
       setCVVERR("");
-      pay(
-        doctor.id,
-        card_number,
-        appoints,
-        ammount,
-        cvv,
-        expiry
-      ).then((res)=>{
-        if(res.status=="success"){
-          setModalVisible(true);
-        }else{
-          alert(res.status);
+      pay(doctor.id, card_number, appoints, ammount, cvv, expiry).then(
+        (res) => {
+          if (res.status == "success") {
+            setModalVisible(true);
+          } else {
+            alert(res.status);
+          }
         }
-      })
+      );
     }
-    
-  }
+  };
   const handleExpiry = (input) => {
     let s = "";
-    s = input
-      if (s.length == 2 && expiry.length == 1) {
-        setExpiry(input + "/");
-      } else {
-        setExpiry(input)
-      }
-  }
+    s = input;
+    if (s.length == 2 && expiry.length == 1) {
+      setExpiry(input + "/");
+    } else {
+      setExpiry(input);
+    }
+  };
   return (
-    <View style={[styles.container, night && styles.buttonDark]}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <AntDesign name="checkcircle" size={120} style={styles.icon2} />
-            {/* <Image source={""}/> */}
-            <Text style={styles.modalText}>Paid successfully</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>OK</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-      <View style={[styles.header, night && styles.buttonDark]}>
-        <View style={styles.Go_Back1}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <View style={styles.Go_Back}>
-              <Ionicons name="arrow-back" size={24} color="black" />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View >
-          <Text style={[styles.heading, night && styles.buttonDark]}> Payment</Text>
-        </View>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <View style={[styles.header2, { flexDirection: "row" }]}>
+        <Icon2
+          name={"arrow-left"}
+          size={30}
+          color="white"
+          onPress={() => navigation.goBack()}
+          style={{ width: "7%", marginHorizontal: 10 }}
+        />
+        <Text style={styles.label}> Payment </Text>
       </View>
-      <View style={{ flex: 1 }}>
-        <View>
-          <Text style={[styles.text, night && styles.buttonDark]}>Choose a payment method</Text>
+      <ScrollView>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <AntDesign name="checkcircle" size={120} style={styles.icon2} />
+              <Image source={""} />
+              <Text style={styles.modalText}>Paid successfully</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>OK</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+
+        <View style={{ marginVertical: 10, alignSelf: "center" }}>
+          <Image
+            source={require("../assets/payment.png")}
+            style={{ height: 250, width: 250 }}
+          />
         </View>
-        <View style={styles.icon}>
-          <TouchableOpacity onPress={() => ""}>
-            <View style={[styles.smallicon, night && styles.dark2]}>
-              <Entypo name="paypal" size={15} color="#2596be" />
-              <Text style={[{ fontSize: 10 }, night && styles.dark2]}>PayPal</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => ""}>
-            <View style={[styles.smallicon, night && styles.dark2]}>
-              <Text style={[{ fontSize: 15 }, night && styles.dark2]}>Visa</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => ""}>
-            <View style={[styles.smallicon, night && styles.dark2]}>
-              <FontAwesome name="cc-mastercard" size={24} color="black" />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => ""}>
-            <View style={[styles.smallicon, night && styles.dark2]}>
-              <FontAwesome5 name="stripe" size={24} color="black" />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <Text style={[styles.text, night && styles.buttonDark]}>Card Number</Text>
+        <View style={{ marginHorizontal: 10, marginVertical: 15 }}>
           <TextInput
+            label={"Card Number"}
+            mode="outlined"
+            value={card_number}
             keyboardType="number-pad"
-            style={[styles.input, night && styles.dark2]}
             onChangeText={setCard_Number}
             maxLength={16}
-            value={card_number}
+            outlineStyle={{
+              borderColor: main_color,
+              borderRadius: 10,
+            }}
             placeholder={"5975 4544 7775 4454"}
+            placeholderTextColor={"grey"}
+            // left={
+            //   <TextInput.Icon
+            //     icon={() => (
+            //       <Icon2 name={"numeric-9-plus-box-multiple-outline"} size={25} />
+            //     )}
+            //   />
+            // }
+            activeOutlineColor={main_color}
           />
-          <Text style={{color:"red",alignSelf:"center"}}>{card_numbererr}</Text>
-        </View>
-        {/* <View>
-      <Text style={[styles.text,night && styles.buttonDark]}>Cash Header Name</Text>
-        <TextInput
-          style={[styles.input,night && styles.dark2]}
-          onChangeText={onChangeText}
-          value={text}
-          placeholder={"Abdelfattah Hesham"}
-        />
-      </View> */}
-        <View style={styles.biginput}>
-          <View style={{ flexDirection: "column" }}>
-            <Text style={[styles.text1, night && styles.buttonDark]}>Expiry Date</Text>
+          <Text style={{ color: "red" }}>{card_numbererr}</Text>
+          <View styel={{ flexDirection: "row" }}>
             <TextInput
-              keyboardType="number-pad"
-              style={[styles.input1, night && styles.dark2]}
-              onChangeText={handleExpiry}
+              label={"Expiry Date"}
+              mode="outlined"
               value={expiry}
-              maxLength={5}
-              placeholder={"6/25"}
-            />
-            <Text style={{color:"red",alignSelf:"center"}}>{expiryerr}</Text>
-          </View>
-          <View style={{ flexDirection: "column" }}>
-            <Text style={[styles.text1, night && styles.buttonDark]}>CVV</Text>
-            <TextInput
               keyboardType="number-pad"
-              style={[styles.input1, night && styles.dark2]}
-              onChangeText={setCVV}
-              maxLength={3}
-              value={cvv}
-              placeholder={"6556"}
+              onChangeText={handleExpiry}
+              maxLength={5}
+              outlineStyle={{
+                borderColor: main_color,
+                borderRadius: 10,
+              }}
+              placeholder={"6/25"}
+              placeholderTextColor={"grey"}
+              // left={
+              //   <TextInput.Icon
+              //     icon={() => (
+              //       <Icon2 name={"numeric-9-plus-box-multiple-outline"} size={25} />
+              //     )}
+              //   />
+              // }
+              activeOutlineColor={main_color}
             />
-            <Text style={{color:"red",alignSelf:"center"}}>{cvverr}</Text>
+            <Text style={{ color: "red" }}>{expiryerr}</Text>
+
+            <TextInput
+              label={"CVV"}
+              mode="outlined"
+              value={cvv}
+              keyboardType="number-pad"
+              onChangeText={setCVV}
+              maxLength={4}
+              outlineStyle={{
+                borderColor: main_color,
+                borderRadius: 10,
+              }}
+              placeholder={"6556"}
+              placeholderTextColor={"grey"}
+              // left={
+              //   <TextInput.Icon
+              //     icon={() => (
+              //       <Icon2 name={"numeric-9-plus-box-multiple-outline"} size={25} />
+              //     )}
+              //   />
+              // }
+              activeOutlineColor={main_color}
+            />
+            <Text style={{ color: "red" }}>{cvverr}</Text>
           </View>
         </View>
-        {/* <View style={styles.content1}>
-        <TextInput
-          style={[styles.input2,night && styles.dark2]}
-          onChangeText={onChangeText}
-          value={text}
-          // placeholder={"25/6"}
-        />
-              <Text style={[styles.text1,night && styles.buttonDark]}>Remember Me</Text>
-        </View> */}
-      </View>
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.button} onPress={() => { handlePayment(); }}>
-          <Text style={styles.buttonText}>Pay</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
 
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            handlePayment();
+          }}
+        >
+          <Text style={{ alignSelf: "center" }}>Pay</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  header2: {
+    backgroundColor: "#288771",
+    width: "100%",
+    height: "12%",
+    // alignItems: "center",
+    paddingTop: "12%",
+    marginBottom: 10,
+  },
+  label: {
+    fontSize: 20,
+    color: "white",
+  },
   container: {
     flex: 1,
     backgroundColor: "white",
-    paddingVertical: 35
+    paddingVertical: 35,
   },
   header: {
     flexDirection: "row",
@@ -215,7 +257,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     paddingVertical: 20,
     // marginBottom: 20,
-
   },
   heading: {
     fontSize: 24,
@@ -236,17 +277,16 @@ const styles = StyleSheet.create({
     width: "35%",
     // justifyContent: "flex-start",
     // justifyContent: "flex-start",
-
   },
   content: {
     paddingHorizontal: 10,
     flexDirection: "column",
-    gap: 5
+    gap: 5,
   },
   content1: {
     flexDirection: "row",
     gap: 5,
-    paddingVertical: "5%"
+    paddingVertical: "5%",
   },
   icon: {
     flexDirection: "row",
@@ -273,7 +313,7 @@ const styles = StyleSheet.create({
     padding: 5,
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   input: {
     height: 50,
@@ -313,35 +353,35 @@ const styles = StyleSheet.create({
   biginput: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "90%"
+    width: "90%",
   },
   button: {
     fontSize: 18,
     paddingHorizontal: "40%",
-
-    borderRadius: 20,
+    marginHorizontal: 20,
+    borderRadius: 10,
     borderColor: "#ffffff",
     backgroundColor: "#288771",
     justifyContent: "center",
     height: 50,
   },
   footer: {
-    paddingVertical: 50
+    paddingVertical: 50,
   },
   buttonDark: {
-    backgroundColor: '#1d1c1c',
+    backgroundColor: "#1d1c1c",
     color: "white",
   },
   dark2: {
-    backgroundColor: '#262424',
+    backgroundColor: "#262424",
     color: "white",
-    borderColor: '#262424'
+    borderColor: "#262424",
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -352,11 +392,11 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
 
   buttonOpen: {
@@ -368,16 +408,15 @@ const styles = StyleSheet.create({
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   icon2: {
     color: "#288771",
     padding: 20,
-
   },
 });
 

@@ -119,8 +119,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             setTimeList(times);
           } else {
             const lengthValue =
-              parseInt(numberOfPatients[Days.indexOf(date.slice(0, 3))]) -
-              parseInt(res.length);
+              parseInt(numberOfPatients[Days.indexOf(date.slice(0, 3))], 10) -
+              parseInt(res.length, 10);
             setLength(lengthValue);
             // console.log(lengthValue);
           }
@@ -254,32 +254,24 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       <TouchableOpacity
         key={key}
         disabled={!avliable}
-        
         onPress={() => {
           let date1 = false;
           Apps_doc_user.map((res) => {
-           if(res.date==date)
-           date1=true;
-          })
+            if (res.date == date) date1 = true;
+          });
 
           if (date1) {
-
             alert("You already booked with this doctor");
             setModalVisible(false);
-
           } else {
-
             setModalVisible(false);
-  
+
             navigation.navigate("Details_user_to_appointment", {
               item,
               time,
               date,
             });
           }
-
-
-
         }}
       >
         <View
@@ -480,25 +472,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.header}>
-        {/* <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Home");
-            }}
-          >
-            <View style={styles.Go_Back}>
-              <Ionicons name="arrow-back" size={35} color="black" />
-            </View>
-          </TouchableOpacity>
-        </View> */}
-        <View
-        // style={{
-        //   width: "100%",
-        //   alignItems: "center",
-        //   justifyContent: "center",
-        //   marginVertical: -15,
-        // }}
-        >
+        <View>
           <Text style={styles.label}> Doctor Profile </Text>
         </View>
       </View>
@@ -553,8 +527,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       item.rate < 0.4
                         ? "star-border"
                         : item.rate < 0.9
-                          ? "star-half"
-                          : "star"
+                        ? "star-half"
+                        : "star"
                     }
                     size={25}
                     color="gold"
@@ -564,8 +538,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       item.rate < 1.4
                         ? "star-border"
                         : item.rate < 1.9
-                          ? "star-half"
-                          : "star"
+                        ? "star-half"
+                        : "star"
                     }
                     size={25}
                     color="gold"
@@ -575,8 +549,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       item.rate < 2.4
                         ? "star-border"
                         : item.rate < 2.9
-                          ? "star-half"
-                          : "star"
+                        ? "star-half"
+                        : "star"
                     }
                     size={25}
                     color="gold"
@@ -586,8 +560,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       item.rate < 3.4
                         ? "star-border"
                         : item.rate < 3.9
-                          ? "star-half"
-                          : "star"
+                        ? "star-half"
+                        : "star"
                     }
                     size={25}
                     color="gold"
@@ -597,8 +571,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                       item.rate < 4.4
                         ? "star-border"
                         : item.rate < 4.9
-                          ? "star-half"
-                          : "star"
+                        ? "star-half"
+                        : "star"
                     }
                     size={25}
                     color="gold"
@@ -806,7 +780,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     size={25}
                     color={main_color}
                     style={{ marginLeft: 5 }}
-                  // onPress={schedule}
+                    // onPress={schedule}
                   />
                   <Text
                     style={{
@@ -851,72 +825,67 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     </Picker>
                   </View>
                 </View>
-                {
-                  f ?
-
-                    <ScrollView horizontal={true}>
-                      {getDays()[0].map((dayOfMonth, idx) => {
-                        const dayOfWeek = getDays()[1][idx];
-                        const Avaliable = getDays()[2][idx];
-                        return day(Avaliable, dayOfWeek, dayOfMonth, idx);
-                      })}
-                      {item.schedule_type == "on appointment" ? (
-                        <Modal
-                          animationType="slide"
-                          transparent={true}
-                          visible={modalVisible}
-                          onRequestClose={() => {
-                            setModalVisible(false);
-                          }}
-                        >
-                          <View style={styles.centeredView}>
-                            <View style={[styles.content, { width: "100%" }]}>
+                {f ? (
+                  <ScrollView horizontal={true}>
+                    {getDays()[0].map((dayOfMonth, idx) => {
+                      const dayOfWeek = getDays()[1][idx];
+                      const Avaliable = getDays()[2][idx];
+                      return day(Avaliable, dayOfWeek, dayOfMonth, idx);
+                    })}
+                    {item.schedule_type == "on appointment" ? (
+                      <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                          setModalVisible(false);
+                        }}
+                      >
+                        <View style={styles.centeredView}>
+                          <View style={[styles.content, { width: "100%" }]}>
+                            <View
+                              style={{
+                                marginVertical: 10,
+                                alignSelf: "center",
+                              }}
+                            >
+                              <Image
+                                source={require("../assets/doctor.png")}
+                                style={{ height: 150, width: 200 }}
+                              />
+                            </View>
+                            <View style={{ width: "100%" }}>
                               <View
                                 style={{
-                                  marginVertical: 10,
-                                  alignSelf: "center",
+                                  flexDirection: "row",
+                                  flexWrap: "wrap",
+                                  justifyContent: "center",
+                                  alignItems: "center",
                                 }}
                               >
-                                <Image
-                                  source={require("../assets/doctor.png")}
-                                  style={{ height: 150, width: 200 }}
-                                />
-                              </View>
-                              <View style={{ width: "100%" }}>
-                                <View
-                                  style={{
-                                    flexDirection: "row",
-                                    flexWrap: "wrap",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  {times(choice).map((e, idx) => {
-                                    const avli = timeList.includes(e);
-                                    return time(!avli, e, idx);
-                                  })}
-                                </View>
+                                {times(choice).map((e, idx) => {
+                                  const avli = timeList.includes(e);
+                                  return time(!avli, e, idx);
+                                })}
                               </View>
                             </View>
                           </View>
-                        </Modal>
-                      ) : (
-                        <></>
-                      )}
-                    </ScrollView>
-                    :
-
-                    <></>
-
-
-                }
+                        </View>
+                      </Modal>
+                    ) : (
+                      <></>
+                    )}
+                  </ScrollView>
+                ) : (
+                  <></>
+                )}
               </View>
             ) : (
               <></>
             )}
           </View>
 
-          {f ?
+          {f ? (
             <View style={styles.content}>
               <View
                 style={{
@@ -927,7 +896,9 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                 }}
               >
                 <Icon4 name={"commenting"} size={30} color={main_color} />
-                <Text style={{ fontSize: 16, width: "60%", marginHorizontal: 5 }}>
+                <Text
+                  style={{ fontSize: 16, width: "60%", marginHorizontal: 5 }}
+                >
                   {" "}
                   Patients's Reviews{" "}
                 </Text>
@@ -1103,19 +1074,16 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                 );
               })}
             </View>
-            :
+          ) : (
             <View
               style={{
                 flex: 1,
-                justifyContent: 'center',
-              }}>
-
+                justifyContent: "center",
+              }}
+            >
               <ActivityIndicator color={"#288771"} size={40} />
-
             </View>
-
-
-          }
+          )}
         </View>
       </ScrollView>
       <StatusBar style="light" backgroundColor="#288759" />

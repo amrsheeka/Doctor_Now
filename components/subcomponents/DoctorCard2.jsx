@@ -1,5 +1,12 @@
 import React, { memo, useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Icon2 from "react-native-vector-icons/Fontisto";
 import { Rating, AirbnbRating } from "react-native-elements";
@@ -18,7 +25,11 @@ import { getinFavourite } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { getFavourite } from "../../database/Users";
 import getTimeList from "../../database/getTimeList";
-import { editDoctor, getDocSchedule, updateDoctor } from "../../database/Doctors";
+import {
+  editDoctor,
+  getDocSchedule,
+  updateDoctor,
+} from "../../database/Doctors";
 const DoctorCard2 = ({ navigation, doctor, reload }) => {
   let image = doctor.image;
   const { night } = useContext(AppContext);
@@ -44,15 +55,15 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   console.log(doctor.active);
   const handleActive = () => {
     let doc = doctor;
-    console.log(doctor)
-    doc['active'] = doc.active == 0 ? 1 : 0;
+    console.log(doctor);
+    doc["active"] = doc.active == 0 ? 1 : 0;
     updateDoctor(doc).then(() => {
       setActive(!active);
     });
-  }
+  };
   const initActive = () => {
     setActive(doctor.active == 0 ? true : false);
-  }
+  };
   async function get_rate(id) {
     getRate(id).then((res) => {
       setRate(res);
@@ -102,8 +113,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
       (res) => {
         res.status != "failed"
           ? res.map((e) => {
-            timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
-          })
+              timeList1 = timeList1.filter((ele) => ele !== e.time.toString());
+            })
           : setTimeList(timeList1);
         setTimeList(timeList1);
       }
@@ -161,11 +172,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
 
   const Face_Card = () => {
     return (
-      <TouchableOpacity
-      // onPress={() => {
-      //   handelRout();
-      // }}
-      >
+      <View>
         <View style={{ marginVertical: 5, flexDirection: "row" }}>
           <Text
             numberOfLines={1}
@@ -228,8 +235,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                   doctor.rate < 0.4
                     ? "star-border"
                     : doctor.rate < 0.9
-                      ? "star-half"
-                      : "star"
+                    ? "star-half"
+                    : "star"
                 }
                 size={35}
                 color="gold"
@@ -239,8 +246,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                   doctor.rate < 1.4
                     ? "star-border"
                     : doctor.rate < 1.9
-                      ? "star-half"
-                      : "star"
+                    ? "star-half"
+                    : "star"
                 }
                 size={35}
                 color="gold"
@@ -250,8 +257,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                   doctor.rate < 2.4
                     ? "star-border"
                     : doctor.rate < 2.9
-                      ? "star-half"
-                      : "star"
+                    ? "star-half"
+                    : "star"
                 }
                 size={35}
                 color="gold"
@@ -261,8 +268,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                   doctor.rate < 3.4
                     ? "star-border"
                     : doctor.rate < 3.9
-                      ? "star-half"
-                      : "star"
+                    ? "star-half"
+                    : "star"
                 }
                 size={35}
                 color="gold"
@@ -272,8 +279,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                   doctor.rate < 4.4
                     ? "star-border"
                     : doctor.rate < 4.9
-                      ? "star-half"
-                      : "star"
+                    ? "star-half"
+                    : "star"
                 }
                 size={35}
                 color="gold"
@@ -293,107 +300,101 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                 {" "}
                 {doctor.views} {" Reviews "}
               </Text>
-              {
-                CurrentUser.user.is_admin == "yes" ? (
-                  <TouchableOpacity
+              {CurrentUser.user.is_admin == "yes" ? (
+                <TouchableOpacity
+                  style={{
+                    alignItems: "center",
+                    // width: "100%",
+                  }}
+                  onPress={() => {
+                    handleActive();
+                  }}
+                >
+                  <Text
                     style={{
-                      alignItems: "center",
-                      // width: "100%",
+                      backgroundColor: active ? main_color : "red",
+                      borderRadius: 10,
+                      paddingHorizontal: 10,
+                      paddingVertical: 10,
+                      color: "white",
+                      margin: 20,
                     }}
-                    onPress={() => { handleActive() }}
                   >
-                    <Text
-                      style={{
-                        backgroundColor: active ? main_color : "red",
-                        borderRadius: 10,
-                        paddingHorizontal: 10,
-                        paddingVertical: 10,
-                        color: "white",
-                        margin: 20,
-                      }}
-                    >
-                      {active ? "Mark as inactive" : "Mark as active"}
+                    {active ? "Mark as inactive" : "Mark as active"}
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    alignItems: "center",
+                    // width: "100%",
+                  }}
+                  disabled={!active}
+                  onPress={async () => {
+                    // // fetch();
+                    navigation.navigate("AppointmentConfirmation", { doctor });
+                    setF(false);
+                    let days, start, end, number;
+                    await getDocSchedule(doctor.id).then((res) => {
+                      if (res.status != "failed") {
+                        res = res.filter((ele) => ele.avilable !== "no");
 
-                    </Text>
-                  </TouchableOpacity>
-                ) :
-                  (
-                    active ? (
-                      <TouchableOpacity
-                        style={{
-                          alignItems: "center",
-                          // width: "100%",
-                        }}
-                        onPress={async () => {
-                          // // fetch();
-                          navigation.navigate("AppointmentConfirmation", { doctor });
-                          setF(false);
-                          let days, start, end, number;
-                          await getDocSchedule(doctor.id).then((res) => {
-                            if (res.status != "failed") {
-                              res = res.filter((ele) => ele.avilable !== "no");
+                        days = res.map((item) => item.day.slice(0, 3));
+                        start = res.map((item) => item.start);
+                        end = res.map((item) => item.end);
+                        number = res.map((item) => item.number);
+                      }
+                    });
+                    setDays(days);
+                    setStartTime(start);
+                    setEndTime(end);
+                    setNumberOfPatients(number);
+                    await get_app_by_doc_id_user_id(
+                      doctor.id,
+                      CurrentUser.user.id
+                    ).then((res) => {
+                      console.log(doctor.id, res);
+                      if (res.status == "failed") setApps_doc_user([]);
+                      else setApps_doc_user(res);
+                    });
 
-                              days = res.map((item) => item.day.slice(0, 3));
-                              start = res.map((item) => item.start);
-                              end = res.map((item) => item.end);
-                              number = res.map((item) => item.number);
-
-                            }
-                          });
-                          setDays(days);
-                          setStartTime(start);
-                          setEndTime(end);
-                          setNumberOfPatients(number);
-                          await get_app_by_doc_id_user_id(doctor.id, CurrentUser.user.id).then((res) => {
-                            console.log(doctor.id, res);
-                            if (res.status == "failed")
-                              setApps_doc_user([]);
-                            else
-                              setApps_doc_user(res);
-                          })
-                        
-
-
-                          await getReviews(doctor.id).then((res) => {
-                            // console.log(res);
-                            if (res.status != "fail") {
-                              // console.log(res);
-                              setComments(res);
-                              const old = res.filter((ele) => ele.users_id == CurrentUser.user.id);
-                              if (old.length != 0) {
-                                setCommentIsExist(true);
-                                setCommentText(old[0].text);
-                                setRateNumber(old[0].rate);
-                              }
-                            }
-                          });
-                          setF(true);
-
-                        }}
-                      >
-                        <Text
-                          style={{
-                            backgroundColor: main_color,
-                            borderRadius: 10,
-                            paddingHorizontal: 10,
-                            paddingVertical: 10,
-                            color: "white",
-                            margin: 20,
-                          }}
-                        >
-                          {" "}
-                          Make Appointment
-                        </Text>
-                      </TouchableOpacity>
-                    ) : (
-                      <Text style={{ color: "red" }}>This doctor is inactive</Text>
-                    )
-                  )
-              }
+                    await getReviews(doctor.id).then((res) => {
+                      // console.log(res);
+                      if (res.status != "fail") {
+                        // console.log(res);
+                        setComments(res);
+                        const old = res.filter(
+                          (ele) => ele.users_id == CurrentUser.user.id
+                        );
+                        if (old.length != 0) {
+                          setCommentIsExist(true);
+                          setCommentText(old[0].text);
+                          setRateNumber(old[0].rate);
+                        }
+                      }
+                    });
+                    setF(true);
+                  }}
+                >
+                  <Text
+                    style={{
+                      backgroundColor: !active ? "grey" : main_color,
+                      borderRadius: 10,
+                      paddingHorizontal: 10,
+                      paddingVertical: 10,
+                      color: "white",
+                      margin: 20,
+                    }}
+                  >
+                    {" "}
+                    Make Appointment
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   };
 
@@ -540,7 +541,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
         flipVertical={false}
         flip={clickReadMore}
         clickable={false}
-      // onFlipEnd={(isFlipEnd)=>{console.log('isFlipEnd', isFlipEnd)}}
+        // onFlipEnd={(isFlipEnd)=>{console.log('isFlipEnd', isFlipEnd)}}
       >
         <View>{Face_Card()}</View>
         {Back_Card()}

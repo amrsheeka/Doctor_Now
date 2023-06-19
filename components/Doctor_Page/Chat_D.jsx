@@ -28,7 +28,9 @@ import {
 import { AppContext } from "../consts/AppContext";
 import CurrentUser from "../consts/CurrentUser";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import Icon2 from "react-native-vector-icons/Entypo";
 const Chat_D = ({ navigation }) => {
+  const main_color = "#288771";
   const [chat, setChat] = useState([]);
 
   const { night } = useContext(AppContext);
@@ -45,8 +47,7 @@ const Chat_D = ({ navigation }) => {
   const getChats = async () => {
     const c = await getChat();
     await setChat(c);
-    if (chat.length == 0)
-      setFind(false);
+    if (chat.length == 0) setFind(false);
     // console.log("chat ", c);
   };
 
@@ -92,7 +93,9 @@ const Chat_D = ({ navigation }) => {
   }, []);
 
   //console.log(chat);
-  let user_chats = chat.filter((e) => e.doctor.id == CurrentUser.user.email.split('@')[0]);
+  let user_chats = chat.filter(
+    (e) => e.doctor.id == CurrentUser.user.email.split("@")[0]
+  );
   // console.log("ddddddd", user_chats);
   // console.log("ffffffffffff", CurrentUser.user.id);
 
@@ -129,9 +132,10 @@ const Chat_D = ({ navigation }) => {
         >
           <View style={styles.card}>
             <Image
-              source={item.User.image != null
-                ? { uri: item.User.image }
-                : require("../assets/Herbal_Medicine_Male_Avatar.png")
+              source={
+                item.User.image != null
+                  ? { uri: item.User.image }
+                  : require("../assets/Herbal_Medicine_Male_Avatar.png")
               }
               style={styles.cardPhoto}
             />
@@ -143,51 +147,83 @@ const Chat_D = ({ navigation }) => {
         </TouchableOpacity>
       );
     }
-    return (<></>);
+    return <></>;
+  };
+
+  const Header = () => {
+    return (
+      <View style={[styles.header1, { flexDirection: "row" }]}>
+        <Icon2
+          name={"arrow-left"}
+          size={30}
+          color={"white"}
+          onPress={() => navigation.goBack()}
+          style={{ marginHorizontal: 10 }}
+        />
+        <Text style={[styles.label]}> Chats </Text>
+      </View>
+    );
   };
 
   return (
-    <View style={[styles.container, night && styles.buttonDark]}>
-
-
-      <View style={[styles.header1, night && styles.buttonDark]}>
-        <View>
-          <View style={styles.Go_Back1}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <View style={styles.Go_Back}>
-                <Ionicons name="arrow-back" size={30} color="black" />
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={[styles.header, night && styles.buttonDark]}>
-          <Text style={styles.heading}>Chats</Text>
-        </View>
-      </View>
-      {
-
-        find ? <FlatList
+    <View style={{ flex: 1 }}>
+      {Header()}
+      {find ? (
+        <FlatList
           data={user_chats}
           renderItem={renderChat}
           keyExtractor={(item) => item.id.toString()}
-          ListEmptyComponent={() => {
-            return (
-              <View style={{ flex: 1, justifyContent: "center", }}>
-                <Image
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    alignItems: "center",
-                  }}
-                  source={require("../assets/empty.png")}
-                />
-                <Text></Text>
-              </View>
-            );
-          }}
-        /> :
-          <></>
-      }
+        />
+      ) : (
+        <View>
+          <Image
+            source={require("../assets/splash.png")}
+            style={[
+              styles.image,
+              {
+                alignSelf: "center",
+                marginVertical: 50,
+                height: 220,
+                width: 200,
+              },
+            ]}
+          />
+          <View style={{ alignItems: "center"}}>
+            <Text
+              style={{
+                color: "#555555",
+                fontSize: 16,
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              {" There are no chats available yet "}{" "}
+            </Text>
+          </View>
+          <View style={{ alignItems: "center", marginTop: 15 }}>
+            <Text
+              style={{
+                color: "#555555",
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              {" Please check back later as patients will  "}{" "}
+            </Text>
+            <Text
+              style={{
+                color: "#555555",
+                fontSize: 14,
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              {" inquire about something. "}{" "}
+            </Text>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -208,10 +244,14 @@ const styles = StyleSheet.create({
   header1: {
     backgroundColor: "#288771",
     width: "100%",
-    // alignItems: "center",
-    // justifyContent: "center",
-    paddingVertical: 30,
-    marginBottom: 20,
+    height: "12%",
+    alignItems: "center",
+    paddingTop: "8%",
+    marginBottom: 10,
+  },
+  label: {
+    fontSize: 20,
+    color: "white",
   },
   heading: {
     fontSize: 24,
@@ -260,7 +300,7 @@ const styles = StyleSheet.create({
     // justifyContent: "flex-start",
     // width: "20%",
     // left:1
-    paddingHorizontal:10
+    paddingHorizontal: 10,
   },
   Go_Back1: {
     // marginTop:15,
@@ -270,10 +310,8 @@ const styles = StyleSheet.create({
     // borderWidth: 3,
     // alignItems: 'flex-end',
     // justifyContent: 'flex-start',
-    
     // justifyContent: "flex-start",
     // justifyContent: "flex-start",
-
   },
   // darklist: {
   //   backgroundColor: '#262424',

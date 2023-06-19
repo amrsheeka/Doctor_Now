@@ -8,21 +8,14 @@ const ProCard = ({
   specialization,
   specialization2,
   image,
-  reviews,
+  rate,
+  views,
   fun1,
   fun2,
   fun3,
 }) => {
-  const [icon1, setIcon1] = useState("star");
-  const [icon2, setIcon2] = useState("star");
-  const [icon3, setIcon3] = useState("star");
-  const [icon4, setIcon4] = useState("star");
-  const [icon5, setIcon5] = useState("star");
-
   const main_color = "#288771";
 
-
-  
   return (
     <View style={styles.content}>
       <View style={{ marginVertical: 5, flexDirection: "row" }}>
@@ -63,11 +56,61 @@ const ProCard = ({
 
         <View style={{ width: "55%", justifyContent: "center" }}>
           <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            <Icon name={icon1} size={35} color="gold" />
-            <Icon name={icon2} size={35} color="gold" />
-            <Icon name={icon3} size={35} color="gold" />
-            <Icon name={icon4} size={35} color="gold" />
-            <Icon name={icon5} size={35} color="gold" />
+            <Icon
+              name={
+                rate < 0.4
+                  ? "star-border"
+                  : rate < 0.9
+                  ? "star-half"
+                  : "star"
+              }
+              size={35}
+              color="gold"
+            />
+            <Icon
+              name={
+                rate < 1.4
+                  ? "star-border"
+                  : rate < 1.9
+                  ? "star-half"
+                  : "star"
+              }
+              size={35}
+              color="gold"
+            />
+            <Icon
+              name={
+                rate < 2.4
+                  ? "star-border"
+                  : rate < 2.9
+                  ? "star-half"
+                  : "star"
+              }
+              size={35}
+              color="gold"
+            />
+            <Icon
+              name={
+                rate < 3.4
+                  ? "star-border"
+                  : rate < 3.9
+                  ? "star-half"
+                  : "star"
+              }
+              size={35}
+              color="gold"
+            />
+            <Icon
+              name={
+                rate < 4.4
+                  ? "star-border"
+                  : rate < 4.9
+                  ? "star-half"
+                  : "star"
+              }
+              size={35}
+              color="gold"
+            />
           </View>
 
           <View>
@@ -80,15 +123,12 @@ const ProCard = ({
               }}
             >
               {" "}
-              {reviews} {" Reviews "}
+              {views} {" Reviews "}
             </Text>
-            <TouchableOpacity
-              style={{ alignItems: "center" }}
-              onPress={fun3}
-            >
+            <TouchableOpacity style={{ alignItems: "center" }} onPress={fun3}>
               <Text
                 style={{
-                  backgroundColor: main_color ,
+                  backgroundColor: main_color,
                   paddingHorizontal: 20,
                   paddingVertical: 10,
                   color: "white",

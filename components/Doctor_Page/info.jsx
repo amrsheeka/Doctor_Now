@@ -14,7 +14,14 @@ import {
   Pressable,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { getStorage, ref, uploadBytesResumable, list, listAll, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  list,
+  listAll,
+  getDownloadURL,
+} from "firebase/storage";
 
 import { StatusBar } from "expo-status-bar";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -40,6 +47,7 @@ import Number_Views_bookings_And_Tab from "./Number_Views_bookings_And_Tab";
 import Schedule_Summary from "./Schedule_Summary";
 import More from "./More";
 import Appointments_History from "./Appointments_History";
+import Comments from "./Comments";
 
 import {
   getAppointment_for_Doctor,
@@ -170,11 +178,8 @@ const Info = ({ navigation }) => {
   const [color2, setColor2] = useState("black");
   const [color1_sechedule, setColor1_sechedule] = useState(main_color);
   const [color2_sechedule, setColor2_sechedule] = useState("black");
-  const [icon1, setIcon1] = useState("star");
-  const [icon2, setIcon2] = useState("star");
-  const [icon3, setIcon3] = useState("star");
-  const [icon4, setIcon4] = useState("star");
-  const [icon5, setIcon5] = useState("star");
+  const [rate, setRate] = useState();
+  const [views, setViews] = useState();
 
   const [whichDay, setWhichDay] = useState(0);
 
@@ -301,13 +306,15 @@ const Info = ({ navigation }) => {
     });
   }
 
-  async function get_number_of_booking(i, id, date) {
+  async function get_number_of_booking(id, date) {
     await getAppointment_by_doc_id(id, date).then((res) => {
       // console.log(res);
       let x;
       if (res.status !== "failed") x = res.length;
       else x = 0;
-      setDoctor_booking({ ...doctor_booking, [i]: x });
+      for (let i = 0; i < 10; i++) {
+        setDoctor_booking({ ...doctor_booking, [i]: x });
+      }
       console.log(doctor_booking);
     });
   }
@@ -330,6 +337,8 @@ const Info = ({ navigation }) => {
       setFullpro_title(res[0].specialization1);
       setImage(res[0].image);
       setExmain(res[0].price);
+      setRate(res[0].rate);
+      setViews(res[0].views);
       getRev(res[0].id);
       if (res[0].schedule_type == "fifo") {
         setSelected("First In First Out");
@@ -460,162 +469,160 @@ const Info = ({ navigation }) => {
     else if (book === number_of_bookings6) return setNumber_of_bookings6;
   };
   const ChangeTime = async (event, selectedTime) => {
+    const currentTime = selectedTime;
 
-      const currentTime = selectedTime;
+    let tempTime = new Date(currentTime);
 
-      let tempTime = new Date(currentTime);
+    let hour = tempTime.getHours();
+    let minutes = tempTime.getMinutes();
+    let TimeType;
 
-      let hour = tempTime.getHours();
-      let minutes = tempTime.getMinutes();
-      let TimeType;
+    hour < 12 ? (TimeType = "AM") : (TimeType = "PM");
 
-      hour < 12 ? (TimeType = "AM") : (TimeType = "PM");
-
-      if (hour > 12) {
-        hour = hour - 12;
-      }
-      if (hour == 0) hour = 12;
-      if (hour < 10) {
-        hour = "0" + hour.toString();
-      }
-      if (minutes < 10) {
-        minutes = "0" + minutes.toString();
-      }
-      let fTime =
-        hour.toString() + ":" + minutes.toString() + " " + TimeType.toString();
-      setShow_time(0);
-      if (which === "sat_start") {
-        updateSchedules({
-          day: schedules[0].day,
-          doctor_id: schedules[0].doctor_id,
-          start: fTime,
-          end: schedules[0].end,
-          id: schedules[0].id,
-          avilable: schedules[0].avilable,
-        });
-      } else if (which === "sat_end") {
-        updateSchedules({
-          day: schedules[0].day,
-          doctor_id: schedules[0].doctor_id,
-          start: schedules[0].start,
-          end: fTime,
-          id: schedules[0].id,
-          avilable: schedules[0].avilable,
-        });
-      } else if (which === "sun_start") {
-        updateSchedules({
-          day: schedules[1].day,
-          doctor_id: schedules[1].doctor_id,
-          start: fTime,
-          end: schedules[1].end,
-          id: schedules[1].id,
-          avilable: schedules[1].avilable,
-        });
-      } else if (which === "sun_end") {
-        updateSchedules({
-          day: schedules[1].day,
-          doctor_id: schedules[1].doctor_id,
-          start: schedules[1].start,
-          end: fTime,
-          id: schedules[1].id,
-          avilable: schedules[1].avilable,
-        });
-      } else if (which === "mon_start") {
-        updateSchedules({
-          day: schedules[2].day,
-          doctor_id: schedules[2].doctor_id,
-          start: fTime,
-          end: schedules[2].end,
-          id: schedules[2].id,
-          avilable: schedules[2].avilable,
-        });
-      } else if (which === "mon_end") {
-        updateSchedules({
-          day: schedules[2].day,
-          doctor_id: schedules[2].doctor_id,
-          start: schedules[2].start,
-          end: fTime,
-          id: schedules[2].id,
-          avilable: schedules[2].avilable,
-        });
-      } else if (which === "tues_start") {
-        updateSchedules({
-          day: schedules[3].day,
-          doctor_id: schedules[3].doctor_id,
-          start: fTime,
-          end: schedules[3].end,
-          id: schedules[3].id,
-          avilable: schedules[3].avilable,
-        });
-      } else if (which === "tues_end") {
-        updateSchedules({
-          day: schedules[3].day,
-          doctor_id: schedules[3].doctor_id,
-          start: schedules[3].start,
-          end: fTime,
-          id: schedules[3].id,
-          avilable: schedules[3].avilable,
-        });
-      } else if (which === "wen_start") {
-        updateSchedules({
-          day: schedules[4].day,
-          doctor_id: schedules[4].doctor_id,
-          start: fTime,
-          end: schedules[4].enad,
-          id: schedules[4].id,
-          avilable: schedules[4].avilable,
-        });
-      } else if (which === "wen_end") {
-        updateSchedules({
-          day: schedules[4].day,
-          doctor_id: schedules[4].doctor_id,
-          start: schedules[4].start,
-          end: fTime,
-          id: schedules[4].id,
-          avilable: schedules[4].avilable,
-        });
-      } else if (which === "thurs_start") {
-        updateSchedules({
-          day: schedules[5].day,
-          doctor_id: schedules[5].doctor_id,
-          start: fTime,
-          end: schedules[5].end,
-          id: schedules[5].id,
-          avilable: schedules[5].avilable,
-        });
-      } else if (which === "thurs_end") {
-        updateSchedules({
-          day: schedules[5].day,
-          doctor_id: schedules[5].doctor_id,
-          start: schedules[5].start,
-          end: fTime,
-          id: schedules[5].id,
-          avilable: schedules[5].avilable,
-        });
-      } else if (which === "fri_start") {
-        //setStartTime6(currentTime);
-        //setStart6(fTime);
-        updateSchedules({
-          day: schedules[6].day,
-          doctor_id: schedules[6].doctor_id,
-          start: fTime,
-          end: schedules[6].end,
-          id: schedules[6].id,
-          avilable: schedules[6].avilable,
-        });
-      } else if (which === "fri_end") {
-        //setEndTime6(currentTime);
-        //setEnd6(fTime);
-        updateSchedules({
-          day: schedules[6].day,
-          doctor_id: schedules[6].doctor_id,
-          start: schedules[6].start,
-          end: fTime,
-          id: schedules[6].id,
-          avilable: schedules[6].avilable,
-        });
-      }
-    
+    if (hour > 12) {
+      hour = hour - 12;
+    }
+    if (hour == 0) hour = 12;
+    if (hour < 10) {
+      hour = "0" + hour.toString();
+    }
+    if (minutes < 10) {
+      minutes = "0" + minutes.toString();
+    }
+    let fTime =
+      hour.toString() + ":" + minutes.toString() + " " + TimeType.toString();
+    setShow_time(0);
+    if (which === "sat_start") {
+      updateSchedules({
+        day: schedules[0].day,
+        doctor_id: schedules[0].doctor_id,
+        start: fTime,
+        end: schedules[0].end,
+        id: schedules[0].id,
+        avilable: schedules[0].avilable,
+      });
+    } else if (which === "sat_end") {
+      updateSchedules({
+        day: schedules[0].day,
+        doctor_id: schedules[0].doctor_id,
+        start: schedules[0].start,
+        end: fTime,
+        id: schedules[0].id,
+        avilable: schedules[0].avilable,
+      });
+    } else if (which === "sun_start") {
+      updateSchedules({
+        day: schedules[1].day,
+        doctor_id: schedules[1].doctor_id,
+        start: fTime,
+        end: schedules[1].end,
+        id: schedules[1].id,
+        avilable: schedules[1].avilable,
+      });
+    } else if (which === "sun_end") {
+      updateSchedules({
+        day: schedules[1].day,
+        doctor_id: schedules[1].doctor_id,
+        start: schedules[1].start,
+        end: fTime,
+        id: schedules[1].id,
+        avilable: schedules[1].avilable,
+      });
+    } else if (which === "mon_start") {
+      updateSchedules({
+        day: schedules[2].day,
+        doctor_id: schedules[2].doctor_id,
+        start: fTime,
+        end: schedules[2].end,
+        id: schedules[2].id,
+        avilable: schedules[2].avilable,
+      });
+    } else if (which === "mon_end") {
+      updateSchedules({
+        day: schedules[2].day,
+        doctor_id: schedules[2].doctor_id,
+        start: schedules[2].start,
+        end: fTime,
+        id: schedules[2].id,
+        avilable: schedules[2].avilable,
+      });
+    } else if (which === "tues_start") {
+      updateSchedules({
+        day: schedules[3].day,
+        doctor_id: schedules[3].doctor_id,
+        start: fTime,
+        end: schedules[3].end,
+        id: schedules[3].id,
+        avilable: schedules[3].avilable,
+      });
+    } else if (which === "tues_end") {
+      updateSchedules({
+        day: schedules[3].day,
+        doctor_id: schedules[3].doctor_id,
+        start: schedules[3].start,
+        end: fTime,
+        id: schedules[3].id,
+        avilable: schedules[3].avilable,
+      });
+    } else if (which === "wen_start") {
+      updateSchedules({
+        day: schedules[4].day,
+        doctor_id: schedules[4].doctor_id,
+        start: fTime,
+        end: schedules[4].enad,
+        id: schedules[4].id,
+        avilable: schedules[4].avilable,
+      });
+    } else if (which === "wen_end") {
+      updateSchedules({
+        day: schedules[4].day,
+        doctor_id: schedules[4].doctor_id,
+        start: schedules[4].start,
+        end: fTime,
+        id: schedules[4].id,
+        avilable: schedules[4].avilable,
+      });
+    } else if (which === "thurs_start") {
+      updateSchedules({
+        day: schedules[5].day,
+        doctor_id: schedules[5].doctor_id,
+        start: fTime,
+        end: schedules[5].end,
+        id: schedules[5].id,
+        avilable: schedules[5].avilable,
+      });
+    } else if (which === "thurs_end") {
+      updateSchedules({
+        day: schedules[5].day,
+        doctor_id: schedules[5].doctor_id,
+        start: schedules[5].start,
+        end: fTime,
+        id: schedules[5].id,
+        avilable: schedules[5].avilable,
+      });
+    } else if (which === "fri_start") {
+      //setStartTime6(currentTime);
+      //setStart6(fTime);
+      updateSchedules({
+        day: schedules[6].day,
+        doctor_id: schedules[6].doctor_id,
+        start: fTime,
+        end: schedules[6].end,
+        id: schedules[6].id,
+        avilable: schedules[6].avilable,
+      });
+    } else if (which === "fri_end") {
+      //setEndTime6(currentTime);
+      //setEnd6(fTime);
+      updateSchedules({
+        day: schedules[6].day,
+        doctor_id: schedules[6].doctor_id,
+        start: schedules[6].start,
+        end: fTime,
+        id: schedules[6].id,
+        avilable: schedules[6].avilable,
+      });
+    }
   };
   const ChangeTime1 = async (event, selectedTime) => {
     ChangeTime(event, selectedTime).then(() => {
@@ -631,8 +638,8 @@ const Info = ({ navigation }) => {
     e,
     start_time,
     end_time,
-    exmin,
-    booking
+    booking,
+    setbooking,
   ) => {
     return (
       <View
@@ -713,12 +720,28 @@ const Info = ({ navigation }) => {
               // defaultValue={booking + ""}
               keyboardType="phone-pad"
               //placeholder={"last name"}
-              onChangeText={bookings_number(booking)}
-              // onSubmitEditing={bookings_number(booking)}
-              value={booking + ""}
+              onChangeText={setbooking}
+              onSubmitEditing={() => {
+                if (day == "Saturday") {
+                  handleSave(0);
+                } else if (day == "Sunday") {
+                  handleSave(1);
+                } else if (day == "Monday") {
+                  handleSave(2);
+                } else if (day == "Tuesday") {
+                  handleSave(3);
+                } else if (day == "Wednesday") {
+                  handleSave(4);
+                } else if (day == "Thursday") {
+                  handleSave(5);
+                } else if (day == "Friday") {
+                  handleSave(6);
+                }
+              }}
+              value={booking}
             />
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               if (day == "Saturday") {
                 handleSave(0);
@@ -745,7 +768,7 @@ const Info = ({ navigation }) => {
               color={main_color}
             />
             <Text style={{ fontSize: 20 }}>Save</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     );
@@ -764,7 +787,9 @@ const Info = ({ navigation }) => {
           style={{ width: "7%", marginHorizontal: 10 }}
         />
         <Text style={[styles.label, { width: "75%" }]}> {page} </Text>
-        {page == "Appointments" || page == "Appointments History" ? (
+        {page == "Appointments" ||
+        page == "Appointments History" ||
+        page == "Comments" || page == "Schedule" ? (
           <></>
         ) : (
           <Icon6
@@ -782,7 +807,6 @@ const Info = ({ navigation }) => {
   // **************************************************************************************************************************
   let url = "";
   const uploadToFirebase = async (uri, name, onProgress) => {
-
     const fetchResponse = await fetch(uri);
     console.log("ok");
     const theBlob = await fetchResponse.blob();
@@ -805,24 +829,20 @@ const Info = ({ navigation }) => {
           reject(error);
         },
         async () => {
-          downloadUrl = await getDownloadURL(uploadTask.snapshot.ref).then((res) => {
-            url = res;
-          });
+          downloadUrl = await getDownloadURL(uploadTask.snapshot.ref).then(
+            (res) => {
+              url = res;
+            }
+          );
 
           resolve({
             downloadUrl,
             metadata: uploadTask.snapshot.metadata,
           });
-
         }
-
       );
-
-
-
     });
   };
-
 
   const selectFile = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -836,46 +856,38 @@ const Info = ({ navigation }) => {
       setImage(result.assets[0].uri);
       // console.log(result.assets[0].uri);
 
-      await uploadToFirebase(uri, fileName, (v) =>
-        console.log(v)
-      ).then(async () => {
-
-        await update_Doctor_info({
-          ...doctor,
-          image: url,
-        }).then(() => {
-          getDoc().then((res) => {
-            setDoctor(res[0]);
-            console.log(res[0]);
-          });
-        });
-        const user = curruser;
-        console.log(user);
-        let updateUser = {};
-        const set = async () => {
-          updateUser = {
-            ...user,
+      await uploadToFirebase(uri, fileName, (v) => console.log(v)).then(
+        async () => {
+          await update_Doctor_info({
+            ...doctor,
             image: url,
+          }).then(() => {
+            getDoc().then((res) => {
+              setDoctor(res[0]);
+              console.log(res[0]);
+            });
+          });
+          const user = curruser;
+          console.log(user);
+          let updateUser = {};
+          const set = async () => {
+            updateUser = {
+              ...user,
+              image: url,
+            };
           };
-        };
-        await set().then(() => {
-          editUser(updateUser).then((res)=>{
-            console.log(res);
-          })
-        });
-
-
-
-
-      })
+          await set().then(() => {
+            editUser(updateUser).then((res) => {
+              console.log(res);
+            });
+          });
+        }
+      );
       alert("Your Photo has been sended");
     } else {
       alert("You did not select any image.");
       return;
     }
-
-
-
   };
 
   // **************************************************************************************************************************
@@ -1141,8 +1153,8 @@ const Info = ({ navigation }) => {
             end,
             startTime,
             endTime,
-            exmination_duration,
-            number_of_bookings
+            number_of_bookings,
+            setNumber_of_bookings,
           )
         ) : (
           <></>
@@ -1195,8 +1207,8 @@ const Info = ({ navigation }) => {
             end1,
             startTime1,
             endTime1,
-            exmination_duration1,
-            number_of_bookings1
+            number_of_bookings1,
+            setNumber_of_bookings1,
           )
         ) : (
           <></>
@@ -1249,8 +1261,8 @@ const Info = ({ navigation }) => {
             end2,
             startTime2,
             endTime2,
-            exmination_duration2,
-            number_of_bookings2
+            number_of_bookings2,
+            setNumber_of_bookings2,
           )
         ) : (
           <></>
@@ -1303,8 +1315,8 @@ const Info = ({ navigation }) => {
             end3,
             startTime3,
             endTime3,
-            exmination_duration3,
-            number_of_bookings3
+            number_of_bookings3,
+            setNumber_of_bookings3,
           )
         ) : (
           <></>
@@ -1357,8 +1369,8 @@ const Info = ({ navigation }) => {
             end4,
             startTime4,
             endTime4,
-            exmination_duration4,
-            number_of_bookings4
+            number_of_bookings4,
+            setNumber_of_bookings4,
           )
         ) : (
           <></>
@@ -1411,8 +1423,8 @@ const Info = ({ navigation }) => {
             end5,
             startTime5,
             endTime5,
-            exmination_duration5,
-            number_of_bookings5
+            number_of_bookings5,
+            setNumber_of_bookings5,
           )
         ) : (
           <></>
@@ -1465,8 +1477,8 @@ const Info = ({ navigation }) => {
             end6,
             startTime6,
             endTime6,
-            exmination_duration6,
-            number_of_bookings6
+            number_of_bookings6,
+            setNumber_of_bookings6,
           )
         ) : (
           <></>
@@ -1601,7 +1613,8 @@ const Info = ({ navigation }) => {
                   specialization={selected3}
                   specialization2={fullpro_title}
                   image={image}
-                  reviews={reviews}
+                  rate={rate}
+                  views={views}
                   fun1={() => setPage("Professional Information")}
                   fun2={selectFile}
                   fun3={() => setPage("Account Settings")}
@@ -1727,6 +1740,7 @@ const Info = ({ navigation }) => {
           ) : page === "More" ? (
             <More
               fun1={() => setPage("Appointments History")}
+              fun2={() => setPage("Comments")}
               navigation={navigation}
             />
           ) : page === "Appointments" ? (
@@ -1739,6 +1753,8 @@ const Info = ({ navigation }) => {
             />
           ) : page === "Appointments History" ? (
             <Appointments_History id={doctor.id} />
+          ) : page === "Comments" ? (
+            <Comments id={doctor.id} />
           ) : (
             <></>
           )}
