@@ -5,17 +5,26 @@ import React, { useState, useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 
 const Thk = ({ navigation, route }) => { 
-    const { night } = useContext(AppContext);
+    // const { night } = useContext(AppContext);
 
-    let name=route.params.doc.name
+    let name=route.params.doc.name;
     return (
-        <View style={[{ flex: 1, padding: 20,display:"flex" }, night && styles.buttonDark]}>
+        <View style={[{ flex: 1, padding: 20,display:"flex" },
+        //  night && styles.buttonDark
+         ]}
+         
+         >
             <View style={styles.header}>
-            <Text style={[styles.heading,night && styles.buttonDark]}>Confirmation</Text>
+            <Text style={[styles.heading
+            // ,night && styles.buttonDark
+            
+            ]}>Confirmation</Text>
                 <AntDesign name="checkcircle" size={120} style={styles.icon}/>
             </View>
             <View style={styles.body}>
-                <Text numberOfLines={5}  style={[styles.text,night && styles.buttonDark]}>
+                <Text numberOfLines={5}  style={[styles.text
+                // ,night && styles.buttonDark
+                ]}>
                     Your appointment booking has successfully completed
                     with {name}  and he will massage you soon.
                 </Text>

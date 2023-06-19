@@ -20,14 +20,17 @@ export const AppProvider = ({ children }) => {
   const [numberOfPatients, setNumberOfPatients] = useState([]);
   const [flag, setFlag] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [f, setF] = useState(true);
+  const [f, setF] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentIsExist, setCommentIsExist] = useState(false);
   const [rateNumber, setRateNumber] = useState(0);
   const [commentText, setCommentText] = useState("");
+  const [ Apps_doc_user, setApps_doc_user ] = useState([]);
+
   return (
     <AppContext.Provider
       value={{
+        Apps_doc_user, setApps_doc_user,
         commentIsExist, setCommentIsExist,
         commentText, setCommentText,
         rateNumber, setRateNumber,

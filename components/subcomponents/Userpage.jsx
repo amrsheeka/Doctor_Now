@@ -67,7 +67,7 @@ const Userpage = ({ navigation }) => {
     user.gender == "female" ? "checked" : "unchecked"
   );
   const [gender, setGender] = useState(user.gender);
-  const [img, setImg] = useState(null);
+  const [img, setImg] = useState(user.image);
   const main_color = "#288771";
   const uploadToFirebase = async (uri, name, onProgress) => {
     
@@ -92,12 +92,10 @@ const Userpage = ({ navigation }) => {
           reject(error);
         },
         async () => {
-          downloadUrl = await getDownloadURL(uploadTask.snapshot.ref).then((res) => {
-          url = res;
-          });
+          url = await getDownloadURL(uploadTask.snapshot.ref);
 
           resolve({
-            downloadUrl,
+            url,
             metadata: uploadTask.snapshot.metadata,
           });
 
