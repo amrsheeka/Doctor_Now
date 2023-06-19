@@ -52,12 +52,9 @@ const AllDoctors = ({ navigation, route }) => {
     const filt = await getFavourite(currentUser.id);
     setFavourite(filt);
   }
-  async function loc() {
-    setLocate(!locate);
-  }
+  
   async function fetchLocation() {
-    loc().then(() => {
-      if (locate) {
+    
         getlocation().then(
           () => {
             console.log(latitude);
@@ -86,11 +83,6 @@ const AllDoctors = ({ navigation, route }) => {
             }
           }
         )
-      } else {
-        setDoctors1(doctors);
-      }
-    })
-
   }
 
   useEffect(() => {
