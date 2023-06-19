@@ -6,7 +6,7 @@ import { Rating, AirbnbRating } from "react-native-elements";
 
 // import { MaterialIcons } from "@expo/vector-icons";
 import { AppContext, AppProvider } from "../consts/AppContext";
-import { getRate } from "../../database/Users";
+import { getRate, get_app_by_doc_id_user_id } from "../../database/Users";
 import FlipCard from "react-native-flip-card";
 import {
   insertFavourite,
@@ -40,6 +40,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { setCommentIsExist } = useContext(AppContext);
   const { setRateNumber } = useContext(AppContext);
   const { setCommentText } = useContext(AppContext);
+  const { setApps_doc_user } = useContext(AppContext);
   console.log(doctor.active);
   const handleActive = () => {
     let doc = doctor;
@@ -343,6 +344,16 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                           setStartTime(start);
                           setEndTime(end);
                           setNumberOfPatients(number);
+                          await get_app_by_doc_id_user_id(doctor.id, CurrentUser.user.id).then((res) => {
+                            console.log(doctor.id, res);
+                            if (res.status == "failed")
+                              setApps_doc_user([]);
+                            else
+                              setApps_doc_user(res);
+                          })
+                        
+
+
                           await getReviews(doctor.id).then((res) => {
                             // console.log(res);
                             if (res.status != "fail") {
