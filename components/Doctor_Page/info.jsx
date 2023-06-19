@@ -114,13 +114,13 @@ const Info = ({ navigation }) => {
   const [end5, setEnd5] = useState("to...");
   const [end6, setEnd6] = useState("to...");
 
-  const [number_of_bookings, setNumber_of_bookings] = useState(6);
-  const [number_of_bookings1, setNumber_of_bookings1] = useState(6);
-  const [number_of_bookings2, setNumber_of_bookings2] = useState(6);
-  const [number_of_bookings3, setNumber_of_bookings3] = useState(6);
-  const [number_of_bookings4, setNumber_of_bookings4] = useState(6);
-  const [number_of_bookings5, setNumber_of_bookings5] = useState(6);
-  const [number_of_bookings6, setNumber_of_bookings6] = useState(6);
+  const [number_of_bookings, setNumber_of_bookings] = useState("6");
+  const [number_of_bookings1, setNumber_of_bookings1] = useState("6");
+  const [number_of_bookings2, setNumber_of_bookings2] = useState("6");
+  const [number_of_bookings3, setNumber_of_bookings3] = useState("6");
+  const [number_of_bookings4, setNumber_of_bookings4] = useState("6");
+  const [number_of_bookings5, setNumber_of_bookings5] = useState("6");
+  const [number_of_bookings6, setNumber_of_bookings6] = useState("6");
 
   const [exmination_duration, setExmination_duration] = useState(30);
   const [exmination_duration1, setExmination_duration1] = useState(30);
@@ -208,13 +208,15 @@ const Info = ({ navigation }) => {
     setSelected(type);
     let doc = { ...doctor };
     if (type == "First In First Out") {
-      doc.schedule_type = "fifo";
+      doc["schedule_type"] = "fifo";
+      
     } else if (type == "On Appointments") {
-      doc.schedule_type = "on appointment";
+      doc["schedule_type"] = "on appointment";
     } else if (type == "Special") {
-      doc.schedule_type = "special";
+      doc["schedule_type"] = "special";
     }
     update_Doctor_info(doc);
+    console.log(doc);
   }
   const handleSave = (i) => {
     updateSchedule({
