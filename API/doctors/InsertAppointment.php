@@ -14,7 +14,7 @@ $age = $obj['age'];
 $gender = $obj['gender'];
 $phone_number = $obj['phone_number'];
 $notes = $obj['notes'];
-$patient_image = isset($obj['patient_image']) ? $$obj['patient_image'] : "";
+$patient_image = $obj['patient_image'];
 
 $doc_name = $obj['doc_name'];
 $doc_image = $obj['doc_image'];

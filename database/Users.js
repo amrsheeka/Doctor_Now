@@ -197,8 +197,9 @@ const insertAppointment = async (
       specialization1: specialization1,
       address: address,
     })
-    .then(function (response) {
-      console.log(response.data.status);
+    .then((response) => {
+
+      console.log(response.data);
       return response.data.status;
     })
     .catch(function (error) {
@@ -302,6 +303,23 @@ const get_History_Apps_for_Doctor_by_Number = async (
     })
     .then(function (response) {
       console.log(response.date);
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+const get_app_by_doc_id_user_id = async (
+  doctor_id,
+  users_id
+) => {
+  return axios
+    .post(`${Ip.ip}/API/doctors/get_app_by_doc_id_user_id.php`, {
+      doctor_id: doctor_id,
+      users_id: users_id,
+    })
+    .then(function (response) {
+      // console.log(response.date);
       return response.data;
     })
     .catch(function (error) {
@@ -468,15 +486,15 @@ const getReviews = async (doctor_id) => {
       console.log(error);
     });
 };
-const insertReviews = async (users_id, doctor_id, user_name , text , rate, date) => {
+const insertReviews = async (users_id, doctor_id, user_name, text, rate, date) => {
   const res = await axios
     .post(`${Ip.ip}/API/reviews/insert_rev.php`, {
       users_id: users_id,
       doctor_id: doctor_id,
       user_name: user_name,
       text: text,
-      rate:rate,
-      date,date,
+      rate: rate,
+      date, date,
     })
     .then(function (response) {
       console.log(response.data);
@@ -485,15 +503,15 @@ const insertReviews = async (users_id, doctor_id, user_name , text , rate, date)
       console.log(error);
     });
 };
-const deleteReviews = async (users_id, doctor_id, user_name , text , rate, date) => {
+const deleteReviews = async (users_id, doctor_id, user_name, text, rate, date) => {
   const res = await axios
     .post(`${Ip.ip}/API/reviews/insert_rev.php`, {
       users_id: users_id,
       doctor_id: doctor_id,
       user_name: user_name,
       text: text,
-      rate:rate,
-      date,date,
+      rate: rate,
+      date, date,
     })
     .then(function (response) {
       console.log(response.data);
@@ -613,4 +631,5 @@ export {
   getDoctorHistory,
   deleteReviews,
   UpdateDoctorRate,
+  get_app_by_doc_id_user_id
 };

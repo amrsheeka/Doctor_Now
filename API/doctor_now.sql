@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2023 at 06:25 PM
+-- Generation Time: Jun 19, 2023 at 12:29 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -54,6 +54,8 @@ CREATE TABLE `appointment` (
 --
 
 INSERT INTO `appointment` (`users_id`, `doctor_id`, `date`, `time`, `name_patient`, `age`, `gender`, `phone_number`, `notes`, `patient_image`, `price`, `wating_time`, `title1`, `title`, `doc_name`, `doc_image`, `specialization1`, `address`, `date_now`) VALUES
+(6363, 509, 'Sat Jun 24 2023', '6:00 PM', 'amr fahim ahmed', '23', 'male', '01002648993', 'Hhhhhhh', NULL, '350 ', '30', 'Doctor', 'Orthopedist', 'Tamer Yehia HCC', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', 'El-Mohandessin : shehab street . borg alzahraa', '2023-06-18'),
+(6363, 509, 'Tue Jun 20 2023', '6:30 PM', 'amr fahim ahmed', '23', 'male', '01002648993', '', NULL, '350 ', '30', 'Doctor', 'Orthopedist', 'Tamer Yehia HCC', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', 'El-Mohandessin : shehab street . borg alzahraa', '2023-06-18'),
 (6364, 509, 'Wed May 31 2023', '9:30 PM', 'Mohamed Essam', '25', 'male', '01092297298', '', '', '', '', '', '', 'Ahmed Essam gv', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Adult Orthopedic Surgery', '', '2023-05-31');
 
 -- --------------------------------------------------------
@@ -132,7 +134,7 @@ CREATE TABLE `doctors` (
   `id` int(20) NOT NULL,
   `email` varchar(32) DEFAULT NULL,
   `title` varchar(32) NOT NULL,
-  `image` varchar(255) DEFAULT NULL,
+  `image` varchar(500) DEFAULT NULL,
   `name` varchar(32) NOT NULL,
   `title1` varchar(32) NOT NULL,
   `describtion` text DEFAULT NULL,
@@ -163,7 +165,7 @@ CREATE TABLE `doctors` (
 --
 
 INSERT INTO `doctors` (`id`, `email`, `title`, `image`, `name`, `title1`, `describtion`, `charactristic`, `charactristic_2`, `specialization`, `specialization1`, `specialization2`, `specialization3`, `address`, `price`, `views`, `currency`, `number`, `start`, `end`, `status`, `schedule_type`, `intervall`, `x_coordnate`, `y_coordnate`, `payment_map`, `rate`) VALUES
-(509, '509@gmail.com', 'Orthopedist', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Tamer Yehia HCC', 'Doctor', 'Consultant orthopedic surgery and spine surgery , joints,  and shoulder and knee injuries sidelined hospitals\r\nPolice Authority', '', '', 'https://www.vezeeta.com/en/docto', 'Adult Orthopedic Surgery', 'Adult Rheumatology, ', 'https://www.vezeeta.com/en/docto', 'El-Mohandessin : shehab street . borg alzahraa', '350 ', 0, 'EGP', '16676', '9:30 PM', '11:00 PM', 'Reservation required, first-come, first-served', 'fifo', 0, '30.05839515', '31.202023080983963', 20, '5.0'),
+(509, '509@gmail.com', 'Orthopedist', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENTae5e6006161765d0/Profile/150/doctor-hcc-hamer-yehia-orthopedic-and-rheumatology_20200429112418383.jpg', 'Tamer Yehia HCC', 'Doctor', 'Consultant orthopedic surgery and spine surgery , joints,  and shoulder and knee injuries sidelined hospitals\r\nPolice Authority', '', '', 'https://www.vezeeta.com/en/docto', 'Adult Orthopedic Surgery', 'Adult Rheumatology, ', 'https://www.vezeeta.com/en/docto', 'El-Mohandessin : shehab street . borg alzahraa', '350 ', 0, 'EGP', '16676', '9:30 PM', '11:00 PM', 'Reservation required, first-come, first-served', 'on appointment', 0, '30.05839515', '31.202023080983963', 20, '5.0'),
 (510, '510@gmail.com', 'Dentist', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENT870c42/Profile/150/doctor-eman-tantawy-dentistry_20220918194218582.jpg', 'Eman Tantawy', 'Doctor', 'Ph.D. and Consultant Oral and Maxillofacial Surgery', 'Hygiene', 'Good Listener', 'https://www.vezeeta.com/en/docto', 'Cosmetic Dentistry', 'Oral Radiology, ', 'https://www.vezeeta.com/en/docto', 'El-Mohandessin : Gezziret El Arab', '300 ', 0, 'EGP', '16676', '9:30 PM', '11:30 PM', 'Appointment reservation', 'on appointment', 0, '30.05839515', '31.202023080983963', 20, '3.8'),
 (511, '511@gmail.com', 'Pulmonologist', 'https://cdn-dr-images.vezeeta.com/Assets/Images/SelfServiceDoctors/ENT790a01/Profile/150/doctor-mohamed-nagy-abdulsamee-cardiology-and-vascular-disease_20221212165408205.jpg', 'Mohamed Nagy Royal Clinic', 'Center', 'Royal clinic cardiovascular and chest endovascular intervention ,endoscopic and  surgery consultants England', 'Hygiene', 'Good Listener', 'https://www.vezeeta.com/en/docto', 'Autoimmune Allergy', 'Adult Allergy and Immunology, ', 'https://www.vezeeta.com/en/docto', 'El-Dokki : 6al tahreer st', '500 ', 0, 'EGP', '16676', '2:00 PM', '11:55 PM', 'Reservation required, first-come, first-served', 'on appointment', 0, '30.0388955', '31.2125563', 20, '5.0'),
 (512, '512@gmail.com', 'Plastic Surgeon', '', 'Mahmoud ElRefaei', 'Doctor', 'Consultant of Plastic Surgery,laser', 'Hygiene', '', 'https://www.vezeeta.com/en/docto', 'Cosmetic Dermatology and Laser', 'Obesity Surgery, ', 'https://www.vezeeta.com/en/docto', 'El-Mohandessin :  Gameat el dowal', '500 ', 0, 'EGP', '16676', '9:30 PM', '11:30 PM', 'Appointment reservation', 'on appointment', 0, '30.05839515', '31.202023080983963', 20, '5.0'),
@@ -756,7 +758,7 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`users_id`, `doctor_id`, `user_name`, `text`, `rate`, `date`) VALUES
-(6347, 509, 'amrsheek', 'احلى دكتور اتعملت معااه', 4, 'Sun Jun 18 2023'),
+(6347, 509, 'amrsheek', 'excellent', 4, 'Sun Jun 18 2023'),
 (6347, 510, 'amrsheek', 'دكتور هايل', 3, 'Sun Jun 18 2023'),
 (6348, 510, 'amrsheek', 'Bad doctor .. bad nurse .. bad clinic .. I advice people don\'t visit this doctor ', 1, 'Sun Jun 18 2023'),
 (6350, 510, 'amrsheek', 'Bad doctor .. bad nurse .. bad clinic .', 2, 'Sun Jun 18 2023'),
@@ -784,7 +786,7 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`id`, `doctor_id`, `start`, `end`, `day`, `avilable`, `number`) VALUES
-(1, 509, '6:00 PM', '10:00 PM', 'Saturday', 'no', 8),
+(1, 509, '6:00 PM', '10:00 PM', 'Saturday', 'yes', 1),
 (2, 510, '6:00 PM', '10:00 PM', 'Saturday', 'yes', 8),
 (3, 511, '6:00 PM', '10:00 PM', 'Saturday', 'yes', 8),
 (4, 512, '6:00 PM', '10:00 PM', 'Saturday', 'yes', 8),
@@ -4417,7 +4419,7 @@ CREATE TABLE `users` (
   `gender` enum('male','female') DEFAULT NULL,
   `age` varchar(2) DEFAULT NULL,
   `bio` text DEFAULT NULL,
-  `image` varchar(50) DEFAULT NULL,
+  `image` varchar(500) DEFAULT NULL,
   `is_admin` enum('yes','no') NOT NULL DEFAULT 'no',
   `is_doctor` enum('no','yes') NOT NULL DEFAULT 'no',
   `created_at` date NOT NULL
@@ -4946,7 +4948,7 @@ INSERT INTO `users` (`id`, `email`, `phone`, `name`, `password`, `address`, `add
 (4803, '1022@gmail.com', '123456', '4803', 'Ahmed220123', 'ahmed', NULL, NULL, NULL, 'amr@gmail.com', 'amr@gmail.com', 'no', 'yes', '0000-00-00'),
 (6347, 'ahmed@gmail.com', '01140940686', 'amrsheek', 'Ahmed220123', 'aaaaaaaaaa', '', 'male', '35', NULL, NULL, 'no', 'no', '2023-04-23'),
 (6362, '', NULL, '', '', '', NULL, NULL, NULL, NULL, '', 'no', 'yes', '2023-05-04'),
-(6363, 'amr@gmail.com', NULL, 'amr', 'Ahmed220123', 'xsadfewf', NULL, NULL, NULL, NULL, '', 'no', 'yes', '2023-05-04');
+(6363, 'amr@gmail.com', '01002648993', 'amr fahim ahmed', 'Ahmed220123', 'xsadfewf', NULL, 'male', '23', 'gg', 'https://firebasestorage.googleapis.com/v0/b/gp-project-81b56.appspot.com/o/images%2F199b9dd0-e023-4ef2-b1c6-c762b7c73ca6.jpeg?alt=media&token=b4084c46-82c2-465d-8e44-f590c9ccbf97', 'no', 'no', '2023-05-04');
 
 --
 -- Indexes for dumped tables

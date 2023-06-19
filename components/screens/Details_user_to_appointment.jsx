@@ -43,7 +43,7 @@ const Details_user_to_appointment = ({ navigation, route }) => {
   const { night } = useContext(AppContext);
   const { length, setLength } = useContext(AppContext);
   const main_color = "#288771";
-  const patient_image = CurrentUser.user.image;
+  const patient_image = CurrentUser.user.image != null ? CurrentUser.user.image:"";
   let doc = route.params.item;
   let id = CurrentUser.user.id;
 
@@ -101,36 +101,22 @@ const Details_user_to_appointment = ({ navigation, route }) => {
         doc.specialization1,
         doc.address,
       ).then((response) => {
+
         setNotes("");
-        console.log(response);
         if (response == "fail") {
           alert("fail");
-        } else {
-          // alert("success");
-          console.log("its ok");
+        } else { 
           navigation.navigate("Thk", { doc });
           getAppointment(id).then((res) => {
             res.status != "failed"
               ? setAppointments(res)
               : setAppointments(appointments);
           });
-          var timeList1 = getTimeList(doc.start, doc.end);
-          getAppointment_by_doc_id(doc.id, new Date().toDateString()).then(
-            (res) => {
-              res.status != "failed"
-                ? res.map((e) => {
-                    timeList1 = timeList1.filter(
-                      (ele) => ele !== e.time.toString()
-                    );
-                  })
-                : setTimeList(timeList1);
-              setTimeList(timeList1);
-            }
-          );
+          
         }
       });
-      setLength(length - 1);
-      // console.log(CurrentUser.user.age)
+      // setLength(length - 1);
+
     }
   };
 

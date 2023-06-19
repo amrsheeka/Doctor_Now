@@ -37,6 +37,7 @@ import {
   getReviews,
   UpdateReviews,
   UpdateDoctorRate,
+  get_app_by_doc_id_user_id,
 } from "../../database/Users";
 import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
@@ -58,7 +59,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
   const [length, setLength] = useState();
   const { comments, setComments } = useContext(AppContext);
   const { commentIsExist, setCommentIsExist } = useContext(AppContext);
-
+  const { Apps_doc_user } = useContext(AppContext);
   const { refreshing, setRefreshing } = useContext(AppContext);
   const getDocDays = async () => {
     let days, start, end, number;
@@ -100,8 +101,11 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     });
   };
   useEffect(() => {
-    getDocDays();
-    getComments();
+    // getDocDays();
+    // getComments();
+    // get_app_by_doc_id_user_id(item.id,CurrentUser.user.id).then((res)=>{
+    //   console.log(res);
+    // })
   }, []);
 
   const getDocTimes = async () => {
@@ -110,6 +114,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       await getAppointment_by_doc_id(item.id, date).then((res) => {
         if (res.status != "failed") {
           if (item.schedule_type == "on appointment") {
+            console.log("ahmed");
             const times = res.map((item) => item.time);
             setTimeList(times);
           } else {
@@ -249,13 +254,32 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       <TouchableOpacity
         key={key}
         disabled={!avliable}
+        
         onPress={() => {
-          setModalVisible(false);
-          navigation.navigate("Details_user_to_appointment", {
-            item,
-            time,
-            date,
-          });
+          let date1 = false;
+          Apps_doc_user.map((res) => {
+           if(res.date==date)
+           date1=true;
+          })
+
+          if (date1) {
+
+            alert("You already booked with this doctor");
+            setModalVisible(false);
+
+          } else {
+
+            setModalVisible(false);
+  
+            navigation.navigate("Details_user_to_appointment", {
+              item,
+              time,
+              date,
+            });
+          }
+
+
+
         }}
       >
         <View
@@ -468,12 +492,12 @@ const AppointmentConfirmation = ({ navigation, route }) => {
           </TouchableOpacity>
         </View> */}
         <View
-          // style={{
-          //   width: "100%",
-          //   alignItems: "center",
-          //   justifyContent: "center",
-          //   marginVertical: -15,
-          // }}
+        // style={{
+        //   width: "100%",
+        //   alignItems: "center",
+        //   justifyContent: "center",
+        //   marginVertical: -15,
+        // }}
         >
           <Text style={styles.label}> Doctor Profile </Text>
         </View>
@@ -882,8 +906,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
                     </ScrollView>
                     :
 
-                  <></>
-              
+                    <></>
+
 
                 }
               </View>
