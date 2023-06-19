@@ -67,7 +67,7 @@ const Userpage = ({ navigation }) => {
     user.gender == "female" ? "checked" : "unchecked"
   );
   const [gender, setGender] = useState(user.gender);
-  const [img, setImg] = useState(user.image);
+  const [img, setImg] = useState(user.image != "" ? user.image:"");
   const main_color = "#288771";
   const uploadToFirebase = async (uri, name, onProgress) => {
     
@@ -302,7 +302,7 @@ const Userpage = ({ navigation }) => {
           onPress={selectFile}
         >
           <Image
-            source={img!=null?{ uri: img }
+            source={img!=""?{ uri: img }
                 : require("../assets/Herbal_Medicine_Male_Avatar.png")
             }
             style={styles.image}
