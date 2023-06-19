@@ -6,7 +6,7 @@ import { Rating, AirbnbRating } from "react-native-elements";
 
 // import { MaterialIcons } from "@expo/vector-icons";
 import { AppContext, AppProvider } from "../consts/AppContext";
-import { getRate, get_app_by_doc_id_user_id } from "../../database/Users";
+import { getRate } from "../../database/Users";
 import FlipCard from "react-native-flip-card";
 import {
   insertFavourite,
@@ -18,7 +18,7 @@ import { getinFavourite } from "../../database/Users";
 import CurrentUser from "../consts/CurrentUser";
 import { getFavourite } from "../../database/Users";
 import getTimeList from "../../database/getTimeList";
-import { getDocSchedule } from "../../database/Doctors";
+import { editDoctor, getDocSchedule, updateDoctor } from "../../database/Doctors";
 const DoctorCard2 = ({ navigation, doctor, reload }) => {
   let image = doctor.image;
   const { night } = useContext(AppContext);
@@ -31,6 +31,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { refreshing, setRefreshing } = useContext(AppContext);
   const [heart, setHeart] = useState("favorite-border");
   const [clickReadMore, setClickReadMore] = useState(false);
+  const [active, setActive] = useState(doctor.active == 0 ? true : false);
   const { setDays } = useContext(AppContext);
   const { setStartTime } = useContext(AppContext);
   const { setEndTime } = useContext(AppContext);
@@ -39,6 +40,18 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { setCommentIsExist } = useContext(AppContext);
   const { setRateNumber } = useContext(AppContext);
   const { setCommentText } = useContext(AppContext);
+  console.log(doctor.active);
+  const handleActive = () => {
+    let doc = doctor;
+    console.log(doctor)
+    doc['active'] = doc.active == 0 ? 1 : 0;
+    updateDoctor(doc).then(() => {
+      setActive(!active);
+    });
+  }
+  const initActive = () => {
+    setActive(doctor.active == 0 ? true : false);
+  }
   async function get_rate(id) {
     getRate(id).then((res) => {
       setRate(res);
@@ -98,6 +111,7 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
 
   useEffect(() => {
     fetchFavouriteinfav();
+    initActive();
     //fetchDoctor();
     //get_rate(doctor.id);
     //countAv_rate();
@@ -142,7 +156,6 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const [icon4, setIcon4] = useState("star");
   const [icon5, setIcon5] = useState("star");
   const { f, setF } = useContext(AppContext);
-  const { setApps_doc_user } = useContext(AppContext);
   const main_color = "#288771";
 
   const Face_Card = () => {
@@ -280,67 +293,17 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                 {doctor.views} {" Reviews "}
               </Text>
               {
-                true ?
+                CurrentUser.user.is_admin == "yes" ? (
                   <TouchableOpacity
                     style={{
                       alignItems: "center",
                       // width: "100%",
                     }}
-                    onPress={async () => {
-                      // // fetch();
-
-
-                      navigation.navigate("AppointmentConfirmation", { doctor });
-                      setF(false);
-                      
-                      let days, start, end, number;
-                      await getDocSchedule(doctor.id).then(async(res) => {
-                        if (res.status != "failed") {
-                          res = res.filter((ele) => ele.avilable !== "no");
-
-                          days = res.map((item) => item.day.slice(0, 3));
-                          start = res.map((item) => item.start);
-                          end = res.map((item) => item.end);
-                          number = res.map((item) => item.number);
-
-                        }
-                        setDays(days);
-                        setStartTime(start);
-                        setEndTime(end);
-                        setNumberOfPatients(number);
-                        await get_app_by_doc_id_user_id(doctor.id, CurrentUser.user.id).then((res) => {
-                          console.log(doctor.id, res);
-                          if (res.status == "failed")
-                            setApps_doc_user([]);
-                          else
-                            setApps_doc_user(res);
-                        })
-                      })
-
-
-
-
-                      await getReviews(doctor.id).then((res) => {
-                        // console.log(res);
-                        if (res.status != "fail") {
-                          // console.log(res);
-                          setComments(res);
-                          const old = res.filter((ele) => ele.users_id == CurrentUser.user.id);
-                          if (old.length != 0) {
-                            setCommentIsExist(true);
-                            setCommentText(old[0].text);
-                            setRateNumber(old[0].rate);
-                          }
-                        }
-                      });
-
-                      setF(true);
-
-                    }}
+                    onPress={() => { handleActive() }}
                   >
                     <Text
                       style={{
-                        backgroundColor: main_color,
+                        backgroundColor: active ? main_color : "red",
                         borderRadius: 10,
                         paddingHorizontal: 10,
                         paddingVertical: 10,
@@ -348,19 +311,73 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                         margin: 20,
                       }}
                     >
-                      {" "}
-                      Make Appointment
+                      {active ? "Mark as inactive" : "Mark as active"}
+
                     </Text>
-                  </TouchableOpacity> :
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: 'center',
-                    }}>
+                  </TouchableOpacity>
+                ) :
+                  (
+                    active ? (
+                      <TouchableOpacity
+                        style={{
+                          alignItems: "center",
+                          // width: "100%",
+                        }}
+                        onPress={async () => {
+                          // // fetch();
+                          navigation.navigate("AppointmentConfirmation", { doctor });
+                          setF(false);
+                          let days, start, end, number;
+                          await getDocSchedule(doctor.id).then((res) => {
+                            if (res.status != "failed") {
+                              res = res.filter((ele) => ele.avilable !== "no");
 
-                    <ActivityIndicator color={"#288771"} size="small" />
+                              days = res.map((item) => item.day.slice(0, 3));
+                              start = res.map((item) => item.start);
+                              end = res.map((item) => item.end);
+                              number = res.map((item) => item.number);
 
-                  </View>
+                            }
+                          });
+                          setDays(days);
+                          setStartTime(start);
+                          setEndTime(end);
+                          setNumberOfPatients(number);
+                          await getReviews(doctor.id).then((res) => {
+                            // console.log(res);
+                            if (res.status != "fail") {
+                              // console.log(res);
+                              setComments(res);
+                              const old = res.filter((ele) => ele.users_id == CurrentUser.user.id);
+                              if (old.length != 0) {
+                                setCommentIsExist(true);
+                                setCommentText(old[0].text);
+                                setRateNumber(old[0].rate);
+                              }
+                            }
+                          });
+                          setF(true);
+
+                        }}
+                      >
+                        <Text
+                          style={{
+                            backgroundColor: main_color,
+                            borderRadius: 10,
+                            paddingHorizontal: 10,
+                            paddingVertical: 10,
+                            color: "white",
+                            margin: 20,
+                          }}
+                        >
+                          {" "}
+                          Make Appointment
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <Text style={{ color: "red" }}>This doctor is inactive</Text>
+                    )
+                  )
               }
             </View>
           </View>

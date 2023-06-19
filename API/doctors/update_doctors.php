@@ -29,16 +29,16 @@ $schedule_type = $obj['schedule_type'];
 $intervall = $obj['intervall'];
 $x_coordnate = $obj['x_coordnate'];
 $y_coordnate = $obj['y_coordnate'];
-
+$active = $obj['active'];
 $stmt = $con->prepare("UPDATE `doctors` SET `title`=?,`image`=?,`name`=?,`title1`=?,
 `describtion`=?,`charactristic`=?,`charactristic_2`=?,`specialization`=?,
 `specialization1`=?,`specialization2`=?,`specialization3`=?,`address`=?,
 `price`=?,`number`=?,`status`=?,`schedule_type`=?,`intervall`=?,`x_coordnate`=?,
-`y_coordnate`=? WHERE id = ?");
+`y_coordnate`=?,`active`=? WHERE id = ?");
 $stmt->execute(array($title, $image, $name, $title1,
  $describtion, $charactristic, $charactristic_2, $specialization,
   $specialization1, $specialization2, $specialization3, $address, $price,
-    $number, $status,$schedule_type,$intervall, $x_coordnate, $y_coordnate, $id));
+    $number, $status,$schedule_type,$intervall, $x_coordnate, $y_coordnate,$active, $id));
 $schedule = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $count = $stmt->rowCount();
 if ($count > 0) {
