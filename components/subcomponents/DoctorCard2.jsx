@@ -369,6 +369,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                           setCommentText(old[0].text);
                           setRateNumber(old[0].rate);
                         }
+                      }else{
+                        setComments([]);
                       }
                     });
                     setF(true);
