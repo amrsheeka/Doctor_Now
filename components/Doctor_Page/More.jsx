@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import Icon3 from "react-native-vector-icons/Fontisto";
 
-const More = ({ navigation, fun1 }) => {
+const More = ({ navigation, fun1 , fun2 }) => {
   const main_color = "#288771";
   return (
     <View style = {{backgroundColor : 'white'}}>
@@ -95,7 +95,7 @@ const More = ({ navigation, fun1 }) => {
           ]}
         >
           <Icon3
-            name={"hipchat"}
+            name={"messenger"}
             size={30}
             color={main_color}
             style={{ width: "10%", marginLeft: 10 }}
@@ -110,6 +110,38 @@ const More = ({ navigation, fun1 }) => {
           >
             {" "}
             Chats{" "}
+          </Text>
+
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={fun2}>
+        <View
+          style={[
+            styles.content,
+            {
+              flexDirection: "row",
+              paddingVertical: 15,
+              marginTop: 5,
+              alignItems: "center",
+            },
+          ]}
+        >
+          <Icon3
+            name={"comments"}
+            size={30}
+            color={main_color}
+            style={{ width: "10%", marginLeft: 10 }}
+          />
+          <Text
+            style={{
+              color: "black",
+              fontSize: 20,
+              paddingHorizontal: 5,
+              width: "85%",
+            }}
+          >
+            {" "}
+            Comments{" "}
           </Text>
           {/* <Icon name={"edit"} size={25} color={main_color} /> */}
         </View>

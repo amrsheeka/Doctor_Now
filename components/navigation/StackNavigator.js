@@ -47,6 +47,7 @@ import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import PricingPlanBadge from "../Doctor_Page/PricingPlanBadge";
 import Chat_D from "../Doctor_Page/Chat_D";
+
 const Tab = createBottomTabNavigator();
 type Props = {
   barColor: string,

@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+  
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DoctorCard from "../subcomponents/DoctorCard";
@@ -100,6 +101,7 @@ const AllDoctors = ({ navigation, route }) => {
     );
   }, [filterd]);
   const handlePicker=(value)=>{
+    console.log(value);
     setDoctors1(
       value == "all"?doctors:doctors.filter((doctor) =>
           doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) && doctor.title == value)
@@ -108,7 +110,16 @@ const AllDoctors = ({ navigation, route }) => {
   const renderDoctor = ({ item }) => (
     <DoctorCard2 key={item.id} reload={() => { }} doctor={item} navigation={navigation} />
   );
-
+  const handleSearch=(name)=>{
+    setSearchQuery(name);
+    let x="";
+    x= name;
+    setDoctors1(
+      doctors1.filter((doctor) =>
+          doctor.name.toLowerCase().includes(x.toLowerCase()))
+    );
+    
+  }
   return (
     <View style={[styles.container, night && styles.buttonDark]}>
       <View style={styles.header}>
@@ -134,7 +145,7 @@ const AllDoctors = ({ navigation, route }) => {
             style={[styles.searchInput, night && styles.dark2]}
             placeholder="Search doctors by name"
             value={searchQuery}
-            onChangeText={(text) => setSearchQuery(text)}
+            onChangeText={(text) => handleSearch(text)}
             placeholderTextColor="gray"
           />
         </View>

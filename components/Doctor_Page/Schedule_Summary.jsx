@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Image
+  Image,
 } from "react-native";
 
 import { RadioButton } from "react-native-paper";
@@ -62,20 +62,15 @@ const Schedule_Summary = ({
     return [day, x];
   };
 
-  const plane = (i) => {
-    let arr = { ...color_plane };
-    arr[i] == "#ccc" ? (arr[i] = "#288771") : (arr[i] = "#ccc");
-    fun4(arr);
-  };
+  // const plane = (i) => {
+  //   let arr = { ...color_plane };
+  //   arr[i] == "#ccc" ? (arr[i] = "#288771") : (arr[i] = "#ccc");
+  //   fun4(arr);
+  // };
 
   const appoint = (i) => {
     return (
-      <TouchableOpacity
-        onPress={() => {
-          fun1(i);
-          fun2();
-        }}
-      >
+      
         <View
           style={[
             styles.content,
@@ -87,20 +82,22 @@ const Schedule_Summary = ({
             },
           ]}
         >
-          <View style={{ width: "40%", merginRight: 30 }}>
+          <View style={{ width: "60%", merginRight: 30 }}>
             <Text style={{ color: main_color }}>
               {i === 0 ? "Today" : i === 1 ? "Tomorrow" : app_days(i)[0]}
             </Text>
             <Text>{app_days(i)[1]}</Text>
           </View>
-          <View style={{ width: "45%", alignSelf: "center" }}>
-            <Text>
-              {doctor_booking[i] === 0
-                ? "No Bookings"
-                : doctor_booking[i] + " Bookings"}
-            </Text>
-          </View>
-          <Icon5
+          <TouchableOpacity
+            style={{ alignSelf: "center", padding: 10, borderRadius: 10 }}
+            onPress={() => {
+              fun1(i);
+              fun2();
+            }}
+          >
+            <Text style={{ color: main_color }}>Get Appointments</Text>
+          </TouchableOpacity>
+          {/* <Icon5
             onPress={() => {
               fun3(
                 i,
@@ -115,9 +112,8 @@ const Schedule_Summary = ({
             size={30}
             color={color_plane[i]}
             style={{ alignSelf: "center", width: "10%", marginLeft: 15 }}
-          />
+          /> */}
         </View>
-      </TouchableOpacity>
     );
   };
 
@@ -134,6 +130,7 @@ const Schedule_Summary = ({
         <View>{appoint(7)}</View>
         <View>{appoint(8)}</View>
         <View>{appoint(9)}</View>
+        <View>{appoint(10)}</View>
       </View>
     );
   };
@@ -202,8 +199,6 @@ const Schedule_Summary = ({
   };
 
   return empty ? ScheduleSummaryEmpty() : appoints();
-
-
 };
 const styles = StyleSheet.create({
   content: {

@@ -21,11 +21,11 @@ import { ScrollView } from "react-native";
 
 
 const Sign_UP_2th_Screen = ({ navigation }) => {
-  const [phone, setphone] = useState("01092297298");
-  const [name, setname] = useState("mohamed essam");
-  const [address, setaddress] = useState("giza");
-  const [age, setAge] = useState("20");
-  const [gender, setGender] = useState("male");
+  const [phone, setphone] = useState("");
+  const [name, setname] = useState("");
+  const [address, setaddress] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
   const [nameErr, setnameErr] = useState("");
   const [ageErr, setAgeErr] = useState("");
   const [addressErr, setAddressErr] = useState("");
