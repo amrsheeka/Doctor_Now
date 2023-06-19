@@ -136,59 +136,6 @@ function Doc_card_appointment({
     });
   };
 
-  // const Delete2 = async () => {
-  //   await deleteAppointment_fromHistory(users_id, doctor_id).then((res) => {
-  //     console.log("its ok");
-  //     if (CurrentUser.user.is_admin == "yes") {
-  //       getAllAppointment_from_history().then((res) => {
-  //         res.status != "failed" ? setAppointments(res) : setAppointments([]);
-  //       });
-  //     } else if (CurrentUser.user.is_doctor == "yes") {
-  //       get_History_Apps_for_Doctor(doctor_id, date_value).then((res) => {
-  //         console.log(res);
-  //         if (res.status !== "failed") setAppointments_History(res);
-  //         else setAppointments_History([]);
-
-  //         console.log(" date: ", date);
-  //         console.log(appointments_History);
-  //       });
-  //     } else {
-  //       get_History_Apps_for_User(users_id).then((res) => {
-  //         res.status != "failed" ? setAppointments(res) : setAppointments([]);
-  //       });
-  //     }
-  //   });
-  // };
-
-  // const Finish = async () => {
-  //   await insertAppointment_toHistory(
-  //     users_id,
-  //     doctor_id,
-  //     date,
-  //     time,
-  //     name_patient,
-  //     age,
-  //     gender,
-  //     notes,
-  //     doc_name,
-  //     image,
-  //     specialization1
-  //   ).then(
-  //     await deleteAppointment(users_id, doctor_id).then((res) => {
-  //       console.log("its ok");
-  //       if (CurrentUser.user.is_admin == "yes") {
-  //         getAllAppointment().then((res) => {
-  //           res.status != "failed" ? setAppointments(res) : setAppointments([]);
-  //         });
-  //       } else {
-  //         getAppointment_for_Doctor(doctor_id).then((res) => {
-  //           console.log(res);
-  //           res.status != "failed" ? setAppointments(res) : setAppointments([]);
-  //         });
-  //       }
-  //     })
-  //   );
-  // };
 
   const cancel = async () => {
     await deleteAppointment(users_id, doctor_id).then((res) => {
@@ -232,7 +179,7 @@ function Doc_card_appointment({
             {title1} {doc_name}
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate("MapScreen", address)}
+            onPress={() => navigation.navigate("MapScreen", {address:address,id:obj.doctor_id})}
           >
             <Icon3 name={"location-pin"} size={30} color={main_color} />
           </TouchableOpacity>

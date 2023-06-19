@@ -126,7 +126,6 @@ const Payment = ({ navigation, route }) => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <AntDesign name="checkcircle" size={120} style={styles.icon2} />
-              <Image source={""} />
               <Text style={styles.modalText}>Paid successfully</Text>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
