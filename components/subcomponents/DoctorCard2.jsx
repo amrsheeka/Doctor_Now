@@ -19,7 +19,7 @@ import CurrentUser from "../consts/CurrentUser";
 import { getFavourite } from "../../database/Users";
 import getTimeList from "../../database/getTimeList";
 import { editDoctor, getDocSchedule, updateDoctor } from "../../database/Doctors";
-const DoctorCard2 = ({ navigation, doctor, reload }) => {
+const DoctorCard2 = ({ navigation, doctor, reload}) => {
   let image = doctor.image;
   const { night } = useContext(AppContext);
   const { favourite, setFavourite } = useContext(AppContext);
@@ -41,10 +41,8 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { setRateNumber } = useContext(AppContext);
   const { setCommentText } = useContext(AppContext);
   const { setApps_doc_user } = useContext(AppContext);
-  console.log(doctor.active);
   const handleActive = () => {
     let doc = doctor;
-    console.log(doctor)
     doc['active'] = doc.active == 0 ? 1 : 0;
     updateDoctor(doc).then(() => {
       setActive(!active);
@@ -345,7 +343,6 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
                           setEndTime(end);
                           setNumberOfPatients(number);
                           await get_app_by_doc_id_user_id(doctor.id, CurrentUser.user.id).then((res) => {
-                            console.log(doctor.id, res);
                             if (res.status == "failed")
                               setApps_doc_user([]);
                             else
