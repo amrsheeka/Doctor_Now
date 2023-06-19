@@ -34,7 +34,6 @@ const Chat_D = ({ navigation }) => {
   const [chat, setChat] = useState([]);
 
   const { night } = useContext(AppContext);
-  const [find, setFind] = useState(true);
   async function getChat() {
     const citiesCol = collection(db, "chats");
     const citySnapshot = await getDocs(citiesCol);
@@ -47,7 +46,6 @@ const Chat_D = ({ navigation }) => {
   const getChats = async () => {
     const c = await getChat();
     await setChat(c);
-    if (chat.length == 0) setFind(false);
     // console.log("chat ", c);
   };
 
@@ -168,7 +166,7 @@ const Chat_D = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       {Header()}
-      {find ? (
+      {chat.length>0 ? (
         <FlatList
           data={user_chats}
           renderItem={renderChat}
