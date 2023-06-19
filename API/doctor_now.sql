@@ -4943,7 +4943,6 @@ CREATE TABLE `users` (
   `age` varchar(2) DEFAULT NULL,
   `bio` text DEFAULT NULL,
   `image` varchar(500) DEFAULT NULL,
-  `image` varchar(500) DEFAULT NULL,
   `is_admin` enum('yes','no') NOT NULL DEFAULT 'no',
   `is_doctor` enum('no','yes') NOT NULL DEFAULT 'no',
   `created_at` date NOT NULL
