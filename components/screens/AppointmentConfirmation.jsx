@@ -108,22 +108,31 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     // })
   }, []);
 
-  const getDocTimes = async () => {
+  const getDocTimes = async (date1) => {
     try {
       setModalVisible(true);
-      await getAppointment_by_doc_id(item.id, date).then((res) => {
+      await getAppointment_by_doc_id(item.id, date1).then((res) => {
+        console.log(res);
         if (res.status != "failed") {
           if (item.schedule_type == "on appointment") {
-            console.log("ahmed");
             const times = res.map((item) => item.time);
             setTimeList(times);
+            console.log(times);
+            Setff(true);
           } else {
             const lengthValue =
               parseInt(numberOfPatients[Days.indexOf(date.slice(0, 3))], 10) -
               parseInt(res.length, 10);
             setLength(lengthValue);
+            console.log(length);
+            // Setff(true);
             // console.log(lengthValue);
           }
+        } else {
+          Setff(true);
+          setTimeList([]);
+          console.log(numberOfPatients[Days.indexOf(date1.slice(0, 3))]);
+          setLength(numberOfPatients[Days.indexOf(date1.slice(0, 3))]);
         }
       });
     } catch (err) {
@@ -155,6 +164,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
 
   const [select_Month, SetSelect_Month] = useState("June 2023");
   const [select_Month_Index, SetSelect_Month_Index] = useState(0);
+  const [ff, Setff] = useState(false);
+
   const main_color = "#288771";
 
   const day = (avliable, week, month, key) => {
@@ -162,12 +173,14 @@ const AppointmentConfirmation = ({ navigation, route }) => {
       <TouchableOpacity
         disabled={!avliable}
         key={key}
-        onPress={() => {
+        onPress={async() => {
           setDate(new Date(2023, select_Month_Index + 5, month).toDateString());
+          Setff(false);
           setChoice(week + "");
-          getDocTimes().then(() => {
+          await getDocTimes(new Date(2023, select_Month_Index + 5, month).toDateString()).then(() => {
             if (item.schedule_type != "on appointment") {
-              if (length != 0) {
+              console.log(length);
+              if (length > 0) {
                 const time = startTime[Days.indexOf(week)];
                 navigation.navigate("Details_user_to_appointment", {
                   item,
@@ -265,7 +278,7 @@ const AppointmentConfirmation = ({ navigation, route }) => {
             setModalVisible(false);
           } else {
             setModalVisible(false);
-
+            console.log(time, date);
             navigation.navigate("Details_user_to_appointment", {
               item,
               time,

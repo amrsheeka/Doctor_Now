@@ -52,11 +52,9 @@ const DoctorCard2 = ({ navigation, doctor, reload }) => {
   const { setRateNumber } = useContext(AppContext);
   const { setCommentText } = useContext(AppContext);
   const { setApps_doc_user } = useContext(AppContext);
-  console.log(doctor.active);
   const handleActive = () => {
     let doc = doctor;
-    console.log(doctor);
-    doc["active"] = doc.active == 0 ? 1 : 0;
+    doc['active'] = doc.active == 0 ? 1 : 0;
     updateDoctor(doc).then(() => {
       setActive(!active);
     });

@@ -384,9 +384,8 @@ const getAppointment_by_doc_id = async (doctor_id, date) => {
       doctor_id: doctor_id,
       date: date,
     })
-    .then(function (response) {
-      console.log(response.date);
-
+    .then((response) =>{
+      console.log(response);
       return response.data;
     })
     .catch(function (error) {

@@ -107,7 +107,7 @@ const Home = ({ navigation }) => {
         <TouchableOpacity
           style={styles.filterCard1}
           onPress={() => {
-            navigation.navigate("AllDoctors", { filteritem: "Stomach" });
+            navigation.navigate("AllDoctors", { filteritem: "Internist" });
           }}
         >
           <View style={styles.filterCardElements}>
@@ -141,7 +141,7 @@ const Home = ({ navigation }) => {
         <TouchableOpacity
           style={styles.filterCard3}
           onPress={() => {
-            navigation.navigate("AllDoctors", { filteritem: "Surgery" });
+            navigation.navigate("AllDoctors", { filteritem: "General Surgeon" });
           }}
         >
           <View style={styles.filterCardElements}>
@@ -194,7 +194,7 @@ const Home = ({ navigation }) => {
 
           <TouchableOpacity
             style={[styles.filter, night && styles.dark2]}
-            onPress={() => navigation.navigate("AllDoctors", { all: "all" })}
+            onPress={() => navigation.navigate("AllDoctors", { filteritem: "all" })}
           >
             <Image
               style={{ height: 35, width: 35, alignItems: "center" }}
