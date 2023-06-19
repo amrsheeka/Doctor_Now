@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "Doctor_Now",
-    "slug": "Doctor_Now",
+    "slug": "doctor-now",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/splash.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "doctor_now.a"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "20eb0c34-cb08-4d31-967e-3aa1fcc2e317"
+      }
+    },
+    "owner": "amr_sheeka"
   }
 }
