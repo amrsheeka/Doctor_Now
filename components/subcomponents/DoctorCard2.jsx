@@ -328,6 +328,7 @@ const DoctorCard2 = ({ navigation, doctor, reload}) => {
                           setF(false);
                           let days, start, end, number;
                           await getDocSchedule(doctor.id).then((res) => {
+                            // console.log(res);
                             if (res.status != "failed") {
                               res = res.filter((ele) => ele.avilable !== "no");
 
@@ -343,6 +344,8 @@ const DoctorCard2 = ({ navigation, doctor, reload}) => {
                           setEndTime(end);
                           setNumberOfPatients(number);
                           await get_app_by_doc_id_user_id(doctor.id, CurrentUser.user.id).then((res) => {
+                            console.log(CurrentUser,doctor.id);
+
                             if (res.status == "failed")
                               setApps_doc_user([]);
                             else
