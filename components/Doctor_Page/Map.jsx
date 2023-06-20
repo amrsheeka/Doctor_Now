@@ -2,43 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { addDoctor } from '../../database/Doctors';
+import { addDoctor, updateDoctor } from '../../database/Doctors';
 
 export default function Map({ navigation, route }) {
-    let addres = route.params.address;
-    let lat = route.params.x_coordnate;
-    let lon = route.params.y_coordnate;
+    const item = route.params.doctor;
+    const address = route.params.address;
     const [doctor, setDoctor] = useState(item);
-    const [latitude, setLatitude] = useState(lat);
-    const [longitude, setLongitude] = useState(lon);
+    const [latitude, setLatitude] = useState(item.x_coordnate);
+    const [longitude, setLongitude] = useState(item.y_coordnate);
     const [initialRegion, setInitialRegion] = useState({
-        latitude: latitude,
-        longitude: longitude,
+        latitude: parseFloat(item.x_coordnate),
+        longitude: parseFloat(item.y_coordnate),
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
     });
     const [markerCoords, setMarkerCoords] = useState(null);
 
     async function getlocation() {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-            // handle permission denied
 
-        } else {
-            let location = await Location.getCurrentPositionAsync({});
-            setLatitude(location.coords.latitude);
-            setLongitude(location.coords.longitude);
-            setInitialRegion({
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-            });
-        }
     }
 
     useEffect(() => {
-        getlocation();
+        //getlocation();
     }, []);
 
     function handleMapPress(event) {
@@ -48,15 +33,14 @@ export default function Map({ navigation, route }) {
         if (markerCoords) {
             let doc = doctor;
 
-            doc = {
-                ...doc, x_coordnate: markerCoords.latitude,
-                y_coordnate: markerCoords.longitude
-            }
+            doc["x_coordnate"] = markerCoords.latitude;
+            doc["y_coordnate"] = markerCoords.longitude;
+            doc["address"] = address;
 
-            console.log(markerCoords, doctor.x_coordnate);
-            addDoctor(doc).then(
-                ()=>{
-                    navigation.navigate("Thk4");
+            //console.log(markerCoords, doctor.x_coordnate);
+            updateDoctor(doc).then(
+                () => {
+                    alert("Your address updated successfully")
                 }
             )
         } else {
