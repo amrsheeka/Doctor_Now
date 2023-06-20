@@ -48,6 +48,7 @@ import Schedule_Summary from "./Schedule_Summary";
 import More from "./More";
 import Appointments_History from "./Appointments_History";
 import Comments from "./Comments";
+import Address from "./Address";
 
 import {
   getAppointment_for_Doctor,
@@ -180,6 +181,9 @@ const Info = ({ navigation }) => {
   const [color2_sechedule, setColor2_sechedule] = useState("black");
   const [rate, setRate] = useState();
   const [views, setViews] = useState();
+  const [address, setAddress] = useState();
+  const [x_coordnate, setX_coordnate] = useState();
+  const [y_coordnate, setY_coordnate] = useState();
 
   const [whichDay, setWhichDay] = useState(0);
 
@@ -209,7 +213,6 @@ const Info = ({ navigation }) => {
     let doc = { ...doctor };
     if (type == "First In First Out") {
       doc["schedule_type"] = "fifo";
-      
     } else if (type == "On Appointments") {
       doc["schedule_type"] = "on appointment";
     } else if (type == "Special") {
@@ -341,7 +344,11 @@ const Info = ({ navigation }) => {
       setExmain(res[0].price);
       setRate(res[0].rate);
       setViews(res[0].views);
+      setAddress(res[0].address);
+      setX_coordnate(res[0].x_coordnate);
+      setY_coordnate(res[0].y_coordnate);
       getRev(res[0].id);
+
       if (res[0].schedule_type == "fifo") {
         setSelected("First In First Out");
       } else if (res[0].schedule_type == "on appointment") {
@@ -641,7 +648,7 @@ const Info = ({ navigation }) => {
     start_time,
     end_time,
     booking,
-    setbooking,
+    setbooking
   ) => {
     return (
       <View
@@ -791,7 +798,8 @@ const Info = ({ navigation }) => {
         <Text style={[styles.label, { width: "75%" }]}> {page} </Text>
         {page == "Appointments" ||
         page == "Appointments History" ||
-        page == "Comments" || page == "Schedule" ? (
+        page == "Comments" ||
+        page == "Schedule" ? (
           <></>
         ) : (
           <Icon6
@@ -1156,7 +1164,7 @@ const Info = ({ navigation }) => {
             startTime,
             endTime,
             number_of_bookings,
-            setNumber_of_bookings,
+            setNumber_of_bookings
           )
         ) : (
           <></>
@@ -1210,7 +1218,7 @@ const Info = ({ navigation }) => {
             startTime1,
             endTime1,
             number_of_bookings1,
-            setNumber_of_bookings1,
+            setNumber_of_bookings1
           )
         ) : (
           <></>
@@ -1264,7 +1272,7 @@ const Info = ({ navigation }) => {
             startTime2,
             endTime2,
             number_of_bookings2,
-            setNumber_of_bookings2,
+            setNumber_of_bookings2
           )
         ) : (
           <></>
@@ -1318,7 +1326,7 @@ const Info = ({ navigation }) => {
             startTime3,
             endTime3,
             number_of_bookings3,
-            setNumber_of_bookings3,
+            setNumber_of_bookings3
           )
         ) : (
           <></>
@@ -1372,7 +1380,7 @@ const Info = ({ navigation }) => {
             startTime4,
             endTime4,
             number_of_bookings4,
-            setNumber_of_bookings4,
+            setNumber_of_bookings4
           )
         ) : (
           <></>
@@ -1426,7 +1434,7 @@ const Info = ({ navigation }) => {
             startTime5,
             endTime5,
             number_of_bookings5,
-            setNumber_of_bookings5,
+            setNumber_of_bookings5
           )
         ) : (
           <></>
@@ -1480,7 +1488,7 @@ const Info = ({ navigation }) => {
             startTime6,
             endTime6,
             number_of_bookings6,
-            setNumber_of_bookings6,
+            setNumber_of_bookings6
           )
         ) : (
           <></>
@@ -1649,6 +1657,7 @@ const Info = ({ navigation }) => {
                   fun1={() => setPage("Clinic Name and Number")}
                   fun2={() => setPage("Exmination and Follow-up")}
                   fun3={() => setPage("Assistant Name and Number")}
+                  fun4={() => setPage("Clinic Address")}
                 />
               )}
             </View>
@@ -1757,6 +1766,15 @@ const Info = ({ navigation }) => {
             <Appointments_History id={doctor.id} />
           ) : page === "Comments" ? (
             <Comments id={doctor.id} />
+          ) : page === "Clinic Address" ? (
+            <Address
+              address={address}
+              fun1={setAddress}
+              x={x_coordnate}
+              fun2={setX_coordnate}
+              y={y_coordnate}
+              fun3={setY_coordnate}
+            />
           ) : (
             <></>
           )}

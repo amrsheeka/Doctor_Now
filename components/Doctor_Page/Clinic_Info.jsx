@@ -8,7 +8,7 @@ import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 
 
-const Clinic_Info = ({nameClinic, numberClinic, exmain, follow_up, duration, nameAssistant, numberAssistant, fun1, fun2, fun3}) => {
+const Clinic_Info = ({nameClinic, numberClinic, exmain, follow_up, duration, nameAssistant, numberAssistant, fun1, fun2, fun3,fun4}) => {
     const main_color = "#288771";
     return (
       <View>
@@ -189,7 +189,7 @@ const Clinic_Info = ({nameClinic, numberClinic, exmain, follow_up, duration, nam
 
         {/* ////////////////////////////////////////////////////////////////////////////// */}
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress = {fun4}>
           <View
             style={[
               styles.content,
