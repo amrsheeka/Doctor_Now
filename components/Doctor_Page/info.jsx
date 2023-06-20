@@ -182,8 +182,8 @@ const Info = ({ navigation }) => {
   const [rate, setRate] = useState();
   const [views, setViews] = useState();
   const [address, setAddress] = useState();
-  const [x_coordnate, setX_coordnate] = useState();
-  const [y_coordnate, setY_coordnate] = useState();
+  const [x_coordnate, setX_coordnate] = useState(null);
+  const [y_coordnate, setY_coordnate] = useState(null);
 
   const [whichDay, setWhichDay] = useState(0);
 
@@ -1768,12 +1768,8 @@ const Info = ({ navigation }) => {
             <Comments id={doctor.id} />
           ) : page === "Clinic Address" ? (
             <Address
-              address={address}
-              fun1={setAddress}
-              x={x_coordnate}
-              fun2={setX_coordnate}
-              y={y_coordnate}
-              fun3={setY_coordnate}
+              navigation={navigation}
+              doctor={doctor}
             />
           ) : (
             <></>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   View,
@@ -10,9 +10,9 @@ import {
 
 import Icon2 from "react-native-vector-icons/Entypo";
 
-const Address = ({ address, fun1, x, fun2, y, fun3 }) => {
+const Address = ({navigation,doctor}) => {
+  const [address, setAddress] = useState(doctor.address);
   const main_color = "#288771";
-
   return (
     <View>
       <View
@@ -44,9 +44,13 @@ const Address = ({ address, fun1, x, fun2, y, fun3 }) => {
         style={styles.inp}
         defaultValue={address}
         //placeholder={"last name"}
-        onChangeText={fun1}
+        onChangeText={setAddress}
       />
-      <TouchableOpacity>
+      <TouchableOpacity
+      onPress={()=>{
+        navigation.navigate("Map",{doctor,address});
+      }}
+      >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Icon2
             name={"map"}

@@ -47,6 +47,7 @@ import { useContext } from "react";
 import { AppContext } from "../consts/AppContext";
 import PricingPlanBadge from "../Doctor_Page/PricingPlanBadge";
 import Chat_D from "../Doctor_Page/Chat_D";
+import Map from "../Doctor_Page/Map";
 
 const Tab = createBottomTabNavigator();
 type Props = {
@@ -501,6 +502,11 @@ const DoctorStackNavigator = () => {
       <Stack.Screen
         name="Chatbox_photo"
         component={Chatbox_photo}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Map"
+        component={Map}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
