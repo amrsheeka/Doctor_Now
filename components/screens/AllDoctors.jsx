@@ -11,7 +11,8 @@ import {
   RefreshControl,
   
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+import Icon4 from "react-native-vector-icons/FontAwesome5";
+import { SelectList } from "react-native-dropdown-select-list";
 import DoctorCard from "../subcomponents/DoctorCard";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Doctor from "../consts/Doctor";
@@ -167,34 +168,40 @@ const AllDoctors = ({ navigation, route }) => {
           </View>
         </TouchableOpacity>
         {/* <View > */}
-        <View style={{ height: 50, width: 200 }}>
-
-          <Picker
-            selectedValue={selectedValue}
-            style={[{ height: 50, width: 250 }, night && styles.buttonDark]}
-            onValueChange={(itemValue, itemIndex) =>
-              handlePicker(itemValue)
-            }
-          >
-            <Picker.Item label="All Doctors" value="all" />
-            <Picker.Item label="Pulmonologist" value="Pulmonologist" />
-            <Picker.Item label="Psychiatrist" value="Psychiatrist" />
-            <Picker.Item label="Internist" value="Internist" />
-            <Picker.Item label="Hematologist" value="Hematologist" />
-            <Picker.Item label="Plastic Surgeon" value="Plastic Surgeon" />
-            <Picker.Item label="Cardiologist" value="Cardiologist" />
-            <Picker.Item label="Neurosurgeon" value="Neurosurgeon" />
-            <Picker.Item label="Endocrinologist" value="Endocrinologist" />
-            <Picker.Item label="ENT Doctor" value="ENT Doctor" />
-            <Picker.Item
-              label="Infertility Specialist"
-              value="Infertility Specialist"
-            />
-            <Picker.Item label="Andrologist" value="Andrologist" />
-          </Picker>
-        </View>
+        <SelectList
+          data={[
+            { value: "all" },
+            { value: "Pulmonologist" },
+            { value: "Psychiatrist" },
+            { value: "Internist" },
+            { value: "Hematologist" },
+            { value: "Plastic Surgeon" },
+            { value: "Cardiologist" },
+            { value: "Neurosurgeon" },
+            { value: "Endocrinologist" },
+            { value: "ENT Doctor" },
+          ]}
+          setSelected={handlePicker}
+          placeholder={selectedValue}
+          search={false}
+          boxStyles={{
+            borderWidth: 0,
+            borderBottomWidth: 2,
+            borderRadius: 0,
+            marginHorizontal: 10,
+            borderColor: "#288771",
+            paddingLeft: 5,
+          }}
+          arrowicon={<Icon4 name={"chevron-down"} size={12} color={"#288771"} />}
+          dropdownStyles={{
+            marginHorizontal: 10,
+            borderWidth: 0,
+            backgroundColor: "white",
+            marginTop: 2,
+          }}
+        />
       </View>
-
+      
 
       <FlatList
         removeClippedSubviews={true}

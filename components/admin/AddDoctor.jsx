@@ -7,10 +7,11 @@ import {
     Button,
     TouchableOpacity,
 } from "react-native";
+import Icon4 from "react-native-vector-icons/FontAwesome5";
 import React, { useState } from "react";
-import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native";
+import { SelectList } from "react-native-dropdown-select-list";
 const AddDoctor = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [emailErr, setEmailErr] = useState("");
@@ -61,22 +62,22 @@ const AddDoctor = ({ navigation }) => {
             } else {
                 setPasswordErr("");
             }
-            if(!address){
+            if (!address) {
                 setAddressErr("Enter the doctor's address.");
-            }else{
+            } else {
                 setAddressErr("");
             }
-            if(!title){
+            if (!title) {
                 setTitleErr("Enter the doctor's speciality");
-            }else{
+            } else {
                 setTitleErr("");
             }
-            if(!description){
+            if (!description) {
                 setDescriptionErr("Enter the doctor's describtion");
-            }else{
+            } else {
                 setDescriptionErr("");
             }
-            if(!price){
+            if (!price) {
                 setPriceErr("Enter the doctor's describtion");
             }
         }
@@ -198,25 +199,37 @@ const AddDoctor = ({ navigation }) => {
                     <Text style={{ fontSize: 17, fontWeight: "bold" }}>
                         Doctor specialty
                     </Text>
-                    <Picker
-                        selectedValue={title}
-                        onValueChange={(value, index) => setTitle(value)}
-                        mode="dropdown"
-                        style={styles.picker}
-                    >
-                        <Picker.Item label="Select Specialization" value="" />
-                        <Picker.Item label="Pulmonologist" value="Pulmonologist" />
-                        <Picker.Item label="Psychiatrist" value="Psychiatrist" />
-                        <Picker.Item label="Internist" value="Internist" />
-                        <Picker.Item label="Hematologist" value="Hematologist" />
-                        <Picker.Item label="Plastic Surgeon" value="Plastic Surgeon" />
-                        <Picker.Item label="Cardiologist" value="Cardiologist" />
-                        <Picker.Item label="Neurosurgeon" value="Neurosurgeon" />
-                        <Picker.Item label="Endocrinologist" value="Endocrinologist" />
-                        <Picker.Item label="ENT Doctor" value="ENT Doctor" />
-                        <Picker.Item label="Infertility Specialist" value="Infertility Specialist" />
-                        <Picker.Item label="Andrologist" value="Andrologist" />
-                    </Picker>
+                    <SelectList
+                        data={[
+                            { value: "Pulmonologist" },
+                            { value: "Psychiatrist" },
+                            { value: "Internist" },
+                            { value: "Hematologist" },
+                            { value: "Plastic Surgeon" },
+                            { value: "Cardiologist" },
+                            { value: "Neurosurgeon" },
+                            { value: "Endocrinologist" },
+                            { value: "ENT Doctor" },
+                        ]}
+                        setSelected={setTitle}
+                        placeholder={title}
+                        search={false}
+                        boxStyles={{
+                            borderWidth: 0,
+                            borderBottomWidth: 2,
+                            borderRadius: 0,
+                            marginHorizontal: 10,
+                            borderColor: "#288771",
+                            paddingLeft: 5,
+                        }}
+                        arrowicon={<Icon4 name={"chevron-down"} size={12} color={"#288771"} />}
+                        dropdownStyles={{
+                            marginHorizontal: 10,
+                            borderWidth: 0,
+                            backgroundColor: "white",
+                            marginTop: 2,
+                        }}
+                    />
                     <Text style={{ color: "red" }}>{titleerr}</Text>
                     <View style={styles.inputContainer}>
                         <Text style={{ fontSize: 17, fontWeight: "bold" }}>
@@ -244,15 +257,30 @@ const AddDoctor = ({ navigation }) => {
                     <Text style={{ fontSize: 17, fontWeight: "bold" }}>
                         Service Type
                     </Text>
-                    <Picker
-                        selectedValue={type}
-                        onValueChange={(value, index) => setType(value)}
-                        mode="dropdown"
-                        style={styles.picker}
-                    >
-                        <Picker.Item label="Doctor" value="Doctor" />
-                        <Picker.Item label="Center" value="Center" />
-                    </Picker>
+                    <SelectList
+                        data={[
+                            { value: "Doctor" },
+                            { value: "Center" },
+                        ]}
+                        setSelected={setType}
+                        placeholder={type}
+                        search={false}
+                        boxStyles={{
+                            borderWidth: 0,
+                            borderBottomWidth: 2,
+                            borderRadius: 0,
+                            marginHorizontal: 10,
+                            borderColor: "#288771",
+                            paddingLeft: 5,
+                        }}
+                        arrowicon={<Icon4 name={"chevron-down"} size={12} color={"#288771"} />}
+                        dropdownStyles={{
+                            marginHorizontal: 10,
+                            borderWidth: 0,
+                            backgroundColor: "white",
+                            marginTop: 2,
+                        }}
+                    />
                     <View style={styles.inputContainer}>
                         <Text style={{ fontSize: 17, fontWeight: "bold", marginTop: 5 }}>
                             Doctor Describtion
