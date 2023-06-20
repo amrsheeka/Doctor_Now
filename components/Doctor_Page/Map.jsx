@@ -4,11 +4,13 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { addDoctor } from '../../database/Doctors';
 
-export default function MapSelect({ navigation, route }) {
-    let item = route.params;
+export default function Map({ navigation, route }) {
+    let addres = route.params.address;
+    let lat = route.params.x_coordnate;
+    let lon = route.params.y_coordnate;
     const [doctor, setDoctor] = useState(item);
-    const [latitude, setLatitude] = useState(30.05839515);
-    const [longitude, setLongitude] = useState(31.202023080983963);
+    const [latitude, setLatitude] = useState(lat);
+    const [longitude, setLongitude] = useState(lon);
     const [initialRegion, setInitialRegion] = useState({
         latitude: latitude,
         longitude: longitude,

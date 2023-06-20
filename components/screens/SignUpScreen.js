@@ -77,8 +77,8 @@ const SignUpScreen = ({ navigation, route }) => {
         confirm
       )
         .then((res) => {
-          console.log("res:", res);
-          if (res == "success") {
+          //console.log("res:", res);
+          if (res.status == "success") {
             alert("Register Successfully go to login ->");
             navigation.navigate("LoginScreen");
           } else {
