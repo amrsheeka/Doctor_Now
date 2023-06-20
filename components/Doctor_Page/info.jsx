@@ -1652,6 +1652,7 @@ const Info = ({ navigation }) => {
                   exmain={exmain}
                   follow_up={follow_up}
                   duration={duration}
+                  address = {address}
                   nameAssistant={nameAssistant}
                   numberAssistant={numberAssistant}
                   fun1={() => setPage("Clinic Name and Number")}

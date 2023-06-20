@@ -8,7 +8,7 @@ import Icon3 from "react-native-vector-icons/Fontisto";
 import Icon4 from "react-native-vector-icons/FontAwesome5";
 
 
-const Clinic_Info = ({nameClinic, numberClinic, exmain, follow_up, duration, nameAssistant, numberAssistant, fun1, fun2, fun3,fun4}) => {
+const Clinic_Info = ({nameClinic, numberClinic, exmain, follow_up, duration,address, nameAssistant, numberAssistant, fun1, fun2, fun3,fun4}) => {
     const main_color = "#288771";
     return (
       <View>
@@ -71,38 +71,6 @@ const Clinic_Info = ({nameClinic, numberClinic, exmain, follow_up, duration, nam
         </TouchableOpacity>
 
         {/* //////////////////////////////////////////////////////////////////// */}
-
-        <TouchableOpacity>
-          <View
-            style={[
-              styles.content,
-              {
-                flexDirection: "row",
-                paddingVertical: 15,
-                marginVertical: 5,
-              },
-            ]}
-          >
-            <Icon3
-              name={"photograph"}
-              size={25}
-              color={main_color}
-              style={{ width: "7%" }}
-            />
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                paddingHorizontal: 5,
-                width: "85%",
-              }}
-            >
-              {" "}
-              Clinic Photos{" "}
-            </Text>
-            <Icon name={"edit"} size={25} color = {main_color} />
-          </View>
-        </TouchableOpacity>
 
         {/* /////////////////////////////////////////////////////////////// */}
 
@@ -219,6 +187,15 @@ const Clinic_Info = ({nameClinic, numberClinic, exmain, follow_up, duration, nam
             </Text>
             <Icon name={"edit"} size={25} color={main_color} />
           </View>
+          {address !== ""  ? (
+            <View style={[styles.content, { paddingVertical: 15 }]}>
+              <View style={{ flexWrap: 'wrap' }}>
+                <Text>{address}</Text>
+              </View>
+            </View>
+          ) : (
+            <></>
+          )}
         </TouchableOpacity>
 
         {/* ///////////////////////////////////////////////////////////// */}
