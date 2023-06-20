@@ -101,8 +101,8 @@ const AppointmentConfirmation = ({ navigation, route }) => {
     });
   };
   useEffect(() => {
-    //getDocDays();
-    getComments();
+    // getDocDays();
+    // getComments();
     // get_app_by_doc_id_user_id(item.id,CurrentUser.user.id).then((res)=>{
     //   console.log(res);
     // })

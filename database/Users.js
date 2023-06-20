@@ -12,35 +12,34 @@ const sighnup = async (
   gender,
   confirm
 ) => {
-  return fetch(`${Ip.ip}/API/Auth/signup.php`, {
-    method: "POST",
-    //mode: "no-cors",
-    header: {
-      Accept: "application/json",
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify({
-      name: name,
-      email: email,
-      password: password,
-      phone: phone,
-      address: address,
-      address_2: "",
-      confirm: confirm,
-      age: age,
-      gender: gender,
-    }),
+  console.log(name,
+    email,
+    password,
+    phone,
+    address,
+    // address2,
+    age,
+    gender,
+    confirm);
+  return await axios.post(`${Ip.ip}/API/Auth/Signup.php`, {
+    name: name,
+    email: email,
+    password: password,
+    phone: phone,
+    address: address,
+    address_2: "",
+    confirm: confirm,
+    age: age,
+    gender: gender,
+  }).then((response)=>{
+    console.log("res: ",response.data);
+    return response.data;
+  }).catch((error)=>{
+    console.log("err: ",error);
+    alert("This email already exist.");
+    throw new Error(error);
   })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      return responseJson.status;
-    })
-
-    .catch((error) => {
-      alert("This email already exist.");
-      throw new Error(error);
-    });
-};
+}
 
 const login = async (email, password) => {
   return await fetch(`${Ip.ip}/API/Auth/Login.php`, {
@@ -384,7 +383,7 @@ const getAppointment_by_doc_id = async (doctor_id, date) => {
       doctor_id: doctor_id,
       date: date,
     })
-    .then((response) =>{
+    .then((response) => {
       console.log(response);
       return response.data;
     })
