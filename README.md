@@ -1,6 +1,6 @@
-# Doctor_Now
+# Doctor_Now:
 
-#TO RUN . . . 
- 1- npm install 
- 2- npm start
+## TO RUN : 
+ - npm install
+ - npm start
  
